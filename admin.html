@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración · Lyon Asesor</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F0F2F5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h1 { color: #e86b18; margin-bottom: 1rem; }
+        .login-box {
+            max-width: 400px;
+            margin: 3rem auto;
+            text-align: center;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background: #e86b18;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .logout-btn {
+            background: #1A2330;
+            float: right;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #1A2330;
+            color: white;
+        }
+        .pagado-true {
+            background: #E8F5E9;
+            color: #2E7D32;
+            font-weight: bold;
+        }
+        .pagado-false {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        .btn-pagar {
+            background: #e86b18;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .export-btn {
+            background: #1A2330;
+            margin-bottom: 1rem;
+        }
+        .stats {
+            background: #F8F0EB;
+            padding: 1rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+        @media (max-width: 800px) {
+            body { padding: 1rem; }
+            table { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div id="loginSection" style="display: none;">
+        <div class="login-box">
+            <h2>Acceso restringido</h2>
+            <input type="email" id="loginEmail" placeholder="Correo electrónico">
+            <input type="password" id="loginPassword" placeholder="Contraseña">
+            <button id="loginBtn">Iniciar sesión</button>
+            <div id="loginError" style="color: red; margin-top: 0.5rem;"></div>
+        </div>
+    </div>
+
+    <div id="adminPanel" style="display: none;">
+        <div style="overflow: auto;">
+            <h1>📊 Panel de Lyon Asesor</h1>
+            <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+            <button id="exportBtn" class="export-btn">📎 Exportar a CSV</button>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div style="margin: 1rem 0;">
+            <label>Filtrar por tipo: </label>
+            <select id="tipoFiltro">
+                <option value="todos">Todos</option>
+                <option value="consultas">Consultas</option>
+                <option value="conferencias">Conferencias</option>
+            </select>
+        </div>
+        <div style="overflow-x: auto;">
+            <table id="leadsTable">
+                <thead>
+                    <tr><th>Tipo</th><th>Fecha</th><th>Nombre/Empresa</th><th>Contacto</th><th>Email</th><th>Teléfono</th><th>Detalle</th><th>Monto</th><th>Pagado</th><th>Acción</th></tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCNLjV0X0SiJsWBiVvjlVB5nqak9IwHaH8",
+        authDomain: "lyon-asesor-panel.firebaseapp.com",
+        projectId: "lyon-asesor-panel",
+        storageBucket: "lyon-asesor-panel.firebasestorage.app",
+        messagingSenderId: "184678528884",
+        appId: "1:184678528884:web:cd6b605e49d281db595e21"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let consultasUnsub = null;
+    let conferenciasUnsub = null;
+
+    function showLogin() {
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('adminPanel').style.display = 'none';
+    }
+    function showAdmin() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadData();
+    }
+
+    function loadData() {
+        if (consultasUnsub) consultasUnsub();
+        if (conferenciasUnsub) conferenciasUnsub();
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '<tr><td colspan="10">Cargando...</td></tr>';
+        const statsDiv = document.getElementById('stats');
+        statsDiv.innerHTML = '';
+
+        let consultasArr = [];
+        let conferenciasArr = [];
+
+        consultasUnsub = db.collection('consultas').onSnapshot(snapshot => {
+            consultasArr = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), tipo: 'consulta' }));
+            renderTable(consultasArr, conferenciasArr, document.getElementById('tipoFiltro').value);
+            updateStats(consultasArr, conferenciasArr);
+        }, error => console.error(error));
+
+        conferenciasUnsub = db.collection('conferencias').onSnapshot(snapshot => {
+            conferenciasArr = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), tipo: 'conferencia' }));
+            renderTable(consultasArr, conferenciasArr, document.getElementById('tipoFiltro').value);
+            updateStats(consultasArr, conferenciasArr);
+        }, error => console.error(error));
+    }
+
+    function renderTable(consultas, conferencias, filtro) {
+        let all = [...consultas, ...conferencias];
+        if (filtro !== 'todos') {
+            all = all.filter(item => item.tipo === filtro);
+        }
+        all.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const tbody = document.getElementById('tableBody');
+        if (all.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="10">No hay registros</td></tr>';
+            return;
+        }
+        tbody.innerHTML = all.map(item => {
+            let detalle = '';
+            let nombreEmpresa = '';
+            let contacto = '';
+            if (item.tipo === 'consulta') {
+                nombreEmpresa = item.nombre;
+                contacto = item.paquete;
+                detalle = item.motivo || '';
+            } else {
+                nombreEmpresa = item.empresa;
+                contacto = item.contacto;
+                detalle = `Tema: ${item.tema} | Participantes: ${item.participantes}`;
+            }
+            return `<tr>
+                <td>${item.tipo === 'consulta' ? '📋 Consulta' : '🎤 Conferencia'}</td>
+                <td>${new Date(item.timestamp).toLocaleDateString()}</td>
+                <td>${nombreEmpresa}</td>
+                <td>${contacto}</td>
+                <td>${item.email}</td>
+                <td>${item.telefono}</td>
+                <td>${detalle}</td>
+                <td>$${item.monto}</td>
+                <td class="${item.pagado ? 'pagado-true' : 'pagado-false'}">${item.pagado ? 'Sí' : 'No'}</td>
+                <td><button class="btn-pagar" data-id="${item.id}" data-tipo="${item.tipo}" data-pagado="${item.pagado}">${item.pagado ? 'Desmarcar' : 'Marcar pagado'}</button></td>
+            </tr>`;
+        }).join('');
+
+        // Agregar event listeners a botones de pagar
+        document.querySelectorAll('.btn-pagar').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const id = btn.getAttribute('data-id');
+                const tipo = btn.getAttribute('data-tipo');
+                const wasPagado = btn.getAttribute('data-pagado') === 'true';
+                const nuevoEstado = !wasPagado;
+                const collection = tipo === 'consulta' ? 'consultas' : 'conferencias';
+                try {
+                    await db.collection(collection).doc(id).update({ pagado: nuevoEstado });
+                    // Actualizar data-pagado en el botón
+                    btn.setAttribute('data-pagado', nuevoEstado);
+                    btn.textContent = nuevoEstado ? 'Desmarcar' : 'Marcar pagado';
+                    // Actualizar clase de la celda
+                    const row = btn.closest('tr');
+                    const pagadoCell = row.cells[8];
+                    pagadoCell.className = nuevoEstado ? 'pagado-true' : 'pagado-false';
+                    pagadoCell.textContent = nuevoEstado ? 'Sí' : 'No';
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al actualizar el estado');
+                }
+            });
+        });
+    }
+
+    function updateStats(consultas, conferencias) {
+        const statsDiv = document.getElementById('stats');
+        const totalConsultas = consultas.length;
+        const totalConferencias = conferencias.length;
+        const pagadasConsultas = consultas.filter(c => c.pagado).length;
+        const pagadasConferencias = conferencias.filter(c => c.pagado).length;
+        const totalIngresos = (pagadasConsultas * 40 + (consultas.filter(c => c.pagado && c.monto === 100).length * 60) + (consultas.filter(c => c.pagado && c.monto === 150).length * 90)) + (pagadasConferencias * 150);
+        statsDiv.innerHTML = `
+            <div class="stat-item"><strong>📋 Consultas</strong><br>Total: ${totalConsultas}<br>Pagadas: ${pagadasConsultas}</div>
+            <div class="stat-item"><strong>🎤 Conferencias</strong><br>Total: ${totalConferencias}<br>Pagadas: ${pagadasConferencias}</div>
+            <div class="stat-item"><strong>💰 Ingresos totales (pagados)</strong><br>$${totalIngresos}</div>
+        `;
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+        } catch (err) {
+            document.getElementById('loginError').innerText = 'Error: correo o contraseña incorrectos';
+            console.error(err);
+        }
+    });
+
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+        await auth.signOut();
+    });
+
+    document.getElementById('exportBtn')?.addEventListener('click', () => {
+        const rows = document.querySelectorAll('#leadsTable tbody tr');
+        let csv = 'Tipo,Fecha,Nombre/Empresa,Contacto,Email,Teléfono,Detalle,Monto,Pagado\n';
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length === 10) {
+                const rowData = Array.from(cells).slice(0, 9).map(cell => cell.textContent.trim());
+                csv += rowData.join(',') + '\n';
+            }
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lyon_asesor_leads.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            currentUser = user;
+            showAdmin();
+        } else {
+            currentUser = null;
+            showLogin();
+            if (consultasUnsub) consultasUnsub();
+            if (conferenciasUnsub) conferenciasUnsub();
+        }
+    });
+</script>
+</body>
+</html>
