@@ -2,207 +2,541 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservar conferencia · Lyon Asesor™</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Reservar conferencia · Lyon Asesor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Mismas variables y estilos que consulta.html (por brevedad, se incluye el mismo CSS) */
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --naranja-oscuro: #c95a10;
+            --navy: #1A2330;
+            --navy-light: #243042;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --text-light: #8899A6;
+            --shadow-sm: 0 2px 8px rgba(26,35,48,0.08);
+            --shadow-md: 0 4px 20px rgba(26,35,48,0.12);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s ease;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body {
-            font-family: 'Georgia', serif;
-            background: #F8F0EB;
-            color: #1A2330;
-            padding: 2rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
-        .container {
-            max-width: 700px;
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(232,107,24,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(26,35,48,0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(232,107,24,0.02) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-content { text-align: center; }
+        .loader-brand {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            line-height: 1.2;
+        }
+        .loader-brand span { color: var(--naranja); }
+        .loader-brand small {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 6px;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto 0;
+        }
+        .loader-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+            animation: loaderProgress 1.8s ease-in-out forwards;
+        }
+        @keyframes loaderProgress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background: transparent;
+        }
+        .nav.scrolled {
+            background: rgba(26,35,48,0.97);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+        }
+        .nav-inner {
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        h1 { color: #e86b18; margin-bottom: 0.5rem; }
-        .sub { color: #5A5A5A; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-        label { display: block; margin: 1rem 0 0.3rem; font-weight: bold; }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-logo-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        .nav-logo-text .main {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .nav-logo-text .main span { color: var(--naranja); }
+        .nav-logo-text .sub {
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--naranja);
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            box-shadow: var(--shadow-orange);
+        }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+        .nav-toggle span {
+            width: 24px;
+            height: 2.5px;
+            background: #fff;
+            transition: var(--transition);
+        }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .page-content {
+            padding: 120px 24px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .form-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .form-card h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--navy);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .form-card .sub {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        label {
+            display: block;
+            margin: 1rem 0 0.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
         input, select, textarea {
             width: 100%;
-            padding: 0.7rem;
+            padding: 0.8rem;
             border-radius: 12px;
             border: 1px solid #ddd;
             font-family: inherit;
         }
-        button {
-            background: #e86b18;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            width: 100%;
+        input:focus, select:focus { outline: none; border-color: var(--naranja); }
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0;
         }
+        .radio-group label {
+            font-weight: normal;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .precio-badge {
+            display: inline-block;
+            background: var(--navy);
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-weight: bold;
+            margin: 0.5rem 0 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-orange); }
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            z-index: 2000;
         }
         .modal-content {
             background: white;
-            max-width: 400px;
-            padding: 1.5rem;
+            max-width: 500px;
+            padding: 2rem;
             border-radius: 24px;
             text-align: center;
+            box-shadow: var(--shadow-lg);
         }
-        .close { float: right; cursor: pointer; font-size: 1.5rem; }
-        .precio { font-size: 1.2rem; font-weight: bold; background: #1A2330; color: white; display: inline-block; padding: 0.2rem 1rem; border-radius: 20px; margin: 1rem 0; }
-        footer { text-align: center; margin-top: 1.5rem; font-size: 0.7rem; color: #888; }
-        .success-message {
-            background: #E8F5E9;
-            color: #2E7D32;
-            padding: 1rem;
+        .modal-content .close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .footer {
+            background: var(--navy-dark);
+            padding: 60px 24px 30px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 60px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .footer-brand h3 span { color: var(--naranja); }
+        .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+        .footer-social a {
+            width: 42px; height: 42px;
             border-radius: 12px;
-            margin-top: 1rem;
-            display: none;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.7);
+            transition: var(--transition-fast);
+        }
+        .footer-social a:hover { background: var(--naranja); color: #fff; transform: translateY(-3px); }
+        .footer-col h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .footer-col ul a:hover { color: var(--naranja); padding-left: 5px; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.82rem;
+        }
+        .footer-legal { font-size: 0.78rem; opacity: 0.7; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: rgba(26,35,48,0.98);
+                backdrop-filter: blur(20px);
+                padding: 100px 40px;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .page-content { padding: 100px 16px 60px; }
+            .form-card { padding: 1.5rem; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Reserva tu conferencia</h1>
-    <div class="sub">Elige el tema y completa tus datos</div>
-    <form id="formConf">
-        <label>Nombre de la empresa u organización *</label>
-        <input type="text" id="empresa" required>
-
-        <label>Nombre de la persona de contacto *</label>
-        <input type="text" id="contacto" required>
-
-        <label>Correo electrónico *</label>
-        <input type="email" id="email" required>
-
-        <label>Teléfono (WhatsApp) *</label>
-        <input type="tel" id="telefono" required>
-
-        <label>Selecciona el tema de la conferencia</label>
-        <select id="tema">
-            <option>NeuroLiderazgo: El Cerebro que Inspira Equipos</option>
-            <option>Autoestima Corporativa: El Pilar del Éxito Sostenible</option>
-            <option>Comunicación Consciente: Del Conflicto a la Conexión</option>
-            <option>Liderazgo con Alma: Gestión de Equipos desde el Factor Humano</option>
-            <option>Estrategias de Bienestar: Neurociencia Aplicada al Estrés Laboral</option>
-            <option>Reconfigura tu Mente: Neuroplasticidad para el Cambio Personal</option>
-            <option>Neuroeducación: Cómo el Cerebro Aprende y Transforma</option>
-            <option>Vínculos que Sanan: Neurobiología de las Relaciones Saludables</option>
-            <option>El Código Familiar: Patrones que Construyen o Destruyen</option>
-            <option>Resiliencia Organizacional: Equipos que se Adaptan y Crecen</option>
-            <option>Propósito y Legado: Neurociencia del Sentido de Vida</option>
-            <option>Integración y Cierre: Consolidando el Nuevo Paradigma</option>
-        </select>
-
-        <label>Número estimado de participantes *</label>
-        <input type="text" id="participantes" required>
-
-        <label>Método de pago</label>
-        <div class="radio-group" style="display:flex; gap:1rem; margin:0.5rem 0;">
-            <label><input type="radio" name="metodo" value="paypal"> PayPal (tarjeta/cuenta)</label>
-            <label><input type="radio" name="metodo" value="p movil"> Pago Móvil / Transferencia</label>
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-brand">LYON<span>ASESOR</span><small>Rugido de Consciencia</small></div>
+            <div class="loader-bar"><div class="loader-bar-inner"></div></div>
         </div>
-        <div class="precio">Monto: $150 USD (tarifa plana)</div>
-
-        <button type="button" id="btnConf">Continuar con el pago</button>
-    </form>
-    <div id="successMessage" class="success-message"></div>
-    <footer>Al enviar, aceptas recibir información sobre tu reserva.</footer>
-</div>
-
-<!-- Modal para Pago Móvil -->
-<div id="modalPagoMovil" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3>Instrucciones de pago</h3>
-        <p><strong>Banco:</strong> Banco Provincial</p>
-        <p><strong>Cédula:</strong> V-17633035</p>
-        <p><strong>Teléfono Pago Móvil:</strong> 04148610464</p>
-        <p><strong>Monto:</strong> $150 USD (equivalente en Bs según tasa BCV)</p>
-        <p>Envía el comprobante por WhatsApp al <strong>04148610464</strong> o al correo lyonasesor@gmail.com con tu empresa. Tu conferencia se confirmará en máximo 2 horas.</p>
-        <button id="cerrarModal">Entendido</button>
     </div>
-</div>
 
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCNLjV0X0SiJsWBiVvjlVB5nqak9IwHaH8",
-        authDomain: "lyon-asesor-panel.firebaseapp.com",
-        projectId: "lyon-asesor-panel",
-        storageBucket: "lyon-asesor-panel.firebasestorage.app",
-        messagingSenderId: "184678528884",
-        appId: "1:184678528884:web:cd6b605e49d281db595e21"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor"></div>
+                <div class="nav-logo-text">
+                    <div class="main">LYON<span>ASESOR</span></div>
+                    <div class="sub">Rugido de Consciencia</div>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#servicios">Servicios</a></li>
+                <li><a href="index.html#ebook">Ebook</a></li>
+                <li><a href="index.html#conferencias">Conferencias</a></li>
+                <li><a href="index.html#curso">Curso</a></li>
+                <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="nav-cta">Contactar</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
 
-    const btn = document.getElementById('btnConf');
-    const modal = document.getElementById('modalPagoMovil');
-    const spanClose = document.getElementsByClassName('close')[0];
-    const cerrarModal = document.getElementById('cerrarModal');
-    const metodoRadios = document.querySelectorAll('input[name="metodo"]');
-    const successDiv = document.getElementById('successMessage');
+    <div class="page-content">
+        <div class="form-card">
+            <h1>Reserva tu conferencia</h1>
+            <div class="sub">Completa el formulario y elige el método de pago</div>
+            <form id="formConf">
+                <label>Nombre de la empresa u organización *</label>
+                <input type="text" id="empresa" required>
 
-    btn.addEventListener('click', async () => {
-        const empresa = document.getElementById('empresa').value.trim();
-        const contacto = document.getElementById('contacto').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const telefono = document.getElementById('telefono').value.trim();
-        const tema = document.getElementById('tema').value;
-        const participantes = document.getElementById('participantes').value.trim();
-        let metodo = null;
-        for (let m of metodoRadios) if (m.checked) metodo = m.value;
+                <label>Nombre de la persona de contacto *</label>
+                <input type="text" id="contacto" required>
 
-        if (!empresa || !contacto || !email || !telefono || !participantes || !metodo) {
-            alert('Por favor completa todos los campos obligatorios.');
-            return;
+                <label>Correo electrónico *</label>
+                <input type="email" id="email" required>
+
+                <label>Teléfono (WhatsApp) *</label>
+                <input type="tel" id="telefono" required>
+
+                <label>Selecciona el tema de la conferencia</label>
+                <select id="tema">
+                    <option>NeuroLiderazgo: El Cerebro que Inspira Equipos</option>
+                    <option>Autoestima Corporativa: El Pilar del Éxito Sostenible</option>
+                    <option>Comunicación Consciente: Del Conflicto a la Conexión</option>
+                    <option>Liderazgo con Alma: Gestión de Equipos desde el Factor Humano</option>
+                    <option>Estrategias de Bienestar: Neurociencia Aplicada al Estrés Laboral</option>
+                    <option>Reconfigura tu Mente: Neuroplasticidad para el Cambio Personal</option>
+                    <option>Neuroeducación: Cómo el Cerebro Aprende y Transforma</option>
+                    <option>Vínculos que Sanan: Neurobiología de las Relaciones Saludables</option>
+                    <option>El Código Familiar: Patrones que Construyen o Destruyen</option>
+                    <option>Resiliencia Organizacional: Equipos que se Adaptan y Crecen</option>
+                    <option>Propósito y Legado: Neurociencia del Sentido de Vida</option>
+                    <option>Integración y Cierre: Consolidando el Nuevo Paradigma</option>
+                </select>
+
+                <label>Número estimado de participantes *</label>
+                <input type="text" id="participantes" required>
+
+                <label>Método de pago</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="metodo" value="paypal"> PayPal (tarjeta/cuenta)</label>
+                    <label><input type="radio" name="metodo" value="p movil"> Pago Móvil / Transferencia</label>
+                </div>
+                <div class="precio-badge">Monto: $150 USD (tarifa plana)</div>
+
+                <button type="button" id="btnConf" class="btn-primary">Continuar con el pago</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pago Móvil -->
+    <div id="modalPagoMovil" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Instrucciones de pago</h3>
+            <p><strong>Banco:</strong> Banco Provincial</p>
+            <p><strong>Cédula:</strong> V-17633035</p>
+            <p><strong>Teléfono Pago Móvil:</strong> 04148610464</p>
+            <p><strong>Monto:</strong> $150 USD (equivalente en Bs según tasa BCV)</p>
+            <p>Envía el comprobante por WhatsApp al <strong>04148610464</strong> o al correo lyonasesor@gmail.com con tu empresa. Tu conferencia se confirmará en máximo 2 horas.</p>
+            <button id="cerrarModal" style="margin-top: 1rem; background:#e86b18; color:white; border:none; padding:0.5rem 1rem; border-radius:40px;">Entendido</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand"><h3>LYON<span>ASESOR</span></h3><p>Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañando procesos de transformación con ética, calidez y profesionalismo.</p><div class="footer-social"><a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><a href="mailto:lyonasesor@outlook.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a></div></div>
+                <div class="footer-col"><h4>Servicios</h4><ul><li><a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank">Ebook Gratuito</a></li><li><a href="consulta.html">Proceso Terapéutico</a></li><li><a href="conferencia.html">Conferencias</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li></ul></div>
+                <div class="footer-col"><h4>Contacto</h4><ul><li><a href="mailto:lyonasesor@outlook.com">lyonasesor@outlook.com</a></li><li><a href="https://www.instagram.com/lyonasesor" target="_blank">@lyonasesor</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p><p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-176333035-6</p></div>
+        </div>
+    </footer>
+
+    <script>
+        setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000);
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => { if (nav) nav.classList.toggle('scrolled', window.scrollY > 50); });
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (navToggle && navLinks) {
+            navToggle.addEventListener('click', () => { navToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+            navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); }); });
         }
 
-        const data = {
-            empresa, contacto, email, telefono, tema, participantes,
-            metodo, monto: 150,
-            timestamp: new Date().toISOString(),
-            pagado: false
-        };
+        const btn = document.getElementById('btnConf');
+        const modal = document.getElementById('modalPagoMovil');
+        const spanClose = document.querySelector('.modal .close');
+        const cerrarModalBtn = document.getElementById('cerrarModal');
+        const metodoRadios = document.querySelectorAll('input[name="metodo"]');
 
-        try {
-            await db.collection('conferencias').add(data);
-            successDiv.style.display = 'block';
-            successDiv.innerHTML = `✅ Solicitud registrada. Revisa las instrucciones de pago abajo.`;
-        } catch (err) {
-            console.error(err);
-            alert('Hubo un error. Contáctanos por WhatsApp.');
-            return;
+        btn.addEventListener('click', () => {
+            const empresa = document.getElementById('empresa').value.trim();
+            const contacto = document.getElementById('contacto').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const tema = document.getElementById('tema').value;
+            const participantes = document.getElementById('participantes').value.trim();
+            let metodo = null;
+            for (let m of metodoRadios) if (m.checked) metodo = m.value;
+
+            if (!empresa || !contacto || !email || !telefono || !participantes || !metodo) {
+                alert('Por favor completa todos los campos obligatorios.');
+                return;
+            }
+
+            // Aquí se podría guardar en Firebase (opcional)
+            if (metodo === 'paypal') {
+                window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD', '_blank');
+                alert('Serás redirigido a PayPal. Una vez pagado, envía tu comprobante.');
+            } else {
+                modal.style.display = 'flex';
+            }
+        });
+
+        function cerrar() {
+            modal.style.display = 'none';
+            alert('Gracias por tu solicitud. Envía el comprobante y te confirmaremos.');
         }
-
-        if (metodo === 'paypal') {
-            window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD', '_blank');
-            alert('Serás redirigido a PayPal. Una vez pagado, envía tu comprobante.');
-        } else {
-            modal.style.display = 'flex';
-        }
-    });
-
-    function cerrar() {
-        modal.style.display = 'none';
-        alert('Gracias por tu solicitud. Envía el comprobante y te confirmaremos.');
-    }
-    spanClose.onclick = cerrar;
-    cerrarModal.onclick = cerrar;
-    window.onclick = (e) => { if (e.target == modal) cerrar(); };
-</script>
+        if (spanClose) spanClose.onclick = cerrar;
+        if (cerrarModalBtn) cerrarModalBtn.onclick = cerrar;
+        window.onclick = (e) => { if (e.target == modal) cerrar(); };
+    </script>
 </body>
 </html>
