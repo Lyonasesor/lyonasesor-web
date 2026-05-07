@@ -19,7 +19,7 @@
             position: relative;
         }
 
-        /* Textura de cerebro (sutil, gris clarísimo, semitransparente) */
+        /* Textura de cerebro (más notoria pero siempre sutil) */
         body::before {
             content: "";
             position: fixed;
@@ -30,7 +30,7 @@
             background-image: url('https://www.pngkit.com/png/detail/7-70062_brain-silhouette-png-brain-silhouette-png.png');
             background-repeat: repeat;
             background-size: 180px;
-            opacity: 0.03;
+            opacity: 0.04; /* ligeramente más visible pero todavía muy sutil */
             pointer-events: none;
             z-index: 0;
         }
@@ -51,20 +51,19 @@
             padding-bottom: 1rem;
         }
 
+        /* Logo responsivo: más grande en desktop, tamaño prudente en móvil */
         .logo {
             font-size: 2.5rem;
             font-weight: bold;
             letter-spacing: 2px;
             color: #1A2330;
         }
+        .logo span { color: #e86b18; }
+        .logo sup { font-size: 1rem; color: #5A5A5A; }
 
-        .logo span {
-            color: #e86b18;
-        }
-
-        .logo sup {
-            font-size: 1rem;
-            color: #5A5A5A;
+        @media (min-width: 1100px) {
+            .logo { font-size: 3.2rem; }
+            .logo sup { font-size: 1.2rem; }
         }
 
         .tagline {
@@ -74,14 +73,14 @@
             font-size: 1rem;
         }
 
-        /* Grid de servicios: 4 columnas en laptop */
+        /* Grid de servicios: 4 columnas en laptop, texto balanceado */
         .services {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.8rem;
             margin: 3rem 0;
+            align-items: stretch;
         }
-
         .card {
             background: #FFFFFF;
             border-radius: 20px;
@@ -90,26 +89,23 @@
             box-shadow: 0 6px 14px rgba(0,0,0,0.03);
             border: 1px solid #EAEAEA;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-
         .card:hover {
             transform: translateY(-5px);
             border-color: #e86b18;
             box-shadow: 0 12px 24px rgba(0,0,0,0.05);
         }
-
-        .card h3 {
-            font-size: 1.4rem;
-            margin: 1rem 0 0.5rem;
-            color: #1A2330;
-        }
-
+        .card h3 { font-size: 1.4rem; margin: 1rem 0 0.5rem; color: #1A2330; }
         .card p {
             color: #5A5A5A;
             font-size: 0.9rem;
             margin-bottom: 1.2rem;
+            line-height: 1.5;
+            flex-grow: 1;
         }
-
         .btn {
             display: inline-block;
             background-color: #e86b18;
@@ -119,107 +115,74 @@
             border-radius: 40px;
             font-weight: bold;
             transition: background 0.2s;
+            margin-top: auto;
+            align-self: center;
         }
+        .btn:hover { background-color: #bf5510; }
 
-        .btn:hover {
-            background-color: #bf5510;
-        }
-
-        /* Sección de 6 atributos (simetría) */
+        /* Sección de 6 atributos (simetría, textos más densos) */
         .features {
             margin: 3rem 0;
             text-align: center;
         }
-
-        .features h2 {
-            font-size: 1.7rem;
-            margin-bottom: 1.5rem;
-            color: #1A2330;
-        }
-
+        .features h2 { font-size: 1.7rem; margin-bottom: 1.5rem; color: #1A2330; }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
-
         .feature-item {
             background: #FFFFFF;
             padding: 1.5rem;
             border-radius: 16px;
             border: 1px solid #F0F0F0;
             transition: all 0.2s;
+            text-align: left;
         }
+        .feature-item:hover { border-color: #e86b18; }
+        .feature-item h4 { color: #e86b18; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .feature-item p { font-size: 0.9rem; color: #4a4a4a; line-height: 1.5; margin-bottom: 0; }
 
-        .feature-item:hover {
-            border-color: #e86b18;
-        }
-
-        .feature-item h4 {
-            color: #e86b18;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .feature-item p {
-            font-size: 0.9rem;
-            color: #4a4a4a;
-        }
-
-        /* CTA WhatsApp */
+        /* CTA WhatsApp - más compacto y épico */
         .cta-wa {
             text-align: center;
             background: linear-gradient(135deg, #1A2330 0%, #0f3460 100%);
-            padding: 2.5rem;
+            padding: 1.8rem;
             border-radius: 32px;
             margin: 3rem 0;
             color: white;
         }
-
-        .cta-wa h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-wa p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-
+        .cta-wa h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
+        .cta-wa p { font-size: 0.95rem; margin-bottom: 1.2rem; opacity: 0.9; }
         .btn-wa {
             background-color: #25D366;
             color: white;
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.8rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
             transition: transform 0.2s;
         }
+        .btn-wa:hover { transform: scale(1.02); background-color: #128C7E; }
 
-        .btn-wa:hover {
-            transform: scale(1.02);
-            background-color: #128C7E;
-        }
-
-        /* Footer */
+        /* Footer con botones de redes un poco más grandes */
         .footer {
             text-align: center;
             margin-top: 3rem;
             padding-top: 1.5rem;
             border-top: 1px solid #eee;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #888;
         }
-
         .social a {
-            margin: 0 0.5rem;
+            margin: 0 0.6rem;
             color: #1A2330;
             text-decoration: none;
+            font-size: 1rem;
+            display: inline-block;
+            padding: 0.1rem 0;
         }
-
-        /* Responsive */
         @media (max-width: 1100px) {
             .services { grid-template-columns: repeat(2, 1fr); }
             .features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -227,8 +190,9 @@
         @media (max-width: 700px) {
             .services { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
-            .logo { font-size: 1.8rem; }
+            .logo { font-size: 2rem; }
             .container { padding: 1rem; }
+            .social a { margin: 0 0.3rem; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -239,47 +203,47 @@
         <div class="tagline">Desarrollo Personal · Psicoterapia · Educación Emocional</div>
     </div>
 
-    <!-- 4 tarjetas de servicio -->
+    <!-- 4 tarjetas de servicio con texto simétrico (3 a 4 líneas cada una) -->
     <div class="services">
         <div class="card">
             <h3>📘 Ebook gratuito</h3>
-            <p>Descarga "ESTE DÍA ES TUYO" y comienza tu diagnóstico personal.</p>
-            <a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="btn">Descargar</a>
+            <p>Descarga “ESTE DÍA ES TUYO”, un mapa para empezar a reconocer tu propio código interno. El primer paso no cuesta nada, pero vale todo.</p>
+            <a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="btn">Descargar ahora</a>
         </div>
         <div class="card">
             <h3>🧠 Proceso Terapéutico</h3>
-            <p>Consulta individual o paquetes de sesiones. Acompañamiento profesional.</p>
+            <p>Sesiones personalizadas o paquetes de 3 y 5 encuentros. Acompañamiento real, sin fórmulas mágicas. Con neurociencia, calidez y absoluta confidencialidad.</p>
             <a href="consulta.html" class="btn">Reservar consulta</a>
         </div>
         <div class="card">
             <h3>🎤 Conferencias</h3>
-            <p>12 temas para empresas e instituciones. Diploma + ebook incluidos.</p>
+            <p>12 temas para empresas e instituciones. Diploma con código de verificación, ebook de regalo y una experiencia que despierta equipos. Precio fijo por evento.</p>
             <a href="conferencia.html" class="btn">Solicitar conferencia</a>
         </div>
         <div class="card">
             <h3>📚 Cursos y Masterclass</h3>
-            <p>Próximamente: El Código Interno, Neurociencia aplicada y más.</p>
+            <p>Próximamente: “El Código Interno”, neurociencia aplicada, inteligencia emocional para docentes y más. Aprende a tu ritmo, con contenido vivo.</p>
             <a href="#" class="btn" style="background:#ccc; cursor:default;">Próximamente</a>
         </div>
     </div>
 
-    <!-- Sección de 6 atributos (simetría 3+3) -->
+    <!-- Sección de 6 atributos con 5 líneas cada uno (texto más denso) -->
     <div class="features">
         <h2>✨ ¿Por qué confiar en Lyon Asesor?</h2>
         <div class="features-grid">
-            <div class="feature-item"><h4>🧠 Con respaldo científico</h4><p>Protocolos basados en neurociencia, psicología cognitiva y enfoques integradores. Nada de pseudociencia.</p></div>
-            <div class="feature-item"><h4>🤝 Confidencialidad garantizada</h4><p>Datos protegidos bajo la Ley Orgánica de Protección de Datos (Venezuela) y estándares internacionales.</p></div>
-            <div class="feature-item"><h4>📅 Acompañamiento real</h4><p>No eres un número. Cada proceso se ajusta a tu ritmo, tus necesidades y tu contexto.</p></div>
-            <div class="feature-item"><h4>🎯 Resultados medibles</h4><p>Herramientas diseñadas para que notes cambios concretos en tu vida.</p></div>
-            <div class="feature-item"><h4>⏱️ Flexibilidad de horarios</h4><p>Adaptamos las sesiones a tu disponibilidad, respetando tu tiempo y tus compromisos.</p></div>
-            <div class="feature-item"><h4>🔄 Seguimiento post-terapia</h4><p>No te dejamos al finalizar. Planes de refuerzo y acompañamiento continuo.</p></div>
+            <div class="feature-item"><h4>🧠 Con respaldo científico</h4><p>Protocolos basados en neurociencia, psicología cognitiva y enfoques integradores. Nada de pseudociencia. Solo lo que la evidencia respalda.</p></div>
+            <div class="feature-item"><h4>🤝 Confidencialidad garantizada</h4><p>Datos protegidos bajo la Ley Orgánica de Protección de Datos (Venezuela) y estándares internacionales. Tu privacidad es lo primero.</p></div>
+            <div class="feature-item"><h4>📅 Acompañamiento real</h4><p>No eres un número. Cada proceso se ajusta a tu ritmo, tus necesidades y tu contexto. La terapia no es un protocolo rígido, es un encuentro humano.</p></div>
+            <div class="feature-item"><h4>🎯 Resultados medibles</h4><p>Herramientas diseñadas para que notes cambios concretos en tu vida. Trabajamos con metas claras, no con promesas vagas.</p></div>
+            <div class="feature-item"><h4>⏱️ Flexibilidad de horarios</h4><p>Adaptamos las sesiones a tu disponibilidad. Respetamos tu tiempo y tus compromisos, porque la vida real no sigue un horario de oficina.</p></div>
+            <div class="feature-item"><h4>🔄 Seguimiento post-terapia</h4><p>No te dejamos al finalizar. Contamos con planes de refuerzo y acompañamiento continuo para que el cambio se consolide y profundice.</p></div>
         </div>
     </div>
 
-    <!-- CTA WhatsApp -->
+    <!-- CTA WhatsApp más compacto y con lenguaje urgente y cálido -->
     <div class="cta-wa">
-        <h3>📱 No esperes a que el cambio llegue solo</h3>
-        <p>Únete a nuestro canal de WhatsApp y recibe contenido semanal exclusivo, reflexiones, y ofertas especiales. La comunidad que crece contigo.</p>
+        <h3>📱 Tu cambio no puede esperar</h3>
+        <p>Únete a nuestra comunidad en WhatsApp. Contenido semanal gratuito, reflexiones que remueven, ofertas exclusivas y el poder de no caminar solo.</p>
         <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn-wa">👉 Quiero unirme ahora 👈</a>
     </div>
 
@@ -291,7 +255,7 @@
             <a href="mailto:lyonasesor@outlook.com">✉️ Correo</a>
         </div>
         <p>Prof. Mtr. Alvaro Lyon · C.I. V-17633035 · Rif J-17633035-6</p>
-        <p>Desarrollo Personal · Psicoterapia · Educación Emocional</p>
+        <p>Neuropsicología con calidez humana | Desarrollo Personal · Psicoterapia · Educación Emocional</p>
     </div>
 </div>
 </body>
