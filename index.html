@@ -3,266 +3,1077 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lyon Asesor™ | Desarrollo Personal · Psicoterapia · Educación Emocional</title>
+    
+    <!-- Metaetiquetas básicas -->
+    <meta name="description" content="Lyon Asesor - Desarrollo Personal, Psicoterapia y Educación Emocional. Transforma tu vida con el Prof. Mtr. Alvaro Lyon. Ebook gratuito, conferencias, procesos terapéuticos.">
+    <meta name="keywords" content="psicoterapia, desarrollo personal, educación emocional, conferencias, talleres, bienestar, salud mental, Venezuela">
+    <meta name="author" content="Prof. Mtr. Álvaro Lyon">
+    
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lyonasesor.github.io/lyonasesor-web/">
+    <meta property="og:title" content="Lyon Asesor | Rugido de Consciencia">
+    <meta property="og:description" content="Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañamiento real, sin misticismos, con ciencia y calidez humana.">
+    <meta property="og:image" content="https://lyonasesor.github.io/lyonasesor-web/social-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Lyon Asesor">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lyon Asesor | Rugido de Consciencia">
+    <meta name="twitter:description" content="Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañamiento real, sin misticismos, con ciencia y calidez humana.">
+    <meta name="twitter:image" content="https://lyonasesor.github.io/lyonasesor-web/social-preview.jpg">
+    
+    <title>Lyon Asesor | Rugido de Consciencia – Desarrollo Personal · Psicoterapia · Educación Emocional</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ========== RESET Y VARIABLES ========== */
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --naranja-oscuro: #c95a10;
+            --navy: #1A2330;
+            --navy-light: #243042;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --text-light: #8899A6;
+            --shadow-sm: 0 2px 8px rgba(26,35,48,0.08);
+            --shadow-md: 0 4px 20px rgba(26,35,48,0.12);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s ease;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body {
-            font-family: 'Georgia', 'Times New Roman', Times, serif;
-            background-color: #FFFFFF;
-            color: #1A2330;
-            line-height: 1.5;
-            position: relative;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+            overflow-x: hidden;
         }
-
-        /* Textura de cerebro (sutil) */
+        /* Textura de fondo sutil */
         body::before {
-            content: "";
+            content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://www.pngkit.com/png/detail/7-70062_brain-silhouette-png-brain-silhouette-png.png');
-            background-repeat: repeat;
-            background-size: 180px;
-            opacity: 0.04;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(232,107,24,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(26,35,48,0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(232,107,24,0.02) 0%, transparent 60%);
             pointer-events: none;
             z-index: 0;
         }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e86b18;
-            padding-bottom: 1rem;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: #1A2330;
-        }
-        .logo span { color: #e86b18; }
-        .logo sup { font-size: 1rem; color: #5A5A5A; }
-
-        @media (min-width: 1100px) {
-            .logo { font-size: 3.2rem; }
-            .logo sup { font-size: 1.2rem; }
-        }
-
-        .tagline {
-            color: #5A5A5A;
-            font-style: italic;
-            margin-top: 0.5rem;
-            font-size: 1rem;
-        }
-
-        /* Grid de servicios */
-        .services {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.8rem;
-            margin: 3rem 0;
-            align-items: stretch;
-        }
-        .card {
-            background: #FFFFFF;
-            border-radius: 20px;
-            padding: 1.8rem 1.2rem;
-            text-align: center;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
-            border: 1px solid #EAEAEA;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        /* ========== LOADER ========== */
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--navy);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-content { text-align: center; }
+        .loader-brand {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+            line-height: 1.2;
+        }
+        .loader-brand span { color: var(--naranja); }
+        .loader-brand small {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 6px;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto 0;
+        }
+        .loader-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+            animation: loaderProgress 1.8s ease-in-out forwards;
+        }
+        @keyframes loaderProgress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        /* ========== NAVEGACIÓN ========== */
+        .nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background: transparent;
+        }
+        .nav.scrolled {
+            background: rgba(26,35,48,0.97);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #e86b18;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
         }
-        .card h3 { font-size: 1.4rem; margin: 1rem 0 0.5rem; color: #1A2330; }
-        .card p {
-            color: #5A5A5A;
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        .nav-logo-text .main {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .nav-logo-text .main span { color: var(--naranja); }
+        .nav-logo-text .sub {
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
             font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-            line-height: 1.5;
-            flex-grow: 1;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--naranja);
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            box-shadow: var(--shadow-orange);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(232,107,24,0.45); }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+        .nav-toggle span {
+            width: 24px;
+            height: 2.5px;
+            background: #fff;
+            transition: var(--transition);
+        }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        /* ========== HERO ========== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 40%, var(--navy-light) 100%);
+            overflow: hidden;
+        }
+        .hero-particles {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--naranja);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 8s infinite;
+        }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.1; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 24px;
+            max-width: 800px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(232,107,24,0.15);
+            border: 1px solid rgba(232,107,24,0.3);
+            color: var(--naranja-luz);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 28px;
+            animation: fadeInDown 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+        .hero-badge-dot {
+            width: 8px; height: 8px;
+            background: var(--naranja);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+        .hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+            opacity: 0;
+        }
+        .hero-title .accent { color: var(--naranja); position: relative; }
+        .hero-title .accent::after {
+            content: '';
+            position: absolute;
+            bottom: 4px; left: 0;
+            width: 100%; height: 4px;
+            background: var(--naranja);
+            opacity: 0.3;
+            border-radius: 2px;
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255,255,255,0.7);
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease 0.7s forwards;
+            opacity: 0;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.9s forwards;
+            opacity: 0;
         }
         .btn {
-            display: inline-block;
-            background-color: #e86b18;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
             text-decoration: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 40px;
-            font-weight: bold;
-            transition: background 0.2s;
-            margin-top: auto;
-            align-self: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
         }
-        .btn:hover { background-color: #bf5510; }
-
-        /* Sección de 6 atributos */
-        .features {
-            margin: 3rem 0;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            box-shadow: var(--shadow-orange);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.25);
+        }
+        .btn-outline:hover { border-color: var(--naranja); color: var(--naranja); transform: translateY(-3px); }
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        .hero-scroll-icon {
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+        .hero-scroll-dot {
+            width: 4px;
+            height: 10px;
+            background: var(--naranja);
+            border-radius: 4px;
+            animation: scrollDot 2s infinite;
+        }
+        @keyframes scrollDot {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(15px); }
+        }
+        @keyframes bounce {
+            0%,20%,50%,80%,100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-8px); }
+            60% { transform: translateX(-50%) translateY(-4px); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* ========== REVEAL ========== */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        /* ========== SECCIONES ========== */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+        }
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--naranja);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* ========== SERVICIOS (4 TARJETAS) ========== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 28px;
+        }
+        .service-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 40px 32px 36px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+        .service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, rgba(232,107,24,0.1), rgba(232,107,24,0.05));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        .service-card:hover .service-icon {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            transform: scale(1.1) rotate(-3deg);
+        }
+        .service-card:hover .service-icon span { filter: brightness(10); }
+        .service-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--navy);
+        }
+        .service-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--naranja);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+        .service-link:hover { gap: 12px; color: var(--naranja-oscuro); }
+        /* ========== SECCIÓN EBOOK ========== */
+        .ebook {
+            background: linear-gradient(160deg, var(--navy-dark), var(--navy));
+            position: relative;
+            overflow: hidden;
+        }
+        .ebook::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(232,107,24,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .ebook-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .ebook-visual { display: flex; justify-content: center; }
+        .ebook-book {
+            width: 280px; height: 380px;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-oscuro));
+            border-radius: 8px 20px 20px 8px;
+            position: relative;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            transform: perspective(800px) rotateY(-8deg);
+            transition: var(--transition);
+        }
+        .ebook-book:hover { transform: perspective(800px) rotateY(-2deg) translateY(-10px); }
+        .ebook-book-spine {
+            position: absolute;
+            left: 0; top: 0;
+            width: 12px; height: 100%;
+            background: var(--naranja-oscuro);
+            border-radius: 8px 0 0 8px;
+        }
+        .ebook-book-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .ebook-book-author {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+        .ebook-badge {
+            position: absolute;
+            top: -15px; right: -15px;
+            background: #fff;
+            color: var(--naranja);
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-md);
+        }
+        .ebook-info h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .ebook-info h2 span { color: var(--naranja); }
+        .ebook-info p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        .ebook-features { list-style: none; margin-bottom: 36px; }
+        .ebook-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.85);
+            padding: 8px 0;
+        }
+        .ebook-features li svg { width: 20px; color: var(--naranja); }
+        /* ========== ESTADÍSTICAS ========== */
+        .stats {
+            background: var(--crema);
+            padding: 60px 24px;
+        }
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
             text-align: center;
         }
-        .features h2 { font-size: 1.7rem; margin-bottom: 1.5rem; color: #1A2330; }
+        .stat-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--naranja);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        /* ========== CARACTERÍSTICAS (6 ATRIBUTOS) ========== */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
         }
         .feature-item {
-            background: #FFFFFF;
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid #F0F0F0;
-            transition: all 0.2s;
-            text-align: left;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
         }
-        .feature-item:hover { border-color: #e86b18; }
-        .feature-item h4 { color: #e86b18; margin-bottom: 0.5rem; font-size: 1.2rem; }
-        .feature-item p { font-size: 0.9rem; color: #4a4a4a; line-height: 1.5; margin-bottom: 0; }
-
-        /* CTA WhatsApp - más delgado y con botón de ancho completo */
-        .cta-wa {
+        .feature-item:hover { background: rgba(232,107,24,0.04); }
+        .feature-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(232,107,24,0.15);
+            line-height: 1;
+            min-width: 50px;
+        }
+        .feature-content h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+        .feature-content p { font-size: 0.93rem; color: var(--text-muted); }
+        /* ========== CONFERENCIAS (12 CARD) ========== */
+        .conf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .conf-card {
+            background: #fff;
+            border-radius: var(--radius-sm);
+            padding: 28px 24px;
+            border: 1px solid rgba(26,35,48,0.06);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .conf-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--naranja);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .conf-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .conf-card:hover::after { transform: scaleX(1); }
+        .conf-card-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: rgba(232,107,24,0.12);
+            margin-bottom: 8px;
+        }
+        .conf-card h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+        .conf-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+        /* ========== CURSO DESTACADO ========== */
+        .course-highlight {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-highlight .course-inner {
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            background: linear-gradient(135deg, #1A2330 0%, #0f3460 100%);
-            padding: 1.2rem 1.8rem; /* reducido verticalmente */
-            border-radius: 32px;
-            margin: 3rem 0;
-            color: white;
+            position: relative;
+            z-index: 1;
         }
-        .cta-wa h3 { font-size: 1.4rem; margin-bottom: 0.3rem; }
-        .cta-wa p { font-size: 0.9rem; margin-bottom: 1rem; opacity: 0.9; }
-        .btn-wa {
-            background-color: #25D366;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            display: block;          /* Ocupa todo el ancho */
-            width: 100%;
-            padding: 0.5rem 1rem;    /* más delgado */
-            border-radius: 60px;
-            transition: background 0.2s;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        .btn-wa:hover {
-            background-color: #128C7E;
-        }
-
-        /* Footer con botones de redes un poco más grandes */
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #eee;
-            font-size: 0.85rem;
-            color: #888;
-        }
-        .social a {
-            margin: 0 0.6rem;
-            color: #1A2330;
-            text-decoration: none;
-            font-size: 1rem;
+        .course-label {
             display: inline-block;
-            padding: 0.1rem 0;
+            background: rgba(232,107,24,0.15);
+            border: 1px solid rgba(232,107,24,0.3);
+            color: var(--naranja-luz);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
         }
-        @media (max-width: 1100px) {
-            .services { grid-template-columns: repeat(2, 1fr); }
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        .course-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
         }
-        @media (max-width: 700px) {
-            .services { grid-template-columns: 1fr; }
-            .features-grid { grid-template-columns: 1fr; }
-            .logo { font-size: 2rem; }
-            .container { padding: 1rem; }
-            .social a { margin: 0 0.3rem; font-size: 0.9rem; }
-            .cta-wa { padding: 1rem; }
-            .btn-wa { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+        .course-title span { color: var(--naranja); }
+        .course-desc {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 36px;
+        }
+        /* ========== CTA WHATSAPP ========== */
+        .cta-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            padding: 80px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-whatsapp .cta-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-whatsapp h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .cta-whatsapp p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 32px;
+        }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            color: #128C7E;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .btn-whatsapp:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 35px rgba(0,0,0,0.25); }
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--navy-dark);
+            padding: 60px 24px 30px;
+            color: rgba(255,255,255,0.6);
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .footer-brand h3 span { color: var(--naranja); }
+        .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+        .footer-social a {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.7);
+            transition: var(--transition-fast);
+        }
+        .footer-social a:hover { background: var(--naranja); color: #fff; transform: translateY(-3px); }
+        .footer-col h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .footer-col ul a:hover { color: var(--naranja); padding-left: 5px; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.82rem;
+        }
+        .footer-legal { font-size: 0.78rem; opacity: 0.7; }
+        /* ========== BOTONES FLOTANTES ========== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 28px; right: 28px;
+            z-index: 999;
+            width: 60px; height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: var(--transition);
+            animation: floatPulse 3s infinite;
+        }
+        .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 6px 30px rgba(37,211,102,0.6); }
+        @keyframes floatPulse {
+            0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+            50% { box-shadow: 0 4px 35px rgba(37,211,102,0.65); }
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 100px; right: 32px;
+            width: 44px; height: 44px;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 998;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--naranja); transform: translateY(-3px); }
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: rgba(26,35,48,0.98);
+                backdrop-filter: blur(20px);
+                padding: 100px 40px;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
+            .ebook-inner { grid-template-columns: 1fr; text-align: center; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .hero-actions .btn { width: 100%; max-width: 300px; justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .services-grid, .conf-grid { grid-template-columns: 1fr; }
+            .ebook-book { width: 220px; height: 300px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            .loader { display: none; }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="logo">LYON <span>ASESOR</span><sup>™</sup></div>
-        <div class="tagline">Desarrollo Personal · Psicoterapia · Educación Emocional</div>
-    </div>
-
-    <!-- 4 tarjetas de servicio -->
-    <div class="services">
-        <div class="card">
-            <h3>📘 Ebook gratuito</h3>
-            <p>Descarga “ESTE DÍA ES TUYO”, un mapa para empezar a reconocer tu propio código interno. El primer paso no cuesta nada, pero vale todo.</p>
-            <a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="btn">Descargar ahora</a>
-        </div>
-        <div class="card">
-            <h3>🧠 Proceso Terapéutico</h3>
-            <p>Sesiones personalizadas o paquetes de 3 y 5 encuentros. Acompañamiento real, sin fórmulas mágicas. Con neurociencia, calidez y absoluta confidencialidad.</p>
-            <a href="consulta.html" class="btn">Reservar consulta</a>
-        </div>
-        <div class="card">
-            <h3>🎤 Conferencias</h3>
-            <p>12 temas para empresas e instituciones. Diploma con código de verificación, ebook de regalo y una experiencia que despierta equipos. Precio fijo por evento.</p>
-            <a href="conferencia.html" class="btn">Solicitar conferencia</a>
-        </div>
-        <div class="card">
-            <h3>📚 Cursos y Masterclass</h3>
-            <p>Próximamente: “El Código Interno”, neurociencia aplicada, inteligencia emocional para docentes y más. Aprende a tu ritmo, con contenido vivo.</p>
-            <a href="#" class="btn" style="background:#ccc; cursor:default;">Próximamente</a>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-brand">LYON<span>ASESOR</span><small>Rugido de Consciencia</small></div>
+            <div class="loader-bar"><div class="loader-bar-inner"></div></div>
         </div>
     </div>
 
-    <!-- Sección de 6 atributos -->
-    <div class="features">
-        <h2>✨ ¿Por qué confiar en Lyon Asesor?</h2>
-        <div class="features-grid">
-            <div class="feature-item"><h4>🧠 Con respaldo científico</h4><p>Protocolos basados en neurociencia, psicología cognitiva y enfoques integradores. Nada de pseudociencia. Solo lo que la evidencia respalda.</p></div>
-            <div class="feature-item"><h4>🤝 Confidencialidad garantizada</h4><p>Datos protegidos bajo la Ley Orgánica de Protección de Datos (Venezuela) y estándares internacionales. Tu privacidad es lo primero.</p></div>
-            <div class="feature-item"><h4>📅 Acompañamiento real</h4><p>No eres un número. Cada proceso se ajusta a tu ritmo, tus necesidades y tu contexto. La terapia no es un protocolo rígido, es un encuentro humano.</p></div>
-            <div class="feature-item"><h4>🎯 Resultados medibles</h4><p>Herramientas diseñadas para que notes cambios concretos en tu vida. Trabajamos con metas claras, no con promesas vagas.</p></div>
-            <div class="feature-item"><h4>⏱️ Flexibilidad de horarios</h4><p>Adaptamos las sesiones a tu disponibilidad. Respetamos tu tiempo y tus compromisos, porque la vida real no sigue un horario de oficina.</p></div>
-            <div class="feature-item"><h4>🔄 Seguimiento post-terapia</h4><p>No te dejamos al finalizar. Contamos con planes de refuerzo y acompañamiento continuo para que el cambio se consolide y profundice.</p></div>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">
+                <div class="nav-logo-icon">L</div>
+                <div class="nav-logo-text">
+                    <div class="main">LYON<span>ASESOR</span></div>
+                    <div class="sub">Rugido de Consciencia</div>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#ebook">Ebook</a></li>
+                <li><a href="#conferencias">Conferencias</a></li>
+                <li><a href="#curso">Curso</a></li>
+                <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="nav-cta">Contactar</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         </div>
-    </div>
+    </nav>
 
-    <!-- CTA WhatsApp más delgado y con botón de ancho completo -->
-    <div class="cta-wa">
-        <h3>📱 Tu cambio no puede esperar</h3>
-        <p>Únete a nuestra comunidad en WhatsApp. Contenido semanal gratuito, reflexiones que remueven, ofertas exclusivas y el poder de no caminar solo.</p>
-        <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn-wa">👉 Quiero unirme ahora 👈</a>
-    </div>
-
-    <div class="footer">
-        <div class="social">
-            <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">📱 WhatsApp</a>
-            <a href="https://instagram.com/lyonasesor" target="_blank">📸 Instagram</a>
-            <a href="https://tiktok.com/@lyonasesor" target="_blank">🎵 TikTok</a>
-            <a href="mailto:lyonasesor@outlook.com">✉️ Correo</a>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="hero-badge-dot"></span>Desarrollo Personal · Psicoterapia · Educación Emocional</div>
+            <h1 class="hero-title">Transforma tu vida.<br><span class="accent">Despierta tu potencial.</span></h1>
+            <p class="hero-subtitle">Con más de una década de experiencia acompañando procesos de crecimiento personal, te invitamos a dar el primer paso hacia la mejor versión de ti mismo.</p>
+            <div class="hero-actions">
+                <a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="btn btn-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Ebook gratuito</a>
+                <a href="#servicios" class="btn btn-outline">Explorar Servicios <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
         </div>
-        <p>Prof. Mtr. Alvaro Lyon · C.I. V-17633035 · Rif J-17633035-6</p>
-        <p>Neuropsicología con calidez humana | Desarrollo Personal · Psicoterapia · Educación Emocional</p>
-    </div>
-</div>
+        <div class="hero-scroll"><div class="hero-scroll-icon"><div class="hero-scroll-dot"></div></div></div>
+    </section>
+
+    <!-- Servicios -->
+    <section class="section services" id="servicios">
+        <div class="section-inner">
+            <div class="section-header reveal"><span class="section-label">Nuestros Servicios</span><h2 class="section-title">Lo que ofrecemos para ti</h2><p class="section-desc">Cada servicio está diseñado para acompañarte en diferentes momentos de tu camino.</p></div>
+            <div class="services-grid">
+                <div class="service-card reveal"><div class="service-icon"><span>📚</span></div><h3 class="service-title">Ebook Gratuito</h3><p class="service-desc">Descarga "ESTE DÍA ES TUYO" y comienza tu transformación con herramientas prácticas.</p><a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="service-link">Descargar ahora <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+                <div class="service-card reveal"><div class="service-icon"><span>🧘</span></div><h3 class="service-title">Proceso Terapéutico</h3><p class="service-desc">Acompañamiento profesional y personalizado. Sesiones individuales para tu crecimiento emocional.</p><a href="consulta.html" class="service-link">Agendar consulta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+                <div class="service-card reveal"><div class="service-icon"><span>🎙️</span></div><h3 class="service-title">Conferencias</h3><p class="service-desc">12 temas transformadores para empresas e instituciones. Diploma + ebook incluidos.</p><a href="conferencia.html" class="service-link">Ver temáticas <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+                <div class="service-card reveal"><div class="service-icon"><span>🎓</span></div><h3 class="service-title">Cursos / Masterclass</h3><p class="service-desc">Formación profunda. Aprende herramientas que cambiarán tu perspectiva y tu vida.</p><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="service-link">Más información <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Ebook destacado -->
+    <section class="section ebook" id="ebook">
+        <div class="section-inner">
+            <div class="ebook-inner">
+                <div class="ebook-visual reveal"><div class="ebook-book"><div class="ebook-book-spine"></div><div class="ebook-book-title">ESTE DÍA<br>ES TUYO</div><div class="ebook-book-author">Prof. Mtr. Álvaro Lyon</div><div class="ebook-badge">GRATIS</div></div></div>
+                <div class="ebook-info reveal"><h2>Tu transformación comienza con <span>una página</span></h2><p>Este libro es más que lectura: es un compañero diario que te brinda herramientas concretas para afrontar tus días con claridad, propósito y fortaleza emocional.</p>
+                    <ul class="ebook-features"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Ejercicios prácticos de reflexión diaria.</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Técnicas de gestión emocional</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Acceso e inmediato completamente gratuito</li></ul>
+                    <a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank" class="btn btn-primary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar Ebook Gratis</a></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item reveal"><div class="stat-number" data-target="12">0</div><div class="stat-label">Conferencias disponibles</div></div>
+            <div class="stat-item reveal"><div class="stat-number" data-target="7">0</div><div class="stat-label">Masterclass exclusivas</div></div>
+            <div class="stat-item reveal"><div class="stat-number" data-target="10">0</div><div class="stat-label">Años de experiencia</div></div>
+            <div class="stat-item reveal"><div class="stat-number" data-target="500">0</div><div class="stat-label">Vidas transformadas</div></div>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <section class="section features" id="features">
+        <div class="section-inner">
+            <div class="section-header reveal"><span class="section-label">¿Por qué elegirnos?</span><h2 class="section-title">Lo que nos distingue</h2><p class="section-desc">Cada experiencia con Lyon Asesor está diseñada para generar un impacto real y duradero.</p></div>
+            <div class="features-grid">
+                <div class="feature-item reveal"><div class="feature-number">01</div><div class="feature-content"><h3>Acompañamiento Profesional</h3><p>Más de una década de experiencia respaldan cada intervención. Cada proceso está guiado con ética, calidez y rigor profesional.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-number">02</div><div class="feature-content"><h3>Enfoque Integral</h3><p>Trabajamos la mente, las emociones y el propósito. No solo síntomas: transformamos desde la raíz.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-number">03</div><div class="feature-content"><h3>Herramientas Prácticas</h3><p>No hay teoría en solitario. Cada servicio incluye técnicas aplicables desde el primer día.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-number">04</div><div class="feature-content"><h3>Accesibilidad Real</h3><p>Servicios adaptados a diferentes realidades. Desde contenido gratuito hasta procesos profundos.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-number">05</div><div class="feature-content"><h3>Certificación Oficial</h3><p>Cada conferencia y curso incluye diploma o certificación que garantiza tu participación.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-number">06</div><div class="feature-content"><h3>Comunidad en Crecimiento</h3><p>Te unes a una red de personas comprometidas con su bienestar. Acompañamiento que trasciende cada sesión.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conferencias (12 temas) -->
+    <section class="section conferences" id="conferencias">
+        <div class="section-inner">
+            <div class="section-header reveal"><span class="section-label">Conferencias</span><h2 class="section-title">12 temáticas que transforman</h2><p class="section-desc">Cada conferencia es una experiencia de aprendizaje vivencial. Incluye diploma y ebook de regalo.</p></div>
+            <div class="conf-grid">
+                <div class="conf-card reveal"><div class="conf-card-number">01</div><h3>Inteligencia Emocional</h3><p>Descubre cómo gestionar tus emociones para transformar tus relaciones y bienestar.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">02</div><h3>Autoestima y Asertividad</h3><p>Aprende a valorarte y comunicarte con firmeza y respeto desde tu esencia.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">03</div><h3>Manejo del Estrés y Ansiedad</h3><p>Herramientas prácticas para recuperar la calma y el equilibrio.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">04</div><h3>Resiliencia</h3><p>Fortalece tu capacidad para afrontar la adversidad y salir más fuerte.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">05</div><h3>Comunicación Efectiva</h3><p>Domina el arte de conectar, escuchar y transmitir con claridad y empatía.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">06</div><h3>Liderazgo Personal</h3><p>Desarrolla tu capacidad de influir positivamente en tu entorno y en ti mismo.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">07</div><h3>Duelo y Pérdida</h3><p>Acompañamiento comprensivo para transitar procesos de duelo con salud emocional.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">08</div><h3>Habilidades Sociales</h3><p>Mejora tus interacciones y construye relaciones significativas.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">09</div><h3>Mindfulness y Atención Plena</h3><p>Aprende a habitar el presente y reducir el piloto automático.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">10</div><h3>Prevención del Burnout</h3><p>Reconoce señales de agotamiento y aprende a proteger tu energía.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">11</div><h3>Paternidad y Crianza</h3><p>Herramientas para una crianza consciente, respetuosa y emocionalmente saludable.</p></div>
+                <div class="conf-card reveal"><div class="conf-card-number">12</div><h3>Motivación y Metas</h3><p>Despierta tu motor interno y transforma tus sueños en planes de acción.</p></div>
+            </div>
+            <div style="text-align:center; margin-top:48px;" class="reveal"><a href="conferencia.html" class="btn btn-primary">Reservar Conferencia <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+        </div>
+    </section>
+
+    <!-- Curso destacado -->
+    <section class="course-highlight" id="curso">
+        <div class="course-inner reveal"><span class="course-label">PRÓXIMAMENTE</span><h2 class="course-title">El Código <span>Interno</span></h2><p class="course-desc">Un curso magistral que te llevará a descubrir los patrones profundos que rigen tu vida. Aprenderás a reprogramar tus creencias limitantes y activar tu máximo potencial. ¿Estás listo para el cambio real?</p><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn btn-primary">Quiero información <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+    </section>
+
+    <!-- CTA WhatsApp -->
+    <section class="cta-whatsapp">
+        <div class="cta-inner reveal"><h2>¿Listo para dar el primer paso?</h2><p>Únete a nuestra comunidad en WhatsApp y recibe contenido exclusivo, tips de bienestar y novedades.</p><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn-whatsapp"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Únete al Canal de WhatsApp</a></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand"><h3>LYON<span>ASESOR</span></h3><p>Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañando procesos de transformación con ética, calidez y profesionalismo.</p><div class="footer-social"><a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><a href="mailto:lyonasesor@outlook.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a></div></div>
+                <div class="footer-col"><h4>Servicios</h4><ul><li><a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank">Ebook Gratuito</a></li><li><a href="consulta.html">Proceso Terapéutico</a></li><li><a href="conferencia.html">Conferencias</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li></ul></div>
+                <div class="footer-col"><h4>Contacto</h4><ul><li><a href="mailto:lyonasesor@outlook.com">lyonasesor@outlook.com</a></li><li><a href="https://www.instagram.com/lyonasesor" target="_blank">@lyonasesor</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p><p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-176333035-6</p></div>
+        </div>
+    </footer>
+
+    <!-- Botones flotantes -->
+    <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    <button class="back-to-top" id="backToTop" aria-label="Volver arriba"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+    <script>
+        // Carga
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
+        // Nav scroll
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 50); });
+        // Menú móvil
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => { navToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+        navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        // Reveal
+        const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        // Contadores
+        const statsObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { const counters = entry.target.querySelectorAll('.stat-number'); counters.forEach(counter => { const target = parseInt(counter.getAttribute('data-target')); const duration = 2000; const step = target / (duration / 16); let current = 0; const timer = setInterval(() => { current += step; if (current >= target) { counter.textContent = target + '+'; clearInterval(timer); } else counter.textContent = Math.floor(current) + '+'; }, 16); }); statsObserver.unobserve(entry.target); } }); }, { threshold: 0.5 });
+        const statsGrid = document.querySelector('.stats-grid'); if (statsGrid) statsObserver.observe(statsGrid);
+        // Botón subir
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => { backToTop.classList.toggle('visible', window.scrollY > 500); });
+        backToTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        // Partículas
+        const particlesContainer = document.getElementById('particles');
+        if (particlesContainer) { for (let i = 0; i < 15; i++) { const particle = document.createElement('div'); particle.className = 'particle'; particle.style.left = Math.random() * 100 + '%'; particle.style.animationDelay = Math.random() * 8 + 's'; particle.style.animationDuration = (6 + Math.random() * 6) + 's'; particle.style.width = (2 + Math.random() * 4) + 'px'; particle.style.height = particle.style.width; particlesContainer.appendChild(particle); } }
+        // Suave desplazamiento para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.getAttribute('href'); if (targetId === '#') return; const target = document.querySelector(targetId); if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); } }); });
+    </script>
 </body>
 </html>
