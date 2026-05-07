@@ -19,7 +19,7 @@
             position: relative;
         }
 
-        /* Textura de cerebro (más notoria pero siempre sutil) */
+        /* Textura de cerebro (sutil) */
         body::before {
             content: "";
             position: fixed;
@@ -30,7 +30,7 @@
             background-image: url('https://www.pngkit.com/png/detail/7-70062_brain-silhouette-png-brain-silhouette-png.png');
             background-repeat: repeat;
             background-size: 180px;
-            opacity: 0.04; /* ligeramente más visible pero todavía muy sutil */
+            opacity: 0.04;
             pointer-events: none;
             z-index: 0;
         }
@@ -51,7 +51,6 @@
             padding-bottom: 1rem;
         }
 
-        /* Logo responsivo: más grande en desktop, tamaño prudente en móvil */
         .logo {
             font-size: 2.5rem;
             font-weight: bold;
@@ -73,7 +72,7 @@
             font-size: 1rem;
         }
 
-        /* Grid de servicios: 4 columnas en laptop, texto balanceado */
+        /* Grid de servicios */
         .services {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -120,7 +119,7 @@
         }
         .btn:hover { background-color: #bf5510; }
 
-        /* Sección de 6 atributos (simetría, textos más densos) */
+        /* Sección de 6 atributos */
         .features {
             margin: 3rem 0;
             text-align: center;
@@ -143,28 +142,33 @@
         .feature-item h4 { color: #e86b18; margin-bottom: 0.5rem; font-size: 1.2rem; }
         .feature-item p { font-size: 0.9rem; color: #4a4a4a; line-height: 1.5; margin-bottom: 0; }
 
-        /* CTA WhatsApp - más compacto y épico */
+        /* CTA WhatsApp - más delgado y con botón de ancho completo */
         .cta-wa {
             text-align: center;
             background: linear-gradient(135deg, #1A2330 0%, #0f3460 100%);
-            padding: 1.8rem;
+            padding: 1.2rem 1.8rem; /* reducido verticalmente */
             border-radius: 32px;
             margin: 3rem 0;
             color: white;
         }
-        .cta-wa h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
-        .cta-wa p { font-size: 0.95rem; margin-bottom: 1.2rem; opacity: 0.9; }
+        .cta-wa h3 { font-size: 1.4rem; margin-bottom: 0.3rem; }
+        .cta-wa p { font-size: 0.9rem; margin-bottom: 1rem; opacity: 0.9; }
         .btn-wa {
             background-color: #25D366;
             color: white;
-            padding: 0.7rem 1.8rem;
-            border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            display: inline-block;
-            transition: transform 0.2s;
+            display: block;          /* Ocupa todo el ancho */
+            width: 100%;
+            padding: 0.5rem 1rem;    /* más delgado */
+            border-radius: 60px;
+            transition: background 0.2s;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
-        .btn-wa:hover { transform: scale(1.02); background-color: #128C7E; }
+        .btn-wa:hover {
+            background-color: #128C7E;
+        }
 
         /* Footer con botones de redes un poco más grandes */
         .footer {
@@ -193,6 +197,8 @@
             .logo { font-size: 2rem; }
             .container { padding: 1rem; }
             .social a { margin: 0 0.3rem; font-size: 0.9rem; }
+            .cta-wa { padding: 1rem; }
+            .btn-wa { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -203,7 +209,7 @@
         <div class="tagline">Desarrollo Personal · Psicoterapia · Educación Emocional</div>
     </div>
 
-    <!-- 4 tarjetas de servicio con texto simétrico (3 a 4 líneas cada una) -->
+    <!-- 4 tarjetas de servicio -->
     <div class="services">
         <div class="card">
             <h3>📘 Ebook gratuito</h3>
@@ -227,7 +233,7 @@
         </div>
     </div>
 
-    <!-- Sección de 6 atributos con 5 líneas cada uno (texto más denso) -->
+    <!-- Sección de 6 atributos -->
     <div class="features">
         <h2>✨ ¿Por qué confiar en Lyon Asesor?</h2>
         <div class="features-grid">
@@ -240,7 +246,7 @@
         </div>
     </div>
 
-    <!-- CTA WhatsApp más compacto y con lenguaje urgente y cálido -->
+    <!-- CTA WhatsApp más delgado y con botón de ancho completo -->
     <div class="cta-wa">
         <h3>📱 Tu cambio no puede esperar</h3>
         <p>Únete a nuestra comunidad en WhatsApp. Contenido semanal gratuito, reflexiones que remueven, ofertas exclusivas y el poder de no caminar solo.</p>
