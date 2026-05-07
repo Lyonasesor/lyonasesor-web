@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar conferencia · Lyon Asesor™</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: #F8F0EB;
+            color: #1A2330;
+            padding: 2rem 1.5rem;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h1 { color: #e86b18; margin-bottom: 0.5rem; }
+        .sub { color: #5A5A5A; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        label { display: block; margin: 1rem 0 0.3rem; font-weight: bold; }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+        }
+        button {
+            background: #e86b18;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            max-width: 400px;
+            padding: 1.5rem;
+            border-radius: 24px;
+            text-align: center;
+        }
+        .close { float: right; cursor: pointer; font-size: 1.5rem; }
+        .precio { font-size: 1.2rem; font-weight: bold; background: #1A2330; color: white; display: inline-block; padding: 0.2rem 1rem; border-radius: 20px; margin: 1rem 0; }
+        footer { text-align: center; margin-top: 1.5rem; font-size: 0.7rem; color: #888; }
+        .success-message {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Reserva tu conferencia</h1>
+    <div class="sub">Elige el tema y completa tus datos</div>
+    <form id="formConf">
+        <label>Nombre de la empresa u organización *</label>
+        <input type="text" id="empresa" required>
+
+        <label>Nombre de la persona de contacto *</label>
+        <input type="text" id="contacto" required>
+
+        <label>Correo electrónico *</label>
+        <input type="email" id="email" required>
+
+        <label>Teléfono (WhatsApp) *</label>
+        <input type="tel" id="telefono" required>
+
+        <label>Selecciona el tema de la conferencia</label>
+        <select id="tema">
+            <option>NeuroLiderazgo: El Cerebro que Inspira Equipos</option>
+            <option>Autoestima Corporativa: El Pilar del Éxito Sostenible</option>
+            <option>Comunicación Consciente: Del Conflicto a la Conexión</option>
+            <option>Liderazgo con Alma: Gestión de Equipos desde el Factor Humano</option>
+            <option>Estrategias de Bienestar: Neurociencia Aplicada al Estrés Laboral</option>
+            <option>Reconfigura tu Mente: Neuroplasticidad para el Cambio Personal</option>
+            <option>Neuroeducación: Cómo el Cerebro Aprende y Transforma</option>
+            <option>Vínculos que Sanan: Neurobiología de las Relaciones Saludables</option>
+            <option>El Código Familiar: Patrones que Construyen o Destruyen</option>
+            <option>Resiliencia Organizacional: Equipos que se Adaptan y Crecen</option>
+            <option>Propósito y Legado: Neurociencia del Sentido de Vida</option>
+            <option>Integración y Cierre: Consolidando el Nuevo Paradigma</option>
+        </select>
+
+        <label>Número estimado de participantes *</label>
+        <input type="text" id="participantes" required>
+
+        <label>Método de pago</label>
+        <div class="radio-group" style="display:flex; gap:1rem; margin:0.5rem 0;">
+            <label><input type="radio" name="metodo" value="paypal"> PayPal (tarjeta/cuenta)</label>
+            <label><input type="radio" name="metodo" value="p movil"> Pago Móvil / Transferencia</label>
+        </div>
+        <div class="precio">Monto: $150 USD (tarifa plana)</div>
+
+        <button type="button" id="btnConf">Continuar con el pago</button>
+    </form>
+    <div id="successMessage" class="success-message"></div>
+    <footer>Al enviar, aceptas recibir información sobre tu reserva.</footer>
+</div>
+
+<!-- Modal para Pago Móvil -->
+<div id="modalPagoMovil" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Instrucciones de pago</h3>
+        <p><strong>Banco:</strong> Banco Provincial</p>
+        <p><strong>Cédula:</strong> V-17633035</p>
+        <p><strong>Teléfono Pago Móvil:</strong> 04148610464</p>
+        <p><strong>Monto:</strong> $150 USD (equivalente en Bs según tasa BCV)</p>
+        <p>Envía el comprobante por WhatsApp al <strong>04148610464</strong> o al correo lyonasesor@gmail.com con tu empresa. Tu conferencia se confirmará en máximo 2 horas.</p>
+        <button id="cerrarModal">Entendido</button>
+    </div>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCNLjV0X0SiJsWBiVvjlVB5nqak9IwHaH8",
+        authDomain: "lyon-asesor-panel.firebaseapp.com",
+        projectId: "lyon-asesor-panel",
+        storageBucket: "lyon-asesor-panel.firebasestorage.app",
+        messagingSenderId: "184678528884",
+        appId: "1:184678528884:web:cd6b605e49d281db595e21"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const btn = document.getElementById('btnConf');
+    const modal = document.getElementById('modalPagoMovil');
+    const spanClose = document.getElementsByClassName('close')[0];
+    const cerrarModal = document.getElementById('cerrarModal');
+    const metodoRadios = document.querySelectorAll('input[name="metodo"]');
+    const successDiv = document.getElementById('successMessage');
+
+    btn.addEventListener('click', async () => {
+        const empresa = document.getElementById('empresa').value.trim();
+        const contacto = document.getElementById('contacto').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const tema = document.getElementById('tema').value;
+        const participantes = document.getElementById('participantes').value.trim();
+        let metodo = null;
+        for (let m of metodoRadios) if (m.checked) metodo = m.value;
+
+        if (!empresa || !contacto || !email || !telefono || !participantes || !metodo) {
+            alert('Por favor completa todos los campos obligatorios.');
+            return;
+        }
+
+        const data = {
+            empresa, contacto, email, telefono, tema, participantes,
+            metodo, monto: 150,
+            timestamp: new Date().toISOString(),
+            pagado: false
+        };
+
+        try {
+            await db.collection('conferencias').add(data);
+            successDiv.style.display = 'block';
+            successDiv.innerHTML = `✅ Solicitud registrada. Revisa las instrucciones de pago abajo.`;
+        } catch (err) {
+            console.error(err);
+            alert('Hubo un error. Contáctanos por WhatsApp.');
+            return;
+        }
+
+        if (metodo === 'paypal') {
+            window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD', '_blank');
+            alert('Serás redirigido a PayPal. Una vez pagado, envía tu comprobante.');
+        } else {
+            modal.style.display = 'flex';
+        }
+    });
+
+    function cerrar() {
+        modal.style.display = 'none';
+        alert('Gracias por tu solicitud. Envía el comprobante y te confirmaremos.');
+    }
+    spanClose.onclick = cerrar;
+    cerrarModal.onclick = cerrar;
+    window.onclick = (e) => { if (e.target == modal) cerrar(); };
+</script>
+</body>
+</html>
