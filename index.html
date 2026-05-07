@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyon Asesor | Neuropsicología · Educación · Transformación</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lyon Asesor™ | Desarrollo Personal · Psicoterapia · Educación Emocional</title>
     <style>
         * {
             margin: 0;
@@ -15,11 +15,30 @@
             font-family: 'Georgia', 'Times New Roman', Times, serif;
             background-color: #FFFFFF;
             color: #1A2330;
-            line-height: 1.6;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* Textura de cerebro (sutil, gris clarísimo, semitransparente) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.pngkit.com/png/detail/7-70062_brain-silhouette-png-brain-silhouette-png.png');
+            background-repeat: repeat;
+            background-size: 180px;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1200px;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
         }
@@ -43,38 +62,46 @@
             color: #e86b18;
         }
 
+        .logo sup {
+            font-size: 1rem;
+            color: #5A5A5A;
+        }
+
         .tagline {
             color: #5A5A5A;
             font-style: italic;
             margin-top: 0.5rem;
+            font-size: 1rem;
         }
 
-        /* Grid de servicios */
+        /* Grid de servicios: 4 columnas en laptop */
         .services {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
             margin: 3rem 0;
         }
 
         .card {
             background: #FFFFFF;
-            border-radius: 16px;
-            padding: 1.8rem;
+            border-radius: 20px;
+            padding: 1.8rem 1.2rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #E0E0E0;
-            transition: transform 0.2s;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+            border: 1px solid #EAEAEA;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .card:hover {
             transform: translateY(-5px);
             border-color: #e86b18;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
         }
 
         .card h3 {
-            color: #1A2330;
+            font-size: 1.4rem;
             margin: 1rem 0 0.5rem;
+            color: #1A2330;
         }
 
         .card p {
@@ -98,6 +125,84 @@
             background-color: #bf5510;
         }
 
+        /* Sección de 6 atributos (simetría) */
+        .features {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 1.7rem;
+            margin-bottom: 1.5rem;
+            color: #1A2330;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-item {
+            background: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #F0F0F0;
+            transition: all 0.2s;
+        }
+
+        .feature-item:hover {
+            border-color: #e86b18;
+        }
+
+        .feature-item h4 {
+            color: #e86b18;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-item p {
+            font-size: 0.9rem;
+            color: #4a4a4a;
+        }
+
+        /* CTA WhatsApp */
+        .cta-wa {
+            text-align: center;
+            background: linear-gradient(135deg, #1A2330 0%, #0f3460 100%);
+            padding: 2.5rem;
+            border-radius: 32px;
+            margin: 3rem 0;
+            color: white;
+        }
+
+        .cta-wa h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-wa p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .btn-wa {
+            background-color: #25D366;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .btn-wa:hover {
+            transform: scale(1.02);
+            background-color: #128C7E;
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -114,7 +219,14 @@
             text-decoration: none;
         }
 
-        @media (max-width: 600px) {
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .services { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 700px) {
+            .services { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
             .logo { font-size: 1.8rem; }
             .container { padding: 1rem; }
         }
@@ -123,10 +235,11 @@
 <body>
 <div class="container">
     <div class="header">
-        <div class="logo">LYON <span>ASESOR</span></div>
-        <div class="tagline">Neuropsicología · Educación · Transformación</div>
+        <div class="logo">LYON <span>ASESOR</span><sup>™</sup></div>
+        <div class="tagline">Desarrollo Personal · Psicoterapia · Educación Emocional</div>
     </div>
 
+    <!-- 4 tarjetas de servicio -->
     <div class="services">
         <div class="card">
             <h3>📘 Ebook gratuito</h3>
@@ -136,18 +249,38 @@
         <div class="card">
             <h3>🧠 Proceso Terapéutico</h3>
             <p>Consulta individual o paquetes de sesiones. Acompañamiento profesional.</p>
-            <a href="https://forms.gle/WZ6vJ61gU5qLBifX8" target="_blank" class="btn">Reservar consulta</a>
+            <a href="consulta.html" class="btn">Reservar consulta</a>
         </div>
         <div class="card">
             <h3>🎤 Conferencias</h3>
             <p>12 temas para empresas e instituciones. Diploma + ebook incluidos.</p>
-            <a href="https://forms.gle/g2GgMo3gkMBZZSHs7" target="_blank" class="btn">Solicitar</a>
+            <a href="conferencia.html" class="btn">Solicitar conferencia</a>
         </div>
         <div class="card">
             <h3>📚 Cursos y Masterclass</h3>
             <p>Próximamente: El Código Interno, Neurociencia aplicada y más.</p>
             <a href="#" class="btn" style="background:#ccc; cursor:default;">Próximamente</a>
         </div>
+    </div>
+
+    <!-- Sección de 6 atributos (simetría 3+3) -->
+    <div class="features">
+        <h2>✨ ¿Por qué confiar en Lyon Asesor?</h2>
+        <div class="features-grid">
+            <div class="feature-item"><h4>🧠 Con respaldo científico</h4><p>Protocolos basados en neurociencia, psicología cognitiva y enfoques integradores. Nada de pseudociencia.</p></div>
+            <div class="feature-item"><h4>🤝 Confidencialidad garantizada</h4><p>Datos protegidos bajo la Ley Orgánica de Protección de Datos (Venezuela) y estándares internacionales.</p></div>
+            <div class="feature-item"><h4>📅 Acompañamiento real</h4><p>No eres un número. Cada proceso se ajusta a tu ritmo, tus necesidades y tu contexto.</p></div>
+            <div class="feature-item"><h4>🎯 Resultados medibles</h4><p>Herramientas diseñadas para que notes cambios concretos en tu vida.</p></div>
+            <div class="feature-item"><h4>⏱️ Flexibilidad de horarios</h4><p>Adaptamos las sesiones a tu disponibilidad, respetando tu tiempo y tus compromisos.</p></div>
+            <div class="feature-item"><h4>🔄 Seguimiento post-terapia</h4><p>No te dejamos al finalizar. Planes de refuerzo y acompañamiento continuo.</p></div>
+        </div>
+    </div>
+
+    <!-- CTA WhatsApp -->
+    <div class="cta-wa">
+        <h3>📱 No esperes a que el cambio llegue solo</h3>
+        <p>Únete a nuestro canal de WhatsApp y recibe contenido semanal exclusivo, reflexiones, y ofertas especiales. La comunidad que crece contigo.</p>
+        <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn-wa">👉 Quiero unirme ahora 👈</a>
     </div>
 
     <div class="footer">
@@ -158,7 +291,7 @@
             <a href="mailto:lyonasesor@outlook.com">✉️ Correo</a>
         </div>
         <p>Prof. Mtr. Alvaro Lyon · C.I. V-17633035 · Rif J-17633035-6</p>
-        <p>Desarrollo Personal | Psicoterapia | Educación Emocional</p>
+        <p>Desarrollo Personal · Psicoterapia · Educación Emocional</p>
     </div>
 </div>
 </body>
