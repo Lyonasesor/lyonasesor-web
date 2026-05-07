@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    
-    <!-- Metaetiquetas básicas -->
-    <meta name="description" content="Lyon Asesor - Desarrollo Personal, Psicoterapia y Educación Emocional. Transforma tu vida con el Prof. Mtr. Alvaro Lyon. Ebook gratuito, conferencias, procesos terapéuticos.">
+    <meta name="description" content="Lyon Asesor - Desarrollo Personal, Psicoterapia y Educación Emocional. Transforma tu vida con el Prof. Mtr. Alvaro Lyon.">
     <meta name="keywords" content="psicoterapia, desarrollo personal, educación emocional, conferencias, talleres, bienestar, salud mental, Venezuela">
     <meta name="author" content="Prof. Mtr. Álvaro Lyon">
-    
-    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <!-- Open Graph / WhatsApp / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lyonasesor.github.io/lyonasesor-web/">
     <meta property="og:title" content="Lyon Asesor | Rugido de Consciencia">
@@ -17,16 +14,11 @@
     <meta property="og:image" content="https://lyonasesor.github.io/lyonasesor-web/social-preview.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="Lyon Asesor">
-    
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Lyon Asesor | Rugido de Consciencia">
-    <meta name="twitter:description" content="Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañamiento real, sin misticismos, con ciencia y calidez humana.">
+    <meta name="twitter:description" content="Desarrollo Personal · Psicoterapia · Educación Emocional">
     <meta name="twitter:image" content="https://lyonasesor.github.io/lyonasesor-web/social-preview.jpg">
-    
     <title>Lyon Asesor | Rugido de Consciencia – Desarrollo Personal · Psicoterapia · Educación Emocional</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -62,7 +54,6 @@
             line-height: 1.7;
             overflow-x: hidden;
         }
-        /* Textura de fondo sutil */
         body::before {
             content: '';
             position: fixed;
@@ -74,7 +65,7 @@
             pointer-events: none;
             z-index: 0;
         }
-        /* ========== LOADER ========== */
+        /* Loader */
         .loader {
             position: fixed;
             top: 0; left: 0;
@@ -123,7 +114,7 @@
             50% { width: 70%; }
             100% { width: 100%; }
         }
-        /* ========== NAVEGACIÓN ========== */
+        /* Navegación */
         .nav {
             position: fixed;
             top: 0; left: 0;
@@ -156,15 +147,14 @@
         .nav-logo-icon {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #fff;
+        }
+        .nav-logo-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -230,7 +220,7 @@
         .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .nav-toggle.active span:nth-child(2) { opacity: 0; }
         .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        /* ========== HERO ========== */
+        /* Hero */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -289,7 +279,7 @@
             animation: pulse 2s infinite;
         }
         @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
+            0%,100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(1.3); }
         }
         .hero-title {
@@ -312,8 +302,9 @@
             opacity: 0.3;
             border-radius: 2px;
         }
+        /* Subtítulo reducido */
         .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-size: clamp(0.85rem, 1.8vw, 1rem);
             color: rgba(255,255,255,0.7);
             font-weight: 300;
             line-height: 1.8;
@@ -397,10 +388,9 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* ========== REVEAL ========== */
+        /* Secciones generales */
         .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
-        /* ========== SECCIONES ========== */
         .section {
             position: relative;
             z-index: 1;
@@ -436,7 +426,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        /* ========== SERVICIOS (4 TARJETAS) ========== */
+        /* Servicios grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -501,19 +491,11 @@
             transition: var(--transition-fast);
         }
         .service-link:hover { gap: 12px; color: var(--naranja-oscuro); }
-        /* ========== SECCIÓN EBOOK ========== */
+        /* Sección ebook */
         .ebook {
             background: linear-gradient(160deg, var(--navy-dark), var(--navy));
             position: relative;
             overflow: hidden;
-        }
-        .ebook::before {
-            content: '';
-            position: absolute;
-            top: -50%; right: -20%;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(232,107,24,0.12) 0%, transparent 70%);
-            pointer-events: none;
         }
         .ebook-inner {
             display: grid;
@@ -521,7 +503,6 @@
             gap: 60px;
             align-items: center;
         }
-        .ebook-visual { display: flex; justify-content: center; }
         .ebook-book {
             width: 280px; height: 380px;
             background: linear-gradient(135deg, var(--naranja), var(--naranja-oscuro));
@@ -535,6 +516,7 @@
             padding: 40px 30px;
             transform: perspective(800px) rotateY(-8deg);
             transition: var(--transition);
+            margin: 0 auto;
         }
         .ebook-book:hover { transform: perspective(800px) rotateY(-2deg) translateY(-10px); }
         .ebook-book-spine {
@@ -556,7 +538,6 @@
             font-size: 0.85rem;
             color: rgba(255,255,255,0.8);
             margin-top: 20px;
-            letter-spacing: 1px;
         }
         .ebook-badge {
             position: absolute;
@@ -591,7 +572,7 @@
             padding: 8px 0;
         }
         .ebook-features li svg { width: 20px; color: var(--naranja); }
-        /* ========== ESTADÍSTICAS ========== */
+        /* Estadísticas */
         .stats {
             background: var(--crema);
             padding: 60px 24px;
@@ -617,7 +598,7 @@
             color: var(--text-muted);
             font-weight: 500;
         }
-        /* ========== CARACTERÍSTICAS (6 ATRIBUTOS) ========== */
+        /* Características 6 */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -648,7 +629,7 @@
             color: var(--navy);
         }
         .feature-content p { font-size: 0.93rem; color: var(--text-muted); }
-        /* ========== CONFERENCIAS (12 CARD) ========== */
+        /* Conferencias grid 12 */
         .conf-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -688,8 +669,8 @@
             margin-bottom: 8px;
             color: var(--navy);
         }
-        .conf-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
-        /* ========== CURSO DESTACADO ========== */
+        .conf-card p { font-size: 0.88rem; color: var(--text-muted); }
+        /* Curso destacado */
         .course-highlight {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
             padding: 80px 24px;
@@ -700,8 +681,6 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
         .course-label {
             display: inline-block;
@@ -728,19 +707,15 @@
             line-height: 1.8;
             margin-bottom: 36px;
         }
-        /* ========== CTA WHATSAPP ========== */
+        /* CTA WhatsApp */
         .cta-whatsapp {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             padding: 80px 24px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
         .cta-whatsapp .cta-inner {
             max-width: 700px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
         }
         .cta-whatsapp h2 {
             font-family: 'Playfair Display', Georgia, serif;
@@ -768,7 +743,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
         .btn-whatsapp:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 35px rgba(0,0,0,0.25); }
-        /* ========== FOOTER ========== */
+        /* Footer */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -834,7 +809,7 @@
             font-size: 0.82rem;
         }
         .footer-legal { font-size: 0.78rem; opacity: 0.7; }
-        /* ========== BOTONES FLOTANTES ========== */
+        /* Botones flotantes */
         .whatsapp-float {
             position: fixed;
             bottom: 28px; right: 28px;
@@ -873,7 +848,7 @@
         }
         .back-to-top.visible { opacity: 1; visibility: visible; }
         .back-to-top:hover { background: var(--naranja); transform: translateY(-3px); }
-        /* ========== RESPONSIVE ========== */
+        /* Responsive */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .nav-toggle { display: flex; }
@@ -918,7 +893,7 @@
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="#hero" class="nav-logo">
-                <div class="nav-logo-icon">L</div>
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor"></div>
                 <div class="nav-logo-text">
                     <div class="main">LYON<span>ASESOR</span></div>
                     <div class="sub">Rugido de Consciencia</div>
@@ -963,7 +938,7 @@
         </div>
     </section>
 
-    <!-- Sección Ebook destacado -->
+    <!-- Ebook -->
     <section class="section ebook" id="ebook">
         <div class="section-inner">
             <div class="ebook-inner">
@@ -1000,7 +975,7 @@
         </div>
     </section>
 
-    <!-- Conferencias (12 temas) -->
+    <!-- Conferencias -->
     <section class="section conferences" id="conferencias">
         <div class="section-inner">
             <div class="section-header reveal"><span class="section-label">Conferencias</span><h2 class="section-title">12 temáticas que transforman</h2><p class="section-desc">Cada conferencia es una experiencia de aprendizaje vivencial. Incluye diploma y ebook de regalo.</p></div>
@@ -1036,44 +1011,4 @@
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
-                <div class="footer-brand"><h3>LYON<span>ASESOR</span></h3><p>Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañando procesos de transformación con ética, calidez y profesionalismo.</p><div class="footer-social"><a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><a href="mailto:lyonasesor@outlook.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a></div></div>
-                <div class="footer-col"><h4>Servicios</h4><ul><li><a href="https://forms.gle/N5bnJD9HJzRwxZWJA" target="_blank">Ebook Gratuito</a></li><li><a href="consulta.html">Proceso Terapéutico</a></li><li><a href="conferencia.html">Conferencias</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li></ul></div>
-                <div class="footer-col"><h4>Contacto</h4><ul><li><a href="mailto:lyonasesor@outlook.com">lyonasesor@outlook.com</a></li><li><a href="https://www.instagram.com/lyonasesor" target="_blank">@lyonasesor</a></li><li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li></ul></div>
-            </div>
-            <div class="footer-bottom"><p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p><p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-176333035-6</p></div>
-        </div>
-    </footer>
-
-    <!-- Botones flotantes -->
-    <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-    <button class="back-to-top" id="backToTop" aria-label="Volver arriba"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
-
-    <script>
-        // Carga
-        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
-        // Nav scroll
-        const nav = document.getElementById('nav');
-        window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 50); });
-        // Menú móvil
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-        navToggle.addEventListener('click', () => { navToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
-        navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); }); });
-        // Reveal
-        const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-        // Contadores
-        const statsObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { const counters = entry.target.querySelectorAll('.stat-number'); counters.forEach(counter => { const target = parseInt(counter.getAttribute('data-target')); const duration = 2000; const step = target / (duration / 16); let current = 0; const timer = setInterval(() => { current += step; if (current >= target) { counter.textContent = target + '+'; clearInterval(timer); } else counter.textContent = Math.floor(current) + '+'; }, 16); }); statsObserver.unobserve(entry.target); } }); }, { threshold: 0.5 });
-        const statsGrid = document.querySelector('.stats-grid'); if (statsGrid) statsObserver.observe(statsGrid);
-        // Botón subir
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => { backToTop.classList.toggle('visible', window.scrollY > 500); });
-        backToTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-        // Partículas
-        const particlesContainer = document.getElementById('particles');
-        if (particlesContainer) { for (let i = 0; i < 15; i++) { const particle = document.createElement('div'); particle.className = 'particle'; particle.style.left = Math.random() * 100 + '%'; particle.style.animationDelay = Math.random() * 8 + 's'; particle.style.animationDuration = (6 + Math.random() * 6) + 's'; particle.style.width = (2 + Math.random() * 4) + 'px'; particle.style.height = particle.style.width; particlesContainer.appendChild(particle); } }
-        // Suave desplazamiento para enlaces internos
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { const targetId = this.getAttribute('href'); if (targetId === '#') return; const target = document.querySelector(targetId); if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); } }); });
-    </script>
-</body>
-</html>
+                <div class="footer-brand"><h3>LYON<span>ASESOR</span></h3><p>Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañando procesos de transformación con ética, calidez y profesionalismo.</p><div class="footer-social"><a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a><a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9
