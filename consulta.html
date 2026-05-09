@@ -506,7 +506,15 @@
             navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); }); });
         }
 
+        // =============================================
+        // CONFIGURACIÓN DE JSONBIN
+        // =============================================
+        const BIN_ID = '69ff5dc1adc21f119a775498';
+        const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
+
+        // =============================================
         // Lógica del formulario
+        // =============================================
         const radiosPaquete = document.querySelectorAll('input[name="paquete"]');
         const metodoRadios = document.querySelectorAll('input[name="metodo"]');
         const btn = document.getElementById('btnEnviar');
@@ -522,22 +530,94 @@
             });
         });
 
-        btn.addEventListener('click', () => {
+        // =============================================
+        // FUNCIÓN PARA GUARDAR CONSULTA EN JSONBIN
+        // =============================================
+        async function guardarConsulta(datos) {
+            try {
+                // 1. Leer los registros actuales
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                
+                // 2. Validar estructura
+                if (!data.record) data.record = {};
+                if (!data.record.registros) data.record.registros = [];
+
+                // 3. Agregar el nuevo registro
+                const nuevoRegistro = {
+                    tipo: 'consulta',
+                    fecha: new Date().toLocaleDateString(),
+                    nombreEmpresa: datos.nombre,
+                    contacto: datos.contacto,
+                    email: datos.email,
+                    telefono: datos.telefono,
+                    detalle: datos.detalle,
+                    monto: datos.monto,
+                    pagado: false,
+                    timestamp: new Date().toISOString()
+                };
+                
+                data.record.registros.push(nuevoRegistro);
+
+                // 4. Guardar todo de vuelta en JSONBin
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(data.record)
+                });
+
+                console.log('✅ Consulta guardada correctamente en JSONBin');
+                return true;
+            } catch (error) {
+                console.error('❌ Error al guardar la consulta:', error);
+                return false;
+            }
+        }
+
+        // =============================================
+        // EVENTO DEL BOTÓN DE ENVIAR
+        // =============================================
+        btn.addEventListener('click', async () => {
             const nombre = document.getElementById('nombre').value.trim();
             const email = document.getElementById('email').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
+            const motivo = document.getElementById('motivo').value.trim();
+            
             let paqueteVal = null;
             for (let r of radiosPaquete) if (r.checked) paqueteVal = r.value;
+            
             let metodo = null;
             for (let m of metodoRadios) if (m.checked) metodo = m.value;
 
+            // Validación de campos obligatorios
             if (!nombre || !email || !telefono || !paqueteVal || !metodo) {
                 alert('Por favor completa todos los campos obligatorios.');
                 return;
             }
 
+            //2. Guardar la consulta en JSONBin
             const paqueteTexto = paqueteVal === '40' ? 'Individual' : (paqueteVal === '100' ? '3 sesiones' : '5 sesiones');
-            // Aquí se guardaría en Firebase (opcional) o solo mostrar pago
+            const datosConsulta = {
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                detalle: motivo || 'Sin motivo',
+                monto: parseInt(paqueteVal),
+                contacto: paqueteTexto
+            };
+
+            const guardado = await guardarConsulta(datosConsulta);
+            if (!guardado) {
+                alert('Hubo un error al registrar tu consulta. Por favor inténtalo de nuevo.');
+                return;
+            }
+
+            // 3. Proceder al método de pago
             if (metodo === 'paypal') {
                 const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor&amount=${paqueteVal}&currency_code=USD`;
                 window.open(paypalLink, '_blank');
@@ -548,6 +628,9 @@
             }
         });
 
+        // =============================================
+        // Cerrar modal de Pago Móvil
+        // =============================================
         function cerrarModalFunc() {
             modal.style.display = 'none';
             alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
