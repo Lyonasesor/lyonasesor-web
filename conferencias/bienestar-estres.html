@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estrategias de Bienestar | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px;
+      width: 100%;
+      background-color: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .slide-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: #cdaa7b;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+    }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #cdaa7b; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #c0c0c0; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #cdaa7b; }
+    .highlight-box {
+      background-color: #222;
+      border-left: 3px solid #cdaa7b;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .chart-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .chart-item {
+      background: #222;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .chart-item .number { font-size: 2.5rem; font-weight: 700; color: #cdaa7b; }
+    .chart-item .label { font-size: 0.85rem; color: #a0a0a0; margin-top: 0.3rem; }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .col-box {
+      background-color: #222;
+      padding: 1.2rem;
+      border-radius: 8px;
+    }
+    .col-box h3 { color: #cdaa7b; margin-bottom: 0.5rem; font-size: 1rem; }
+    .col-box p { font-size: 0.9rem; color: #a0a0a0; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+    .btn {
+      background: transparent;
+      border: 1px solid #cdaa7b;
+      color: #cdaa7b;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #cdaa7b; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #555; font-size: 0.8rem; margin-top: 1rem; }
+    .interactive-box {
+      background-color: #222;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .option-btn {
+      background: transparent;
+      border: 1px solid #555;
+      color: #e0e0e0;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { border-color: #cdaa7b; color: #cdaa7b; }
+    .option-btn.selected { background: #cdaa7b; color: #0f0f0f; border-color: #cdaa7b; }
+    .exercise-box {
+      background: #1a1a1a;
+      border: 1px dashed #cdaa7b;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .exercise-box h3 { color: #cdaa7b; margin-bottom: 0.5rem; }
+    .timer-display { font-size: 3rem; font-weight: 700; color: #cdaa7b; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Estrategias de Bienestar · 1 hora</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Estrategias de Bienestar</h1>
+        <h2>Neurociencia Aplicada al Estrés Laboral</h2>
+        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color: #888; margin-top: 2rem;">Conferencia corporativa · 1 hora de duración</p>
+        <p style="color: #555;">Diploma + Ebook incluidos</p>
+      `,
+      `
+        <h2>La Epidemia Silenciosa</h2>
+        <p>La Organización Mundial de la Salud cataloga el estrés laboral como la "epidemia del siglo XXI".</p>
+        <p>Según la OIT, se pierden 12.000 millones de días de trabajo al año por depresión y ansiedad, costando a la economía global casi 1 billón de dólares.</p>
+        <div class="chart-box">
+          <div class="chart-item"><div class="number">83%</div><div class="label">Trabajadores en EE.UU. sufren estrés laboral (APA)</div></div>
+          <div class="chart-item"><div class="number">50%</div><div class="label">Del absentismo laboral en Europa es por estrés (EU-OSHA)</div></div>
+        </div>
+      `,
+      `
+        <h2>Tu Cerebro Bajo Estrés</h2>
+        <p>El estrés activa el eje Hipotálamo-Hipófisis-Adrenal (HPA), liberando cortisol.</p>
+        <p>En pequeñas dosis, el cortisol nos ayuda a responder a desafíos. El problema es la exposición crónica.</p>
+        <div class="two-col">
+          <div class="col-box">
+            <h3>🔴 Exceso de Cortisol</h3>
+            <p>Reduce el hipocampo (memoria). Hiperactiva la amígdala (miedo). Debilita el sistema inmune. Aumenta el riesgo cardiovascular.</p>
+          </div>
+          <div class="col-box">
+            <h3>🟢 Regulación del Estrés</h3>
+            <p>La corteza prefrontal puede inhibir la amígdala. El nervio vago activa el sistema parasimpático. El cerebro puede aprender a calmarse.</p>
+          </div>
+        </div>
+      `,
+      `
+        <h2>La Respiración: Tu Ancla al Presente</h2>
+        <p>La herramienta más poderosa para regular el sistema nervioso es gratis, portable y siempre está contigo: tu respiración.</p>
+        <p>La técnica 4-7-8, desarrollada por el Dr. Andrew Weil, activa el nervio vago y reduce el cortisol en minutos.</p>
+        <div class="exercise-box">
+          <h3>🧘 Ejercicio Rápido: Respiración 4-7-8</h3>
+          <p>Inhala por la nariz durante <strong>4 segundos</strong>. Sostén el aire <strong>7 segundos</strong>. Exhala por la boca <strong>8 segundos</strong>. Repite 4 veces ante una situación de estrés agudo.</p>
+        </div>
+      `,
+      `
+        <h2>La Ventana de Tolerancia</h2>
+        <p>El Dr. Dan Siegel describe la "ventana de tolerancia": el rango de activación en el que podemos funcionar de manera óptima.</p>
+        <p>Cuando el estrés nos saca de esa ventana, entramos en hiperactivación (ansiedad, reactividad) o hipoactivación (desconexión, agotamiento).</p>
+        <div class="highlight-box">No se trata de eliminar el estrés. Se trata de aprender a volver a tu ventana de tolerancia más rápido cada vez.</div>
+      `,
+      `
+        <h2>Momento de Diagnóstico</h2>
+        <p>Evalúa tu nivel de estrés laboral actual.</p>
+        <div class="interactive-box">
+          <p style="margin-bottom: 1rem;">En la última semana, ¿con qué frecuencia te has sentido abrumado/a en el trabajo?</p>
+          <div class="options" id="q5Options">
+            <button class="option-btn" onclick="selectOption(this, 'q5')">Nunca</button>
+            <button class="option-btn" onclick="selectOption(this, 'q5')">Alguna vez</button>
+            <button class="option-btn" onclick="selectOption(this, 'q5')">Varias veces</button>
+            <button class="option-btn" onclick="selectOption(this, 'q5')">Todos los días</button>
+          </div>
+        </div>
+      `,
+      `
+        <h2>El Líder como Regulador Emocional</h2>
+        <p>Las neuronas espejo hacen que el estado emocional del líder se contagie al equipo.</p>
+        <p>Un líder que gestiona su estrés no solo se protege a sí mismo: protege el bienestar de todo su equipo.</p>
+        <ul>
+          <li>Si llegas estresado, activas la amígdala de tu equipo</li>
+          <li>Si modelas la calma, enseñas a tu equipo a regularse</li>
+          <li>La regulación emocional del líder es la primera estrategia de bienestar organizacional</li>
+        </ul>
+      `,
+      `
+        <h2>Micro-Hábitos de Bienestar</h2>
+        <p>No necesitas un retiro de un mes. Necesitas pequeñas acciones diarias que reprogramen tu sistema nervioso.</p>
+        <ul>
+          <li><strong>Micropausas de 90 segundos:</strong> Cada hora, detente. Cierra los ojos. Respira profundo. Deja que tu sistema nervioso baje la guardia.</li>
+          <li><strong>Desconexión digital al menos 30 min antes de dormir:</strong> La luz azul suprime la melatonina y eleva el cortisol nocturno.</li>
+          <li><strong>Movimiento consciente:</strong> No necesitas un gimnasio. Camina 10 minutos al aire libre sin mirar el teléfono. La naturaleza reduce el cortisol mediblemente.</li>
+        </ul>
+      `,
+      `
+        <h2>El Caso de Aetna</h2>
+        <p>La aseguradora Aetna implementó un programa de mindfulness para sus empleados.</p>
+        <p>Los resultados fueron medibles:</p>
+        <ul>
+          <li>Reducción del 28% en niveles de estrés</li>
+          <li>Mejora del 20% en calidad de sueño</li>
+          <li>Aumento de 62 minutos semanales de productividad por empleado</li>
+        </ul>
+        <p>El bienestar no es un costo. Es la inversión con mayor retorno.</p>
+      `,
+      `
+        <h2>Tu Plan de Bienestar Personal</h2>
+        <p>El estrés no desaparece. Pero puedes cambiar tu relación con él.</p>
+        <p>Las neurociencias demuestran que pequeñas intervenciones diarias pueden reducir el cortisol, aumentar la serotonina y fortalecer la corteza prefrontal.</p>
+        <div class="highlight-box">No se trata de trabajar menos. Se trata de que tu cerebro pueda trabajar sin destruirse en el proceso.</div>
+        <p style="text-align: center; margin-top: 2rem; color: #cdaa7b;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Estrategias de Bienestar · 1 hora`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    function selectOption(btn, questionId) {
+      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>
