@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Código Familiar | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      /* Fondo con textura sutil */
+      background-color: #0f0f0f;
+      background-image: linear-gradient(45deg, #1a1a1a 1%, #0f0f0f 10%, #1a1a1a 20%);
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px;
+      width: 100%;
+      /* Fondo semi-transparente diferente */
+      background-color: rgba(20, 20, 20, 0.95);
+      border: 1px solid #4a3a2a;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+    .slide-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: #c9a87c;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+      background: #2a2018;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #c9a87c; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #c0c0c0; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #c9a87c; }
+    .highlight-box {
+      background-color: #1f1f1f;
+      border-left: 3px solid #c9a87c;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .col-box {
+      background-color: #1f1f1f;
+      padding: 1.2rem;
+      border-radius: 8px;
+    }
+    .col-box h3 { color: #c9a87c; margin-bottom: 0.5rem; font-size: 1rem; }
+    .col-box p { font-size: 0.9rem; color: #a0a0a0; }
+    .pattern-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .pattern-card {
+      background-color: #1f1f1f;
+      padding: 1.2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .pattern-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .pattern-card .name { font-weight: 600; color: #c9a87c; margin-bottom: 0.3rem; }
+    .pattern-card .desc { font-size: 0.8rem; color: #a0a0a0; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+    .btn {
+      background: transparent;
+      border: 1px solid #c9a87c;
+      color: #c9a87c;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #c9a87c; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #555; font-size: 0.8rem; margin-top: 1rem; }
+    .interactive-box {
+      background-color: #1f1f1f;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .option-btn {
+      background: transparent;
+      border: 1px solid #555;
+      color: #e0e0e0;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { border-color: #c9a87c; color: #c9a87c; }
+    .option-btn.selected { background: #c9a87c; color: #0f0f0f; border-color: #c9a87c; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · El Código Familiar · 1 hora</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>El Código Familiar</h1>
+        <h2>Patrones que Construyen o Destruyen</h2>
+        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color: #888; margin-top: 2rem;">Conferencia corporativa · 1 hora de duración</p>
+        <p style="color: #555;">Diploma + Ebook incluidos</p>
+      `,
+      `
+        <h2>El Espejo Más Antiguo</h2>
+        <p>Antes de tener jefe, tuviste padres. Antes de conocer la oficina, conociste la mesa del comedor.</p>
+        <p>La familia es el primer sistema al que pertenecemos. Allí aprendimos, sin saberlo, cómo se ama, cómo se discute, cómo se pide ayuda y cómo se reacciona al estrés.</p>
+        <p>Muchas de las dificultades que enfrentamos hoy en nuestras relaciones adultas —de pareja, de trabajo, con nosotros mismos— son ecos de patrones que se codificaron en la infancia.</p>
+        <div class="highlight-box">No elegimos el código con el que fuimos programados. Pero sí podemos aprender a leerlo. Y, cuando es necesario, reescribirlo.</div>
+      `,
+      `
+        <h2>La Herencia que No Está en los Genes</h2>
+        <p>La ciencia ha demostrado que no solo heredamos el color de ojos. Heredamos formas de reaccionar al estrés, de vincularnos, de manejar el conflicto.</p>
+        <p>El campo de la epigenética, con estudios como los de Michael Meaney (Universidad McGill), muestra que el estrés materno puede modificar la expresión genética de las crías... durante generaciones.</p>
+        <p>No se trata de culpar a nuestros padres. Se trata de entender de dónde venimos para poder decidir hacia dónde vamos.</p>
+        <div class="highlight-box">"La historia de tu familia no tiene por qué ser tu destino." — Murray Bowen</div>
+      `,
+      `
+        <h2>Tu Estilo de Apego</h2>
+        <p>Mary Ainsworth identificó patrones de apego que se forman en la infancia y que actúan como un "manual de instrucciones" oculto para nuestras relaciones adultas.</p>
+        <div class="pattern-box">
+          <div class="pattern-card">
+            <div class="emoji">🔒</div>
+            <div class="name">Apego Seguro</div>
+            <div class="desc">"Confío en los demás y en mí mismo. Puedo estar cerca sin perderme."</div>
+          </div>
+          <div class="pattern-card">
+            <div class="emoji">🚧</div>
+            <div class="name">Apego Ansioso</div>
+            <div class="desc">"Necesito confirmación constante. El silencio me aterra. Temo el abandono."</div>
+          </div>
+          <div class="pattern-card">
+            <div class="emoji">🧱</div>
+            <div class="name">Apego Evitativo</div>
+            <div class="desc">"Prefiero no depender de nadie. La cercanía me agobia. Me basto solo."</div>
+          </div>
+          <div class="pattern-card">
+            <div class="emoji">💔</div>
+            <div class="name">Apego Desorganizado</div>
+            <div class="desc">"Anhelo la conexión, pero también la temo. Mis reacciones son impredecibles."</div>
+          </div>
+        </div>
+      `,
+      `
+        <h2>El Conflicto No es el Problema</h2>
+        <p>En todas las familias hay conflictos. La diferencia no está en la presencia de desacuerdos, sino en cómo se manejan.</p>
+        <p>John Gottman, tras estudiar miles de parejas y familias, encontró que el predictor más confiable de una relación saludable no es la ausencia de conflicto, sino la capacidad de reparación después de una ruptura.</p>
+        <p>Una familia funcional no es la que nunca discute. Es la que sabe pedir disculpas, escuchar el dolor del otro y reconstruir la conexión.</p>
+        <div class="highlight-box">El código se transmite en los silencios, en lo que no se dice, en el portazo que se da o en el abrazo que se niega.</div>
+      `,
+      `
+        <h2>Momento de Diagnóstico Personal</h2>
+        <p>Piensa en tu familia de origen. ¿Cómo se manejaban estas situaciones?</p>
+        <div class="interactive-box">
+          <p style="margin-bottom: 1rem;">Cuando alguien cometía un error en tu casa...</p>
+          <div class="options" id="q9Options">
+            <button class="option-btn" onclick="selectOption(this, 'q9')">Se hablaba y se buscaba solución</button>
+            <button class="option-btn" onclick="selectOption(this, 'q9')">Había gritos o castigos</button>
+            <button class="option-btn" onclick="selectOption(this, 'q9')">Se ignoraba el tema</button>
+            <button class="option-btn" onclick="selectOption(this, 'q9')">Alguien se victimizaba</button>
+          </div>
+        </div>
+      `,
+      `
+        <h2>Romper el Círculo</h2>
+        <p>La buena noticia es que los patrones no son cadenas. La neuroplasticidad nos permite aprender nuevas formas de relacionarnos a cualquier edad.</p>
+        <p>El primer paso es la conciencia: identificar qué patrón repetimos. El segundo, la responsabilidad: dejar de culpar a quien nos lo transmitió y hacernos cargo de cambiarlo. El tercero, la acción: practicar nuevas formas de comunicarnos, de poner límites, de pedir ayuda.</p>
+        <p>Bowen llamó a esto "diferenciación del self": la capacidad de ser uno mismo dentro del sistema familiar, sin fusionarse ni cortar.</p>
+        <div class="highlight-box">No podemos elegir el código con el que nacimos. Pero sí podemos decidir qué partes del código queremos transmitir.</div>
+      `,
+      `
+        <h2>Señales de un Código Familiar Sano</h2>
+        <ul>
+          <li><strong>Las emociones se permiten:</strong> La tristeza no es debilidad. El enfado no es peligro. Cada miembro puede expresar lo que siente sin miedo a represalias.</li>
+          <li><strong>Los errores se reparan, no se castigan:</strong> Cuando alguien falla, se busca entender y reparar, no culpar y sentenciar.</li>
+          <li><strong>Los roles son flexibles:</strong> El fuerte puede ser vulnerable. El débil puede liderar. Nadie está condenado a ser siempre el mismo personaje en la obra familiar.</li>
+          <li><strong>Las disculpas son genuinas:</strong> "Lo siento" significa "reconozco el daño y me comprometo a no repetirlo", no "terminemos esta conversación incómoda".</li>
+        </ul>
+      `,
+      `
+        <h2>Reescribir el Legado</h2>
+        <p>Sanar el código familiar no significa confrontar a nuestros padres ni cortar lazos. Significa hacer las paces con nuestra historia.</p>
+        <p>Es entender que nuestros padres hicieron lo que pudieron con las herramientas que tenían. Y que nosotros podemos hacerlo mejor con las herramientas que estamos adquiriendo.</p>
+        <p>El mejor regalo que podemos dar a las generaciones futuras es un código reescrito desde la conciencia, no desde la repetición automática.</p>
+      `,
+      `
+        <h2>La Familia que Elegimos</h2>
+        <p>Tu equipo de trabajo, tu organización, tu comunidad... son también tu familia.</p>
+        <p>Los mismos patrones que aprendiste en casa se replican en la oficina. La misma necesidad de ser visto, escuchado y valorado.</p>
+        <p>Cuando entiendes el código, puedes empezar a escribir uno nuevo. Uno donde las personas crecen, los conflictos reparan y el legado es de sanación, no de dolor.</p>
+        <div class="highlight-box">No estás atrapado en tu código familiar. Eres el primer autor de su próxima versión.</div>
+        <p style="text-align: center; margin-top: 2rem; color: #c9a87c;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · El Código Familiar · 1 hora`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    function selectOption(btn, questionId) {
+      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>
