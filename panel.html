@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lyon Asesor | Panel de Conferencias</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { max-width: 1000px; width: 100%; }
+    .logo {
+      text-transform: uppercase;
+      letter-spacing: 0.4rem;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #cdaa7b;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+    .subtitle {
+      text-align: center;
+      color: #a0a0a0;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .duration-info {
+      text-align: center;
+      color: #cdaa7b;
+      font-size: 0.85rem;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.05rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+    .card {
+      background-color: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      border-color: #cdaa7b;
+      background-color: #222222;
+      transform: translateY(-4px);
+    }
+    .card-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #cdaa7b;
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      background: transparent;
+      border: 1px solid #cdaa7b;
+      color: #cdaa7b;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { background: #cdaa7b; color: #0f0f0f; }
+    .footer {
+      text-align: center;
+      color: #555;
+      font-size: 0.8rem;
+      margin-top: 3rem;
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+      color: #888;
+      font-size: 0.85rem;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #2ecc71;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">LYON ASESOR · Rugido de Consciencia</div>
+    <h1>Panel de Conferencias</h1>
+    <p class="subtitle">Selecciona la presentación para iniciar</p>
+    <p class="duration-info">Cada conferencia · 1 hora de duración</p>
+
+    <div class="grid" id="conferenceGrid"></div>
+
+    <div class="status">
+      <span class="dot"></span>
+      <span>Sistema listo · Panel privado · 12 conferencias disponibles</span>
+    </div>
+    <div class="footer">
+      © 2025 · Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.
+    </div>
+  </div>
+
+  <script>
+    const conferences = [
+      { id: 1, title: "NeuroLiderazgo", subtitle: "El Cerebro que Inspira Equipos", file: "conferencias/neuro-liderazgo.html" },
+      { id: 2, title: "Autoestima Corporativa", subtitle: "El Pilar del Éxito Sostenible", file: "conferencias/autoestima-corporativa.html" },
+      { id: 3, title: "Comunicación Consciente", subtitle: "Del Conflicto a la Conexión", file: "conferencias/comunicacion-consciente.html" },
+      { id: 4, title: "Liderazgo con Alma", subtitle: "Gestión de Equipos desde el Factor Humano", file: "conferencias/liderazgo-alma.html" },
+      { id: 5, title: "Estrategias de Bienestar", subtitle: "Neurociencia Aplicada al Estrés Laboral", file: "conferencias/bienestar-estres.html" },
+      { id: 6, title: "Reconfigura tu Mente", subtitle: "Neuroplasticidad para el Cambio Personal", file: "conferencias/reconfigura-mente.html" },
+      { id: 7, title: "Neuroeducación", subtitle: "Cómo el Cerebro Aprende y Transforma", file: "conferencias/neuroeducacion.html" },
+      { id: 8, title: "Vínculos que Sanan", subtitle: "Neurobiología de las Relaciones Saludables", file: "conferencias/vinculos-que-sanan.html" },
+      { id: 9, title: "El Código Familiar", subtitle: "Patrones que Construyen o Destruyen", file: "conferencias/codigo-familiar.html" },
+      { id: 10, title: "Resiliencia Organizacional", subtitle: "Equipos que se Adaptan y Crecen", file: "conferencias/resiliencia-organizacional.html" },
+      { id: 11, title: "Propósito y Legado", subtitle: "Neurociencia del Sentido de Vida", file: "conferencias/proposito-legado.html" },
+      { id: 12, title: "Integración y Cierre", subtitle: "Consolidando el Nuevo Paradigma", file: "conferencias/integracion-cierre.html" }
+    ];
+
+    const grid = document.getElementById('conferenceGrid');
+    conferences.forEach(conf => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div>
+          <div class="card-number">${String(conf.id).padStart(2, '0')}</div>
+          <div class="card-title">${conf.title}</div>
+          <div class="card-desc">${conf.subtitle} · 1 hora</div>
+        </div>
+        <a href="${conf.file}" class="btn" target="_blank">Iniciar Presentación</a>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
