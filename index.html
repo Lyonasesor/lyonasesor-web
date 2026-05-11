@@ -422,7 +422,7 @@
         }
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas en escritorio */
             gap: 28px;
         }
         .service-card {
@@ -852,6 +852,7 @@
             .ebook-inner { grid-template-columns: 1fr; text-align: center; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .hero-actions .btn { width: 100%; max-width: 300px; justify-content: center; }
+            .services-grid, .conf-grid { grid-template-columns: 1fr; } /* Una columna en móviles */
         }
         @media (max-width: 480px) {
             .services-grid, .conf-grid { grid-template-columns: 1fr; }
