@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarga tu Ebook · Lyon Asesor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --naranja-oscuro: #c95a10;
+            --navy: #1A2330;
+            --navy-light: #243042;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --text-light: #8899A6;
+            --shadow-sm: 0 2px 8px rgba(26,35,48,0.08);
+            --shadow-md: 0 4px 20px rgba(26,35,48,0.12);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s ease;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+            padding: 2rem 1.5rem;
+        }
+        .form-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        .form-card h1 { font-family: 'Playfair Display', serif; color: var(--navy); margin-bottom: 0.5rem; }
+        .sub { color: var(--text-muted); margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        label { display: block; margin: 1rem 0 0.3rem; font-weight: 600; }
+        input, select { width: 100%; padding: 0.8rem; border-radius: var(--radius-sm); border: 1px solid #ddd; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-orange); }
+        .requerido { color: #d9534f; }
+        .has-error input, .has-error select { border-color: #d9534f; }
+        .field-error { color: #d9534f; font-size: 0.8rem; display: none; }
+        .checkbox-label { display: flex; align-items: center; gap: 10px; font-weight: normal; margin: 1rem 0; }
+        .checkbox-label input { width: auto; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h1>📘 Descarga tu Ebook</h1>
+        <div class="sub">Completa los datos para recibir el enlace de descarga de manera inmediata.</div>
+        <form id="ebookForm">
+            <div class="field" id="field-nombre">
+                <label>Nombre completo <span class="requerido">*</span></label>
+                <input type="text" id="nombre" required>
+                <span class="field-error">Este campo es requerido.</span>
+            </div>
+            <div class="field" id="field-email">
+                <label>Correo electrónico <span class="requerido">*</span></label>
+                <input type="email" id="email" required>
+                <span class="field-error">Ingresa un correo válido.</span>
+            </div>
+            <div class="field" id="field-whatsapp">
+                <label>WhatsApp <span class="requerido">*</span></label>
+                <input type="tel" id="whatsapp" required>
+                <span class="field-error">Este campo es requerido.</span>
+            </div>
+
+            <div class="field">
+                <label>¿Qué tan seguido sientes que tus esfuerzos no se traducen en resultados? (1-5)</label>
+                <select id="likert">
+                    <option value="">Selecciona...</option>
+                    <option value="1">1 - Nunca</option>
+                    <option value="2">2 - Raramente</option>
+                    <option value="3">3 - A veces</option>
+                    <option value="4">4 - Con frecuencia</option>
+                    <option value="5">5 - Siempre</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Si tu trabajo/proyecto fuera una casa, ¿qué necesita reparación urgente?</label>
+                <select id="casa">
+                    <option value="">Selecciona...</option>
+                    <option value="cimientos">Los cimientos</option>
+                    <option value="paredes">Las paredes</option>
+                    <option value="techo">El techo</option>
+                    <option value="no_seguro">No estoy seguro/a</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>¿Cuál de estas frases te describe mejor?</label>
+                <select id="frase">
+                    <option value="">Selecciona...</option>
+                    <option value="a">"Me falta tiempo, siempre improviso"</option>
+                    <option value="b">"Sé que debo cambiar, pero me da miedo"</option>
+                    <option value="c">"Veo que otros avanzan mientras yo me estanco"</option>
+                    <option value="d">"Tengo ideas, pero no sé cómo ejecutarlas"</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Si en 6 meses resolverás tu problema, ¿qué emoción predominaría?</label>
+                <select id="emocion">
+                    <option value="">Selecciona...</option>
+                    <option value="alivio">Alivio</option>
+                    <option value="orgullo">Orgullo</option>
+                    <option value="libertad">Libertad</option>
+                    <option value="seguridad">Seguridad</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>¿Cuánto invertirías para resolver tu desafío en 30 días?</label>
+                <select id="inversion">
+                    <option value="">Selecciona...</option>
+                    <option value="<50">Menos de 50 USD</option>
+                    <option value="50-200">Entre 50 y 200 USD</option>
+                    <option value="200-600">Entre 200 y 600 USD</option>
+                    <option value=">600">Más de 600 USD</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Tu mayor desafío ahora mismo</label>
+                <select id="desafio">
+                    <option value="">Selecciona...</option>
+                    <option value="emociones">Manejo de emociones</option>
+                    <option value="autoestima">Autoestima</option>
+                    <option value="relaciones">Relaciones</option>
+                    <option value="liderazgo">Liderazgo</option>
+                    <option value="estres">Estrés laboral</option>
+                    <option value="otros">Otros</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>¿Eres?</label>
+                <select id="perfil">
+                    <option value="">Selecciona...</option>
+                    <option value="estudiante">Estudiante</option>
+                    <option value="profesional">Profesional</option>
+                    <option value="docente">Docente</option>
+                    <option value="emprendedor">Emprendedor</option>
+                    <option value="terapeuta">Terapeuta</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Ciudad / País</label>
+                <input type="text" id="ciudad">
+            </div>
+
+            <div class="checkbox-label">
+                <input type="checkbox" id="validacion" required>
+                <label for="validacion">✅ Confirmo que la información suministrada es verdadera y autorizo el procesamiento de mis datos.</label>
+            </div>
+
+            <div id="error-banner" style="color: #d9534f; display: none; margin-bottom:10px;">Por favor, completa todos los campos requeridos y acepta los términos.</div>
+
+            <button type="submit" class="btn-primary">📥 Descargar Ebook</button>
+        </form>
+    </div>
+
+    <script>
+        const BIN_ID = '69ff5dc1adc21f119a775498';
+        const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
+
+        document.getElementById('ebookForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            let valid = true;
+            document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+            document.querySelectorAll('.field-error').forEach(el => el.style.display = 'none');
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const validacion = document.getElementById('validacion').checked;
+
+            if (!nombre) { document.getElementById('field-nombre').classList.add('has-error'); document.getElementById('field-nombre').querySelector('.field-error').style.display = 'block'; valid = false; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('field-email').classList.add('has-error'); document.getElementById('field-email').querySelector('.field-error').style.display = 'block'; valid = false; }
+            if (!whatsapp) { document.getElementById('field-whatsapp').classList.add('has-error'); document.getElementById('field-whatsapp').querySelector('.field-error').style.display = 'block'; valid = false; }
+            if (!validacion) { valid = false; }
+
+            if (!valid) {
+                document.getElementById('error-banner').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('error-banner').style.display = 'none';
+
+            // Recoger respuestas
+            const respuestas = {
+                likert: document.getElementById('likert').value || '',
+                casa: document.getElementById('casa').value || '',
+                frase: document.getElementById('frase').value || '',
+                emocion: document.getElementById('emocion').value || '',
+                inversion: document.getElementById('inversion').value || '',
+                desafio: document.getElementById('desafio').value || '',
+                perfil: document.getElementById('perfil').value || '',
+                ciudad: document.getElementById('ciudad').value.trim() || ''
+            };
+
+            try {
+                // 1. Leer registros actuales
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+                const data = await res.json();
+                if (!data.record) data.record = {};
+                if (!data.record.registros) data.record.registros = [];
+
+                // 2. Crear el registro del ebook
+                const nuevoRegistro = {
+                    tipo: 'ebook-lead',
+                    timestamp: new Date().toISOString(),
+                    nombreEmpresa: nombre,
+                    email: email,
+                    telefono: whatsapp,
+                    detalle: `Likert: ${respuestas.likert} | Casa: ${respuestas.casa} | Frase: ${respuestas.frase} | Emoción: ${respuestas.emocion} | Inversión: ${respuestas.inversion} | Desafío: ${respuestas.desafio} | Perfil: ${respuestas.perfil}`,
+                    monto: 0,
+                    pagado: false,
+                    respuestasCompletas: respuestas
+                };
+
+                data.record.registros.push(nuevoRegistro);
+
+                // 3. Guardar en JSONBin
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(data.record)
+                });
+
+                // 4. Redirigir al enlace de Google Drive
+                window.location.href = 'https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu';
+
+            } catch (error) {
+                console.error('Error al guardar:', error);
+                alert('Hubo un problema al procesar tu solicitud. Por favor, intenta de nuevo más tarde.');
+            }
+        });
+    </script>
+</body>
+</html>
