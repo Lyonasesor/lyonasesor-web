@@ -124,6 +124,8 @@
                 <option value="todos">Todos</option>
                 <option value="consulta">Consultas</option>
                 <option value="conferencia">Conferencias</option>
+                <option value="ebook-lead">Descargas de Ebook</option>
+                <option value="diagnostico">Brújula Emocional</option>
             </select>
         </div>
         <div style="overflow-x: auto;">
@@ -255,31 +257,52 @@
             let nombreEmpresa = item.nombreEmpresa || item.nombre || '';
             let contacto = item.contacto || item.paquete || '';
             let detalle = item.detalle || item.motivo || '';
+            let email = item.email || '-';
+            let telefono = item.telefono || '-';
+            let monto = item.monto || 0;
+            let pagado = item.pagado || false;
+
             if (item.tipo === 'conferencia') {
                 nombreEmpresa = item.nombreEmpresa || item.empresa || '';
                 contacto = item.contacto || '';
                 detalle = item.detalle || `Tema: ${item.tema || ''} | Participantes: ${item.participantes || ''}`;
+            } else if (item.tipo === 'ebook-lead') {
+                // El nombre ya se guarda en nombreEmpresa, el email y telefono se guardan en sus campos.
+                // El detalle se guardó en item.detalle las respuestas del formulario.
+                contacto = 'Lead';
+                monto = 0;
+                pagado = false;
+            } else if (item.tipo === 'diagnostico') {
+                nombreEmpresa = item.nombreEmpresa;
+                email = item.email;
+                contacto = 'Autodiagnóstico';
+                detalle = item.detalle; // Ejemplo: "Perfil: Brújula Orientada | Puntaje: 20% | Nivel: 1"
+                monto = 0;
+                pagado = false;
             }
 
             const fecha = item.fecha || (item.timestamp ? new Date(item.timestamp).toLocaleDateString() : '-');
-            const pagado = item.pagado || false;
-            const monto = item.monto || 0;
 
             return `<tr>
-                <td>${item.tipo === 'consulta' ? '📋 Consulta' : '🎤 Conferencia'}</td>
+                <td>${item.tipo === 'consulta' ? '📋 Consulta' : 
+                        item.tipo === 'conferencia' ? '🎤 Conferencia' : 
+                        item.tipo === 'ebook-lead' ? '📘 Ebook' : 
+                        item.tipo === 'diagnostico' ? '🧭 Brújula' : item.tipo}</td>
                 <td>${fecha}</td>
                 <td>${nombreEmpresa}</td>
                 <td>${contacto}</td>
-                <td>${item.email || '-'}</td>
-                <td>${item.telefono || '-'}</td>
+                <td>${email}</td>
+                <td>${telefono}</td>
                 <td>${detalle}</td>
                 <td>$${monto}</td>
                 <td class="${pagado ? 'pagado-true' : 'pagado-false'}">${pagado ? 'Sí' : 'No'}</td>
-                <td><button class="btn-pagar" data-index="${index}" data-pagado="${pagado}">${pagado ? 'Desmarcar' : 'Marcar pagado'}</button></td>
+                <td>${item.tipo === 'consulta' || item.tipo === 'conferencia' ? 
+                    `<button class="btn-pagar" data-index="${index}" data-pagado="${pagado}">${pagado ? 'Desmarcar' : 'Marcar pagado'}</button>` : 
+                    `<span style="color:#aaa; font-size:0.8rem;">—</span>`}</td>
             </tr>`;
         }).join('');
 
-        // Agregar eventos a los botones de pagar
+        // Agregar eventos a los botones de pagar (solo para consultas y conferencias)
         document.querySelectorAll('.btn-pagar').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const index = parseInt(this.getAttribute('data-index'));
@@ -351,7 +374,10 @@
         let csv = 'Tipo,Fecha,Nombre/Empresa,Contacto,Email,Teléfono,Detalle,Monto,Pagado\n';
         registros.forEach(item => {
             const row = [
-                item.tipo === 'consulta' ? 'Consulta' : 'Conferencia',
+                item.tipo === 'consulta' ? 'Consulta' : 
+                item.tipo === 'conferencia' ? 'Conferencia' : 
+                item.tipo === 'ebook-lead' ? 'Ebook' : 
+                item.tipo === 'diagnostico' ? 'Brújula' : item.tipo,
                 item.fecha || new Date(item.timestamp).toLocaleDateString(),
                 item.nombreEmpresa || item.nombre || '',
                 item.contacto || item.paquete || '',
