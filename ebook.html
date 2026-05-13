@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descarga tu Ebook · Lyon Asesor</title>
+    <title>Descarga Gratis · ESTE DÍA ES TUYO · Lyon Asesor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ========== RESET Y VARIABLES (Mismo estilo que el index) ========== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -30,205 +31,317 @@
             --transition-fast: 0.2s ease;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-dark);
             background: var(--blanco-calido);
             line-height: 1.7;
-            padding: 2rem 1.5rem;
+            overflow-x: hidden;
         }
-        .form-card {
-            max-width: 700px;
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(232,107,24,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(26,35,48,0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(232,107,24,0.02) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ========== LAYOUT PRINCIPAL ========== */
+        .page-wrapper {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== HERO (CABECERA) ========== */
+        .hero-ebook {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 80px;
             background: #fff;
             border-radius: var(--radius);
-            padding: 2.5rem;
+            padding: 3rem;
             box-shadow: var(--shadow-md);
         }
-        .form-card h1 { font-family: 'Playfair Display', serif; color: var(--navy); margin-bottom: 0.5rem; }
-        .sub { color: var(--text-muted); margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-        label { display: block; margin: 1rem 0 0.3rem; font-weight: 600; }
-        input, select { width: 100%; padding: 0.8rem; border-radius: var(--radius-sm); border: 1px solid #ddd; }
+        .hero-text { flex: 1; }
+        .hero-text h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+        .hero-text h1 span { color: var(--naranja); }
+        .hero-text .sub {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        .hero-text .description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
         .btn-primary {
+            display: inline-block;
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
             color: #fff;
-            border: none;
-            padding: 0.9rem;
+            padding: 16px 36px;
             border-radius: 50px;
             font-weight: 600;
-            width: 100%;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            border: none;
             cursor: pointer;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
+
+        .hero-cover { flex: 0 0 300px; text-align: center; }
+        .hero-cover img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            transform: rotateY(-5deg) rotateX(2deg);
+            transition: var(--transition);
+        }
+        .hero-cover img:hover { transform: rotateY(0deg) scale(1.02); }
+
+        /* ========== SECCIÓN DE PROBLEMA (DOLOR) ========== */
+        .section-block {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .section-block h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        .section-block h2 span { color: var(--naranja); }
+        .section-block p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 1.5rem 0;
+        }
+        .problem-item {
+            background: var(--crema);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border-left: 4px solid var(--naranja);
+        }
+        .problem-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
+        .problem-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        /* ========== MÓDULOS ========== */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin-top: 1.5rem;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-orange); }
-        .requerido { color: #d9534f; }
-        .has-error input, .has-error select { border-color: #d9534f; }
-        .field-error { color: #d9534f; font-size: 0.8rem; display: none; }
-        .checkbox-label { display: flex; align-items: center; gap: 10px; font-weight: normal; margin: 1rem 0; }
-        .checkbox-label input { width: auto; }
+        .module-card {
+            background: var(--blanco-calido);
+            border: 1px solid rgba(26,35,48,0.06);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        .module-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+        .module-card .module-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--naranja);
+            margin-bottom: 0.3rem;
+        }
+        .module-card h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.2rem; }
+        .module-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* ========== AUTOR ========== */
+        .author-grid {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .author-img { flex: 0 0 150px; }
+        .author-img img {
+            width: 100%;
+            border-radius: 50%;
+            border: 4px solid var(--naranja-luz);
+        }
+        .author-info { flex: 1; }
+        .author-info h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 0.3rem; }
+        .author-info p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
+
+        /* ========== CTA FORMULARIO ========== */
+        #formSection {
+            background: var(--navy);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        #formSection h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        #formSection h2 span { color: var(--naranja); }
+        #formSection p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        .form-container .btn-primary { width: 100%; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero-ebook { flex-direction: column-reverse; text-align: center; padding: 2rem; }
+            .hero-cover { flex: 0 0 auto; width: 200px; }
+            .author-grid { flex-direction: column; text-align: center; }
+            .author-img { flex: 0 0 auto; width: 120px; }
+        }
     </style>
 </head>
 <body>
-    <div class="form-card">
-        <h1>📘 Descarga tu Ebook</h1>
-        <div class="sub">Completa los datos para recibir el enlace de descarga de manera inmediata.</div>
-        <form id="ebookForm">
-            <div class="field" id="field-nombre">
-                <label>Nombre completo <span class="requerido">*</span></label>
-                <input type="text" id="nombre" required>
-                <span class="field-error">Este campo es requerido.</span>
-            </div>
-            <div class="field" id="field-email">
-                <label>Correo electrónico <span class="requerido">*</span></label>
-                <input type="email" id="email" required>
-                <span class="field-error">Ingresa un correo válido.</span>
-            </div>
-            <div class="field" id="field-whatsapp">
-                <label>WhatsApp <span class="requerido">*</span></label>
-                <input type="tel" id="whatsapp" required>
-                <span class="field-error">Este campo es requerido.</span>
-            </div>
 
-            <div class="field">
-                <label>¿Qué tan seguido sientes que tus esfuerzos no se traducen en resultados? (1-5)</label>
-                <select id="likert">
-                    <option value="">Selecciona...</option>
-                    <option value="1">1 - Nunca</option>
-                    <option value="2">2 - Raramente</option>
-                    <option value="3">3 - A veces</option>
-                    <option value="4">4 - Con frecuencia</option>
-                    <option value="5">5 - Siempre</option>
-                </select>
+    <!-- ========== CONTENEDOR PRINCIPAL ========== -->
+    <div class="page-wrapper">
+
+        <!-- HERO SECTION -->
+        <div class="hero-ebook">
+            <div class="hero-text">
+                <h1>Este Día <span>Es Tuyo</span></h1>
+                <div class="sub">Programa Completo de Autogestión Emocional y Desarrollo Personal</div>
+                <p class="description">
+                    Las emociones no son tus enemigas. Son mensajeras. Aprender a escucharlas, entenderlas y gestionarlas es el acto más valiente que puedes hacer por ti mismo.
+                </p>
+                <a href="#formSection" class="btn-primary">📥 Descargar mi Ebook Gratis</a>
             </div>
-
-            <div class="field">
-                <label>Si tu trabajo/proyecto fuera una casa, ¿qué necesita reparación urgente?</label>
-                <select id="casa">
-                    <option value="">Selecciona...</option>
-                    <option value="cimientos">Los cimientos</option>
-                    <option value="paredes">Las paredes</option>
-                    <option value="techo">El techo</option>
-                    <option value="no_seguro">No estoy seguro/a</option>
-                </select>
+            <div class="hero-cover">
+                <!-- Usando la portada del PDF como imagen de portada -->
+                <img src="https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu" alt="Portada Este Día Es Tuyo">
             </div>
+        </div>
 
-            <div class="field">
-                <label>¿Cuál de estas frases te describe mejor?</label>
-                <select id="frase">
-                    <option value="">Selecciona...</option>
-                    <option value="a">"Me falta tiempo, siempre improviso"</option>
-                    <option value="b">"Sé que debo cambiar, pero me da miedo"</option>
-                    <option value="c">"Veo que otros avanzan mientras yo me estanco"</option>
-                    <option value="d">"Tengo ideas, pero no sé cómo ejecutarlas"</option>
-                </select>
+        <!-- SECCIÓN DE PROBLEMA -->
+        <div class="section-block">
+            <h2>¿Para quién es este <span>programa?</span></h2>
+            <p>Si sientes que tus esfuerzos no se traducen en resultados, que el estrés te gana la batalla o que tu diálogo interno se ha vuelto un crítico implacable, este material es para ti.</p>
+            <div class="problem-grid">
+                <div class="problem-item"><h3>📉 Desgaste emocional</h3><p>Cuando el cansancio no se va aunque duermas.</p></div>
+                <div class="problem-item"><h3>🧠 Diálogo interno hostil</h3><p>Esa voz que te juzga y te paraliza constantemente.</p></div>
+                <div class="problem-item"><h3>💥 Reacciones impulsivas</h3><p>Cuando una emoción negativa toma el control sin avisar.</p></div>
+                <div class="problem-item"><h3>🔒 Falta de dirección</h3><p>Necesitas un mapa claro para salir del piloto automático.</p></div>
             </div>
+        </div>
 
-            <div class="field">
-                <label>Si en 6 meses resolverás tu problema, ¿qué emoción predominaría?</label>
-                <select id="emocion">
-                    <option value="">Selecciona...</option>
-                    <option value="alivio">Alivio</option>
-                    <option value="orgullo">Orgullo</option>
-                    <option value="libertad">Libertad</option>
-                    <option value="seguridad">Seguridad</option>
-                </select>
+        <!-- SECCIÓN DE MÓDULOS -->
+        <div class="section-block">
+            <h2>Lo que <span>encontrarás</span> dentro</h2>
+            <p>Un programa estructurado en 9 módulos que te guiarán desde el autoconocimiento hasta la gestión plena de tu mundo interior.</p>
+            <div class="modules-grid">
+                <div class="module-card"><div class="module-number">01</div><h3>Introducción a la Autogestión Emocional</h3><p>Entiende qué son las emociones y por qué gestionarlas es la clave de tu bienestar.</p></div>
+                <div class="module-card"><div class="module-number">02</div><h3>Conociendo tus Emociones</h3><p>Identifica las emociones básicas y aprende a descifrar sus mensajes.</p></div>
+                <div class="module-card"><div class="module-number">03</div><h3>Claves de Gestión Emocional</h3><p>Respiración consciente, meditación y mindfulness como herramientas diarias.</p></div>
+                <div class="module-card"><div class="module-number">04</div><h3>Habilidades & Autogestión</h3><p>Desarrolla asertividad y empatía para relacionarte mejor con el mundo.</p></div>
+                <div class="module-card"><div class="module-number">05</div><h3>Desarrollo de Resiliencia</h3><p>Capacidad para enfrentar, superar y aprender de las adversidades.</p></div>
+                <div class="module-card"><div class="module-number">06</div><h3>Aprendamos a ser Optimistas</h3><p>Sal del pensamiento catastrófico y cultiva una actitud positiva realista.</p></div>
+                <div class="module-card"><div class="module-number">07</div><h3>Gestión del Estrés</h3><p>Técnicas efectivas para manejar la presión y recuperar tu calma.</p></div>
+                <div class="module-card"><div class="module-number">08</div><h3>Planificación Personal</h3><p>Establece metas y prioridades alineadas con tu verdadera esencia.</p></div>
+                <div class="module-card"><div class="module-number">09</div><h3>Mantenimiento de la Autogestión</h3><p>Hábitos y estrategias para que tu equilibrio sea permanente.</p></div>
             </div>
+        </div>
 
-            <div class="field">
-                <label>¿Cuánto invertirías para resolver tu desafío en 30 días?</label>
-                <select id="inversion">
-                    <option value="">Selecciona...</option>
-                    <option value="<50">Menos de 50 USD</option>
-                    <option value="50-200">Entre 50 y 200 USD</option>
-                    <option value="200-600">Entre 200 y 600 USD</option>
-                    <option value=">600">Más de 600 USD</option>
-                </select>
+        <!-- SECCIÓN AUTOR -->
+        <div class="section-block">
+            <h2>Conoce al <span>autor</span></h2>
+            <div class="author-grid">
+                <div class="author-img">
+                    <img src="https://drive.google.com/uc?export=download&id=1R-4QpJ2BcG7sG4n7V-lTzoNqT8g5xqRx" alt="Prof. Mtr. Alvaro Lyon">
+                </div>
+                <div class="author-info">
+                    <h3>Prof. Mtr. Alvaro Lyon Abreu</h3>
+                    <p>
+                        Psicoterapeuta · Master Internacional · Director de Lyon Asesor, f.p.
+                        Desarrollar el punto direccional único en la vida ha sido su sendero.
+                        En este ebook comparte las herramientas prácticas de autogestión emocional que ha usado con cientos de personas, tanto en consulta como en espacios académicos. 
+                        Escribe desde la experiencia real, no desde la teoría vacía.
+                    </p>
+                </div>
             </div>
+        </div>
 
-            <div class="field">
-                <label>Tu mayor desafío ahora mismo</label>
-                <select id="desafio">
-                    <option value="">Selecciona...</option>
-                    <option value="emociones">Manejo de emociones</option>
-                    <option value="autoestima">Autoestima</option>
-                    <option value="relaciones">Relaciones</option>
-                    <option value="liderazgo">Liderazgo</option>
-                    <option value="estres">Estrés laboral</option>
-                    <option value="otros">Otros</option>
-                </select>
-            </div>
+        <!-- SECCIÓN CTA Y FORMULARIO -->
+        <div id="formSection">
+            <h2>Comienza hoy. Es <span>gratuito.</span> Es <span>tuyo.</span></h2>
+            <p>Completa tus datos y te enviaremos el programa completo. Tu información está segura y no será compartida.</p>
+            <form id="ebookForm" class="form-container">
+                <input type="text" id="nombre" placeholder="Tu nombre completo" required>
+                <input type="email" id="email" placeholder="Tu correo electrónico" required>
+                <input type="tel" id="whatsapp" placeholder="Tu WhatsApp (opcional)">
+                <!-- Puedes agregar más campos si los necesitas, pero los esenciales son estos -->
+                <button type="submit" class="btn-primary">📥 Recibir mi Ebook</button>
+                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Al registrarte, aceptas nuestra política de confidencialidad.</p>
+            </form>
+        </div>
 
-            <div class="field">
-                <label>¿Eres?</label>
-                <select id="perfil">
-                    <option value="">Selecciona...</option>
-                    <option value="estudiante">Estudiante</option>
-                    <option value="profesional">Profesional</option>
-                    <option value="docente">Docente</option>
-                    <option value="emprendedor">Emprendedor</option>
-                    <option value="terapeuta">Terapeuta</option>
-                    <option value="otro">Otro</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label>Ciudad / País</label>
-                <input type="text" id="ciudad">
-            </div>
-
-            <div class="checkbox-label">
-                <input type="checkbox" id="validacion" required>
-                <label for="validacion">✅ Confirmo que la información suministrada es verdadera y autorizo el procesamiento de mis datos.</label>
-            </div>
-
-            <div id="error-banner" style="color: #d9534f; display: none; margin-bottom:10px;">Por favor, completa todos los campos requeridos y acepta los términos.</div>
-
-            <button type="submit" class="btn-primary">📥 Descargar Ebook</button>
-        </form>
     </div>
 
     <script>
+        // =============================================
+        // CONFIGURACIÓN DE JSONBIN (MISMA QUE YA TIENES)
+        // =============================================
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
 
         document.getElementById('ebookForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            let valid = true;
-            document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
-            document.querySelectorAll('.field-error').forEach(el => el.style.display = 'none');
 
             const nombre = document.getElementById('nombre').value.trim();
             const email = document.getElementById('email').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
-            const validacion = document.getElementById('validacion').checked;
 
-            if (!nombre) { document.getElementById('field-nombre').classList.add('has-error'); document.getElementById('field-nombre').querySelector('.field-error').style.display = 'block'; valid = false; }
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('field-email').classList.add('has-error'); document.getElementById('field-email').querySelector('.field-error').style.display = 'block'; valid = false; }
-            if (!whatsapp) { document.getElementById('field-whatsapp').classList.add('has-error'); document.getElementById('field-whatsapp').querySelector('.field-error').style.display = 'block'; valid = false; }
-            if (!validacion) { valid = false; }
-
-            if (!valid) {
-                document.getElementById('error-banner').style.display = 'block';
+            if (!nombre || !email) {
+                alert('Por favor, completa tu nombre y correo electrónico.');
                 return;
             }
 
-            document.getElementById('error-banner').style.display = 'none';
-
-            // Recoger respuestas
-            const respuestas = {
-                likert: document.getElementById('likert').value || '',
-                casa: document.getElementById('casa').value || '',
-                frase: document.getElementById('frase').value || '',
-                emocion: document.getElementById('emocion').value || '',
-                inversion: document.getElementById('inversion').value || '',
-                desafio: document.getElementById('desafio').value || '',
-                perfil: document.getElementById('perfil').value || '',
-                ciudad: document.getElementById('ciudad').value.trim() || ''
-            };
-
             try {
                 // 1. Leer registros actuales
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
                 const data = await res.json();
                 if (!data.record) data.record = {};
                 if (!data.record.registros) data.record.registros = [];
@@ -239,11 +352,10 @@
                     timestamp: new Date().toISOString(),
                     nombreEmpresa: nombre,
                     email: email,
-                    telefono: whatsapp,
-                    detalle: `Likert: ${respuestas.likert} | Casa: ${respuestas.casa} | Frase: ${respuestas.frase} | Emoción: ${respuestas.emocion} | Inversión: ${respuestas.inversion} | Desafío: ${respuestas.desafio} | Perfil: ${respuestas.perfil}`,
+                    telefono: whatsapp || '',
+                    detalle: 'Descarga del ebook "Este Día Es Tuyo"',
                     monto: 0,
-                    pagado: false,
-                    respuestasCompletas: respuestas
+                    pagado: false
                 };
 
                 data.record.registros.push(nuevoRegistro);
@@ -262,8 +374,8 @@
                 window.location.href = 'https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu';
 
             } catch (error) {
-                console.error('Error al guardar:', error);
-                alert('Hubo un problema al procesar tu solicitud. Por favor, intenta de nuevo más tarde.');
+                console.error('Error al guardar el lead:', error);
+                alert('Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo o descarga directamente desde el enlace.');
             }
         });
     </script>
