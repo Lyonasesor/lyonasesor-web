@@ -178,21 +178,34 @@
         .module-card p { font-size: 0.85rem; color: var(--text-muted); }
 
         /* ========== AUTOR ========== */
-        .author-grid {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            flex-wrap: wrap;
+        .author-section {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            border: 1px solid rgba(26,35,48,0.06);
+            text-align: center;
         }
-        .author-img { flex: 0 0 150px; }
-        .author-img img {
-            width: 100%;
-            border-radius: 50%;
-            border: 4px solid var(--naranja-luz);
+        .author-section h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
         }
-        .author-info { flex: 1; }
-        .author-info h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 0.3rem; }
-        .author-info p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
+        .author-section h2 span { color: var(--naranja); }
+        .author-section h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+        .author-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
 
         /* ========== CTA FORMULARIO ========== */
         #formSection {
@@ -228,8 +241,6 @@
         @media (max-width: 768px) {
             .hero-ebook { flex-direction: column-reverse; text-align: center; padding: 2rem; }
             .hero-cover { flex: 0 0 auto; width: 200px; }
-            .author-grid { flex-direction: column; text-align: center; }
-            .author-img { flex: 0 0 auto; width: 120px; }
         }
     </style>
 </head>
@@ -283,22 +294,15 @@
         </div>
 
         <!-- SECCIÓN AUTOR -->
-        <div class="section-block">
+        <div class="author-section">
             <h2>Conoce al <span>autor</span></h2>
-            <div class="author-grid">
-                <div class="author-img">
-                    <img src="FotoAutor.png" alt="Prof. Mtr. Alvaro Lyon">
-                </div>
-                <div class="author-info">
-                    <h3>Prof. Mtr. Alvaro Lyon Abreu</h3>
-                    <p>
-                        Psicoterapeuta · Master Internacional · Director de Lyon Asesor, f.p.
-                        Desarrollar el punto direccional único en la vida ha sido su sendero.
-                        En este ebook comparte las herramientas prácticas de autogestión emocional que ha usado con cientos de personas, tanto en consulta como en espacios académicos. 
-                        Escribe desde la experiencia real, no desde la teoría vacía.
-                    </p>
-                </div>
-            </div>
+            <h3>Prof. Mtr. Alvaro Lyon Abreu</h3>
+            <p>
+                Psicoterapeuta · Master Internacional · Director de Lyon Asesor, f.p.
+                Desarrollar el punto direccional único en la vida ha sido su sendero.
+                En este ebook comparte las herramientas prácticas de autogestión emocional que ha usado con cientos de personas, tanto en consulta como en espacios académicos. 
+                Escribe desde la experiencia real, no desde la teoría vacía.
+            </p>
         </div>
 
         <!-- SECCIÓN CTA Y FORMULARIO -->
