@@ -1218,7 +1218,6 @@
 
     <div class="areas-grid" id="areas-grid"></div>
 
-    <!-- CTA BLOCK CORREGIDO -->
     <div class="cta-block">
       <p class="cta-block-label">Tu siguiente paso</p>
       <h3>Este mapa ya existe.<br><em>Ahora necesita un guía.</em></h3>
@@ -1228,7 +1227,6 @@
         <span class="cta-feat"><span class="cta-feat-dot"></span>Proceso personalizado LA-00 a LA-12</span>
         <span class="cta-feat"><span class="cta-feat-dot"></span>Resultados medibles y documentados</span>
       </div>
-      <!-- NUEVO CTA: WHATSAPP DIRECTO Y CONSULTA -->
       <a href="https://api.whatsapp.com/send?phone=584148610464&text=Hola%20Alvaro%2C%20he%20realizado%20la%20Br%C3%BAjula%20Emocional%20y%20quiero%20iniciar%20mi%20proceso%20terap%C3%A9utico." class="btn-primary" style="margin-bottom:10px;">💬 Iniciar por WhatsApp</a>
       <a href="consulta.html" class="btn-primary" style="background:var(--naranja);">📅 Agendar una consulta</a>
       <span class="cta-note">O escríbele directamente a Alvaro: lyonasesor@gmail.com</span>
@@ -1244,7 +1242,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>© Lyon Asesor, f.p. · Prof. Mtr. Alvaro Lyon · <a href="https://lyonasesor.netlify.app/">lyonasesor.netlify.app</a> · RIF: J-17633035-6</p>
+  <p>© Lyon Asesor, f.p. · Prof. Mtr. Alvaro Lyon · <a href="https://lyonasesor-web.pages.dev/">lyonasesor-web.pages.dev</a> · RIF: J-17633035-6</p>
   <p style="margin-top:6px; font-size:11px; opacity:0.6;">Este instrumento es orientativo y no constituye un diagnóstico clínico. Es de uso exclusivo de Lyon Asesor.</p>
 </div>
 
@@ -1324,7 +1322,7 @@ document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener
   updateProgress();
 }));
 
-document.querySelectorAll('input[type="text"], input[type="email"], select').forEach(el => {
+document.querySelectorAll('input[type="text"], input[type="email"], select").forEach(el => {
   el.addEventListener('input', updateProgress);
   el.addEventListener('change', updateProgress);
 });
