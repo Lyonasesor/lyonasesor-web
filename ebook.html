@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ========== RESET Y VARIABLES (Mismo estilo que el index) ========== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -50,8 +49,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
-        /* ========== LAYOUT PRINCIPAL ========== */
         .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
@@ -59,8 +56,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* ========== HERO (CABECERA) ========== */
         .hero-ebook {
             display: flex;
             flex-direction: row;
@@ -107,7 +102,6 @@
             cursor: pointer;
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
-
         .hero-cover { flex: 0 0 300px; text-align: center; }
         .hero-cover img {
             width: 100%;
@@ -118,8 +112,6 @@
             transition: var(--transition);
         }
         .hero-cover img:hover { transform: rotateY(0deg) scale(1.02); }
-
-        /* ========== SECCIÓN DE PROBLEMA (DOLOR) ========== */
         .section-block {
             background: #fff;
             border-radius: var(--radius);
@@ -135,7 +127,6 @@
         }
         .section-block h2 span { color: var(--naranja); }
         .section-block p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
-
         .problem-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -151,8 +142,6 @@
         }
         .problem-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
         .problem-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-
-        /* ========== MÓDULOS ========== */
         .modules-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -176,8 +165,6 @@
         }
         .module-card h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.2rem; }
         .module-card p { font-size: 0.85rem; color: var(--text-muted); }
-
-        /* ========== AUTOR ========== */
         .author-section {
             background: #fff;
             border-radius: var(--radius);
@@ -206,8 +193,6 @@
             max-width: 700px;
             margin: 0 auto;
         }
-
-        /* ========== CTA FORMULARIO ========== */
         #formSection {
             background: var(--navy);
             color: #fff;
@@ -216,10 +201,13 @@
             margin-bottom: 60px;
             text-align: center;
         }
-        #formSection h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        #formSection h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
         #formSection h2 span { color: var(--naranja); }
         #formSection p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
-
         .form-container {
             max-width: 500px;
             margin: 0 auto;
@@ -236,8 +224,6 @@
             font-size: 1rem;
         }
         .form-container .btn-primary { width: 100%; }
-
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .hero-ebook { flex-direction: column-reverse; text-align: center; padding: 2rem; }
             .hero-cover { flex: 0 0 auto; width: 200px; }
@@ -245,14 +231,10 @@
     </style>
 </head>
 <body>
-
-    <!-- ========== CONTENEDOR PRINCIPAL ========== -->
     <div class="page-wrapper">
-
-        <!-- HERO SECTION -->
         <div class="hero-ebook">
             <div class="hero-text">
-                <h1>Este Día <span>Es Tuyo</span></h1>
+                <h1>Descarga el libro que <span>cambiará tu día</span></h1>
                 <div class="sub">Programa Completo de Autogestión Emocional y Desarrollo Personal</div>
                 <p class="description">
                     Las emociones no son tus enemigas. Son mensajeras. Aprender a escucharlas, entenderlas y gestionarlas es el acto más valiente que puedes hacer por ti mismo.
@@ -263,8 +245,6 @@
                 <img src="PortadaEbook.png" alt="Portada Este Día Es Tuyo">
             </div>
         </div>
-
-        <!-- SECCIÓN DE PROBLEMA -->
         <div class="section-block">
             <h2>¿Para quién es este <span>programa?</span></h2>
             <p>Si sientes que tus esfuerzos no se traducen en resultados, que el estrés te gana la batalla o que tu diálogo interno se ha vuelto un crítico implacable, este material es para ti.</p>
@@ -275,8 +255,6 @@
                 <div class="problem-item"><h3>🔒 Falta de dirección</h3><p>Necesitas un mapa claro para salir del piloto automático.</p></div>
             </div>
         </div>
-
-        <!-- SECCIÓN DE MÓDULOS -->
         <div class="section-block">
             <h2>Lo que <span>encontrarás</span> dentro</h2>
             <p>Un programa estructurado en 9 módulos que te guiarán desde el autoconocimiento hasta la gestión plena de tu mundo interior.</p>
@@ -292,20 +270,15 @@
                 <div class="module-card"><div class="module-number">09</div><h3>Mantenimiento de la Autogestión</h3><p>Hábitos y estrategias para que tu equilibrio sea permanente.</p></div>
             </div>
         </div>
-
-        <!-- SECCIÓN AUTOR -->
         <div class="author-section">
             <h2>Conoce al <span>autor</span></h2>
             <h3>Prof. Mtr. Alvaro Lyon Abreu</h3>
             <p>
                 Psicoterapeuta · Master Internacional · Director de Lyon Asesor, f.p.
                 Desarrollar el punto direccional único en la vida ha sido su sendero.
-                En este ebook comparte las herramientas prácticas de autogestión emocional que ha usado con cientos de personas, tanto en consulta como en espacios académicos. 
-                Escribe desde la experiencia real, no desde la teoría vacía.
+                En este ebook comparte las herramientas prácticas de autogestión emocional que ha usado con cientos de personas.
             </p>
         </div>
-
-        <!-- SECCIÓN CTA Y FORMULARIO -->
         <div id="formSection">
             <h2>Comienza hoy. Es <span>gratuito.</span> Es <span>tuyo.</span></h2>
             <p>Completa tus datos y te enviaremos el programa completo. Tu información está segura y no será compartida.</p>
@@ -317,39 +290,25 @@
                 <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Al registrarte, aceptas nuestra política de confidencialidad.</p>
             </form>
         </div>
-
     </div>
-
     <script>
-        // =============================================
-        // CONFIGURACIÓN DE JSONBIN (MISMA QUE YA TIENES)
-        // =============================================
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
         document.getElementById('ebookForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const nombre = document.getElementById('nombre').value.trim();
             const email = document.getElementById('email').value.trim();
             const whatsapp = document.getElementById('whatsapp').value.trim();
-
             if (!nombre || !email) {
                 alert('Por favor, completa tu nombre y correo electrónico.');
                 return;
             }
-
             try {
-                // 1. Leer registros actuales
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
                 const data = await res.json();
                 if (!data.record) data.record = {};
                 if (!data.record.registros) data.record.registros = [];
-
-                // 2. Crear el registro del ebook
-                const nuevoRegistro = {
+                data.record.registros.push({
                     tipo: 'ebook-lead',
                     timestamp: new Date().toISOString(),
                     nombreEmpresa: nombre,
@@ -358,23 +317,13 @@
                     detalle: 'Descarga del ebook "Este Día Es Tuyo"',
                     monto: 0,
                     pagado: false
-                };
-
-                data.record.registros.push(nuevoRegistro);
-
-                // 3. Guardar en JSONBin
+                });
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
-                    },
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                     body: JSON.stringify(data.record)
                 });
-
-                // 4. Redirigir al enlace de Google Drive
                 window.location.href = 'https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu';
-
             } catch (error) {
                 console.error('Error al guardar el lead:', error);
                 alert('Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo o descarga directamente desde el enlace.');
