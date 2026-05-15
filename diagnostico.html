@@ -1322,7 +1322,7 @@ document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener
   updateProgress();
 }));
 
-document.querySelectorAll('input[type="text"], input[type="email"], select").forEach(el => {
+document.querySelectorAll('input[type="text"], input[type="email"], select').forEach(el => {
   el.addEventListener('input', updateProgress);
   el.addEventListener('change', updateProgress);
 });
