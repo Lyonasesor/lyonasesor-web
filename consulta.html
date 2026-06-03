@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Proceso Terapéutico · Lyon Asesor</title>
+    <title>Agendar Consulta Terapéutica · Lyon Asesor</title>
+    <meta name="description" content="Agenda tu consulta de psicoterapia online o presencial con el Prof. Mtr. Alvaro Lyon. Acompañamiento profesional y personalizado.">
+    <link rel="canonical" href="https://lyonasesor-web.pages.dev/consulta.html">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthTherapy",
+      "name": "Consulta Terapéutica con Prof. Mtr. Alvaro Lyon",
+      "url": "https://lyonasesor-web.pages.dev/consulta.html",
+      "provider": {
+        "@type": "ProfessionalService",
+        "name": "Lyon Asesor"
+      },
+      "description": "Acompañamiento profesional y personalizado para tu crecimiento emocional. Sesiones individuales de psicoterapia."
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ========== RESET Y VARIABLES (Mismo estilo que el index) ========== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -51,7 +65,6 @@
             z-index: 0;
         }
 
-        /* ========== LAYOUT PRINCIPAL ========== */
         .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
@@ -60,7 +73,6 @@
             z-index: 1;
         }
 
-        /* ========== HERO (CABECERA) ========== */
         .hero-section {
             background: #fff;
             border-radius: var(--radius);
@@ -105,7 +117,6 @@
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
 
-        /* ========== SECCIÓN DE PROBLEMA (DOLOR) ========== */
         .section-block {
             background: #fff;
             border-radius: var(--radius);
@@ -138,7 +149,6 @@
         .problem-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
         .problem-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
-        /* ========== BENEFICIOS ========== */
         .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -155,7 +165,6 @@
         .benefit-item h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.3rem; }
         .benefit-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
-        /* ========== SECCIÓN AUTOR ========== */
         .author-section {
             background: #fff;
             border-radius: var(--radius);
@@ -185,7 +194,6 @@
             margin: 0 auto;
         }
 
-        /* ========== PREGUNTAS FRECUENTES ========== */
         .faq-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -200,7 +208,6 @@
         .faq-item h4 { color: var(--navy); margin-bottom: 0.3rem; }
         .faq-item p { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* ========== CTA FORMULARIO ========== */
         #formSection {
             background: var(--navy);
             color: #fff;
@@ -230,7 +237,6 @@
         }
         .form-container .btn-primary { width: 100%; }
 
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .faq-grid { grid-template-columns: 1fr; }
             .hero-section { padding: 2rem; }
@@ -239,10 +245,8 @@
 </head>
 <body>
 
-    <!-- ========== CONTENEDOR PRINCIPAL ========== -->
     <div class="page-wrapper">
 
-        <!-- HERO SECTION -->
         <div class="hero-section">
             <h1>Acompañamiento <span>Terapéutico</span></h1>
             <div class="sub">Para quienes deciden mirar hacia adentro con valentía</div>
@@ -253,7 +257,6 @@
             <a href="#formSection" class="btn-primary">📅 Agendar mi primera sesión</a>
         </div>
 
-        <!-- SECCIÓN DE PROBLEMA -->
         <div class="section-block">
             <h2>¿Para quién es este <span>proceso?</span></h2>
             <p>Si sientes que llevas tiempo cargando algo que no sabes nombrar, si las emociones te desbordan o si simplemente necesitas un espacio seguro para ordenar tu mundo interior, este acompañamiento es para ti.</p>
@@ -265,7 +268,6 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DE BENEFICIOS -->
         <div class="section-block">
             <h2>¿Qué <span>recibirás</span> al iniciar?</h2>
             <div class="benefits-grid">
@@ -276,7 +278,6 @@
             </div>
         </div>
 
-        <!-- SECCIÓN AUTOR -->
         <div class="author-section">
             <h2>Sobre tu <span>guía</span></h2>
             <h3>Prof. Mtr. Alvaro Lyon Abreu</h3>
@@ -288,7 +289,6 @@
             </p>
         </div>
 
-        <!-- PREGUNTAS FRECUENTES -->
         <div class="section-block">
             <h2>Preguntas <span>frecuentes</span></h2>
             <div class="faq-grid">
@@ -299,7 +299,6 @@
             </div>
         </div>
 
-        <!-- CTA FORMULARIO -->
         <div id="formSection">
             <h2>Comienza hoy. Un <span>paso</span> que cambiará <span>todo.</span></h2>
             <p>Completa tus datos y te contactaré personalmente para acordar la primera sesión.</p>
@@ -330,7 +329,6 @@
 
     </div>
 
-    <!-- MODAL PAGO MÓVIL -->
     <div id="modalPagoMovil" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; z-index:2000;">
         <div style="background:#fff; max-width:500px; padding:2rem; border-radius:24px; text-align:center; box-shadow:var(--shadow-lg);">
             <h3 style="color:var(--navy);">Instrucciones de pago</h3>
@@ -344,12 +342,8 @@
     </div>
 
     <script>
-        // =============================================
-        // CONFIGURACIÓN DE JSONBIN
-        // =============================================
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
         const modal = document.getElementById('modalPagoMovil');
         const montoModal = document.getElementById('montoModal');
 
@@ -371,7 +365,6 @@
             const paqueteTexto = paquete === '40' ? 'Individual' : (paquete === '100' ? '3 sesiones' : '5 sesiones');
 
             try {
-                // 1. Leer registros actuales
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                     headers: { 'X-Master-Key': API_KEY }
                 });
@@ -379,7 +372,6 @@
                 if (!data.record) data.record = {};
                 if (!data.record.registros) data.record.registros = [];
 
-                // 2. Crear el registro de la consulta
                 const nuevoRegistro = {
                     tipo: 'consulta',
                     timestamp: new Date().toISOString(),
@@ -394,7 +386,6 @@
 
                 data.record.registros.push(nuevoRegistro);
 
-                // 3. Guardar en JSONBin
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
                     headers: {
@@ -404,7 +395,6 @@
                     body: JSON.stringify(data.record)
                 });
 
-                // 4. Redirigir según método de pago
                 if (metodo === 'paypal') {
                     const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor&amount=${paquete}&currency_code=USD`;
                     window.open(paypalLink, '_blank');
@@ -420,7 +410,6 @@
             }
         });
 
-        // Cerrar modal de Pago Móvil
         document.getElementById('cerrarModal').addEventListener('click', function() {
             modal.style.display = 'none';
             alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
