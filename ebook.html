@@ -152,21 +152,79 @@
             margin-bottom: 0.5rem;
         }
         .section-block h2 span { color: var(--naranja); }
-        .section-block p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
+        .section-block > p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
+
+        /* Grid de recursos con tarjetas expandidas */
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
             margin: 1.5rem 0;
         }
         .resource-item {
             background: var(--crema);
-            padding: 1.5rem;
+            padding: 1.8rem;
             border-radius: var(--radius-sm);
             border-left: 4px solid var(--naranja);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
-        .resource-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
-        .resource-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .resource-item .resource-icon {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+        }
+        .resource-item h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.2rem;
+        }
+        .resource-item .resource-subtitle {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--naranja);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+        .resource-item p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .resource-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0;
+        }
+        .resource-item ul li {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 3px 0;
+            padding-left: 1.2em;
+            position: relative;
+        }
+        .resource-item ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--naranja);
+            font-weight: 700;
+        }
+        .resource-badge {
+            display: inline-block;
+            background: var(--navy);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 50px;
+            margin-top: 0.5rem;
+            width: fit-content;
+        }
+
         .payment-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -196,25 +254,58 @@
             font-family: 'Inter', sans-serif;
             font-size: 1rem;
         }
-        .download-links {
+
+        /* Sección de descarga post-pago */
+        .download-info {
             margin-top: 20px;
-            background: #e8f5e9;
-            padding: 20px;
+            background: #fff8e1;
+            padding: 20px 24px;
             border-radius: var(--radius-sm);
-            border-left: 4px solid #2e7d32;
+            border-left: 4px solid #f59e0b;
         }
-        .download-links a {
+        .download-info p {
+            color: #7c5a00;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        .download-info strong {
             display: block;
-            color: var(--navy);
-            font-weight: 600;
-            text-decoration: none;
-            padding: 6px 0;
+            margin-bottom: 6px;
+            font-size: 1rem;
+            color: #5a3e00;
         }
-        .download-links a:hover { color: var(--naranja); }
+        .download-steps {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .download-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .download-step .step-num {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            background: var(--naranja);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
         @media (max-width: 768px) {
             .hero-ebook { flex-direction: column-reverse; text-align: center; padding: 2rem; }
             .hero-cover { flex: 0 0 auto; width: 200px; }
             .payment-section { grid-template-columns: 1fr; }
+            .resource-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -238,17 +329,73 @@
             </div>
         </div>
 
+        <!-- SECCIÓN: QUÉ INCLUYE -->
         <div class="section-block">
             <h2>¿Qué incluye el <span>paquete?</span></h2>
-            <p>Cuatro recursos digitales diseñados para acompañarte en tu proceso de autoconocimiento y gestión emocional.</p>
+            <p>Cuatro recursos digitales diseñados por el Prof. Mtr. Alvaro Lyon para acompañarte en tu proceso de autoconocimiento y gestión emocional. Cada herramienta tiene un propósito claro y resultados concretos.</p>
             <div class="resource-grid">
-                <div class="resource-item"><h3>📘 "Este Día Es Tuyo"</h3><p>Programa completo de autogestión emocional y desarrollo personal.</p></div>
-                <div class="resource-item"><h3>📓 Diario Terapéutico</h3><p>Herramienta de reflexión guiada para el autoconocimiento profundo.</p></div>
-                <div class="resource-item"><h3>📄 Guía de Autocuidado</h3><p>Estrategias diarias para mantener el equilibrio y la calma.</p></div>
-                <div class="resource-item"><h3>📋 Ejercicios de Bienestar</h3><p>Prácticas concretas para aplicar la inteligencia emocional en tu día a día.</p></div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📘</div>
+                    <div class="resource-subtitle">Ebook principal · +120 páginas</div>
+                    <h3>"Este Día Es Tuyo"</h3>
+                    <p>Un programa completo de autogestión emocional y desarrollo personal estructurado en módulos progresivos. Combina psicología positiva, mindfulness y técnicas cognitivo-conductuales para transformar tu relación con el tiempo y contigo mismo.</p>
+                    <ul>
+                        <li>Método de planificación consciente día a día</li>
+                        <li>Técnicas para gestionar la ansiedad y el estrés</li>
+                        <li>Estrategias para construir hábitos sostenibles</li>
+                        <li>Ejercicios de visualización y enfoque mental</li>
+                        <li>Plan de acción personalizable semana a semana</li>
+                    </ul>
+                    <span class="resource-badge">✦ Recurso estrella del paquete</span>
+                </div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📓</div>
+                    <div class="resource-subtitle">Herramienta de reflexión · 60 páginas</div>
+                    <h3>Diario Terapéutico</h3>
+                    <p>Una guía de escritura reflexiva diseñada para profundizar en tu autoconocimiento. Cada página ofrece preguntas y prompts terapéuticos que te invitan a explorar tus emociones, creencias y patrones de pensamiento con honestidad y compasión.</p>
+                    <ul>
+                        <li>Prompts diarios de escritura terapéutica</li>
+                        <li>Espacios para registrar emociones y estados de ánimo</li>
+                        <li>Reflexiones guiadas sobre metas y valores personales</li>
+                        <li>Seguimiento semanal de tu progreso emocional</li>
+                    </ul>
+                    <span class="resource-badge">Imprimible o digital</span>
+                </div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-subtitle">Guía práctica · Acceso inmediato</div>
+                    <h3>Guía de Autocuidado</h3>
+                    <p>Un manual de estrategias diarias para mantener el equilibrio físico, mental y emocional. Basada en evidencia científica, ofrece rutinas y hábitos concretos que puedes incorporar en tu vida aunque tengas poco tiempo disponible.</p>
+                    <ul>
+                        <li>Rutinas matutinas y nocturnas para el bienestar</li>
+                        <li>Técnicas de respiración y relajación muscular</li>
+                        <li>Alimentación y movimiento para la salud emocional</li>
+                        <li>Gestión de límites personales y vínculos sanos</li>
+                    </ul>
+                    <span class="resource-badge">Aplicable desde el día 1</span>
+                </div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📋</div>
+                    <div class="resource-subtitle">Cuaderno de ejercicios · Práctico</div>
+                    <h3>Ejercicios de Bienestar Emocional</h3>
+                    <p>Una colección de actividades y prácticas concretas para desarrollar la inteligencia emocional en el día a día. Cada ejercicio está explicado paso a paso y puede realizarse en 5 a 15 minutos, sin materiales adicionales.</p>
+                    <ul>
+                        <li>Ejercicios de reconocimiento y regulación emocional</li>
+                        <li>Prácticas de gratitud y perspectiva positiva</li>
+                        <li>Dinámicas de comunicación asertiva</li>
+                        <li>Técnicas de anclaje para momentos de crisis emocional</li>
+                    </ul>
+                    <span class="resource-badge">+30 ejercicios incluidos</span>
+                </div>
+
             </div>
         </div>
 
+        <!-- SECCIÓN: CÓMO ADQUIRIRLO -->
         <div class="section-block">
             <h2>¿Cómo <span>adquirirlo?</span></h2>
             
@@ -270,18 +417,37 @@
             </div>
         </div>
 
+        <!-- SECCIÓN: DESCARGA (sin enlaces directos) -->
         <div class="section-block">
-            <h2>Descarga tus <span>archivos</span></h2>
-            <p>Una vez realizado el pago, puedes acceder a tus recursos desde aquí:</p>
-            <div class="download-links">
-                <strong style="display:block; margin-bottom:10px;">📂 Enlaces de descarga directa:</strong>
-                <a href="https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu" target="_blank">📘 "Este Día Es Tuyo" - Ebook completo</a>
-                <a href="https://drive.google.com/uc?export=download&id=1KYfFN_2lh9_tuP6mO0M7fju99Ry8Y5ev" target="_blank">📓 Diario Terapéutico</a>
-                <a href="https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-" target="_blank">📄 Guía de Autocuidado</a>
-                <a href="https://drive.google.com/uc?export=download&id=1Y4oLyRkHLFIZOkkM4AEa_pnCjNcZXRMq" target="_blank">📋 Ejercicios de Bienestar</a>
+            <h2>Recibe tus <span>archivos</span></h2>
+            <p>Una vez confirmado tu pago, recibirás acceso a los 4 recursos digitales de forma inmediata.</p>
+
+            <div class="download-info">
+                <strong>🔒 Los archivos se entregan una vez verificado el pago</strong>
+                <p>Para proteger el contenido y garantizar una entrega segura, los enlaces de descarga se envían personalmente tras la confirmación del pago.</p>
+            </div>
+
+            <div class="download-steps">
+                <div class="download-step">
+                    <div class="step-num">1</div>
+                    <span><strong>Realiza tu pago</strong> a través de PayPal o Pago Móvil usando los métodos indicados arriba.</span>
+                </div>
+                <div class="download-step">
+                    <div class="step-num">2</div>
+                    <span><strong>Envía tu comprobante</strong> por WhatsApp al <a href="https://wa.me/584148610464" target="_blank" style="color: var(--naranja); font-weight:600;">0414-8610464</a>, indicando tu nombre y correo electrónico.</span>
+                </div>
+                <div class="download-step">
+                    <div class="step-num">3</div>
+                    <span><strong>Recibe tus 4 archivos</strong> directamente en tu correo o por WhatsApp en un plazo máximo de 24 horas hábiles.</span>
+                </div>
+                <div class="download-step">
+                    <div class="step-num">4</div>
+                    <span><strong>¡Comienza tu transformación!</strong> Descarga, imprime o guarda tus recursos y empieza hoy mismo.</span>
+                </div>
             </div>
         </div>
 
+        <!-- SECCIÓN: FORMULARIO -->
         <div class="section-block" style="text-align:center;">
             <h2>Regístrate para <span>recibir novedades</span></h2>
             <p style="max-width:500px; margin:0 auto 1.5rem;">Déjanos tus datos y te mantendremos informado sobre nuevos lanzamientos y contenido exclusivo.</p>
@@ -296,7 +462,6 @@
     </div>
 
     <script>
-        // Configuración JSONbin
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
 
@@ -327,7 +492,7 @@
                     telefono: whatsapp || '',
                     detalle: 'Compra de Biblioteca Lyon Asesor - Paquete $9.99',
                     monto: 9.99,
-                    pagado: true // Asumimos que ya pagó porque está llenando el formulario
+                    pagado: true
                 });
 
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
@@ -336,7 +501,7 @@
                     body: JSON.stringify(data.record)
                 });
 
-                alert('¡Registro exitoso! Descarga tus archivos desde los enlaces de arriba. ¡Gracias por confiar en Lyon Asesor!');
+                alert('¡Registro exitoso! Pronto recibirás tus archivos. ¡Gracias por confiar en Lyon Asesor!');
             } catch (error) {
                 console.error('Error al guardar:', error);
                 alert('Hubo un error al guardar tus datos. Por favor, contacta por WhatsApp para recibir tus archivos.');
