@@ -157,9 +157,12 @@
         /* Grid de recursos con tarjetas expandidas */
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             margin: 1.5rem 0;
+        }
+        @media (max-width: 1024px) {
+            .resource-grid { grid-template-columns: repeat(2, 1fr); }
         }
         .resource-item {
             background: var(--crema);
@@ -354,9 +357,9 @@
                     <div class="resource-icon">📓</div>
                     <div class="resource-subtitle">Herramienta de reflexión · 60 páginas</div>
                     <h3>Diario Terapéutico</h3>
-                    <p>Una guía de escritura reflexiva diseñada para profundizar en tu autoconocimiento. Cada página ofrece preguntas y prompts terapéuticos que te invitan a explorar tus emociones, creencias y patrones de pensamiento con honestidad y compasión.</p>
+                    <p>Una guía de escritura reflexiva diseñada para profundizar en tu autoconocimiento. Cada página ofrece preguntas y ejercicios terapéuticos que te invitan a explorar tus emociones, creencias y patrones de pensamiento con honestidad y compasión.</p>
                     <ul>
-                        <li>Prompts diarios de escritura terapéutica</li>
+                        <li>Preguntas diarias de escritura terapéutica</li>
                         <li>Espacios para registrar emociones y estados de ánimo</li>
                         <li>Reflexiones guiadas sobre metas y valores personales</li>
                         <li>Seguimiento semanal de tu progreso emocional</li>
