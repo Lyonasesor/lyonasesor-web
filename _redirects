@@ -1,0 +1,5 @@
+# Permitir que descargasahora.html se sirva como una página independiente
+/descargasahora.html /descargasahora.html 200
+
+# Regla SPA para el resto de rutas (mantiene tu configuración actual)
+/* /index.html 200
