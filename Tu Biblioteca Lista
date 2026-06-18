@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Descargas · Lyon Asesor</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --navy: #1A2330;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --shadow-md: 0 4px 20px rgba(26,35,48,0.12);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+        }
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        /* HEADER */
+        .page-header {
+            text-align: center;
+            background: var(--navy);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(232,107,24,0.18), transparent 70%);
+            border-radius: 50%;
+        }
+        .page-header::after {
+            content: "";
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 160px; height: 160px;
+            background: radial-gradient(circle, rgba(232,107,24,0.12), transparent 70%);
+            border-radius: 50%;
+        }
+        .page-header .badge {
+            display: inline-block;
+            background: rgba(232,107,24,0.2);
+            color: var(--naranja-luz, #f28c4e);
+            border: 1px solid rgba(232,107,24,0.35);
+            padding: 5px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+        }
+        .page-header h1 span { color: var(--naranja-luz, #f28c4e); }
+        .page-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* AVISO DE BIENVENIDA */
+        .welcome-box {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .welcome-box .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+        .welcome-box p { font-size: 0.92rem; color: #2e4a2e; margin: 0; }
+        .welcome-box strong { color: #1b5e20; }
+
+        /* TARJETAS DE DESCARGA */
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .download-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid rgba(26,35,48,0.07);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: var(--transition);
+        }
+        .download-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .download-card .card-icon { font-size: 2.2rem; }
+        .download-card .card-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--naranja);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .download-card h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+        .download-card p {
+            font-size: 0.87rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            flex-grow: 1;
+        }
+        .download-card .card-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            background: var(--crema);
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+        }
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            padding: 13px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            font-size: 0.92rem;
+            margin-top: 0.5rem;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(232,107,24,0.45);
+        }
+
+        /* FOOTER */
+        .footer-block {
+            background: var(--navy);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+        }
+        .footer-block p {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.88rem;
+            margin-bottom: 0.8rem;
+        }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.92rem;
+            transition: var(--transition);
+        }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+
+        @media (max-width: 640px) {
+            .downloads-grid { grid-template-columns: 1fr; }
+            .page-header { padding: 2.2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <div class="badge">✦ Acceso exclusivo</div>
+            <h1>Tu <span>Biblioteca Personal</span><br>está lista</h1>
+            <p>Gracias por tu compra. A continuación encontrarás los cuatro recursos de tu paquete Lyon Asesor listos para descargar.</p>
+        </div>
+
+        <div class="welcome-box">
+            <div class="icon">✅</div>
+            <p><strong>Pago confirmado.</strong> Tienes acceso completo a los 4 archivos digitales. Descárgalos, guárdalos y úsalos a tu propio ritmo. Te recomendamos comenzar con el ebook principal <em>"Este Día Es Tuyo"</em>.</p>
+        </div>
+
+        <div class="downloads-grid">
+
+            <div class="download-card">
+                <div class="card-icon">📘</div>
+                <div class="card-tag">Ebook principal · +120 páginas</div>
+                <h2>"Este Día Es Tuyo"</h2>
+                <p>Programa completo de autogestión emocional. Combina psicología positiva, mindfulness y técnicas cognitivo-conductuales para transformar tu relación contigo mismo y con tu tiempo.</p>
+                <div class="card-meta">📄 Formato PDF · Lectura en cualquier dispositivo</div>
+                <a href="https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu" target="_blank" class="btn-download">
+                    ⬇ Descargar ebook
+                </a>
+            </div>
+
+            <div class="download-card">
+                <div class="card-icon">📓</div>
+                <div class="card-tag">Herramienta de reflexión · 60 páginas</div>
+                <h2>Diario Terapéutico</h2>
+                <p>Guía de escritura reflexiva con preguntas y ejercicios terapéuticos para explorar tus emociones, creencias y patrones de pensamiento con honestidad y compasión.</p>
+                <div class="card-meta">📄 Formato PDF · Imprimible o digital</div>
+                <a href="https://drive.google.com/uc?export=download&id=1KYfFN_2lh9_tuP6mO0M7fju99Ry8Y5ev" target="_blank" class="btn-download">
+                    ⬇ Descargar diario
+                </a>
+            </div>
+
+            <div class="download-card">
+                <div class="card-icon">📄</div>
+                <div class="card-tag">Guía práctica · Aplicable desde el día 1</div>
+                <h2>Guía de Autocuidado</h2>
+                <p>Manual de estrategias diarias para mantener el equilibrio físico, mental y emocional, con rutinas concretas que puedes incorporar aunque tengas poco tiempo disponible.</p>
+                <div class="card-meta">📄 Formato PDF · Lectura en cualquier dispositivo</div>
+                <a href="https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-" target="_blank" class="btn-download">
+                    ⬇ Descargar guía
+                </a>
+            </div>
+
+            <div class="download-card">
+                <div class="card-icon">📋</div>
+                <div class="card-tag">Cuaderno de ejercicios · +30 prácticas</div>
+                <h2>Ejercicios de Bienestar Emocional</h2>
+                <p>Colección de actividades paso a paso para desarrollar la inteligencia emocional en el día a día. Cada ejercicio toma entre 5 y 15 minutos, sin materiales adicionales.</p>
+                <div class="card-meta">📄 Formato PDF · Imprimible o digital</div>
+                <a href="https://drive.google.com/uc?export=download&id=1Y4oLyRkHLFIZOkkM4AEa_pnCjNcZXRMq" target="_blank" class="btn-download">
+                    ⬇ Descargar ejercicios
+                </a>
+            </div>
+
+        </div>
+
+        <div class="footer-block">
+            <p>¿Tuviste algún problema con la descarga o tienes alguna consulta? Escríbenos directamente.</p>
+            <a href="https://wa.me/584148610464?text=Hola%20Alvaro%2C%20tengo%20una%20consulta%20sobre%20mis%20descargas%20de%20la%20biblioteca" target="_blank" class="btn-whatsapp">
+                📲 Contactar por WhatsApp
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>
