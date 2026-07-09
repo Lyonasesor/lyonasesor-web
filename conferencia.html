@@ -238,18 +238,20 @@
         }
         .form-container .btn-primary { width: 100%; }
 
+        /* Alerta corregida: texto oscuro sobre fondo claro */
         .redirect-alert {
-            background: #e3f2fd;
-            border-left: 4px solid #1e88e5;
+            background: #fff3e0;
+            border-left: 4px solid #e65100;
             padding: 16px 20px;
             border-radius: var(--radius-sm);
             margin-top: 20px;
             text-align: left;
         }
         .redirect-alert p {
-            color: #0d47a1;
-            font-size: 0.9rem;
+            color: #4a2c00;
+            font-size: 0.95rem;
             margin: 0;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -319,7 +321,8 @@
             <h2>Reserva tu conferencia. <span>Transforma</span> tu equipo.</h2>
             <p>Completa los datos y te contactaré personalmente para coordinar todos los detalles.</p>
 
-            <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
+            <!-- Alerta corregida: texto oscuro legible -->
+            <div class="redirect-alert">
                 <p>📌 <strong>Importante:</strong> Después de completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás un correo con los detalles de la conferencia.</p>
             </div>
 
