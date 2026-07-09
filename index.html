@@ -292,7 +292,6 @@
             background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 40%, var(--navy-light) 100%);
             overflow: hidden;
             padding-top: 60px;
-            /* separación del menú en escritorio */
         }
         .hero-particles {
             position: absolute;
@@ -1031,36 +1030,217 @@
             opacity: 0.7;
         }
 
-        /* ===== FLOTANTES ===== */
-        .whatsapp-float {
+        /* ===== CHAT DE VENTAS (FLOTANTE) ===== */
+        .chat-float {
             position: fixed;
             bottom: 28px;
             right: 28px;
             z-index: 999;
             width: 60px;
             height: 60px;
-            background: #25D366;
+            background: var(--naranja);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            box-shadow: var(--shadow-orange);
             transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            color: #fff;
             animation: floatPulse 3s infinite;
         }
-        .whatsapp-float:hover {
+        .chat-float:hover {
             transform: scale(1.12);
-            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+            box-shadow: 0 6px 30px rgba(232, 107, 24, 0.6);
+        }
+        .chat-float svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
         }
         @keyframes floatPulse {
             0%,
             100% {
-                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+                box-shadow: 0 4px 20px rgba(232, 107, 24, 0.4);
             }
             50% {
-                box-shadow: 0 4px 35px rgba(37, 211, 102, 0.65);
+                box-shadow: 0 4px 35px rgba(232, 107, 24, 0.65);
             }
         }
+
+        /* ===== VENTANA DEL CHAT ===== */
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            width: 380px;
+            max-width: calc(100vw - 56px);
+            max-height: 80vh;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 998;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(26, 35, 48, 0.08);
+            animation: slideUp 0.3s ease;
+        }
+        .chat-window.open {
+            display: flex;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .chat-header {
+            background: var(--navy);
+            color: #fff;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .chat-header h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .chat-header h3 span {
+            color: var(--naranja);
+        }
+        .chat-header .close-chat {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 4px;
+        }
+        .chat-header .close-chat:hover {
+            color: #fff;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+            max-height: 400px;
+        }
+        .chat-message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 90%;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            animation: messageIn 0.3s ease;
+        }
+        .chat-message.bot {
+            background: #fff;
+            border: 1px solid rgba(26, 35, 48, 0.06);
+            align-self: flex-start;
+            box-shadow: var(--shadow-sm);
+        }
+        .chat-message.user {
+            background: var(--naranja);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-message .product-btn {
+            display: inline-block;
+            margin: 6px 4px 0 0;
+            padding: 8px 16px;
+            background: var(--crema);
+            border: 1px solid var(--naranja);
+            border-radius: 30px;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .chat-message .product-btn:hover {
+            background: var(--naranja);
+            color: #fff;
+        }
+        .chat-message .paypal-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 20px;
+            background: #0070ba;
+            color: #fff;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .chat-message .paypal-btn:hover {
+            background: #005ea6;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(26, 35, 48, 0.06);
+            background: #fff;
+            flex-shrink: 0;
+            gap: 8px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+        .chat-input-area input:focus {
+            border-color: var(--naranja);
+            box-shadow: 0 0 0 3px rgba(232, 107, 24, 0.1);
+        }
+        .chat-input-area button {
+            padding: 10px 20px;
+            background: var(--naranja);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .chat-input-area button:hover {
+            background: var(--naranja-oscuro);
+        }
+        .chat-input-area button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .back-to-top {
             position: fixed;
             bottom: 100px;
@@ -1078,7 +1258,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
-            z-index: 998;
+            z-index: 997;
         }
         .back-to-top.visible {
             opacity: 1;
@@ -1089,7 +1269,7 @@
             transform: translateY(-3px);
         }
 
-        /* ===== MEDIA QUERIES ===== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -1116,7 +1296,6 @@
             }
             .hero {
                 padding-top: 80px;
-                /* más separación en móvil */
             }
             .hero-title {
                 font-size: clamp(2rem, 8vw, 3.2rem);
@@ -1158,8 +1337,13 @@
             .conf-card {
                 max-width: 100%;
             }
+            .chat-window {
+                bottom: 80px;
+                right: 12px;
+                width: calc(100vw - 24px);
+                max-height: 70vh;
+            }
         }
-
         @media (max-width: 480px) {
             .service-card {
                 flex: 1 1 100%;
@@ -1172,8 +1356,26 @@
             .hero-title {
                 font-size: clamp(1.8rem, 9vw, 2.8rem);
             }
+            .chat-window {
+                bottom: 70px;
+                right: 8px;
+                width: calc(100vw - 16px);
+                max-height: 65vh;
+            }
+            .chat-messages {
+                padding: 12px;
+                min-height: 150px;
+                max-height: 300px;
+            }
+            .chat-input-area input {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            .chat-input-area button {
+                font-size: 0.8rem;
+                padding: 8px 14px;
+            }
         }
-
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
@@ -1468,29 +1670,47 @@
         </div>
     </footer>
 
-    <!-- ===== FLOTANTES ===== -->
-    <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
+    <!-- ===== CHAT DE VENTAS (BOTÓN FLOTANTE + VENTANA) ===== -->
+    <!-- Botón flotante -->
+    <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
+    </button>
+
+    <!-- Ventana del chat -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>LYON <span>ASESOR</span></h3>
+            <button class="close-chat" id="chatClose">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Mensajes insertados por JavaScript -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." disabled>
+            <button id="chatSend" disabled>Enviar</button>
+        </div>
+    </div>
+
     <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
 
     <!-- ===== SCRIPTS ===== -->
     <script>
+        // ===== LOADER =====
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
             }, 2000);
         });
 
-        // Nav scroll
+        // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Mobile toggle
+        // ===== MOBILE TOGGLE =====
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
         navToggle.addEventListener('click', () => {
@@ -1504,7 +1724,7 @@
             });
         });
 
-        // Reveal on scroll
+        // ===== REVEAL =====
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1512,7 +1732,7 @@
         }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // Back to top
+        // ===== BACK TO TOP =====
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             backToTop.classList.toggle('visible', window.scrollY > 500);
@@ -1521,7 +1741,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Particles
+        // ===== PARTICLES =====
         const particlesContainer = document.getElementById('particles');
         if (particlesContainer) {
             for (let i = 0; i < 15; i++) {
@@ -1536,7 +1756,7 @@
             }
         }
 
-        // Smooth anchor scroll
+        // ===== SMOOTH ANCHOR SCROLL =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const targetId = this.getAttribute('href');
@@ -1548,6 +1768,394 @@
                 }
             });
         });
+
+        // =============================================
+        // CHAT DE VENTAS INTEGRADO
+        // =============================================
+        (function() {
+            // Elementos del chat
+            const chatToggle = document.getElementById('chatToggle');
+            const chatWindow = document.getElementById('chatWindow');
+            const chatClose = document.getElementById('chatClose');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+
+            // Estado del chat
+            let chatOpen = false;
+            let step = 'welcome'; // welcome, producto, email, confirmacion, gracias
+            let productoSeleccionado = '';
+            let emailCapturado = '';
+            let nombreCapturado = '';
+
+            // URLs de PayPal
+            const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
+            const PAYPAL_CONSULTA = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor&amount=40&currency_code=USD';
+            const PAYPAL_CONFERENCIA = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD';
+
+            // Configuración de JSONBin (misma que usas en el panel)
+            const BIN_ID = '69ff5dc1adc21f119a775498';
+            const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
+
+            // Función para agregar mensaje al chat
+            function addMessage(text, sender, options = {}) {
+                const div = document.createElement('div');
+                div.className = `chat-message ${sender}`;
+                if (sender === 'bot' && options.buttons) {
+                    div.innerHTML = text + options.buttons;
+                } else if (sender === 'bot') {
+                    div.textContent = text;
+                } else {
+                    div.textContent = text;
+                }
+                chatMessages.appendChild(div);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Función para mostrar mensaje de "escribiendo..."
+            function showTyping() {
+                const div = document.createElement('div');
+                div.className = 'chat-message bot';
+                div.id = 'typingIndicator';
+                div.textContent = '✍️ Escribiendo...';
+                chatMessages.appendChild(div);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function removeTyping() {
+                const typing = document.getElementById('typingIndicator');
+                if (typing) typing.remove();
+            }
+
+            // Función para habilitar/deshabilitar input
+            function setInputEnabled(enabled) {
+                chatInput.disabled = !enabled;
+                chatSend.disabled = !enabled;
+                if (enabled) chatInput.focus();
+            }
+
+            // Función para guardar lead en JSONBin
+            async function saveLead(tipo, nombre, email, producto) {
+                try {
+                    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                        headers: { 'X-Master-Key': API_KEY }
+                    });
+                    const data = await res.json();
+                    if (!data.record) data.record = {};
+                    if (!data.record.registros) data.record.registros = [];
+
+                    const monto = producto === 'biblioteca' ? 9.99 :
+                        producto === 'consulta' ? 40 :
+                        producto === 'conferencia' ? 150 : 0;
+
+                    data.record.registros.push({
+                        tipo: `chat-${tipo}`,
+                        timestamp: new Date().toISOString(),
+                        nombreEmpresa: nombre,
+                        email: email,
+                        telefono: '',
+                        detalle: `Compra por chat: ${producto}`,
+                        monto: monto,
+                        pagado: false,
+                        producto: producto
+                    });
+
+                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify(data.record)
+                    });
+                } catch (error) {
+                    console.error('Error al guardar lead:', error);
+                }
+            }
+
+            // === FLUJO DE CONVERSACIÓN ===
+
+            function startChat() {
+                chatMessages.innerHTML = '';
+                step = 'welcome';
+                chatInput.value = '';
+                setInputEnabled(false);
+
+                const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
+
+Estoy aquí para ayudarte a encontrar lo que necesitas.
+
+¿Qué te gustaría conocer hoy?`;
+
+                const botones = `
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                        <button class="product-btn" data-producto="biblioteca">📚 Biblioteca Lyon Asesor</button>
+                        <button class="product-btn" data-producto="consulta">🧘 Proceso Terapéutico</button>
+                        <button class="product-btn" data-producto="conferencia">🎤 Conferencia</button>
+                    </div>
+                `;
+                addMessage(bienvenida, 'bot', { buttons: botones });
+
+                // Eventos para los botones de producto
+                document.querySelectorAll('.product-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const producto = this.getAttribute('data-producto');
+                        handleProductSelection(producto);
+                    });
+                });
+            }
+
+            function handleProductSelection(producto) {
+                productoSeleccionado = producto;
+                step = 'producto';
+
+                let nombreProducto = '';
+                let precio = '';
+                let descripcion = '';
+
+                if (producto === 'biblioteca') {
+                    nombreProducto = '📚 Biblioteca Lyon Asesor';
+                    precio = '$9.99';
+                    descripcion = 'Incluye 4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
+                } else if (producto === 'consulta') {
+                    nombreProducto = '🧘 Proceso Terapéutico';
+                    precio = '$40 (sesión individual)';
+                    descripcion = 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos.';
+                } else if (producto === 'conferencia') {
+                    nombreProducto = '🎤 Conferencia';
+                    precio = '$150 (tarifa plana)';
+                    descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
+                }
+
+                const mensaje = `Has seleccionado: **${nombreProducto}**
+
+${descripcion}
+
+**Precio:** ${precio}
+
+¿Te gustaría adquirirlo?`;
+
+                const botones = `
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                        <button class="product-btn" data-action="comprar">✅ Sí, quiero comprar</button>
+                        <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
+                    </div>
+                `;
+
+                addMessage(mensaje, 'bot', { buttons: botones });
+
+                document.querySelectorAll('.product-btn[data-action="comprar"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        askForEmail();
+                    });
+                });
+                document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        startChat();
+                    });
+                });
+            }
+
+            function askForEmail() {
+                step = 'email';
+                setInputEnabled(true);
+                chatInput.placeholder = 'Ingresa tu nombre y correo (ej: Ana, ana@email.com)';
+                addMessage('Perfecto. Para continuar, necesito tu nombre y correo electrónico (ej: Ana, ana@email.com):', 'bot');
+                chatInput.focus();
+            }
+
+            function handleEmailInput(input) {
+                // Intentar separar nombre y correo
+                const parts = input.split(',');
+                let nombre = '';
+                let email = '';
+
+                if (parts.length >= 2) {
+                    nombre = parts[0].trim();
+                    email = parts[1].trim();
+                } else if (input.includes('@')) {
+                    // Asumir que solo es correo, pedir nombre después
+                    email = input.trim();
+                    addMessage('¿Y tu nombre?', 'bot');
+                    step = 'esperando_nombre';
+                    return;
+                } else {
+                    // Asumir que solo es nombre, pedir correo después
+                    nombre = input.trim();
+                    addMessage('Ahora ingresa tu correo electrónico:', 'bot');
+                    step = 'esperando_email';
+                    return;
+                }
+
+                if (nombre && email && email.includes('@')) {
+                    nombreCapturado = nombre;
+                    emailCapturado = email;
+                    saveLead(productoSeleccionado, nombre, email, productoSeleccionado);
+                    showPaymentOptions();
+                } else {
+                    addMessage('Por favor, ingresa ambos: tu nombre y tu correo (ej: Ana, ana@email.com)', 'bot');
+                    chatInput.value = '';
+                    chatInput.focus();
+                }
+            }
+
+            function handleWaitingForName(input) {
+                const nombre = input.trim();
+                if (nombre) {
+                    nombreCapturado = nombre;
+                    step = 'esperando_email';
+                    addMessage('Gracias. Ahora ingresa tu correo electrónico:', 'bot');
+                    chatInput.value = '';
+                    chatInput.focus();
+                } else {
+                    addMessage('Por favor, ingresa tu nombre:', 'bot');
+                    chatInput.value = '';
+                    chatInput.focus();
+                }
+            }
+
+            function handleWaitingForEmail(input) {
+                const email = input.trim();
+                if (email && email.includes('@')) {
+                    emailCapturado = email;
+                    saveLead(productoSeleccionado, nombreCapturado, email, productoSeleccionado);
+                    showPaymentOptions();
+                } else {
+                    addMessage('Por favor, ingresa un correo válido (ej: ana@email.com):', 'bot');
+                    chatInput.value = '';
+                    chatInput.focus();
+                }
+            }
+
+            function showPaymentOptions() {
+                step = 'confirmacion';
+                setInputEnabled(false);
+
+                let mensaje = `¡Gracias, ${nombreCapturado}! 🙌
+
+Para completar tu compra, haz clic en el botón de pago a continuación. Serás redirigido a PayPal para finalizar el pago de forma segura.
+
+✅ Una vez realizado el pago, recibirás tus archivos en el correo que nos proporcionaste (${emailCapturado}).`;
+
+                let botonPayPal = '';
+
+                if (productoSeleccionado === 'biblioteca') {
+                    botonPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>
+                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
+                } else if (productoSeleccionado === 'consulta') {
+                    botonPayPal = `<a href="${PAYPAL_CONSULTA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $40 con PayPal</a>
+                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
+                } else if (productoSeleccionado === 'conferencia') {
+                    botonPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>
+                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
+                }
+
+                const botones = `
+                    <div style="margin-top:8px;">
+                        ${botonPayPal}
+                        <div style="margin-top:8px;">
+                            <button class="product-btn" data-action="finalizar">✅ Ya realicé el pago</button>
+                            <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
+                        </div>
+                    </div>
+                `;
+
+                addMessage(mensaje, 'bot', { buttons: botones });
+
+                document.querySelectorAll('.product-btn[data-action="finalizar"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        step = 'gracias';
+                        setInputEnabled(false);
+                        addMessage(`🎉 ¡Gracias, ${nombreCapturado}! Tu pago ha sido confirmado.
+
+En breve recibirás un correo con los detalles de tu compra y los enlaces de descarga (si aplica).
+
+¿Hay algo más en lo que pueda ayudarte?`, 'bot');
+
+                        const botonesFinal = `
+                            <div style="margin-top:8px;">
+                                <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
+                            </div>
+                        `;
+                        addMessage('', 'bot', { buttons: botonesFinal });
+
+                        document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                startChat();
+                            });
+                        });
+                    });
+                });
+                document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        startChat();
+                    });
+                });
+            }
+
+            // === MANEJO DE ENVÍO DE MENSAJES ===
+            chatSend.addEventListener('click', function() {
+                const input = chatInput.value.trim();
+                if (!input) return;
+
+                addMessage(input, 'user');
+                chatInput.value = '';
+
+                if (step === 'email') {
+                    handleEmailInput(input);
+                } else if (step === 'esperando_nombre') {
+                    handleWaitingForName(input);
+                } else if (step === 'esperando_email') {
+                    handleWaitingForEmail(input);
+                } else {
+                    // Mensaje genérico si no está en un paso específico
+                    setInputEnabled(false);
+                    showTyping();
+                    setTimeout(() => {
+                        removeTyping();
+                        addMessage('No entendí tu mensaje. Por favor, usa los botones para navegar.', 'bot');
+                        setInputEnabled(true);
+                    }, 1000);
+                }
+            });
+
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    chatSend.click();
+                }
+            });
+
+            // === ABRIR / CERRAR CHAT ===
+            chatToggle.addEventListener('click', function() {
+                if (chatWindow.classList.contains('open')) {
+                    chatWindow.classList.remove('open');
+                    chatOpen = false;
+                } else {
+                    chatWindow.classList.add('open');
+                    chatOpen = true;
+                    if (chatMessages.children.length === 0) {
+                        startChat();
+                    }
+                    // Enfocar input si está habilitado
+                    if (!chatInput.disabled) {
+                        setTimeout(() => chatInput.focus(), 300);
+                    }
+                }
+            });
+
+            chatClose.addEventListener('click', function() {
+                chatWindow.classList.remove('open');
+                chatOpen = false;
+            });
+
+            // Cerrar chat con Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && chatOpen) {
+                    chatWindow.classList.remove('open');
+                    chatOpen = false;
+                }
+            });
+        })();
     </script>
 </body>
 </html>
