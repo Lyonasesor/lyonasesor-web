@@ -1221,17 +1221,14 @@
             display: inline-block;
             margin: 6px 4px 0 0;
             padding: 8px 16px;
-            background: var(--crema);
+            background: transparent;
             border: 1px solid var(--naranja);
             border-radius: 30px;
-            color: var(--navy);
+            color: var(--naranja);
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-fast);
-            border: 1px solid var(--naranja);
-            background: transparent;
-            color: var(--naranja);
         }
         .chat-message .product-btn:hover {
             background: var(--naranja);
@@ -1816,7 +1813,7 @@
         });
 
         // =============================================
-        // CHAT DE VENTAS INTEGRADO — VERSIÓN CORREGIDA
+        // CHAT DE VENTAS INTEGRADO — VERSIÓN SIMPLIFICADA
         // =============================================
         (function() {
             // Elementos del chat
@@ -1829,13 +1826,9 @@
 
             // Estado del chat
             let chatOpen = false;
-            let step = 'welcome'; // welcome, producto, email, confirmacion, gracias
-            let productoSeleccionado = '';
-            let emailCapturado = '';
-            let nombreCapturado = '';
-            let pagoConfirmado = false; // guardia anti doble-clic
+            let step = 'welcome';
 
-            // URLs de PayPal — AHORA CON BOTONES ALOJADOS
+            // URLs de PayPal
             const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
             const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
             const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
@@ -1843,15 +1836,9 @@
             const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
 
             // Enlace directo a WhatsApp para "hablar con Alvaro"
-            const WHATSAPP_HUMANO = 'https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32';
-
-            // Configuración de JSONBin
-            // ⚠️ Recomendado: mover esto a un backend/proxy (ver nota en el código)
-            const BIN_ID = '69ff5dc1adc21f119a775498';
-            const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
+            const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
 
             // ---------- Helpers de render ----------
-
             function addMessage(text, sender, options = {}) {
                 const div = document.createElement('div');
                 div.className = `chat-message ${sender}`;
@@ -1870,20 +1857,6 @@
                 return d.innerHTML.replace(/\n/g, '<br>');
             }
 
-            function showTyping() {
-                const div = document.createElement('div');
-                div.className = 'chat-message bot';
-                div.id = 'typingIndicator';
-                div.textContent = '✍️ Escribiendo...';
-                chatMessages.appendChild(div);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function removeTyping() {
-                const typing = document.getElementById('typingIndicator');
-                if (typing) typing.remove();
-            }
-
             function setInputEnabled(enabled) {
                 chatInput.disabled = !enabled;
                 chatSend.disabled = !enabled;
@@ -1896,51 +1869,10 @@
                 </div>`;
             }
 
-            // ---------- Persistencia del lead ----------
-
-            async function saveLead(tipo, nombre, email, producto, monto) {
-                try {
-                    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                        headers: { 'X-Master-Key': API_KEY }
-                    });
-                    const data = await res.json();
-                    if (!data.record) data.record = {};
-                    if (!data.record.registros) data.record.registros = [];
-
-                    data.record.registros.push({
-                        tipo: `chat-${tipo}`,
-                        timestamp: new Date().toISOString(),
-                        nombreEmpresa: nombre,
-                        email: email,
-                        telefono: '',
-                        detalle: `Compra por chat: ${producto}`,
-                        monto: monto,
-                        pagado: false,
-                        producto: producto
-                    });
-
-                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': API_KEY
-                        },
-                        body: JSON.stringify(data.record)
-                    });
-                } catch (error) {
-                    console.error('Error al guardar lead:', error);
-                }
-            }
-
             // ---------- Pasos del flujo ----------
-
             function startChat() {
                 chatMessages.innerHTML = '';
                 step = 'welcome';
-                productoSeleccionado = '';
-                emailCapturado = '';
-                nombreCapturado = '';
-                pagoConfirmado = false;
                 chatInput.value = '';
                 setInputEnabled(false);
 
@@ -1948,7 +1880,7 @@
 
 Estoy aquí para ayudarte a encontrar lo que necesitas.
 
-¿Qué te gustaría conocer hoy?`;
+¿Qué te gustaría adquirir hoy?`;
 
                 const botones = `
                     <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
@@ -1962,25 +1894,34 @@ Estoy aquí para ayudarte a encontrar lo que necesitas.
             }
 
             function handleProductSelection(producto) {
-                productoSeleccionado = producto;
                 step = 'producto';
 
                 let nombreProducto = '',
                     precio = '',
-                    descripcion = '';
+                    descripcion = '',
+                    botonesPayPal = '';
 
                 if (producto === 'biblioteca') {
                     nombreProducto = '📚 Biblioteca Lyon Asesor';
                     precio = '$9.99';
                     descripcion = 'Incluye 4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
+                    botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
                 } else if (producto === 'consulta') {
                     nombreProducto = '🧘 Proceso Terapéutico';
                     precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
                     descripcion = 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos. Selecciona tu paquete.';
+                    botonesPayPal = `
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                            <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $40 (1 sesión)</a>
+                            <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $100 (3 sesiones)</a>
+                            <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $150 (5 sesiones)</a>
+                        </div>
+                    `;
                 } else if (producto === 'conferencia') {
                     nombreProducto = '🎤 Conferencia';
                     precio = '$150 (tarifa plana)';
                     descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
+                    botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
                 }
 
                 const mensaje = `Has seleccionado: **${nombreProducto}**
@@ -1989,133 +1930,13 @@ ${descripcion}
 
 **Precio:** ${precio}
 
-¿Te gustaría adquirirlo?`;
-
-                const botones = `
-                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-                        <button class="product-btn" data-role="accion" data-action="comprar">✅ Sí, quiero comprar</button>
-                        <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                    </div>
-                    ${botonHumano()}
-                `;
-
-                addMessage(mensaje, 'bot', { buttons: botones });
-            }
-
-            function askForEmail() {
-                step = 'email';
-                setInputEnabled(true);
-                chatInput.placeholder = 'Ingresa tu nombre y correo (ej: Ana, ana@email.com)';
-                const botones = `
-                    <div style="margin-top:8px;">
-                        <button class="product-btn" data-role="accion" data-action="atras-producto">🔙 Elegir otro producto</button>
-                    </div>
-                `;
-                addMessage('Perfecto. Para continuar, necesito tu nombre y correo electrónico (ej: Ana, ana@email.com):', 'bot', { buttons: botones });
-                chatInput.focus();
-            }
-
-            function handleEmailInput(input) {
-                const parts = input.split(',');
-                let nombre = '',
-                    email = '';
-
-                if (parts.length >= 2) {
-                    nombre = parts[0].trim();
-                    email = parts[1].trim();
-                } else if (input.includes('@')) {
-                    email = input.trim();
-                    addMessage('¿Y tu nombre?', 'bot');
-                    step = 'esperando_nombre';
-                    return;
-                } else {
-                    nombre = input.trim();
-                    addMessage('Ahora ingresa tu correo electrónico:', 'bot');
-                    step = 'esperando_email';
-                    return;
-                }
-
-                if (nombre && email && email.includes('@')) {
-                    nombreCapturado = nombre;
-                    emailCapturado = email;
-                    let monto = 0;
-                    if (productoSeleccionado === 'biblioteca') monto = 9.99;
-                    else if (productoSeleccionado === 'conferencia') monto = 150;
-                    else if (productoSeleccionado === 'consulta') monto = 40;
-                    saveLead(productoSeleccionado, nombre, email, productoSeleccionado, monto);
-                    showPaymentOptions();
-                } else {
-                    addMessage('Por favor, ingresa ambos: tu nombre y tu correo (ej: Ana, ana@email.com)', 'bot');
-                    chatInput.value = '';
-                    chatInput.focus();
-                }
-            }
-
-            function handleWaitingForName(input) {
-                const nombre = input.trim();
-                if (nombre) {
-                    nombreCapturado = nombre;
-                    step = 'esperando_email';
-                    addMessage('Gracias. Ahora ingresa tu correo electrónico:', 'bot');
-                    chatInput.value = '';
-                    chatInput.focus();
-                } else {
-                    addMessage('Por favor, ingresa tu nombre:', 'bot');
-                    chatInput.value = '';
-                    chatInput.focus();
-                }
-            }
-
-            function handleWaitingForEmail(input) {
-                const email = input.trim();
-                if (email && email.includes('@')) {
-                    emailCapturado = email;
-                    let monto = 0;
-                    if (productoSeleccionado === 'biblioteca') monto = 9.99;
-                    else if (productoSeleccionado === 'conferencia') monto = 150;
-                    else if (productoSeleccionado === 'consulta') monto = 40;
-                    saveLead(productoSeleccionado, nombreCapturado, email, productoSeleccionado, monto);
-                    showPaymentOptions();
-                } else {
-                    addMessage('Por favor, ingresa un correo válido (ej: ana@email.com):', 'bot');
-                    chatInput.value = '';
-                    chatInput.focus();
-                }
-            }
-
-            function showPaymentOptions() {
-                step = 'confirmacion';
-                setInputEnabled(false);
-
-                const mensaje = `¡Gracias, ${nombreCapturado}! 🙌
-
-Para completar tu compra, haz clic en el botón de pago a continuación. Serás redirigido a PayPal para finalizar el pago de forma segura.
-
-✅ Una vez realizado el pago, recibirás tus archivos en el correo que nos proporcionaste (${emailCapturado}).`;
-
-                let botonPayPal = '';
-
-                if (productoSeleccionado === 'biblioteca') {
-                    botonPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>
-                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
-                } else if (productoSeleccionado === 'consulta') {
-                    botonPayPal = `
-                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                            <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $40 (1 sesión)</a>
-                            <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $100 (3 sesiones)</a>
-                            <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $150 (5 sesiones)</a>
-                        </div>
-                        <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
-                } else if (productoSeleccionado === 'conferencia') {
-                    botonPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>
-                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
-                }
+Haz clic en el botón de pago para completar tu compra:`;
 
                 const botones = `
                     <div style="margin-top:8px;">
-                        ${botonPayPal}
+                        ${botonesPayPal}
+                        <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
                         <div style="margin-top:8px;">
-                            <button class="product-btn" data-role="accion" data-action="finalizar">✅ Ya realicé el pago</button>
                             <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
                         </div>
                     </div>
@@ -2125,29 +1946,7 @@ Para completar tu compra, haz clic en el botón de pago a continuación. Serás 
                 addMessage(mensaje, 'bot', { buttons: botones });
             }
 
-            function finalizarCompra() {
-                // Guardia anti doble-clic: si ya se confirmó, no repetir el mensaje
-                if (pagoConfirmado) return;
-                pagoConfirmado = true;
-
-                step = 'gracias';
-                setInputEnabled(false);
-                const mensaje = `🎉 ¡Gracias, ${nombreCapturado}! Tu pago ha sido confirmado.
-
-En breve recibirás un correo con los detalles de tu compra y los enlaces de descarga (si aplica).
-
-¿Hay algo más en lo que pueda ayudarte?`;
-
-                const botones = `
-                    <div style="margin-top:8px;">
-                        <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                    </div>
-                    ${botonHumano()}
-                `;
-                addMessage(mensaje, 'bot', { buttons: botones });
-            }
-
-            // ---------- Delegación de eventos (único listener para todos los botones del chat) ----------
+            // ---------- Delegación de eventos ----------
             chatMessages.addEventListener('click', function(e) {
                 const btn = e.target.closest('.product-btn[data-role]');
                 if (!btn) return;
@@ -2161,20 +1960,13 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
 
                 if (rol === 'accion') {
                     const accion = btn.dataset.action;
-                    if (accion === 'comprar') {
-                        askForEmail();
-                    } else if (accion === 'volver') {
+                    if (accion === 'volver') {
                         startChat();
-                    } else if (accion === 'atras-producto') {
-                        setInputEnabled(false);
-                        handleProductSelection(productoSeleccionado);
-                    } else if (accion === 'finalizar') {
-                        finalizarCompra();
                     }
                 }
             });
 
-            // ---------- Envío de mensajes de texto libre ----------
+            // ---------- Envío de mensajes ----------
             chatSend.addEventListener('click', function() {
                 const input = chatInput.value.trim();
                 if (!input) return;
@@ -2182,21 +1974,9 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
                 addMessage(input, 'user');
                 chatInput.value = '';
 
-                if (step === 'email') {
-                    handleEmailInput(input);
-                } else if (step === 'esperando_nombre') {
-                    handleWaitingForName(input);
-                } else if (step === 'esperando_email') {
-                    handleWaitingForEmail(input);
-                } else {
-                    setInputEnabled(false);
-                    showTyping();
-                    setTimeout(() => {
-                        removeTyping();
-                        addMessage('No entendí tu mensaje. Por favor, usa los botones para navegar.', 'bot');
-                        setInputEnabled(true);
-                    }, 1000);
-                }
+                setInputEnabled(false);
+                addMessage('Por favor, usa los botones para navegar.', 'bot');
+                setInputEnabled(true);
             });
 
             chatInput.addEventListener('keydown', function(e) {
