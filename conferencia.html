@@ -238,6 +238,20 @@
         }
         .form-container .btn-primary { width: 100%; }
 
+        .redirect-alert {
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            text-align: left;
+        }
+        .redirect-alert p {
+            color: #0d47a1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .faq-grid { grid-template-columns: 1fr; }
             .hero-section { padding: 2rem; }
@@ -304,6 +318,11 @@
         <div id="formSection">
             <h2>Reserva tu conferencia. <span>Transforma</span> tu equipo.</h2>
             <p>Completa los datos y te contactaré personalmente para coordinar todos los detalles.</p>
+
+            <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
+                <p>📌 <strong>Importante:</strong> Después de completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás un correo con los detalles de la conferencia.</p>
+            </div>
+
             <form id="conferenciaForm" class="form-container">
                 <input type="text" id="empresa" placeholder="Nombre de la empresa / organización" required>
                 <input type="text" id="contacto" placeholder="Nombre de la persona de contacto" required>
@@ -408,9 +427,9 @@
                 });
 
                 if (metodo === 'paypal') {
-                    const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD`;
+                    const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor%20(${tema})&amount=150&currency_code=USD`;
                     window.open(paypalLink, '_blank');
-                    alert('Serás redirigido a PayPal. Una vez pagado, envía tu comprobante por WhatsApp.');
+                    alert('Serás redirigido a PayPal. Una vez pagado, recibirás un correo con los detalles de la conferencia.');
                 } else {
                     modal.style.display = 'flex';
                 }
