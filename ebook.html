@@ -304,6 +304,20 @@
             font-size: 0.8rem;
         }
 
+        /* Nuevo: Alerta de redirección */
+        .redirect-alert {
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+        }
+        .redirect-alert p {
+            color: #0d47a1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .hero-ebook { flex-direction: column-reverse; text-align: center; padding: 2rem; }
             .hero-cover { flex: 0 0 auto; width: 200px; }
@@ -326,6 +340,11 @@
                 <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary">💳 Pagar con PayPal</a>
                 <br><br>
                 <p style="font-size:0.9rem; color: var(--text-muted);">También aceptamos Pago Móvil en Venezuela</p>
+
+                <!-- Alerta de redirección -->
+                <div class="redirect-alert">
+                    <p>🔔 Después del pago, serás redirigido a nuestra página de agradecimiento para recibir tus archivos.</p>
+                </div>
             </div>
             <div class="hero-cover">
                 <img src="PortadaEbook.png" alt="Biblioteca Lyon Asesor">
@@ -420,37 +439,52 @@
             </div>
         </div>
 
-        <!-- SECCIÓN: DESCARGA (sin enlaces directos) -->
-        <div class="section-block">
+        <!-- SECCIÓN: DESCARGA (con enlaces directos para clientes que ya pagaron) -->
+        <div class="section-block" id="descarga">
             <h2>Recibe tus <span>archivos</span></h2>
-            <p>Una vez confirmado tu pago, recibirás acceso a los 4 recursos digitales de forma inmediata.</p>
+            <p>Si ya realizaste el pago, puedes descargar tus archivos aquí:</p>
 
-            <div class="download-info">
-                <strong>🔒 Los archivos se entregan una vez verificado el pago</strong>
-                <p>Para proteger el contenido y garantizar una entrega segura, los enlaces de descarga se envían personalmente tras la confirmación del pago.</p>
+            <div class="download-info" style="background: #e8f5e9; border-left-color: #2e7d32;">
+                <strong>✅ Acceso para clientes que ya pagaron</strong>
+                <p>Haz clic en cada enlace para descargar tu recurso.</p>
             </div>
 
-            <div class="download-steps">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                <a href="https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
+                    📘 "Este Día Es Tuyo"
+                </a>
+                <a href="https://drive.google.com/uc?export=download&id=1KYfFN_2lh9_tuP6mO0M7fju99Ry8Y5ev" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
+                    📓 Diario Terapéutico
+                </a>
+                <a href="https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
+                    📄 Guía de Autocuidado
+                </a>
+                <a href="https://drive.google.com/uc?export=download&id=1Y4oLyRkHLFIZOkkM4AEa_pnCjNcZXRMq" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
+                    📋 Ejercicios de Bienestar
+                </a>
+            </div>
+
+            <div class="download-steps" style="margin-top: 20px;">
                 <div class="download-step">
                     <div class="step-num">1</div>
                     <span><strong>Realiza tu pago</strong> a través de PayPal o Pago Móvil usando los métodos indicados arriba.</span>
                 </div>
                 <div class="download-step">
                     <div class="step-num">2</div>
-                    <span><strong>Envía tu comprobante</strong> por WhatsApp al <a href="https://wa.me/584148610464" target="_blank" style="color: var(--naranja); font-weight:600;">0414-8610464</a>, indicando tu nombre y correo electrónico.</span>
+                    <span><strong>Descarga tus archivos</strong> directamente desde los enlaces de arriba.</span>
                 </div>
                 <div class="download-step">
                     <div class="step-num">3</div>
-                    <span><strong>Recibe tus 4 archivos</strong> directamente en tu correo o por WhatsApp en un plazo máximo de 24 horas hábiles.</span>
-                </div>
-                <div class="download-step">
-                    <div class="step-num">4</div>
                     <span><strong>¡Comienza tu transformación!</strong> Descarga, imprime o guarda tus recursos y empieza hoy mismo.</span>
                 </div>
             </div>
+
+            <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
+                <p>📌 <strong>Importante:</strong> Después de pagar con PayPal, serás redirigido a nuestra página de agradecimiento para confirmar tu compra.</p>
+            </div>
         </div>
 
-        <!-- SECCIÓN: FORMULARIO -->
+        <!-- SECCIÓN: FORMULARIO DE LEAD -->
         <div class="section-block" style="text-align:center;">
             <h2>Regístrate para <span>recibir novedades</span></h2>
             <p style="max-width:500px; margin:0 auto 1.5rem;">Déjanos tus datos y te mantendremos informado sobre nuevos lanzamientos y contenido exclusivo.</p>
@@ -488,26 +522,30 @@
                 if (!data.record.registros) data.record.registros = [];
 
                 data.record.registros.push({
-                    tipo: 'compra-biblioteca',
+                    tipo: 'lead-biblioteca',
                     timestamp: new Date().toISOString(),
                     nombreEmpresa: nombre,
                     email: email,
                     telefono: whatsapp || '',
-                    detalle: 'Compra de Biblioteca Lyon Asesor - Paquete $9.99',
-                    monto: 9.99,
-                    pagado: true
+                    detalle: 'Lead de Biblioteca Lyon Asesor',
+                    monto: 0,
+                    pagado: false
                 });
 
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
                     body: JSON.stringify(data.record)
                 });
 
-                alert('¡Registro exitoso! Pronto recibirás tus archivos. ¡Gracias por confiar en Lyon Asesor!');
+                alert('¡Registro exitoso! Pronto recibirás novedades. ¡Gracias por confiar en Lyon Asesor!');
+                document.getElementById('leadForm').reset();
             } catch (error) {
                 console.error('Error al guardar:', error);
-                alert('Hubo un error al guardar tus datos. Por favor, contacta por WhatsApp para recibir tus archivos.');
+                alert('Hubo un error al guardar tus datos. Por favor, intenta de nuevo.');
             }
         });
     </script>
