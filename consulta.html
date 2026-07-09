@@ -237,18 +237,20 @@
         }
         .form-container .btn-primary { width: 100%; }
 
+        /* Alerta corregida: texto oscuro sobre fondo claro */
         .redirect-alert {
-            background: #e3f2fd;
-            border-left: 4px solid #1e88e5;
+            background: #fff3e0;
+            border-left: 4px solid #e65100;
             padding: 16px 20px;
             border-radius: var(--radius-sm);
             margin-top: 20px;
             text-align: left;
         }
         .redirect-alert p {
-            color: #0d47a1;
-            font-size: 0.9rem;
+            color: #4a2c00;
+            font-size: 0.95rem;
             margin: 0;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -317,7 +319,8 @@
             <h2>Comienza hoy. Un <span>paso</span> que cambiará <span>todo.</span></h2>
             <p>Completa tus datos y te contactaré personalmente para acordar la primera sesión.</p>
 
-            <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
+            <!-- Alerta corregida: texto oscuro legible -->
+            <div class="redirect-alert">
                 <p>📌 <strong>Importante:</strong> Después de completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás un correo con las instrucciones para agendar tu sesión.</p>
             </div>
 
