@@ -238,7 +238,11 @@
         }
         .form-container .btn-primary { width: 100%; }
 
-        /* ===== ALERTA CORREGIDA: TEXTO VISIBLE #1e293b ===== */
+        /* ===== ALERTA CORREGIDA: se fuerza el color oscuro con !important =====
+           Motivo del bug: la regla "#formSection p" (selector con ID) tenía
+           más especificidad CSS que ".redirect-alert p" (selector con clase),
+           por lo que el color blanco translúcido (rgba(255,255,255,0.7))
+           ganaba sobre el color oscuro #1e293b y el texto se veía desvaído. */
         .redirect-alert {
             background: #fff3e0;
             border-left: 4px solid #e65100;
@@ -248,7 +252,7 @@
             text-align: left;
         }
         .redirect-alert p {
-            color: #1e293b;
+            color: #1e293b !important;
             font-size: 0.95rem;
             margin: 0;
             font-weight: 500;
