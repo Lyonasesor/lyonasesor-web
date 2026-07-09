@@ -237,6 +237,20 @@
         }
         .form-container .btn-primary { width: 100%; }
 
+        .redirect-alert {
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            text-align: left;
+        }
+        .redirect-alert p {
+            color: #0d47a1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         @media (max-width: 768px) {
             .faq-grid { grid-template-columns: 1fr; }
             .hero-section { padding: 2rem; }
@@ -302,6 +316,11 @@
         <div id="formSection">
             <h2>Comienza hoy. Un <span>paso</span> que cambiará <span>todo.</span></h2>
             <p>Completa tus datos y te contactaré personalmente para acordar la primera sesión.</p>
+
+            <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
+                <p>📌 <strong>Importante:</strong> Después de completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás un correo con las instrucciones para agendar tu sesión.</p>
+            </div>
+
             <form id="consultaForm" class="form-container">
                 <input type="text" id="nombre" placeholder="Nombre completo" required>
                 <input type="email" id="email" placeholder="Correo electrónico" required>
@@ -363,6 +382,7 @@
             }
 
             const paqueteTexto = paquete === '40' ? 'Individual' : (paquete === '100' ? '3 sesiones' : '5 sesiones');
+            const monto = parseInt(paquete);
 
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -379,7 +399,7 @@
                     email: email,
                     telefono: telefono,
                     detalle: motivo || 'Sin motivo específico',
-                    monto: parseInt(paquete),
+                    monto: monto,
                     pagado: false,
                     paquete: paqueteTexto
                 };
@@ -396,11 +416,11 @@
                 });
 
                 if (metodo === 'paypal') {
-                    const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor&amount=${paquete}&currency_code=USD`;
+                    const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor%20(${paqueteTexto})&amount=${monto}&currency_code=USD`;
                     window.open(paypalLink, '_blank');
-                    alert('Serás redirigido a PayPal. Una vez pagado, envía tu comprobante por WhatsApp.');
+                    alert('Serás redirigido a PayPal. Una vez pagado, recibirás un correo con las instrucciones para agendar tu sesión.');
                 } else {
-                    montoModal.textContent = '$' + paquete;
+                    montoModal.textContent = '$' + monto;
                     modal.style.display = 'flex';
                 }
 
