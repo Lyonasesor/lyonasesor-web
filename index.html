@@ -1030,6 +1030,64 @@
             opacity: 0.7;
         }
 
+        /* ===== FLOTANTES ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: var(--transition);
+            animation: floatPulse 3s infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.12);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+        @keyframes floatPulse {
+            0%,
+            100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 35px rgba(37, 211, 102, 0.65);
+            }
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 997;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--naranja);
+            transform: translateY(-3px);
+        }
+
         /* ===== CHAT DE VENTAS (FLOTANTE) ===== */
         .chat-float {
             position: fixed;
@@ -1048,7 +1106,7 @@
             cursor: pointer;
             border: none;
             color: #fff;
-            animation: floatPulse 3s infinite;
+            animation: floatPulseChat 3s infinite;
         }
         .chat-float:hover {
             transform: scale(1.12);
@@ -1059,7 +1117,7 @@
             height: 30px;
             fill: white;
         }
-        @keyframes floatPulse {
+        @keyframes floatPulseChat {
             0%,
             100% {
                 box-shadow: 0 4px 20px rgba(232, 107, 24, 0.4);
@@ -1171,10 +1229,22 @@
             font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition-fast);
+            border: 1px solid var(--naranja);
+            background: transparent;
+            color: var(--naranja);
         }
         .chat-message .product-btn:hover {
             background: var(--naranja);
             color: #fff;
+        }
+        .chat-message .product-btn.humano {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+        .chat-message .product-btn.humano:hover {
+            background: #128C7E;
+            border-color: #128C7E;
         }
         .chat-message .paypal-btn {
             display: inline-block;
@@ -1213,6 +1283,10 @@
             border-color: var(--naranja);
             box-shadow: 0 0 0 3px rgba(232, 107, 24, 0.1);
         }
+        .chat-input-area input:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
         .chat-input-area button {
             padding: 10px 20px;
             background: var(--naranja);
@@ -1223,7 +1297,7 @@
             cursor: pointer;
             transition: var(--transition-fast);
         }
-        .chat-input-area button:hover {
+        .chat-input-area button:hover:not(:disabled) {
             background: var(--naranja-oscuro);
         }
         .chat-input-area button:disabled {
@@ -1239,34 +1313,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 100px;
-            right: 32px;
-            width: 44px;
-            height: 44px;
-            background: var(--navy);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 997;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        .back-to-top:hover {
-            background: var(--naranja);
-            transform: translateY(-3px);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1625,7 +1671,7 @@
             <h2>¿Listo para dar el primer paso?</h2>
             <p>Únete a nuestra comunidad en WhatsApp y recibe contenido exclusivo, tips de bienestar y novedades.</p>
             <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" class="btn-whatsapp">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 Únete al Canal de WhatsApp
             </a>
         </div>
@@ -1641,7 +1687,7 @@
                     <div class="footer-social">
                         <a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
                         <a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a>
-                        <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+                        <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
                         <a href="mailto:lyonasesor@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
                     </div>
                 </div>
@@ -1770,7 +1816,7 @@
         });
 
         // =============================================
-        // CHAT DE VENTAS INTEGRADO
+        // CHAT DE VENTAS INTEGRADO — VERSIÓN CORREGIDA
         // =============================================
         (function() {
             // Elementos del chat
@@ -1787,24 +1833,30 @@
             let productoSeleccionado = '';
             let emailCapturado = '';
             let nombreCapturado = '';
+            let pagoConfirmado = false; // guardia anti doble-clic
 
-            // URLs de PayPal
+            // URLs de PayPal — AHORA CON BOTONES ALOJADOS
             const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
-            const PAYPAL_CONSULTA = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor&amount=40&currency_code=USD';
-            const PAYPAL_CONFERENCIA = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Conferencia%20Lyon%20Asesor&amount=150&currency_code=USD';
+            const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+            const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+            const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+            const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
 
-            // Configuración de JSONBin (misma que usas en el panel)
+            // Enlace directo a WhatsApp para "hablar con Alvaro"
+            const WHATSAPP_HUMANO = 'https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32';
+
+            // Configuración de JSONBin
+            // ⚠️ Recomendado: mover esto a un backend/proxy (ver nota en el código)
             const BIN_ID = '69ff5dc1adc21f119a775498';
             const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
 
-            // Función para agregar mensaje al chat
+            // ---------- Helpers de render ----------
+
             function addMessage(text, sender, options = {}) {
                 const div = document.createElement('div');
                 div.className = `chat-message ${sender}`;
                 if (sender === 'bot' && options.buttons) {
-                    div.innerHTML = text + options.buttons;
-                } else if (sender === 'bot') {
-                    div.textContent = text;
+                    div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
                 } else {
                     div.textContent = text;
                 }
@@ -1812,7 +1864,12 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
-            // Función para mostrar mensaje de "escribiendo..."
+            function escapeHtml(str) {
+                const d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML.replace(/\n/g, '<br>');
+            }
+
             function showTyping() {
                 const div = document.createElement('div');
                 div.className = 'chat-message bot';
@@ -1827,15 +1884,21 @@
                 if (typing) typing.remove();
             }
 
-            // Función para habilitar/deshabilitar input
             function setInputEnabled(enabled) {
                 chatInput.disabled = !enabled;
                 chatSend.disabled = !enabled;
                 if (enabled) chatInput.focus();
             }
 
-            // Función para guardar lead en JSONBin
-            async function saveLead(tipo, nombre, email, producto) {
+            function botonHumano() {
+                return `<div style="margin-top:6px;">
+                    <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Alvaro</a>
+                </div>`;
+            }
+
+            // ---------- Persistencia del lead ----------
+
+            async function saveLead(tipo, nombre, email, producto, monto) {
                 try {
                     const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                         headers: { 'X-Master-Key': API_KEY }
@@ -1843,10 +1906,6 @@
                     const data = await res.json();
                     if (!data.record) data.record = {};
                     if (!data.record.registros) data.record.registros = [];
-
-                    const monto = producto === 'biblioteca' ? 9.99 :
-                        producto === 'consulta' ? 40 :
-                        producto === 'conferencia' ? 150 : 0;
 
                     data.record.registros.push({
                         tipo: `chat-${tipo}`,
@@ -1873,11 +1932,15 @@
                 }
             }
 
-            // === FLUJO DE CONVERSACIÓN ===
+            // ---------- Pasos del flujo ----------
 
             function startChat() {
                 chatMessages.innerHTML = '';
                 step = 'welcome';
+                productoSeleccionado = '';
+                emailCapturado = '';
+                nombreCapturado = '';
+                pagoConfirmado = false;
                 chatInput.value = '';
                 setInputEnabled(false);
 
@@ -1889,29 +1952,22 @@ Estoy aquí para ayudarte a encontrar lo que necesitas.
 
                 const botones = `
                     <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-                        <button class="product-btn" data-producto="biblioteca">📚 Biblioteca Lyon Asesor</button>
-                        <button class="product-btn" data-producto="consulta">🧘 Proceso Terapéutico</button>
-                        <button class="product-btn" data-producto="conferencia">🎤 Conferencia</button>
+                        <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca Lyon Asesor</button>
+                        <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Proceso Terapéutico</button>
+                        <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia</button>
                     </div>
+                    ${botonHumano()}
                 `;
                 addMessage(bienvenida, 'bot', { buttons: botones });
-
-                // Eventos para los botones de producto
-                document.querySelectorAll('.product-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const producto = this.getAttribute('data-producto');
-                        handleProductSelection(producto);
-                    });
-                });
             }
 
             function handleProductSelection(producto) {
                 productoSeleccionado = producto;
                 step = 'producto';
 
-                let nombreProducto = '';
-                let precio = '';
-                let descripcion = '';
+                let nombreProducto = '',
+                    precio = '',
+                    descripcion = '';
 
                 if (producto === 'biblioteca') {
                     nombreProducto = '📚 Biblioteca Lyon Asesor';
@@ -1919,8 +1975,8 @@ Estoy aquí para ayudarte a encontrar lo que necesitas.
                     descripcion = 'Incluye 4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
                 } else if (producto === 'consulta') {
                     nombreProducto = '🧘 Proceso Terapéutico';
-                    precio = '$40 (sesión individual)';
-                    descripcion = 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos.';
+                    precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
+                    descripcion = 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos. Selecciona tu paquete.';
                 } else if (producto === 'conferencia') {
                     nombreProducto = '🎤 Conferencia';
                     precio = '$150 (tarifa plana)';
@@ -1937,50 +1993,42 @@ ${descripcion}
 
                 const botones = `
                     <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-                        <button class="product-btn" data-action="comprar">✅ Sí, quiero comprar</button>
-                        <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
+                        <button class="product-btn" data-role="accion" data-action="comprar">✅ Sí, quiero comprar</button>
+                        <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
                     </div>
+                    ${botonHumano()}
                 `;
 
                 addMessage(mensaje, 'bot', { buttons: botones });
-
-                document.querySelectorAll('.product-btn[data-action="comprar"]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        askForEmail();
-                    });
-                });
-                document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        startChat();
-                    });
-                });
             }
 
             function askForEmail() {
                 step = 'email';
                 setInputEnabled(true);
                 chatInput.placeholder = 'Ingresa tu nombre y correo (ej: Ana, ana@email.com)';
-                addMessage('Perfecto. Para continuar, necesito tu nombre y correo electrónico (ej: Ana, ana@email.com):', 'bot');
+                const botones = `
+                    <div style="margin-top:8px;">
+                        <button class="product-btn" data-role="accion" data-action="atras-producto">🔙 Elegir otro producto</button>
+                    </div>
+                `;
+                addMessage('Perfecto. Para continuar, necesito tu nombre y correo electrónico (ej: Ana, ana@email.com):', 'bot', { buttons: botones });
                 chatInput.focus();
             }
 
             function handleEmailInput(input) {
-                // Intentar separar nombre y correo
                 const parts = input.split(',');
-                let nombre = '';
-                let email = '';
+                let nombre = '',
+                    email = '';
 
                 if (parts.length >= 2) {
                     nombre = parts[0].trim();
                     email = parts[1].trim();
                 } else if (input.includes('@')) {
-                    // Asumir que solo es correo, pedir nombre después
                     email = input.trim();
                     addMessage('¿Y tu nombre?', 'bot');
                     step = 'esperando_nombre';
                     return;
                 } else {
-                    // Asumir que solo es nombre, pedir correo después
                     nombre = input.trim();
                     addMessage('Ahora ingresa tu correo electrónico:', 'bot');
                     step = 'esperando_email';
@@ -1990,7 +2038,11 @@ ${descripcion}
                 if (nombre && email && email.includes('@')) {
                     nombreCapturado = nombre;
                     emailCapturado = email;
-                    saveLead(productoSeleccionado, nombre, email, productoSeleccionado);
+                    let monto = 0;
+                    if (productoSeleccionado === 'biblioteca') monto = 9.99;
+                    else if (productoSeleccionado === 'conferencia') monto = 150;
+                    else if (productoSeleccionado === 'consulta') monto = 40;
+                    saveLead(productoSeleccionado, nombre, email, productoSeleccionado, monto);
                     showPaymentOptions();
                 } else {
                     addMessage('Por favor, ingresa ambos: tu nombre y tu correo (ej: Ana, ana@email.com)', 'bot');
@@ -2018,7 +2070,11 @@ ${descripcion}
                 const email = input.trim();
                 if (email && email.includes('@')) {
                     emailCapturado = email;
-                    saveLead(productoSeleccionado, nombreCapturado, email, productoSeleccionado);
+                    let monto = 0;
+                    if (productoSeleccionado === 'biblioteca') monto = 9.99;
+                    else if (productoSeleccionado === 'conferencia') monto = 150;
+                    else if (productoSeleccionado === 'consulta') monto = 40;
+                    saveLead(productoSeleccionado, nombreCapturado, email, productoSeleccionado, monto);
                     showPaymentOptions();
                 } else {
                     addMessage('Por favor, ingresa un correo válido (ej: ana@email.com):', 'bot');
@@ -2031,7 +2087,7 @@ ${descripcion}
                 step = 'confirmacion';
                 setInputEnabled(false);
 
-                let mensaje = `¡Gracias, ${nombreCapturado}! 🙌
+                const mensaje = `¡Gracias, ${nombreCapturado}! 🙌
 
 Para completar tu compra, haz clic en el botón de pago a continuación. Serás redirigido a PayPal para finalizar el pago de forma segura.
 
@@ -2043,8 +2099,13 @@ Para completar tu compra, haz clic en el botón de pago a continuación. Serás 
                     botonPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>
                     <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
                 } else if (productoSeleccionado === 'consulta') {
-                    botonPayPal = `<a href="${PAYPAL_CONSULTA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $40 con PayPal</a>
-                    <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
+                    botonPayPal = `
+                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                            <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $40 (1 sesión)</a>
+                            <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $100 (3 sesiones)</a>
+                            <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pagar $150 (5 sesiones)</a>
+                        </div>
+                        <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
                 } else if (productoSeleccionado === 'conferencia') {
                     botonPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>
                     <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>`;
@@ -2054,46 +2115,66 @@ Para completar tu compra, haz clic en el botón de pago a continuación. Serás 
                     <div style="margin-top:8px;">
                         ${botonPayPal}
                         <div style="margin-top:8px;">
-                            <button class="product-btn" data-action="finalizar">✅ Ya realicé el pago</button>
-                            <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
+                            <button class="product-btn" data-role="accion" data-action="finalizar">✅ Ya realicé el pago</button>
+                            <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
                         </div>
                     </div>
+                    ${botonHumano()}
                 `;
 
                 addMessage(mensaje, 'bot', { buttons: botones });
+            }
 
-                document.querySelectorAll('.product-btn[data-action="finalizar"]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        step = 'gracias';
-                        setInputEnabled(false);
-                        addMessage(`🎉 ¡Gracias, ${nombreCapturado}! Tu pago ha sido confirmado.
+            function finalizarCompra() {
+                // Guardia anti doble-clic: si ya se confirmó, no repetir el mensaje
+                if (pagoConfirmado) return;
+                pagoConfirmado = true;
+
+                step = 'gracias';
+                setInputEnabled(false);
+                const mensaje = `🎉 ¡Gracias, ${nombreCapturado}! Tu pago ha sido confirmado.
 
 En breve recibirás un correo con los detalles de tu compra y los enlaces de descarga (si aplica).
 
-¿Hay algo más en lo que pueda ayudarte?`, 'bot');
+¿Hay algo más en lo que pueda ayudarte?`;
 
-                        const botonesFinal = `
-                            <div style="margin-top:8px;">
-                                <button class="product-btn" data-action="volver">🔙 Volver al inicio</button>
-                            </div>
-                        `;
-                        addMessage('', 'bot', { buttons: botonesFinal });
-
-                        document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
-                            btn.addEventListener('click', () => {
-                                startChat();
-                            });
-                        });
-                    });
-                });
-                document.querySelectorAll('.product-btn[data-action="volver"]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        startChat();
-                    });
-                });
+                const botones = `
+                    <div style="margin-top:8px;">
+                        <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
+                    </div>
+                    ${botonHumano()}
+                `;
+                addMessage(mensaje, 'bot', { buttons: botones });
             }
 
-            // === MANEJO DE ENVÍO DE MENSAJES ===
+            // ---------- Delegación de eventos (único listener para todos los botones del chat) ----------
+            chatMessages.addEventListener('click', function(e) {
+                const btn = e.target.closest('.product-btn[data-role]');
+                if (!btn) return;
+
+                const rol = btn.dataset.role;
+
+                if (rol === 'producto') {
+                    handleProductSelection(btn.dataset.producto);
+                    return;
+                }
+
+                if (rol === 'accion') {
+                    const accion = btn.dataset.action;
+                    if (accion === 'comprar') {
+                        askForEmail();
+                    } else if (accion === 'volver') {
+                        startChat();
+                    } else if (accion === 'atras-producto') {
+                        setInputEnabled(false);
+                        handleProductSelection(productoSeleccionado);
+                    } else if (accion === 'finalizar') {
+                        finalizarCompra();
+                    }
+                }
+            });
+
+            // ---------- Envío de mensajes de texto libre ----------
             chatSend.addEventListener('click', function() {
                 const input = chatInput.value.trim();
                 if (!input) return;
@@ -2108,7 +2189,6 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
                 } else if (step === 'esperando_email') {
                     handleWaitingForEmail(input);
                 } else {
-                    // Mensaje genérico si no está en un paso específico
                     setInputEnabled(false);
                     showTyping();
                     setTimeout(() => {
@@ -2125,7 +2205,7 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
                 }
             });
 
-            // === ABRIR / CERRAR CHAT ===
+            // ---------- Abrir / cerrar chat ----------
             chatToggle.addEventListener('click', function() {
                 if (chatWindow.classList.contains('open')) {
                     chatWindow.classList.remove('open');
@@ -2136,7 +2216,6 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
                     if (chatMessages.children.length === 0) {
                         startChat();
                     }
-                    // Enfocar input si está habilitado
                     if (!chatInput.disabled) {
                         setTimeout(() => chatInput.focus(), 300);
                     }
@@ -2148,7 +2227,6 @@ En breve recibirás un correo con los detalles de tu compra y los enlaces de des
                 chatOpen = false;
             });
 
-            // Cerrar chat con Escape
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && chatOpen) {
                     chatWindow.classList.remove('open');
