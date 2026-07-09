@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¡Gracias por tu compra! · Lyon Asesor</title>
-    <meta name="description" content="¡Gracias por adquirir la Biblioteca Lyon Asesor! Recibirás tus archivos en tu correo electrónico.">
+    <meta name="description" content="¡Gracias por tu compra en Lyon Asesor!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -70,12 +70,6 @@
             color: var(--text-muted);
             margin-bottom: 1.5rem;
         }
-        .page-wrapper .description {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
 
         .producto-box {
             background: var(--crema);
@@ -97,29 +91,8 @@
             margin: 0;
         }
 
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 450px;
-            margin: 1.5rem auto 0;
-        }
-        .form-container input {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid #e2e8f0;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition-fast);
-        }
-        .form-container input:focus {
-            border-color: var(--naranja);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.12);
-        }
-
-        .btn-primary {
+        /* Botón de descarga para biblioteca */
+        .btn-download {
             display: inline-block;
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
             color: #fff;
@@ -129,48 +102,36 @@
             text-decoration: none;
             box-shadow: var(--shadow-orange);
             transition: var(--transition);
-            border: none;
-            cursor: pointer;
             font-size: 1rem;
-            width: 100%;
+            margin-top: 1rem;
         }
-        .btn-primary:hover {
+        .btn-download:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(232,107,24,0.5);
         }
 
-        .success-message {
-            background: #e8f5e9;
-            border-left: 4px solid #2e7d32;
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            margin: 1.5rem 0;
-            text-align: left;
+        /* Botón de WhatsApp para consultas y conferencias */
+        .btn-whatsapp-success {
+            display: inline-block;
+            background: #25D366;
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+            transition: var(--transition);
+            font-size: 1rem;
+            margin-top: 1rem;
         }
-        .success-message p {
-            color: #1b5e20;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        /* Mensaje específico por producto (sin enlaces directos) */
-        .product-message {
-            background: #fff3e0;
-            border-left: 4px solid #e65100;
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            margin: 1.5rem 0;
-            text-align: left;
-        }
-        .product-message p {
-            color: #4a2c00;
-            font-size: 0.95rem;
-            margin: 0;
+        .btn-whatsapp-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(37,211,102,0.5);
         }
 
         .back-link {
             display: inline-block;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             color: var(--naranja);
             text-decoration: none;
             font-weight: 500;
@@ -191,11 +152,7 @@
     <div class="page-wrapper" id="app">
         <div class="icon">🎉</div>
         <h1>¡Gracias por tu <span>compra</span>!</h1>
-        <div class="sub">Tu pedido ha sido procesado exitosamente</div>
-
-        <div class="description">
-            Hemos recibido tu pago. A continuación, completa tus datos para recibir la información de tu compra.
-        </div>
+        <div class="sub">Tu pago ha sido procesado exitosamente</div>
 
         <!-- PRODUCTO -->
         <div class="producto-box" id="productoInfo">
@@ -203,38 +160,15 @@
             <p id="productoDetalle">4 herramientas digitales para tu bienestar emocional.</p>
         </div>
 
-        <!-- MENSAJE ESPECÍFICO POR PRODUCTO (sin enlaces directos) -->
-        <div class="product-message" id="productMessage">
-            <p id="mensajeProducto">📧 Recibirás los enlaces de descarga en tu correo electrónico. Revisa tu bandeja de entrada (y el spam, por si acaso).</p>
-        </div>
-
-        <!-- FORMULARIO DE CORREO -->
-        <div id="formSection">
-            <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1rem;">
-                <strong>Ingresa tu correo electrónico</strong> para recibir los detalles de tu compra.
-            </p>
-            <form id="emailForm" class="form-container">
-                <input type="text" id="nombre" placeholder="Tu nombre completo" required>
-                <input type="email" id="email" placeholder="Tu correo electrónico" required>
-                <button type="submit" class="btn-primary">📩 Recibir mi información</button>
-            </form>
-        </div>
-
-        <!-- MENSAJE DE ÉXITO (oculto inicialmente) -->
-        <div id="successMessage" class="success-message" style="display:none;">
-            <p id="successText">✅ ¡Listo! Hemos enviado los detalles de tu compra a tu correo electrónico. Revisa tu bandeja de entrada (y el spam, por si acaso).</p>
+        <!-- CONTENIDO DINÁMICO SEGÚN PRODUCTO -->
+        <div id="contenidoDinamico">
+            <!-- Será llenado por JavaScript -->
         </div>
 
         <a href="index.html" class="back-link">← Volver al inicio</a>
     </div>
 
     <script>
-        // =============================================
-        // CONFIGURACIÓN JSONBin
-        // =============================================
-        const BIN_ID = '69ff5dc1adc21f119a775498';
-        const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
         // =============================================
         // DETECTAR PRODUCTO DESDE LA URL
         // =============================================
@@ -245,23 +179,17 @@
             biblioteca: {
                 nombre: '📚 Biblioteca Lyon Asesor',
                 detalle: '4 herramientas digitales para tu bienestar emocional: ebook + 3 guías prácticas.',
-                tipo: 'compra-biblioteca',
-                monto: 9.99,
-                mensaje: '📧 Recibirás los enlaces de descarga en tu correo electrónico. Revisa tu bandeja de entrada (y el spam, por si acaso).'
+                mensaje: 'Aquí tienes tus archivos listos para descargar:'
             },
             consulta: {
                 nombre: '🧘 Proceso Terapéutico',
                 detalle: 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos.',
-                tipo: 'compra-consulta',
-                monto: 40,
-                mensaje: '📞 En las próximas 24 horas recibirás un correo o WhatsApp para agendar tu primera sesión.'
+                mensaje: 'Coordina tu primera sesión directamente con Alvaro por WhatsApp:'
             },
             conferencia: {
                 nombre: '🎤 Conferencia Lyon Asesor',
                 detalle: '12 temáticas transformadoras para empresas e instituciones. Diploma + ebook incluidos.',
-                tipo: 'compra-conferencia',
-                monto: 150,
-                mensaje: '📧 En las próximas 24 horas recibirás un correo para coordinar todos los detalles de la conferencia.'
+                mensaje: 'Coordina los detalles de tu conferencia directamente con Alvaro por WhatsApp:'
             }
         };
 
@@ -270,84 +198,47 @@
         // Mostrar información del producto
         document.getElementById('productoNombre').textContent = info.nombre;
         document.getElementById('productoDetalle').textContent = info.detalle;
-        document.getElementById('mensajeProducto').textContent = info.mensaje;
 
         // =============================================
-        // MANEJO DEL FORMULARIO DE CORREO
+        // GENERAR CONTENIDO DINÁMICO SEGÚN PRODUCTO
         // =============================================
-        document.getElementById('emailForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        const contenedor = document.getElementById('contenidoDinamico');
 
-            const nombre = document.getElementById('nombre').value.trim();
-            const email = document.getElementById('email').value.trim();
-
-            if (!nombre || !email) {
-                alert('Por favor, completa tu nombre y correo electrónico.');
-                return;
-            }
-
-            try {
-                // Guardar en JSONBin
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                const data = await res.json();
-                if (!data.record) data.record = {};
-                if (!data.record.registros) data.record.registros = [];
-
-                data.record.registros.push({
-                    tipo: info.tipo,
-                    timestamp: new Date().toISOString(),
-                    nombreEmpresa: nombre,
-                    email: email,
-                    telefono: '',
-                    detalle: `Compra confirmada: ${info.nombre}`,
-                    monto: info.monto,
-                    pagado: true,
-                    producto: producto
-                });
-
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
-                    },
-                    body: JSON.stringify(data.record)
-                });
-
-                // Ocultar formulario, mostrar mensaje de éxito
-                document.getElementById('formSection').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-
-                // Mensaje de éxito específico según producto
-                const successText = document.getElementById('successText');
-                if (producto === 'biblioteca') {
-                    successText.textContent = '✅ ¡Listo! Hemos enviado los enlaces de descarga a tu correo electrónico. Revisa tu bandeja de entrada (y el spam, por si acaso).';
-                } else if (producto === 'consulta') {
-                    successText.textContent = '✅ ¡Listo! En las próximas 24 horas recibirás un correo o WhatsApp para agendar tu primera sesión.';
-                } else if (producto === 'conferencia') {
-                    successText.textContent = '✅ ¡Listo! En las próximas 24 horas recibirás un correo para coordinar todos los detalles de la conferencia.';
-                }
-
-            } catch (error) {
-                console.error('Error al guardar:', error);
-                alert('Hubo un error al procesar tus datos. Por favor, contacta por WhatsApp para recibir tus archivos.');
-            }
-        });
-
-        // =============================================
-        // SI EL USUARIO LLEGÓ CON PARÁMETROS (desde el chat)
-        // =============================================
-        const emailParam = urlParams.get('email');
-        const nombreParam = urlParams.get('nombre');
-        if (emailParam && nombreParam) {
-            document.getElementById('email').value = emailParam;
-            document.getElementById('nombre').value = nombreParam;
-            // Auto-enviar después de 1 segundo
-            setTimeout(() => {
-                document.getElementById('emailForm').dispatchEvent(new Event('submit'));
-            }, 1000);
+        if (producto === 'biblioteca') {
+            // Mostrar enlace de descarga directa
+            contenedor.innerHTML = `
+                <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
+                    ${info.mensaje}
+                </p>
+                <a href="https://lyonasesor-web.pages.dev/descargasahora" target="_blank" class="btn-download">
+                    📥 Descargar mis ebooks ahora
+                </a>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.8rem;">
+                    Los archivos también están disponibles en la página de descarga.
+                </p>
+            `;
+        } else if (producto === 'consulta') {
+            // Mostrar botón de WhatsApp para consultas
+            const mensajeWhatsApp = encodeURIComponent('Hola Alvaro, acabo de pagar mi consulta y quiero coordinar la primera sesión.');
+            contenedor.innerHTML = `
+                <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
+                    ${info.mensaje}
+                </p>
+                <a href="https://wa.me/584148610464?text=${mensajeWhatsApp}" target="_blank" class="btn-whatsapp-success">
+                    📲 Contactar por WhatsApp
+                </a>
+            `;
+        } else if (producto === 'conferencia') {
+            // Mostrar botón de WhatsApp para conferencias
+            const mensajeWhatsApp = encodeURIComponent('Hola Alvaro, acabo de pagar mi conferencia y quiero coordinar los detalles.');
+            contenedor.innerHTML = `
+                <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
+                    ${info.mensaje}
+                </p>
+                <a href="https://wa.me/584148610464?text=${mensajeWhatsApp}" target="_blank" class="btn-whatsapp-success">
+                    📲 Contactar por WhatsApp
+                </a>
+            `;
         }
     </script>
 </body>
