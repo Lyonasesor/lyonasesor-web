@@ -154,7 +154,6 @@
         .section-block h2 span { color: var(--naranja); }
         .section-block > p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
 
-        /* Grid de recursos con tarjetas expandidas */
         .resource-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -258,53 +257,6 @@
             font-size: 1rem;
         }
 
-        /* Sección de descarga post-pago */
-        .download-info {
-            margin-top: 20px;
-            background: #fff8e1;
-            padding: 20px 24px;
-            border-radius: var(--radius-sm);
-            border-left: 4px solid #f59e0b;
-        }
-        .download-info p {
-            color: #7c5a00;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-        .download-info strong {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 1rem;
-            color: #5a3e00;
-        }
-        .download-steps {
-            margin-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .download-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-        .download-step .step-num {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            background: var(--naranja);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-
-        /* Nuevo: Alerta de redirección */
         .redirect-alert {
             background: #e3f2fd;
             border-left: 4px solid #1e88e5;
@@ -316,6 +268,26 @@
             color: #0d47a1;
             font-size: 0.9rem;
             margin: 0;
+        }
+
+        /* Mensaje de entrega por correo (reemplaza los enlaces directos) */
+        .delivery-info {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            padding: 20px 24px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+        }
+        .delivery-info p {
+            color: #1b5e20;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        .delivery-info strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1rem;
+            color: #1b5e20;
         }
 
         @media (max-width: 768px) {
@@ -341,9 +313,8 @@
                 <br><br>
                 <p style="font-size:0.9rem; color: var(--text-muted);">También aceptamos Pago Móvil en Venezuela</p>
 
-                <!-- Alerta de redirección -->
                 <div class="redirect-alert">
-                    <p>🔔 Después del pago, serás redirigido a nuestra página de agradecimiento para recibir tus archivos.</p>
+                    <p>🔔 Después del pago, serás redirigido a nuestra página de agradecimiento para confirmar tu compra.</p>
                 </div>
             </div>
             <div class="hero-cover">
@@ -439,44 +410,14 @@
             </div>
         </div>
 
-        <!-- SECCIÓN: DESCARGA (con enlaces directos para clientes que ya pagaron) -->
-        <div class="section-block" id="descarga">
+        <!-- SECCIÓN: ENTREGA (sin enlaces directos) -->
+        <div class="section-block">
             <h2>Recibe tus <span>archivos</span></h2>
-            <p>Si ya realizaste el pago, puedes descargar tus archivos aquí:</p>
+            <p>Una vez confirmado tu pago, recibirás los enlaces de descarga directamente en tu correo electrónico.</p>
 
-            <div class="download-info" style="background: #e8f5e9; border-left-color: #2e7d32;">
-                <strong>✅ Acceso para clientes que ya pagaron</strong>
-                <p>Haz clic en cada enlace para descargar tu recurso.</p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                <a href="https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
-                    📘 "Este Día Es Tuyo"
-                </a>
-                <a href="https://drive.google.com/uc?export=download&id=1KYfFN_2lh9_tuP6mO0M7fju99Ry8Y5ev" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
-                    📓 Diario Terapéutico
-                </a>
-                <a href="https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
-                    📄 Guía de Autocuidado
-                </a>
-                <a href="https://drive.google.com/uc?export=download&id=1Y4oLyRkHLFIZOkkM4AEa_pnCjNcZXRMq" target="_blank" style="display: block; padding: 14px 20px; background: var(--crema); border-radius: var(--radius-sm); text-align: center; text-decoration: none; color: var(--navy); font-weight: 600; border: 1px solid rgba(26,35,48,0.06); transition: var(--transition-fast);">
-                    📋 Ejercicios de Bienestar
-                </a>
-            </div>
-
-            <div class="download-steps" style="margin-top: 20px;">
-                <div class="download-step">
-                    <div class="step-num">1</div>
-                    <span><strong>Realiza tu pago</strong> a través de PayPal o Pago Móvil usando los métodos indicados arriba.</span>
-                </div>
-                <div class="download-step">
-                    <div class="step-num">2</div>
-                    <span><strong>Descarga tus archivos</strong> directamente desde los enlaces de arriba.</span>
-                </div>
-                <div class="download-step">
-                    <div class="step-num">3</div>
-                    <span><strong>¡Comienza tu transformación!</strong> Descarga, imprime o guarda tus recursos y empieza hoy mismo.</span>
-                </div>
+            <div class="delivery-info">
+                <strong>📧 Los enlaces se envían por correo</strong>
+                <p>Después de completar el pago, recibirás un correo con los 4 enlaces de descarga. Revisa tu bandeja de entrada (y el spam, por si acaso).</p>
             </div>
 
             <div class="redirect-alert" style="background: #fff3e0; border-left-color: #e65100;">
