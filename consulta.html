@@ -238,11 +238,7 @@
         }
         .form-container .btn-primary { width: 100%; }
 
-        /* ===== ALERTA CORREGIDA: se fuerza el color oscuro con !important =====
-           Motivo del bug: la regla "#formSection p" (selector con ID) tenía
-           más especificidad CSS que ".redirect-alert p" (selector con clase),
-           por lo que el color blanco translúcido (rgba(255,255,255,0.7))
-           ganaba sobre el color oscuro #1e293b y el texto se veía desvaído. */
+        /* ===== ALERTA ACTUALIZADA: Nuevo mensaje para el flujo del chatbot ===== */
         .redirect-alert {
             background: #fff3e0;
             border-left: 4px solid #e65100;
@@ -322,11 +318,11 @@
 
         <div id="formSection">
             <h2>Comienza hoy. Un <span>paso</span> que cambiará <span>todo.</span></h2>
-            <p>Completa tus datos y te contactaré personalmente para acordar la primera sesión.</p>
+            <p>Completa tus datos y serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás las instrucciones para agendar tu sesión en la página de agradecimiento.</p>
 
-            <!-- ALERTA CORREGIDA: texto visible -->
+            <!-- ALERTA ACTUALIZADA: Mensaje alineado con el nuevo flujo del chatbot -->
             <div class="redirect-alert">
-                <p>📌 <strong>Importante:</strong> Después de completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás un correo con las instrucciones para agendar tu sesión.</p>
+                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, serás llevado a una página donde podrás contactar directamente con Alvaro por WhatsApp para coordinar tu primera sesión.</p>
             </div>
 
             <form id="consultaForm" class="form-container">
@@ -424,9 +420,16 @@
                 });
 
                 if (metodo === 'paypal') {
-                    const paypalLink = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=lyonasesor@gmail.com&item_name=Consulta%20Lyon%20Asesor%20(${paqueteTexto})&amount=${monto}&currency_code=USD`;
-                    window.open(paypalLink, '_blank');
-                    alert('Serás redirigido a PayPal. Una vez pagado, recibirás un correo con las instrucciones para agendar tu sesión.');
+                    // REDIRECCIÓN AL NUEVO BOTÓN ALOJADO DE PAYPAL
+                    let paypalLink;
+                    if (paquete === '40') {
+                        paypalLink = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                    } else if (paquete === '100') {
+                        paypalLink = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                    } else if (paquete === '150') {
+                        paypalLink = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+                    }
+                    window.location.href = paypalLink;
                 } else {
                     montoModal.textContent = '$' + monto;
                     modal.style.display = 'flex';
