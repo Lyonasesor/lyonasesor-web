@@ -109,6 +109,8 @@
             --coral-light: #F5DDD5;
             --sage: #5A7A5A;
             --sage-light: #D5E8D5;
+            /* Altura real del nav, medida por JS y usada para que nada quede tapado debajo */
+            --nav-height: 84px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -149,7 +151,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         }
         .nav-inner {
-            max-width: 1200px;
+            max-width: 960px;
             margin: 0 auto;
             padding: 0 24px;
             display: flex;
@@ -161,6 +163,7 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
+            flex-shrink: 0;
         }
         .nav-logo-icon {
             width: 44px;
@@ -168,6 +171,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
         .nav-logo-icon img {
             width: 40px;
@@ -182,26 +186,29 @@
             letter-spacing: 2px;
             color: #fff;
             line-height: 1.2;
+            white-space: nowrap;
         }
         .nav-logo-text .main span { color: var(--naranja); }
         .nav-logo-text .sub {
             font-size: 0.65rem;
             letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.7);
+            white-space: nowrap;
         }
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 20px;
             list-style: none;
         }
         .nav-links a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 500;
             transition: var(--transition-fast);
             position: relative;
+            white-space: nowrap;
         }
         .nav-links a::after {
             content: '';
@@ -218,7 +225,7 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
             color: #fff !important;
-            padding: 10px 24px;
+            padding: 9px 20px;
             border-radius: 50px;
             font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
@@ -247,6 +254,27 @@
         .nav-toggle.active span:nth-child(2) { opacity: 0; }
         .nav-toggle.active span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== NAV RESPONSIVE (colapsa antes de amontonarse) ===== */
+        @media (max-width: 1000px) {
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(26,35,48,0.98);
+                backdrop-filter: blur(20px);
+                padding: 100px 40px;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
         }
 
         /* ===== HERO HEADER ===== */
@@ -323,7 +351,7 @@
             border-bottom: 1px solid rgba(26,35,48,0.06);
             padding: 1rem 2rem;
             position: sticky;
-            top: 0;
+            top: var(--nav-height);
             z-index: 100;
         }
         .progress-inner {
@@ -1207,23 +1235,6 @@
             .areas-grid { grid-template-columns: 1fr; }
             .likert-row { grid-template-columns: 1fr repeat(5,36px); }
             .cta-features { flex-direction: column; align-items: center; gap: 10px; }
-            .nav-links { display: none; }
-            .nav-toggle { display: flex; }
-            .nav-links.active {
-                display: flex;
-                flex-direction: column;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(26,35,48,0.98);
-                backdrop-filter: blur(20px);
-                padding: 100px 40px;
-                gap: 28px;
-                z-index: 1000;
-            }
-            .nav-links.active a { font-size: 1.3rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .chat-window {
                 bottom: 80px;
@@ -1803,8 +1814,18 @@
     <script>
         // ===== NAV =====
         const nav = document.getElementById('nav');
+
+        // Mide el alto real del nav y lo expone como variable CSS,
+        // así la barra de progreso (sticky) nunca queda tapada por el nav fijo.
+        function updateNavHeight() {
+            document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+        }
+        updateNavHeight();
+        window.addEventListener('resize', updateNavHeight);
+
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
+            updateNavHeight();
         });
 
         const navToggle = document.getElementById('navToggle');
