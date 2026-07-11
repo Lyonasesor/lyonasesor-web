@@ -955,7 +955,10 @@
         // ===== FORMULARIO CONFERENCIA =====
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
+
+        // Referencias seguras al modal (pueden no existir)
         const modal = document.getElementById('modalPagoMovil');
+        const cerrarModalBtn = document.getElementById('cerrarModal');
 
         document.getElementById('conferenciaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1016,7 +1019,22 @@
                 if (metodo === 'paypal') {
                     window.location.href = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
                 } else {
-                    modal.style.display = 'flex';
+                    // Pago Móvil - si existe el modal, lo mostramos; si no, enviamos por WhatsApp
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    } else {
+                        const mensaje = encodeURIComponent(
+                            `Hola Alvaro, he seleccionado Pago Móvil para mi conferencia.\n` +
+                            `Empresa: ${empresa}\n` +
+                            `Contacto: ${contacto}\n` +
+                            `Email: ${email}\n` +
+                            `Teléfono: ${telefono}\n` +
+                            `Tema: ${tema}\n` +
+                            `Participantes: ${participantes}`
+                        );
+                        window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
+                        alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
+                    }
                 }
 
             } catch (error) {
@@ -1025,20 +1043,25 @@
             }
         });
 
-        document.getElementById('cerrarModal').addEventListener('click', function() {
-            modal.style.display = 'none';
-            alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-        });
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+        // Cerrar modal de Pago Móvil (solo si existe)
+        if (cerrarModalBtn) {
+            cerrarModalBtn.addEventListener('click', function() {
+                if (modal) modal.style.display = 'none';
                 alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-            }
-        };
+            });
+        }
+
+        if (modal) {
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
+                }
+            };
+        }
 
         // =============================================
-        // CHAT DE VENTAS — CORREGIDO
+        // CHAT DE VENTAS — CORREGIDO (sin errores)
         // =============================================
         (function() {
             if (document.readyState === 'loading') {
