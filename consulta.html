@@ -263,6 +263,8 @@
             color: var(--navy);
             line-height: 1.15;
             margin-bottom: 0.5rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .hero-section h1 span { color: var(--naranja); }
         .hero-section .sub {
@@ -713,6 +715,7 @@
         @media (max-width: 768px) {
             .faq-grid { grid-template-columns: 1fr; }
             .hero-section { padding: 2rem; margin-top: 70px; }
+            .hero-section h1 { font-size: clamp(1.9rem, 7vw, 2.5rem); }
             .section-block { padding: 1.5rem; }
             #formSection { padding: 2rem; }
             .nav-links { display: none; }
@@ -742,6 +745,7 @@
         }
         @media (max-width: 480px) {
             .hero-section { padding: 1.5rem; }
+            .hero-section h1 { font-size: clamp(1.5rem, 8vw, 2rem); line-height: 1.2; }
             .chat-window {
                 bottom: 70px;
                 right: 8px;
