@@ -52,14 +52,16 @@
         }
     </script>
     
-    <!-- ANALYTICS + PIXEL -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics 4 — ID REAL -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4CZ7YNGE4Z"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
+        gtag('config', 'G-4CZ7YNGE4Z');
     </script>
+    
+    <!-- Meta Pixel — Placeholder, reemplazar con ID real -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -129,21 +131,21 @@
             z-index: 1;
         }
 
-        /* ===== NAV ===== */
+        /* ===== NAV (unificado y más delgado) ===== */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 20px 0;
+            padding: 16px 0;
             transition: var(--transition);
             background: transparent;
         }
         .nav.scrolled {
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
-            padding: 12px 0;
+            padding: 10px 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         }
         .nav-inner {
@@ -157,46 +159,41 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
         }
         .nav-logo-icon {
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .nav-logo-icon img {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
             alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.35rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             color: #fff;
             line-height: 1.2;
         }
         .nav-logo-text .main span { color: var(--naranja); }
-        .nav-logo-text .sub {
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.7);
-        }
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 28px;
             list-style: none;
         }
         .nav-links a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: var(--transition-fast);
             position: relative;
@@ -216,7 +213,7 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
             color: #fff !important;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border-radius: 50px;
             font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
@@ -230,11 +227,11 @@
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
-            padding: 8px;
+            padding: 6px;
             z-index: 1001;
         }
         .nav-toggle span {
-            width: 24px;
+            width: 22px;
             height: 2.5px;
             background: #fff;
             transition: var(--transition);
@@ -759,16 +756,15 @@
                 <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Psicoterapia y Desarrollo Personal" /></div>
                 <div class="nav-logo-text">
                     <div class="main">LYON<span>ASESOR</span></div>
-                    <div class="sub">Rugido de Consciencia</div>
                 </div>
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html#servicios">Servicios</a></li>
                 <li><a href="ebook.html">Biblioteca</a></li>
-                <li><a href="conferencia.html">Conferencias</a></li>
+                <li><a href="index.html#conferencias">Conferencias</a></li>
                 <li><a href="index.html#curso">Curso</a></li>
                 <li><a href="diagnostico.html">Brújula Emocional</a></li>
-                <li><a href="index.html#contacto" class="nav-cta">Contactar</a></li>
+                <li><a href="consulta.html" class="nav-cta">Agendar consulta</a></li>
             </ul>
             <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         </div>
@@ -891,11 +887,11 @@
                 <div class="footer-col">
                     <h4>Servicios</h4>
                     <ul>
-                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
-                        <li><a href="consulta.html">Proceso Terapéutico</a></li>
+                        <li><a href="consulta.html" style="font-weight:700; color:var(--naranja);">🌟 Proceso Terapéutico</a></li>
                         <li><a href="conferencia.html">Conferencias</a></li>
-                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
+                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
                         <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -910,7 +906,7 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p>
-                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-176333035-6</p>
+                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-17633035-6</p>
             </div>
         </div>
     </footer>
@@ -1061,7 +1057,7 @@
         }
 
         // =============================================
-        // CHAT DE VENTAS — CORREGIDO (sin errores)
+        // CHAT DE VENTAS — VERSIÓN ESTABLE
         // =============================================
         (function() {
             if (document.readyState === 'loading') {
