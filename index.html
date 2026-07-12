@@ -6,6 +6,8 @@
     <meta name="description" content="Lyon Asesor: Psicoterapia, desarrollo personal y educación emocional. Prof. Mtr. Alvaro Lyon. Consulta online, conferencias y autodiagnóstico gratuito." />
     <meta name="keywords" content="psicoterapia, desarrollo personal, educación emocional, conferencias, talleres, bienestar, salud mental" />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
+    
+    <!-- OPEN GRAPH OPTIMIZADO -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor-web.pages.dev/" />
     <meta property="og:title" content="Lyon Asesor | Psicoterapia y Desarrollo Personal" />
@@ -13,10 +15,14 @@
     <meta property="og:image" content="https://lyonasesor-web.pages.dev/social-preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_ES" />
+    
+    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lyon Asesor | Psicoterapia y Desarrollo Personal" />
     <meta name="twitter:description" content="Desarrollo Personal · Psicoterapia · Educación Emocional" />
     <meta name="twitter:image" content="https://lyonasesor-web.pages.dev/social-preview.jpg" />
+    
     <title>Lyon Asesor | Psicoterapia y Desarrollo Personal</title>
     <link rel="canonical" href="https://lyonasesor-web.pages.dev/" />
     
@@ -139,7 +145,7 @@
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
             padding: 10px 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 30px rgba(0,  ., 0, 0.15);
         }
         .nav-inner {
             max-width: 1200px;
@@ -245,7 +251,7 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== HERO — CORREGIDO PARA VISTA COMPLETA ===== */
+        /* ===== HERO ===== */
         .hero {
             position: relative;
             min-height: 100dvh;
@@ -904,7 +910,7 @@
             box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
         }
 
-        /* ===== FOOTER ===== */
+        /* ===== FOOTER CON YOUTUBE ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -936,25 +942,43 @@
             line-height: 1.7;
             margin-bottom: 20px;
         }
+        /* NUEVO: BOTÓN DE YOUTUBE EN EL FOOTER */
+        .footer-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #FF0000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            margin-top: 8px;
+        }
+        .footer-youtube:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
+        }
+        .footer-youtube svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+        .footer-youtube-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: block;
+            margin-top: 4px;
+        }
         .footer-social {
             display: flex;
-            gap: 14px;
-        }
-        .footer-social a {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.7);
-            transition: var(--transition-fast);
-        }
-        .footer-social a:hover {
-            background: var(--naranja);
-            color: #fff;
-            transform: translateY(-3px);
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
         }
         .footer-col h4 {
             color: #fff;
@@ -1294,6 +1318,9 @@
                 grid-template-columns: 1fr;
                 gap: 32px;
             }
+            .footer-social {
+                align-items: center;
+            }
             .services-grid,
             .conf-grid {
                 flex-direction: column;
@@ -1359,6 +1386,10 @@
             .chat-input-area button {
                 font-size: 0.8rem;
                 padding: 8px 14px;
+            }
+            .footer-youtube {
+                font-size: 0.8rem;
+                padding: 8px 16px;
             }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1637,7 +1668,7 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- ===== FOOTER CON YOUTUBE ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -1645,10 +1676,11 @@
                     <h3>LYON<span>ASESOR</span></h3>
                     <p>Desarrollo Personal · Psicoterapia · Educación Emocional. Acompañando procesos de transformación con ética, calidez y profesionalismo.</p>
                     <div class="footer-social">
-                        <a href="https://www.instagram.com/lyonasesor" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-                        <a href="https://www.tiktok.com/@lyonasesor" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.2V11.2a4.85 4.85 0 01-3.59-1.48 4.83 4.83 0 01-1.25-3.05h3.03v-.78h-2.08a4.84 4.84 0 003.89 2.8z"/></svg></a>
-                        <a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-                        <a href="mailto:lyonasesor@gmail.com" aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                        <a href="https://www.youtube.com/@LyonAsesor" target="_blank" class="footer-youtube" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            Suscríbete a nuestro canal de YouTube
+                        </a>
+                        <span class="footer-youtube-text">Clases, análisis y contenido exclusivo para tu desarrollo personal.</span>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -1665,7 +1697,7 @@
                     <h4>Contacto</h4>
                     <ul>
                         <li><a href="mailto:lyonasesor@gmail.com">lyonasesor@gmail.com</a></li>
-                        <li><a href="https://www.instagram.com/lyonasesor" target="_blank">@lyonasesor</a></li>
+                        <li><a href="https://www.youtube.com/@LyonAsesor" target="_blank">YouTube</a></li>
                         <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li>
                     </ul>
                 </div>
