@@ -53,14 +53,16 @@
         }
     </script>
     
-    <!-- ANALYTICS + PIXEL -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics 4 — ID REAL -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4CZ7YNGE4Z"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
+        gtag('config', 'G-4CZ7YNGE4Z');
     </script>
+    
+    <!-- Meta Pixel — Placeholder, reemplazar con ID real -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -109,8 +111,6 @@
             --coral-light: #F5DDD5;
             --sage: #5A7A5A;
             --sage-light: #D5E8D5;
-            /* Altura real del nav, medida por JS y usada para que nada quede tapado debajo */
-            --nav-height: 84px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -133,25 +133,25 @@
             z-index: 0;
         }
 
-        /* ===== NAV ===== */
+        /* ===== NAV (unificado y más delgado) ===== */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 12px 0;
+            padding: 16px 0;
             transition: var(--transition);
             background: transparent;
         }
         .nav.scrolled {
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
-            padding: 8px 0;
+            padding: 10px 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         }
         .nav-inner {
-            max-width: 880px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
             display: flex;
@@ -161,54 +161,44 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
-            flex-shrink: 0;
         }
         .nav-logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
         }
         .nav-logo-icon img {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
             alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: #fff;
             line-height: 1.2;
-            white-space: nowrap;
         }
         .nav-logo-text .main span { color: var(--naranja); }
-        .nav-logo-text .sub {
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.7);
-            white-space: nowrap;
-        }
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 28px;
             list-style: none;
         }
         .nav-links a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-size: 0.84rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: var(--transition-fast);
             position: relative;
-            white-space: nowrap;
         }
         .nav-links a::after {
             content: '';
@@ -225,7 +215,7 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
             color: #fff !important;
-            padding: 8px 16px;
+            padding: 8px 20px;
             border-radius: 50px;
             font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
@@ -239,11 +229,11 @@
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
-            padding: 8px;
+            padding: 6px;
             z-index: 1001;
         }
         .nav-toggle span {
-            width: 24px;
+            width: 22px;
             height: 2.5px;
             background: #fff;
             transition: var(--transition);
@@ -256,31 +246,10 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== NAV RESPONSIVE (colapsa antes de amontonarse) ===== */
-        @media (max-width: 1000px) {
-            .nav-links { display: none; }
-            .nav-toggle { display: flex; }
-            .nav-links.active {
-                display: flex;
-                flex-direction: column;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(26,35,48,0.98);
-                backdrop-filter: blur(20px);
-                padding: 100px 40px;
-                gap: 28px;
-                z-index: 1000;
-            }
-            .nav-links.active a { font-size: 1.3rem; }
-        }
-
-        /* ===== HERO HEADER ===== */
+        /* ===== HEADER ===== */
         .header {
             background: var(--navy);
-            padding: 90px 2rem 3rem;
+            padding: 100px 2rem 3rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -351,7 +320,7 @@
             border-bottom: 1px solid rgba(26,35,48,0.06);
             padding: 1rem 2rem;
             position: sticky;
-            top: var(--nav-height);
+            top: 0;
             z-index: 100;
         }
         .progress-inner {
@@ -1230,11 +1199,28 @@
         }
 
         @media (max-width: 768px) {
-            .header { padding: 76px 1.5rem 2.5rem; }
+            .header { padding: 80px 1.5rem 2.5rem; }
             .field-row { grid-template-columns: 1fr; }
             .areas-grid { grid-template-columns: 1fr; }
             .likert-row { grid-template-columns: 1fr repeat(5,36px); }
             .cta-features { flex-direction: column; align-items: center; gap: 10px; }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(26,35,48,0.98);
+                backdrop-filter: blur(20px);
+                padding: 100px 40px;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .chat-window {
                 bottom: 80px;
@@ -1244,7 +1230,7 @@
             }
         }
         @media (max-width: 480px) {
-            .header { padding: 68px 1rem 2rem; }
+            .header { padding: 70px 1rem 2rem; }
             .main { padding: 1rem 1rem 3rem; }
             .section { margin-bottom: 1.5rem; }
             .question { padding: 1rem; }
@@ -1268,7 +1254,7 @@
 </head>
 <body>
 
-    <!-- ===== NAV CORREGIDO (IGUAL AL DE GRACIAS.HTML) ===== -->
+    <!-- ===== NAV ===== -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
@@ -1283,7 +1269,7 @@
                 <li><a href="index.html#conferencias">Conferencias</a></li>
                 <li><a href="index.html#curso">Curso</a></li>
                 <li><a href="diagnostico.html">Brújula Emocional</a></li>
-                <li><a href="index.html#contacto" class="nav-cta">Contactar</a></li>
+                <li><a href="consulta.html" class="nav-cta">Agendar consulta</a></li>
             </ul>
             <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         </div>
@@ -1768,11 +1754,11 @@
                 <div class="footer-col">
                     <h4>Servicios</h4>
                     <ul>
-                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
-                        <li><a href="consulta.html">Proceso Terapéutico</a></li>
+                        <li><a href="consulta.html" style="font-weight:700; color:var(--naranja);">🌟 Proceso Terapéutico</a></li>
                         <li><a href="conferencia.html">Conferencias</a></li>
-                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
+                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
                         <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -1787,7 +1773,7 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p>
-                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-176333035-6</p>
+                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-17633035-6</p>
             </div>
         </div>
     </footer>
@@ -1809,22 +1795,11 @@
         </div>
     </div>
 
-    <!-- ===== SCRIPTS ===== -->
     <script>
         // ===== NAV =====
         const nav = document.getElementById('nav');
-
-        // Mide el alto real del nav y lo expone como variable CSS,
-        // así la barra de progreso (sticky) nunca queda tapada por el nav fijo.
-        function updateNavHeight() {
-            document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
-        }
-        updateNavHeight();
-        window.addEventListener('resize', updateNavHeight);
-
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
-            updateNavHeight();
         });
 
         const navToggle = document.getElementById('navToggle');
@@ -2104,104 +2079,118 @@
             }
         }
 
-        // ===== CHAT =====
+        // =============================================
+        // CHAT DE VENTAS — VERSIÓN ESTABLE
+        // =============================================
         (function() {
-            const chatToggle = document.getElementById('chatToggle');
-            const chatWindow = document.getElementById('chatWindow');
-            const chatClose = document.getElementById('chatClose');
-            const chatMessages = document.getElementById('chatMessages');
-            const chatInput = document.getElementById('chatInput');
-            const chatSend = document.getElementById('chatSend');
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initChat);
+            } else {
+                initChat();
+            }
 
-            let chatOpen = false;
+            function initChat() {
+                const chatToggle = document.getElementById('chatToggle');
+                const chatWindow = document.getElementById('chatWindow');
+                const chatClose = document.getElementById('chatClose');
+                const chatMessages = document.getElementById('chatMessages');
+                const chatInput = document.getElementById('chatInput');
+                const chatSend = document.getElementById('chatSend');
 
-            const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
-            const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
-            const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
-            const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
-            const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
-            const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
-
-            function addMessage(text, sender, options = {}) {
-                const div = document.createElement('div');
-                div.className = `chat-message ${sender}`;
-                if (sender === 'bot' && options.buttons) {
-                    div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
-                } else {
-                    div.textContent = text;
+                if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatInput || !chatSend) {
+                    console.warn('Chat: Elementos no encontrados');
+                    return;
                 }
-                chatMessages.appendChild(div);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
 
-            function escapeHtml(str) {
-                const d = document.createElement('div');
-                d.textContent = str;
-                return d.innerHTML.replace(/\n/g, '<br>');
-            }
+                let chatOpen = false;
 
-            function setInputEnabled(enabled) {
-                chatInput.disabled = !enabled;
-                chatSend.disabled = !enabled;
-                if (enabled) chatInput.focus();
-            }
+                const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
+                const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+                const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
 
-            function botonHumano() {
-                return `<div style="margin-top:6px;">
-                    <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a>
-                </div>`;
-            }
+                function addMessage(text, sender, options = {}) {
+                    const div = document.createElement('div');
+                    div.className = `chat-message ${sender}`;
+                    if (sender === 'bot' && options.buttons) {
+                        div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
+                    } else {
+                        div.textContent = text;
+                    }
+                    chatMessages.appendChild(div);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
 
-            function startChat() {
-                chatMessages.innerHTML = '';
-                chatInput.value = '';
-                setInputEnabled(false);
+                function escapeHtml(str) {
+                    const d = document.createElement('div');
+                    d.textContent = str;
+                    return d.innerHTML.replace(/\n/g, '<br>');
+                }
 
-                const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
+                function setInputEnabled(enabled) {
+                    chatInput.disabled = !enabled;
+                    chatSend.disabled = !enabled;
+                    if (enabled) chatInput.focus();
+                }
+
+                function botonHumano() {
+                    return `<div style="margin-top:6px;">
+                        <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a>
+                    </div>`;
+                }
+
+                function startChat() {
+                    chatMessages.innerHTML = '';
+                    chatInput.value = '';
+                    setInputEnabled(false);
+
+                    const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
 
 Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
 
 ¿Qué te gustaría explorar?`;
 
-                const botones = `
-                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-                        <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
-                        <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
-                        <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
-                        <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
-                    </div>
-                    ${botonHumano()}
-                `;
-                addMessage(bienvenida, 'bot', { buttons: botones });
-            }
-
-            function handleProductSelection(producto) {
-                let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
-
-                if (producto === 'biblioteca') {
-                    nombreProducto = '📚 Biblioteca Lyon Asesor';
-                    precio = '$9.99';
-                    descripcion = '4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
-                    botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
-                } else if (producto === 'consulta') {
-                    nombreProducto = '🧘 Proceso Terapéutico';
-                    precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
-                    descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos. Selecciona tu paquete.';
-                    botonesPayPal = `
-                        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                            <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
-                            <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
-                            <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
+                    const botones = `
+                        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
+                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
+                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
+                            <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
                         </div>
+                        ${botonHumano()}
                     `;
-                } else if (producto === 'conferencia') {
-                    nombreProducto = '🎤 Conferencia';
-                    precio = '$150 (tarifa plana)';
-                    descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
-                    botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                    addMessage(bienvenida, 'bot', { buttons: botones });
                 }
 
-                const mensaje = `Has seleccionado: **${nombreProducto}**
+                function handleProductSelection(producto) {
+                    let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
+
+                    if (producto === 'biblioteca') {
+                        nombreProducto = '📚 Biblioteca Lyon Asesor';
+                        precio = '$9.99';
+                        descripcion = '4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
+                        botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
+                    } else if (producto === 'consulta') {
+                        nombreProducto = '🧘 Proceso Terapéutico';
+                        precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
+                        descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos. Selecciona tu paquete.';
+                        botonesPayPal = `
+                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                                <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
+                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
+                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
+                            </div>
+                        `;
+                    } else if (producto === 'conferencia') {
+                        nombreProducto = '🎤 Conferencia';
+                        precio = '$150 (tarifa plana)';
+                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
+                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                    }
+
+                    const mensaje = `Has seleccionado: **${nombreProducto}**
 
 ${descripcion}
 
@@ -2209,83 +2198,87 @@ ${descripcion}
 
 Haz clic en el botón de pago para completar tu compra:`;
 
-                const botones = `
-                    <div style="margin-top:8px;">
-                        ${botonesPayPal}
-                        <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
+                    const botones = `
                         <div style="margin-top:8px;">
-                            <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                            <a href="index.html#contacto" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
+                            ${botonesPayPal}
+                            <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
+                            <div style="margin-top:8px;">
+                                <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
+                                <a href="index.html#contacto" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
+                            </div>
                         </div>
-                    </div>
-                    ${botonHumano()}
-                `;
+                        ${botonHumano()}
+                    `;
 
-                addMessage(mensaje, 'bot', { buttons: botones });
-            }
-
-            chatMessages.addEventListener('click', function(e) {
-                const btn = e.target.closest('.product-btn[data-role]');
-                if (!btn) return;
-                const rol = btn.dataset.role;
-
-                if (rol === 'producto') {
-                    handleProductSelection(btn.dataset.producto);
-                    return;
+                    addMessage(mensaje, 'bot', { buttons: botones });
                 }
 
-                if (rol === 'accion') {
-                    const accion = btn.dataset.action;
-                    if (accion === 'volver') {
-                        startChat();
-                    } else if (accion === 'diagnostico') {
-                        window.location.href = 'diagnostico.html';
+                chatMessages.addEventListener('click', function(e) {
+                    const btn = e.target.closest('.product-btn[data-role]');
+                    if (!btn) return;
+                    const rol = btn.dataset.role;
+
+                    if (rol === 'producto') {
+                        handleProductSelection(btn.dataset.producto);
+                        return;
                     }
-                }
-            });
 
-            chatSend.addEventListener('click', function() {
-                const input = chatInput.value.trim();
-                if (!input) return;
+                    if (rol === 'accion') {
+                        const accion = btn.dataset.action;
+                        if (accion === 'volver') {
+                            startChat();
+                        } else if (accion === 'diagnostico') {
+                            window.location.href = 'diagnostico.html';
+                        }
+                    }
+                });
 
-                addMessage(input, 'user');
-                chatInput.value = '';
+                chatSend.addEventListener('click', function() {
+                    const input = chatInput.value.trim();
+                    if (!input) return;
 
-                setInputEnabled(false);
-                const msg = encodeURIComponent(`Mensaje desde el chat de lyonasesor.com: ${input}`);
-                window.open(`https://wa.me/584148610464?text=${msg}`, '_blank');
-                
-                addMessage('Gracias por tu mensaje. He abierto un chat con Álvaro para que pueda responderte personalmente. 💬', 'bot');
-                setInputEnabled(true);
-            });
+                    addMessage(input, 'user');
+                    chatInput.value = '';
 
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') chatSend.click();
-            });
+                    setInputEnabled(false);
+                    const msg = encodeURIComponent(`Mensaje desde el chat de lyonasesor.com: ${input}`);
+                    window.open(`https://wa.me/584148610464?text=${msg}`, '_blank');
+                    
+                    addMessage('Gracias por tu mensaje. He abierto un chat con Álvaro para que pueda responderte personalmente. 💬', 'bot');
+                    setInputEnabled(true);
+                });
 
-            chatToggle.addEventListener('click', function() {
-                if (chatWindow.classList.contains('open')) {
+                chatInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') chatSend.click();
+                });
+
+                chatToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (chatWindow.classList.contains('open')) {
+                        chatWindow.classList.remove('open');
+                        chatOpen = false;
+                    } else {
+                        chatWindow.classList.add('open');
+                        chatOpen = true;
+                        if (chatMessages.children.length === 0) startChat();
+                        if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300);
+                    }
+                });
+
+                chatClose.addEventListener('click', function() {
                     chatWindow.classList.remove('open');
                     chatOpen = false;
-                } else {
-                    chatWindow.classList.add('open');
-                    chatOpen = true;
-                    if (chatMessages.children.length === 0) startChat();
-                    if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300);
-                }
-            });
+                });
 
-            chatClose.addEventListener('click', function() {
-                chatWindow.classList.remove('open');
-                chatOpen = false;
-            });
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && chatOpen) {
-                    chatWindow.classList.remove('open');
-                    chatOpen = false;
-                }
-            });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && chatOpen) {
+                        chatWindow.classList.remove('open');
+                        chatOpen = false;
+                    }
+                });
+            }
         })();
     </script>
 </body>
