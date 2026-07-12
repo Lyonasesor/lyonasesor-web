@@ -245,7 +245,7 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== HERO CON ANIMACIÓN MEJORADA ===== */
+        /* ===== HERO CON ANIMACIÓN ===== */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -270,7 +270,6 @@
             width: 100%;
             height: 100%;
         }
-        /* Ondas de luz sutiles */
         .hero-waves {
             position: absolute;
             bottom: 0;
@@ -1417,7 +1416,7 @@
         </div>
     </nav>
 
-    <!-- ===== HERO CON ANIMACIÓN ===== -->
+    <!-- ===== HERO CON ANIMACIÓN Y NUEVO COPY ===== -->
     <section class="hero" id="hero">
         <div class="hero-particles" id="particles"></div>
         <div class="hero-waves">
@@ -1429,9 +1428,10 @@
         </div>
         <div class="hero-content">
             <div class="hero-badge"><span class="hero-badge-dot"></span>Psicoterapia · Desarrollo Personal · Educación Emocional</div>
+            <!-- NUEVO HERO — OPCIÓN A -->
             <h1 class="hero-title">
-                <span class="line1">Ya estás cansado de sonreír</span>
-                <span class="line2"><span class="accent">cuando no quieres.</span></span>
+                <span class="line1">No tienes que cargarlo solo.</span>
+                <span class="line2"><span class="accent">Hay un camino de vuelta a ti.</span></span>
             </h1>
             <p class="hero-subtitle">Hay una forma de salir del piloto automático sin culpa ni exigencias. Acompañamiento real para recuperar el rumbo.</p>
             <div class="hero-actions">
@@ -1524,7 +1524,7 @@
         </div>
     </section>
 
-    <!-- ===== ESTADÍSTICAS (CORREGIDAS) ===== -->
+    <!-- ===== ESTADÍSTICAS ===== -->
     <section class="stats">
         <div class="stats-grid">
             <div class="stat-item reveal"><div class="stat-number">12</div><div class="stat-label">Conferencias disponibles</div></div>
@@ -1534,7 +1534,7 @@
         </div>
     </section>
 
-    <!-- ===== TESTIMONIOS (VERIFICADOS) ===== -->
+    <!-- ===== TESTIMONIOS ===== -->
     <section class="section features" id="testimonios" style="background: var(--crema);">
         <div class="section-inner">
             <div class="section-header reveal">
@@ -1753,7 +1753,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ===== PARTICLES (animación mejorada) =====
+        // ===== PARTICLES =====
         (function() {
             const container = document.getElementById('particles');
             if (!container) return;
@@ -1801,7 +1801,6 @@
             function drawParticles() {
                 ctx.clearRect(0, 0, width, height);
 
-                // Dibujar conexiones
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
@@ -1820,7 +1819,6 @@
                     }
                 }
 
-                // Dibujar partículas
                 for (const p of particles) {
                     p.pulse += p.pulseSpeed;
                     const pulseFactor = 0.7 + 0.3 * Math.sin(p.pulse);
@@ -1836,7 +1834,6 @@
                     ctx.fillStyle = gradient;
                     ctx.fill();
 
-                    // Núcleo brillante
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, size * 0.2, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * 0.3})`;
@@ -1852,7 +1849,6 @@
                     if (p.x < 0 || p.x > width) p.vx *= -1;
                     if (p.y < 0 || p.y > height) p.vy *= -1;
 
-                    // Límites suaves
                     p.x = Math.max(0, Math.min(width, p.x));
                     p.y = Math.max(0, Math.min(height, p.y));
                 }
@@ -2012,7 +2008,7 @@ Haz clic en el botón de pago para completar tu compra:`;
                             <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
                             <div style="margin-top:8px;">
                                 <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                                <a href="index.html#contacto" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
+                                <a href="mailto:lyonasesor@gmail.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
                             </div>
                         </div>
                         ${botonHumano()}
