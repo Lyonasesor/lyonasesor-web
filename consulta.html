@@ -76,6 +76,11 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -960,10 +965,9 @@
             });
         });
 
-        // ===== FORMULARIO CONSULTA =====
-        const BIN_ID = '69ff5dc1adc21f119a775498';
-        const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
+        // =============================================
+        // FORMULARIO CONSULTA - CON FIREBASE
+        // =============================================
         const modal = document.getElementById('modalPagoMovil');
         const montoModal = document.getElementById('montoModal');
         const cerrarModalBtn = document.getElementById('cerrarModal');
@@ -987,35 +991,21 @@
             const monto = parseInt(paquete);
 
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                const data = await res.json();
-                if (!data.record) data.record = {};
-                if (!data.record.registros) data.record.registros = [];
-
-                const nuevoRegistro = {
-                    tipo: 'consulta',
-                    timestamp: new Date().toISOString(),
-                    nombreEmpresa: nombre,
+                // 🔥 GUARDAR EN FIREBASE en lugar de JSONBin
+                const datos = {
+                    nombre: nombre,
                     email: email,
                     telefono: telefono,
-                    detalle: motivo || 'Sin motivo específico',
+                    tipo: 'consulta',
+                    paquete: paqueteTexto,
                     monto: monto,
-                    pagado: false,
-                    paquete: paqueteTexto
+                    motivo: motivo || 'Sin motivo específico',
+                    estado: 'pendiente',
+                    pagado: false
                 };
-
-                data.record.registros.push(nuevoRegistro);
-
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
-                    },
-                    body: JSON.stringify(data.record)
-                });
+                
+                await guardarLead('consultas', datos);
+                console.log('✅ Consulta guardada en Firebase');
 
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'form_submit', { 'event_category': 'consulta' });
@@ -1035,22 +1025,17 @@
                     }
                     window.location.href = paypalLink;
                 } else {
-                    if (modal && montoModal) {
-                        montoModal.textContent = '$' + monto;
-                        modal.style.display = 'flex';
-                    } else {
-                        const mensaje = encodeURIComponent(
-                            `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
-                            `Nombre: ${nombre}\n` +
-                            `Email: ${email}\n` +
-                            `Teléfono: ${telefono}\n` +
-                            `Paquete: ${paqueteTexto}\n` +
-                            `Monto: $${monto}\n` +
-                            `Motivo: ${motivo || 'No especificado'}`
-                        );
-                        window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                        alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
-                    }
+                    const mensaje = encodeURIComponent(
+                        `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
+                        `Nombre: ${nombre}\n` +
+                        `Email: ${email}\n` +
+                        `Teléfono: ${telefono}\n` +
+                        `Paquete: ${paqueteTexto}\n` +
+                        `Monto: $${monto}\n` +
+                        `Motivo: ${motivo || 'No especificado'}`
+                    );
+                    window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
+                    alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
                 }
 
             } catch (error) {
