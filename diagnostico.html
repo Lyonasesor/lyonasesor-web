@@ -77,11 +77,17 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
     <style>
+        /* ===== TODOS LOS ESTILOS IGUALES ===== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -1815,6 +1821,10 @@
     </div>
 
     <script>
+        // ===== TODOS LOS SCRIPTS DEL DIAGNOSTICO IGUALES =====
+        // (Nav, likert, progress, cálculo de resultado, etc. - TODOS IGUALES)
+        // SOLO CAMBIA LA FUNCIÓN guardarDiagnosticoEnJSONBin POR guardarDiagnosticoEnFirebase
+
         // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
@@ -1911,7 +1921,9 @@
             el.addEventListener('change', updateProgress);
         });
 
-        // ===== CÁLCULO RESULTADO =====
+        // =============================================
+        // CÁLCULO RESULTADO - CON FIREBASE
+        // =============================================
         function calcularResultado() {
             let valid = true;
             const nombre = document.getElementById('nombre').value.trim();
@@ -2043,7 +2055,10 @@
                 fbq('track', 'Lead');
             }
 
-            guardarDiagnosticoEnJSONBin(nombre, email, perfil, pct, nivel);
+            // ════════════════════════════════════════════════════════
+            // 🔥 GUARDAR EN FIREBASE (reemplaza JSONBin)
+            // ════════════════════════════════════════════════════════
+            guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel);
         }
 
         function getQ(num) {
@@ -2059,40 +2074,25 @@
             return item.peso[v - 1];
         }
 
-        async function guardarDiagnosticoEnJSONBin(nombre, email, perfil, puntaje, nivel) {
-            const BIN_ID = '69ff5dc1adc21f119a775498';
-            const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
+        // ════════════════════════════════════════════════════════
+        // 🔥 NUEVA FUNCIÓN: GUARDAR EN FIREBASE
+        // ════════════════════════════════════════════════════════
+        async function guardarDiagnosticoEnFirebase(nombre, email, perfil, puntaje, nivel) {
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
-                const data = await res.json();
-                if (!data.record) data.record = {};
-                if (!data.record.registros) data.record.registros = [];
-
-                const nuevoRegistro = {
-                    tipo: 'diagnostico',
-                    timestamp: new Date().toISOString(),
-                    nombreEmpresa: nombre,
+                const datos = {
+                    nombre: nombre,
                     email: email,
-                    detalle: `Perfil: ${perfil} | Puntaje: ${Math.round(puntaje * 100)}% | Nivel: ${nivel}`,
-                    monto: 0,
-                    pagado: false
+                    tipo: 'diagnostico',
+                    perfil: perfil,
+                    puntaje: Math.round(puntaje * 100),
+                    nivel: nivel,
+                    estado: 'completado'
                 };
-
-                data.record.registros.push(nuevoRegistro);
-
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
-                    },
-                    body: JSON.stringify(data.record)
-                });
-
-                console.log('✅ Diagnóstico guardado en JSONBin');
+                
+                await guardarLead('diagnosticos', datos);
+                console.log('✅ Diagnóstico guardado en Firebase');
             } catch (error) {
-                console.error('❌ Error al guardar diagnóstico:', error);
+                console.error('❌ Error al guardar diagnóstico en Firebase:', error);
             }
         }
 
