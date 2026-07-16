@@ -82,6 +82,11 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -1045,10 +1050,9 @@
             });
         });
 
-        // ===== FORMULARIO LEAD =====
-        const BIN_ID = '69ff5dc1adc21f119a775498';
-        const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
-
+        // =============================================
+        // FORMULARIO LEAD - CON FIREBASE
+        // =============================================
         document.getElementById('leadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nombre = document.getElementById('nombre').value.trim();
@@ -1061,32 +1065,19 @@
             }
 
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                const data = await res.json();
-                if (!data.record) data.record = {};
-                if (!data.record.registros) data.record.registros = [];
-
-                data.record.registros.push({
-                    tipo: 'lead-biblioteca',
-                    timestamp: new Date().toISOString(),
-                    nombreEmpresa: nombre,
+                // 🔥 GUARDAR EN FIREBASE en lugar de JSONBin
+                const datos = {
+                    nombre: nombre,
                     email: email,
                     telefono: whatsapp || '',
-                    detalle: 'Lead de Biblioteca Lyon Asesor',
-                    monto: 0,
-                    pagado: false
-                });
-
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
-                    },
-                    body: JSON.stringify(data.record)
-                });
+                    tipo: 'ebook',
+                    producto: 'Biblioteca Lyon Asesor',
+                    precio: '9.99',
+                    estado: 'lead'
+                };
+                
+                await guardarLead('ebooks', datos);
+                console.log('✅ Lead de Ebook guardado en Firebase');
 
                 alert('¡Registro exitoso! Pronto recibirás novedades. ¡Gracias por confiar en Lyon Asesor!');
                 document.getElementById('leadForm').reset();
