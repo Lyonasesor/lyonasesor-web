@@ -1,5 +1,5 @@
 // ============================================================
-// FIREBASE CONFIG - Lyon Asesor
+// FIREBASE CONFIG - Lyon Asesor (VERSIÓN CORREGIDA)
 // ============================================================
 
 // Configuración de Firebase (proyecto: lyon-asesor-panel-259ef)
@@ -17,6 +17,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+// EXPONER database GLOBALMENTE para todas las páginas
+window.database = database;
+
 console.log('✅ Firebase configurado correctamente para Lyon Asesor');
 
 // ============================================================
@@ -25,12 +28,13 @@ console.log('✅ Firebase configurado correctamente para Lyon Asesor');
 
 /**
  * Guarda un lead en Firebase
- * @param {string} coleccion - 'consultas', 'conferencias', 'ebooks', 'diagnosticos', 'leads'
+ * @param {string} coleccion - 'consultas', 'conferencias', 'ebooks', 'diagnosticos'
  * @param {object} datos - Los datos del formulario
  * @returns {Promise}
  */
 function guardarLead(coleccion, datos) {
   const timestamp = Date.now();
+  // Usar timestamp como ID único
   const referencia = database.ref(`leads/${coleccion}/${timestamp}`);
   
   // Agregar timestamp y fecha legible
@@ -44,9 +48,12 @@ function guardarLead(coleccion, datos) {
   return referencia.set(registro);
 }
 
+// EXPONER guardarLead GLOBALMENTE
+window.guardarLead = guardarLead;
+
 /**
  * Lee todos los leads de una colección
- * @param {string} coleccion - 'consultas', 'conferencias', 'ebooks', 'diagnosticos', 'leads'
+ * @param {string} coleccion - 'consultas', 'conferencias', 'ebooks', 'diagnosticos'
  * @returns {Promise<Array>}
  */
 function leerLeads(coleccion) {
@@ -60,6 +67,7 @@ function leerLeads(coleccion) {
       }));
     });
 }
+window.leerLeads = leerLeads;
 
 /**
  * Lee TODOS los leads de todas las colecciones
@@ -69,37 +77,22 @@ function leerTodosLosLeads() {
   return database.ref('leads').once('value')
     .then(snapshot => {
       const data = snapshot.val();
-      if (!data) return { consultas: [], conferencias: [], ebooks: [], diagnosticos: [], leads: [] };
+      if (!data) return { consultas: [], conferencias: [], ebooks: [], diagnosticos: [] };
       
       const resultado = {};
       for (const [coleccion, items] of Object.entries(data)) {
-        resultado[coleccion] = Object.keys(items).map(key => ({
-          id: key,
-          ...items[key]
-        }));
+        if (typeof items === 'object' && items !== null) {
+          resultado[coleccion] = Object.keys(items).map(key => ({
+            id: key,
+            ...items[key]
+          }));
+        } else {
+          resultado[coleccion] = [];
+        }
       }
       return resultado;
     });
 }
-
-/**
- * Actualiza el estado de un lead
- * @param {string} coleccion 
- * @param {string} id 
- * @param {string} estado - 'pendiente', 'pagado', 'contactado', 'cerrado'
- */
-function actualizarEstadoLead(coleccion, id, estado) {
-  return database.ref(`leads/${coleccion}/${id}/estado`).set(estado);
-}
-
-/**
- * Marca un lead como pagado
- * @param {string} coleccion 
- * @param {string} id 
- * @param {boolean} pagado 
- */
-function marcarPagado(coleccion, id, pagado) {
-  return database.ref(`leads/${coleccion}/${id}/pagado`).set(pagado);
-}
+window.leerTodosLosLeads = leerTodosLosLeads;
 
 console.log('✅ Funciones de Firebase cargadas para Lyon Asesor');
