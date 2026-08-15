@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard · Lyon Asesor</title>
-    
+    <title>Admin · Lyon Asesor</title>
+
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
-    
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -18,10 +18,7 @@
             padding: 20px;
             color: #1e293b;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1400px; margin: 0 auto; }
 
         /* ===== LOGIN ===== */
         .login-box {
@@ -33,16 +30,8 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.08);
             text-align: center;
         }
-        .login-box h2 {
-            font-weight: 600;
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            color: #0f172a;
-        }
-        .login-box p {
-            color: #64748b;
-            margin-bottom: 24px;
-        }
+        .login-box h2 { font-weight: 600; font-size: 1.6rem; margin-bottom: 8px; color: #0f172a; }
+        .login-box p { color: #64748b; margin-bottom: 24px; }
         .login-box input {
             width: 100%;
             padding: 14px 18px;
@@ -52,11 +41,7 @@
             margin-bottom: 16px;
             transition: 0.2s;
         }
-        .login-box input:focus {
-            border-color: #e86b18;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.15);
-        }
+        .login-box input:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.15); }
         .login-box button {
             width: 100%;
             padding: 14px;
@@ -70,11 +55,7 @@
             transition: 0.2s;
         }
         .login-box button:hover { background: #d45f14; }
-        .login-error {
-            color: #dc2626;
-            margin-top: 12px;
-            font-size: 0.9rem;
-        }
+        .login-error { color: #dc2626; margin-top: 12px; font-size: 0.9rem; }
 
         /* ===== DASHBOARD ===== */
         .dashboard-header {
@@ -85,17 +66,9 @@
             gap: 16px;
             margin-bottom: 24px;
         }
-        .dashboard-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
+        .dashboard-header h1 { font-size: 1.8rem; font-weight: 700; color: #0f172a; }
         .dashboard-header h1 span { color: #e86b18; }
-        .header-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        .header-actions { display: flex; gap: 12px; flex-wrap: wrap; }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -137,26 +110,11 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
             border: 1px solid #f1f5f9;
         }
-        .stat-card .stat-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #94a3b8;
-            font-weight: 600;
-        }
-        .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-top: 4px;
-        }
-        .stat-card .stat-sub {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 4px;
-        }
+        .stat-card .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 600; }
+        .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
+        .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
 
-        /* ===== GESTIÓN DE CONFERENCIAS ===== */
+        /* ===== GESTIÓN DE CONFERENCIAS (UNIFICADO) ===== */
         .config-card {
             background: white;
             border-radius: 20px;
@@ -165,59 +123,79 @@
             margin-bottom: 24px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
-        .config-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #0f172a;
-        }
-        .config-card .sub {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 16px;
-        }
+        .config-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
+        .config-card .sub { font-size: 0.85rem; color: #64748b; margin-bottom: 16px; }
+
+        /* === Grid de conferencias (estilo PANEL) === */
         .conferencias-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
         }
         .conf-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
             background: #f8fafc;
-            border-radius: 12px;
+            border-radius: 16px;
+            padding: 18px 20px;
             border: 1px solid #f1f5f9;
             transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-        .conf-item.activa {
-            border-color: #dcfce7;
-            background: #f0fdf4;
+        .conf-item.activa { border-color: #dcfce7; background: #f0fdf4; }
+        .conf-item .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-        .conf-item .info .nombre {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #0f172a;
+        .conf-item .header .numero {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #cdaa7b;
+            opacity: 0.6;
+            line-height: 1;
         }
-        .conf-item .info .id {
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
-        .conf-item .estado-badge {
-            font-size: 0.7rem;
-            padding: 2px 10px;
+        .conf-item .header .estado-badge {
+            font-size: 0.65rem;
+            padding: 3px 12px;
             border-radius: 40px;
             font-weight: 600;
         }
-        .conf-item .estado-badge.activa {
-            background: #dcfce7;
-            color: #166534;
+        .conf-item .header .estado-badge.activa { background: #dcfce7; color: #166534; }
+        .conf-item .header .estado-badge.inactiva { background: #fee2e2; color: #991b1b; }
+
+        .conf-item .titulo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
         }
-        .conf-item .estado-badge.inactiva {
-            background: #fee2e2;
-            color: #991b1b;
+        .conf-item .descripcion {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
         }
+        .conf-item .acciones {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .conf-item .acciones .btn-conferencia {
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #e86b18;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .conf-item .acciones .btn-conferencia:hover { background: #d45f14; transform: translateY(-2px); }
 
         /* ===== TOGGLE SWITCH ===== */
         .toggle-switch {
@@ -227,11 +205,7 @@
             height: 24px;
             flex-shrink: 0;
         }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider {
             position: absolute;
             cursor: pointer;
@@ -254,12 +228,8 @@
             transition: .3s;
             border-radius: 50%;
         }
-        .toggle-switch input:checked + .toggle-slider {
-            background: #e86b18;
-        }
-        .toggle-switch input:checked + .toggle-slider::before {
-            transform: translateX(20px);
-        }
+        .toggle-switch input:checked + .toggle-slider { background: #e86b18; }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
 
         /* ===== FILTROS ===== */
         .filters-bar {
@@ -278,14 +248,9 @@
             font-weight: 500;
             color: #1e293b;
             cursor: pointer;
-            transition: 0.2s;
             min-width: 160px;
         }
-        .filters-bar select:focus {
-            border-color: #e86b18;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
-        }
+        .filters-bar select:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
 
         /* ===== TABLA ===== */
         .table-wrapper {
@@ -295,15 +260,8 @@
             overflow: hidden;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
-        .table-scroll {
-            overflow-x: auto;
-            padding: 4px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
+        .table-scroll { overflow-x: auto; padding: 4px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th {
             background: #f8fafc;
             color: #475569;
@@ -313,11 +271,7 @@
             border-bottom: 2px solid #e2e8f0;
             white-space: nowrap;
         }
-        td {
-            padding: 14px 20px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-        }
+        td { padding: 14px 20px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
         tr:hover td { background: #fafbfc; }
         .badge {
             display: inline-block;
@@ -352,7 +306,7 @@
         .btn-pagar.desmarcar { background: #94a3b8; }
         .btn-pagar.desmarcar:hover { background: #64748b; }
 
-        /* ===== GRÁFICO DE TORTA (CSS puro) ===== */
+        /* ===== GRÁFICO ===== */
         .chart-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -367,12 +321,7 @@
             border: 1px solid #f1f5f9;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
-        .chart-card h3 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1e293b;
-        }
+        .chart-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; color: #1e293b; }
         .pie-container {
             display: flex;
             align-items: center;
@@ -456,10 +405,10 @@
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
         </div>
 
-        <!-- ===== GESTIÓN DE CONFERENCIAS ===== -->
+        <!-- ===== GESTIÓN DE CONFERENCIAS (UNIFICADO) ===== -->
         <div class="config-card">
             <h3>🎤 Gestión de Conferencias</h3>
-            <p class="sub">Activa o desactiva las conferencias. Solo las activas aparecerán en el formulario de registro.</p>
+            <p class="sub">Activa o desactiva cada conferencia. Solo las activas aparecerán en el formulario de registro. Haz clic en "Iniciar Presentación" para ver la conferencia.</p>
             <div id="conferenciasList">
                 <p style="color:#94a3b8;">Cargando conferencias...</p>
             </div>
@@ -536,10 +485,28 @@
     };
 
     // =============================================
+    // LISTA DE CONFERENCIAS (PARA TARJETAS Y ACTIVACIÓN)
+    // =============================================
+    const CONFERENCES_DATA = [
+        { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo', descripcion: 'El Cerebro que Inspira Equipos', file: 'conferencias/neuro-liderazgo.html' },
+        { id: 'ie40', titulo: 'Inteligencia Emocional 4.0', descripcion: 'Liderar en la Incertidumbre', file: 'conferencias/ie40.html' },
+        { id: 'factor-humano', titulo: 'El Factor Humano', descripcion: 'Autogestión Emocional en Entornos de Alta Demanda', file: 'conferencias/factor-humano.html' },
+        { id: 'autoestima', titulo: 'Autoestima Inquebrantable', descripcion: 'El Pilar del Rendimiento Personal', file: 'conferencias/autoestima.html' },
+        { id: 'neurobienestar', titulo: 'Neurobienestar', descripcion: 'Equilibrio Emocional en un Mundo Hiperconectado', file: 'conferencias/neurobienestar.html' },
+        { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones', descripcion: 'Educar con el Corazón y el Cerebro', file: 'conferencias/pedagogia-emociones.html' },
+        { id: 'poder-creencias', titulo: 'El Poder de las Creencias', descripcion: 'Reprograma tu Mente, Transforma tu Realidad', file: 'conferencias/poder-creencias.html' },
+        { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula', descripcion: 'Estrategias para un Aprendizaje Profundo', file: 'conferencias/neurociencia-aula.html' },
+        { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos', descripcion: 'Alto Rendimiento con Inteligencia Emocional', file: 'conferencias/gestion-emocional.html' },
+        { id: 'desarrollo-humano', titulo: 'Desarrollo Humano con Propósito', descripcion: 'Del Autoconocimiento a la Trascendencia', file: 'conferencias/desarrollo-humano.html' },
+        { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: 'conferencias/comunicacion-conecta.html' },
+        { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro', descripcion: 'Neuroeducación para Formadores y Docentes', file: 'conferencias/educar-corazon.html' }
+    ];
+
+    // =============================================
     // ESTADO
     // =============================================
     let allLeads = [];
-    let conferenciasData = {};
+    let conferenciasActivas = {};
 
     // =============================================
     // AUTENTICACIÓN
@@ -627,7 +594,7 @@
                 return cargarConferencias();
             }
 
-            conferenciasData = data;
+            conferenciasActivas = data;
             renderConferencias(data);
 
         } catch (error) {
@@ -638,28 +605,17 @@
     }
 
     // =============================================
-    // INICIALIZAR CONFERENCIAS
+    // INICIALIZAR CONFERENCIAS EN FIREBASE
     // =============================================
     async function inicializarConferencias() {
-        const conferencias = [
-            { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo: El Cerebro que Inspira Equipos', activa: false },
-            { id: 'ie40', titulo: 'Inteligencia Emocional 4.0: Liderar en la Incertidumbre', activa: false },
-            { id: 'factor-humano', titulo: 'El Factor Humano: Autogestión Emocional en Entornos de Alta Demanda', activa: false },
-            { id: 'autoestima', titulo: 'Autoestima Inquebrantable: El Pilar del Rendimiento Personal', activa: false },
-            { id: 'neurobienestar', titulo: 'Neurobienestar: Equilibrio Emocional en un Mundo Hiperconectado', activa: false },
-            { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones: Educar con el Corazón y el Cerebro', activa: false },
-            { id: 'poder-creencias', titulo: 'El Poder de las Creencias: Reprograma tu Mente, Transforma tu Realidad', activa: false },
-            { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula: Estrategias para un Aprendizaje Profundo', activa: false },
-            { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos de Alto Rendimiento', activa: false },
-            { id: 'desarrollo-humano', titulo: 'Del Autoconocimiento a la Trascendencia: Desarrollo Humano con Propósito', activa: false },
-            { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta: Neurodiálogo para Equipos Cohesionados', activa: false },
-            { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro: Neuroeducación para Formadores y Docentes', activa: false }
-        ];
-
         const updates = {};
-        conferencias.forEach(c => {
+        CONFERENCES_DATA.forEach(c => {
             updates[`configuracion/conferencias/${c.id}`] = {
-                ...c,
+                id: c.id,
+                titulo: c.titulo,
+                descripcion: c.descripcion,
+                file: c.file,
+                activa: false,
                 fecha_creacion: new Date().toISOString(),
                 ultima_modificacion: new Date().toISOString()
             };
@@ -670,30 +626,36 @@
     }
 
     // =============================================
-    // RENDER CONFERENCIAS
+    // RENDER CONFERENCIAS (estilo tarjetas)
     // =============================================
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
-
+        
         let html = '<div class="conferencias-grid">';
-        for (const [id, conf] of Object.entries(data)) {
-            const activa = conf.activa === true;
+        
+        CONFERENCES_DATA.forEach((conf, index) => {
+            const activa = data[conf.id] && data[conf.id].activa === true;
+            const numero = String(index + 1).padStart(2, '0');
+            
             html += `
                 <div class="conf-item ${activa ? 'activa' : ''}">
-                    <div class="info">
-                        <div class="nombre">${conf.titulo}</div>
-                        <div class="id">ID: ${id}</div>
+                    <div class="header">
+                        <div class="numero">${numero}</div>
+                        <span class="estado-badge ${activa ? 'activa' : 'inactiva'}">${activa ? '✅ Activa' : '⛔ Inactiva'}</span>
                     </div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span class="estado-badge ${activa ? 'activa' : 'inactiva'}">${activa ? 'Activa' : 'Inactiva'}</span>
+                    <div class="titulo">${conf.titulo}</div>
+                    <div class="descripcion">${conf.descripcion} · 1 hora</div>
+                    <div class="acciones">
+                        <a href="${conf.file}" class="btn-conferencia" target="_blank">🎬 Iniciar Presentación</a>
                         <label class="toggle-switch">
-                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${id}" onchange="toggleConferencia('${id}', this.checked)">
+                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${conf.id}" onchange="toggleConferencia('${conf.id}', this.checked)">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
                 </div>
             `;
-        }
+        });
+        
         html += '</div>';
         container.innerHTML = html;
     }
@@ -898,7 +860,7 @@
         }
     }, 30000);
 
-    console.log('✅ Dashboard Lyon Asesor cargado con Firebase');
+    console.log('✅ Admin Lyon Asesor unificado cargado');
 </script>
 </body>
 </html>
