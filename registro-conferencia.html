@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | Conferencia Lyon Asesor</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- Librerías para PDF y QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f0eb;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 780px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            padding: 40px 44px;
+            position: relative;
+        }
+        @media (max-width: 600px) { .container { padding: 24px 20px; } }
+        .brand {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .brand img {
+            max-height: 64px;
+            width: auto;
+        }
+        .brand .tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: #cdaa7b;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: #1a2330;
+            margin: 12px 0 4px;
+        }
+        h1 span { color: #e86b18; }
+        .subtitle {
+            text-align: center;
+            color: #5a6c7d;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a2330;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: #faf8f5;
+            transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #e86b18;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
+        }
+        .form-group select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: #e86b18;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary:hover { background: #d45f14; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,107,24,0.3); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .error-msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .success-msg {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        #diplomaSection {
+            display: none;
+            margin-top: 24px;
+            border-top: 2px solid #f1f0ed;
+            padding-top: 24px;
+        }
+        #diplomaContent {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .download-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .btn-download {
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-download-pdf {
+            background: #1a2330;
+            color: white;
+        }
+        .btn-download-pdf:hover { background: #0f172a; transform: translateY(-2px); }
+        .btn-download-ebooks {
+            background: #cdaa7b;
+            color: #1a2330;
+        }
+        .btn-download-ebooks:hover { background: #b89565; transform: translateY(-2px); }
+        .btn-download:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .download-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 12px;
+        }
+
+        /* ===== DIPLOMA ===== */
+        .diploma-preview {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 32px 40px;
+            background: white;
+            border: 6px solid #e86b18;
+            border-radius: 16px;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            position: relative;
+        }
+        .diploma-preview .logo-diploma {
+            max-height: 70px;
+            width: auto;
+            margin-bottom: 8px;
+        }
+        .diploma-preview .title-empresa {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #1a2330;
+            margin-bottom: 2px;
+        }
+        .diploma-preview .sub-empresa {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e86b18;
+            margin-bottom: 16px;
+        }
+        .diploma-preview .line-divider {
+            width: 80px;
+            height: 2px;
+            background: #e86b18;
+            margin: 0 auto 20px;
+        }
+        .diploma-preview .certifica-text {
+            font-size: 16px;
+            color: #5a6c7d;
+            margin-bottom: 6px;
+        }
+        .diploma-preview .nombre-participante {
+            font-size: 30px;
+            font-weight: 700;
+            color: #1a2330;
+            margin: 6px 0;
+        }
+        .diploma-preview .logro-text {
+            font-size: 16px;
+            color: #1a2330;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .diploma-preview .titulo-conferencia {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e86b18;
+            margin: 6px 0 12px;
+            font-style: italic;
+        }
+        .diploma-preview .horas-text {
+            font-size: 15px;
+            color: #5a6c7d;
+            margin-bottom: 16px;
+        }
+        .diploma-preview .footer-diploma {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .diploma-preview .footer-diploma .left {
+            text-align: left;
+            font-size: 13px;
+            color: #5a6c7d;
+        }
+        .diploma-preview .footer-diploma .left strong { color: #1a2330; }
+        .diploma-preview .footer-diploma .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .diploma-preview .footer-diploma .qr-container #qrcode {
+            width: 90px;
+            height: 90px;
+        }
+        .diploma-preview .footer-diploma .qr-container .qr-label {
+            font-size: 10px;
+            color: #94a3b8;
+            letter-spacing: 0.05rem;
+        }
+        .diploma-preview .sello-firma {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            margin-top: 12px;
+        }
+        .diploma-preview .sello-firma img {
+            max-height: 70px;
+            width: auto;
+        }
+        .diploma-preview .firma-text {
+            font-size: 13px;
+            color: #5a6c7d;
+            margin-top: 4px;
+        }
+        .diploma-preview .validacion-text {
+            margin-top: 12px;
+            font-size: 10px;
+            color: #94a3b8;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+
+        .loading-overlay {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f1f0ed;
+            border-top-color: #e86b18;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 20px;
+            border-top: 1px solid #f1f0ed;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <div class="brand">
+        <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" style="max-height:60px;">
+        <div class="tagline">Formación Profesional</div>
+    </div>
+
+    <h1>Registro <span>Conferencia</span></h1>
+    <p class="subtitle">Completa tus datos para obtener tu diploma y materiales</p>
+
+    <div id="errorMsg" class="error-msg"></div>
+    <div id="successMsg" class="success-msg"></div>
+
+    <!-- FORMULARIO -->
+    <form id="registroForm" novalidate>
+        <div class="form-group">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" placeholder="Ej: María González" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="email">Correo electrónico *</label>
+                <input type="email" id="email" placeholder="maria@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp *</label>
+                <input type="tel" id="whatsapp" placeholder="+58 414 123 4567" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cedula">Cédula / ID *</label>
+                <input type="text" id="cedula" placeholder="V-12345678" required>
+            </div>
+            <div class="form-group">
+                <label for="pais">País *</label>
+                <select id="pais" required>
+                    <option value="">Selecciona</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="España">España</option>
+                    <option value="México">México</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Chile">Chile</option>
+                    <option value="Perú">Perú</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="EEUU">Estados Unidos</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ciudad">Ciudad *</label>
+            <input type="text" id="ciudad" placeholder="Ej: Caracas" required>
+        </div>
+
+        <div class="form-group">
+            <label for="conferenciaSelect">Conferencia *</label>
+            <select id="conferenciaSelect" required>
+                <option value="">Cargando conferencias disponibles...</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">🎓 Obtener mi diploma y ebooks</button>
+    </form>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p style="color:#5a6c7d;">Generando tu diploma... un momento</p>
+    </div>
+
+    <!-- DIPLOMA -->
+    <div id="diplomaSection">
+        <div id="diplomaContent"></div>
+        <div class="download-actions">
+            <button class="btn-download btn-download-pdf" id="downloadPdfBtn">📄 Descargar Diploma (PDF)</button>
+            <button class="btn-download btn-download-ebooks" id="downloadEbooksBtn">📚 Descargar 4 Ebooks</button>
+        </div>
+        <p class="download-note">🔒 Descarga única. Una vez descargados, no podrás volver a obtenerlos con este registro.</p>
+        <p class="download-note">✅ Verifica la autenticidad escaneando el código QR del diploma.</p>
+    </div>
+
+    <div class="footer-note">
+        © 2025 Lyon Asesor · Prof. Mtr. Álvaro Lyon · Datos protegidos y confidenciales
+    </div>
+</div>
+
+<script>
+// =============================================
+// CONFIGURACIÓN
+// =============================================
+const EB00KS = [
+    { nombre: 'Este día es tuyo', url: 'https://drive.google.com/uc?export=download&id=1wexcxv48A9wfVUliSyrXiyQRFoXo9hzu' },
+    { nombre: 'Diario terapéutico', url: 'https://drive.google.com/uc?export=download&id=1KYfFN_2lh9_tuP6mO0M7fju99Ry8Y5ev' },
+    { nombre: 'Ejercicios de bienestar', url: 'https://drive.google.com/uc?export=download&id=1Y4oLyRkHLFIZOkkM4AEa_pnCjNcZXRMq' },
+    { nombre: 'Guía de autocuidado', url: 'https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-' }
+];
+
+// =============================================
+// ESTADO
+// =============================================
+let registroData = null;
+let codigoUnico = null;
+let diplomaDescargado = false;
+let ebooksDescargados = false;
+let qrCodeInstance = null;
+
+// =============================================
+// CARGAR CONFERENCIAS ACTIVAS
+// =============================================
+async function cargarConferenciasActivas() {
+    try {
+        const snapshot = await database.ref('configuracion/conferencias').once('value');
+        const data = snapshot.val();
+        if (!data) return [];
+
+        const activas = [];
+        for (const [id, conf] of Object.entries(data)) {
+            if (conf.activa === true) {
+                activas.push({ id, titulo: conf.titulo });
+            }
+        }
+        return activas;
+    } catch (error) {
+        console.error('Error cargando conferencias activas:', error);
+        return [];
+    }
+}
+
+// =============================================
+// INICIALIZAR FORMULARIO
+// =============================================
+document.addEventListener('DOMContentLoaded', async function() {
+    const select = document.getElementById('conferenciaSelect');
+    const conferencias = await cargarConferenciasActivas();
+
+    if (conferencias.length === 0) {
+        select.innerHTML = `<option value="">⚠️ No hay conferencias activas en este momento</option>`;
+        select.disabled = true;
+        document.getElementById('submitBtn').disabled = true;
+        mostrarError('⚠️ No hay conferencias disponibles en este momento. Contacta al organizador.');
+        return;
+    }
+
+    select.innerHTML = `<option value="">Selecciona la conferencia del día</option>`;
+    conferencias.forEach(c => {
+        select.innerHTML += `<option value="${c.id}">${c.titulo}</option>`;
+    });
+    select.disabled = false;
+    document.getElementById('submitBtn').disabled = false;
+
+    document.getElementById('registroForm').addEventListener('submit', handleSubmit);
+});
+
+// =============================================
+// MANEJAR SUBMIT
+// =============================================
+async function handleSubmit(e) {
+    e.preventDefault();
+
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'none';
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const cedula = document.getElementById('cedula').value.trim();
+    const pais = document.getElementById('pais').value;
+    const ciudad = document.getElementById('ciudad').value.trim();
+    const conferenciaId = document.getElementById('conferenciaSelect').value;
+    const conferenciaTitulo = document.getElementById('conferenciaSelect').selectedOptions[0]?.text || '';
+
+    if (!nombre || !email || !whatsapp || !cedula || !pais || !ciudad || !conferenciaId) {
+        mostrarError('Por favor, completa todos los campos requeridos.');
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        mostrarError('Ingresa un correo electrónico válido.');
+        return;
+    }
+
+    document.getElementById('loadingOverlay').style.display = 'block';
+    document.getElementById('submitBtn').disabled = true;
+
+    try {
+        const existe = await verificarRegistroExistente(cedula, conferenciaId);
+        if (existe) {
+            mostrarError('⚠️ Ya has descargado el diploma para esta conferencia. Si necesitas ayuda, contacta a soporte.');
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            return;
+        }
+
+        codigoUnico = generarCodigo(conferenciaId);
+
+        const datos = {
+            nombre, email, whatsapp, cedula, pais, ciudad,
+            conferencia: conferenciaId,
+            tituloConferencia: conferenciaTitulo,
+            codigoUnico: codigoUnico,
+            timestamp: Date.now(),
+            fecha: new Date().toISOString(),
+            fechaLegible: new Date().toLocaleString('es-ES'),
+            descargado: false,
+            ebooksDescargados: false,
+            fechaDescarga: null,
+            tipo: 'conferencia'
+        };
+
+        await database.ref(`leads/conferencias/${cedula}_${conferenciaId}`).set(datos);
+        registroData = datos;
+
+        generarDiploma(nombre, cedula, conferenciaTitulo, codigoUnico);
+
+        document.getElementById('loadingOverlay').style.display = 'none';
+        document.getElementById('registroForm').style.display = 'none';
+        document.getElementById('diplomaSection').style.display = 'block';
+        document.getElementById('diplomaSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        mostrarExito('✅ ¡Registro completado! Tu diploma está listo para descargar.');
+
+    } catch (error) {
+        console.error('❌ Error:', error);
+        mostrarError('Hubo un error al procesar tu registro. Intenta de nuevo.');
+        document.getElementById('loadingOverlay').style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+    }
+}
+
+// =============================================
+// VERIFICAR REGISTRO EXISTENTE
+// =============================================
+async function verificarRegistroExistente(cedula, conferenciaId) {
+    try {
+        const snapshot = await database.ref('leads/conferencias').once('value');
+        const data = snapshot.val();
+        if (!data) return false;
+
+        const clave = `${cedula}_${conferenciaId}`;
+        return data[clave] && data[clave].descargado === true;
+    } catch (error) {
+        console.error('Error verificando registro:', error);
+        return false;
+    }
+}
+
+// =============================================
+// GENERAR CÓDIGO ÚNICO
+// =============================================
+function generarCodigo(conferenciaId) {
+    const prefix = conferenciaId.substring(0, 3).toUpperCase();
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let codigo = prefix + '-';
+    for (let i = 0; i < 7; i++) {
+        codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return codigo;
+}
+
+// =============================================
+// GENERAR DIPLOMA
+// =============================================
+function generarDiploma(nombre, cedula, titulo, codigo) {
+    const container = document.getElementById('diplomaContent');
+
+    const html = `
+        <div class="diploma-preview">
+            <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma">
+            <div class="title-empresa">LYON ASESOR</div>
+            <div class="sub-empresa">Formación Profesional</div>
+            <div class="line-divider"></div>
+
+            <div class="certifica-text">Certifica que</div>
+            <div class="nombre-participante">${nombre}</div>
+            <div class="logro-text">
+                Logró culminar y aprobar satisfactoriamente<br>
+                su participación en la formación
+            </div>
+            <div class="titulo-conferencia">"${titulo}"</div>
+            <div class="horas-text">con una duración de 8 horas (ocho) de formación continua.</div>
+
+            <div class="footer-diploma">
+                <div class="left">
+                    <strong>Código:</strong> ${codigo}<br>
+                    <strong>Fecha:</strong> ${new Date().toLocaleDateString('es-ES')}
+                </div>
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                    <div class="qr-label">Verifica aquí</div>
+                </div>
+            </div>
+
+            <div class="sello-firma">
+                <img src="assets/img/Sello.png" alt="Sello Lyon Asesor">
+                <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon">
+            </div>
+            <div class="firma-text">Prof. Mtr. Álvaro Lyon · Director</div>
+
+            <div class="validacion-text">
+                Verifica la autenticidad de este diploma escaneando el código QR
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+
+    const urlValidacion = `https://${window.location.hostname}/validar-diploma.html?codigo=${codigo}`;
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        qrCodeInstance = new QRCode(qrContainer, {
+            text: urlValidacion,
+            width: 90,
+            height: 90,
+            colorDark: '#1a2330',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    document.getElementById('downloadPdfBtn').onclick = function() {
+        if (diplomaDescargado) {
+            alert('⚠️ Ya has descargado tu diploma. Solo se permite una descarga por registro.');
+            return;
+        }
+        descargarPDF(nombre, codigo);
+    };
+
+    document.getElementById('downloadEbooksBtn').onclick = function() {
+        if (ebooksDescargados) {
+            alert('⚠️ Ya has descargado los ebooks. Solo se permite una descarga por registro.');
+            return;
+        }
+        descargarEbooks();
+    };
+}
+
+// =============================================
+// DESCARGAR PDF
+// =============================================
+async function descargarPDF(nombre, codigo) {
+    try {
+        const element = document.querySelector('.diploma-preview');
+        if (!element) return;
+
+        await database.ref(`leads/conferencias/${registroData.cedula}_${registroData.conferencia}`).update({
+            descargado: true,
+            fechaDescarga: new Date().toISOString()
+        });
+
+        diplomaDescargado = true;
+
+        const opt = {
+            margin: 0.5,
+            filename: `Diploma_${nombre.replace(/\s/g, '_')}_${codigo}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
+
+        await html2pdf().set(opt).from(element).save();
+        document.getElementById('downloadPdfBtn').disabled = true;
+        document.getElementById('downloadPdfBtn').textContent = '✅ Diploma descargado';
+        console.log('✅ Diploma descargado exitosamente');
+
+    } catch (error) {
+        console.error('Error al descargar PDF:', error);
+        alert('Hubo un error al generar el PDF. Intenta de nuevo.');
+    }
+}
+
+// =============================================
+// DESCARGAR EBOOKS
+// =============================================
+function descargarEbooks() {
+    database.ref(`leads/conferencias/${registroData.cedula}_${registroData.conferencia}`).update({
+        ebooksDescargados: true
+    });
+
+    ebooksDescargados = true;
+
+    EB00KS.forEach((ebook, index) => {
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.href = ebook.url;
+            link.download = `${ebook.nombre}.pdf`;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }, index * 800);
+    });
+
+    document.getElementById('downloadEbooksBtn').disabled = true;
+    document.getElementById('downloadEbooksBtn').textContent = '📚 Ebooks descargados';
+    alert('📚 Los 4 ebooks comenzarán a descargarse. Revisa tu carpeta de descargas.');
+}
+
+// =============================================
+// UTILIDADES
+// =============================================
+function mostrarError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
+}
+
+function mostrarExito(msg) {
+    const el = document.getElementById('successMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
+}
+
+console.log('✅ Registro de conferencias cargado');
+</script>
+</body>
+</html>
