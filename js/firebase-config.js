@@ -17,10 +17,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// EXPONER database GLOBALMENTE para todas las páginas
+// === EXPONER database GLOBALMENTE para todas las páginas ===
 window.database = database;
 
 console.log('✅ Firebase configurado correctamente para Lyon Asesor');
+console.log('📡 Database URL:', firebaseConfig.databaseURL);
 
 // ============================================================
 // FUNCIONES DE UTILIDAD PARA FIREBASE
@@ -34,10 +35,8 @@ console.log('✅ Firebase configurado correctamente para Lyon Asesor');
  */
 function guardarLead(coleccion, datos) {
   const timestamp = Date.now();
-  // Usar timestamp como ID único
   const referencia = database.ref(`leads/${coleccion}/${timestamp}`);
   
-  // Agregar timestamp y fecha legible
   const registro = {
     ...datos,
     timestamp: timestamp,
@@ -48,7 +47,7 @@ function guardarLead(coleccion, datos) {
   return referencia.set(registro);
 }
 
-// EXPONER guardarLead GLOBALMENTE
+// === EXPONER guardarLead GLOBALMENTE ===
 window.guardarLead = guardarLead;
 
 /**
@@ -96,3 +95,4 @@ function leerTodosLosLeads() {
 window.leerTodosLosLeads = leerTodosLosLeads;
 
 console.log('✅ Funciones de Firebase cargadas para Lyon Asesor');
+console.log('✅ window.database disponible globalmente');
