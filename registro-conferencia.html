@@ -549,6 +549,21 @@ async function handleSubmit(e) {
         await database.ref(`leads/conferencias/${cedula}_${conferenciaId}`).set(datos);
         registroData = datos;
 
+        // Guardamos una copia mínima y pública (SIN email ni WhatsApp) indexada
+        // por el código del diploma, para que validar-diploma.html pueda
+        // verificar el QR sin necesitar acceso a los leads protegidos.
+        await database.ref(`diplomas_publicos/${codigoUnico}`).set({
+            nombre: datos.nombre,
+            cedula: datos.cedula,
+            tituloConferencia: datos.tituloConferencia,
+            pais: datos.pais,
+            ciudad: datos.ciudad,
+            fecha: datos.fecha,
+            fechaLegible: datos.fechaLegible,
+            codigoUnico: datos.codigoUnico,
+            descargado: false
+        });
+
         generarDiploma(nombre, cedula, conferenciaTitulo, codigoUnico);
 
         document.getElementById('loadingOverlay').style.display = 'none';
@@ -569,14 +584,16 @@ async function handleSubmit(e) {
 // =============================================
 // VERIFICAR REGISTRO EXISTENTE
 // =============================================
+// IMPORTANTE: ya NO leemos toda la colección "leads/conferencias" (eso exponía
+// datos personales de todos los registrados y además está bloqueado por las
+// reglas de seguridad, que solo permiten al admin leer "leads"). En su lugar
+// consultamos un nodo público aparte que SOLO guarda un booleano por persona
+// + conferencia, sin ningún dato personal.
 async function verificarRegistroExistente(cedula, conferenciaId) {
     try {
-        const snapshot = await database.ref('leads/conferencias').once('value');
-        const data = snapshot.val();
-        if (!data) return false;
-
         const clave = `${cedula}_${conferenciaId}`;
-        return data[clave] && data[clave].descargado === true;
+        const snapshot = await database.ref(`verificaciones/conferencias/${clave}`).once('value');
+        return snapshot.val() === true;
     } catch (error) {
         console.error('Error verificando registro:', error);
         return false;
@@ -681,10 +698,20 @@ async function descargarPDF(nombre, codigo) {
         const element = document.querySelector('.diploma-preview');
         if (!element) return;
 
-        await database.ref(`leads/conferencias/${registroData.cedula}_${registroData.conferencia}`).update({
+        const clave = `${registroData.cedula}_${registroData.conferencia}`;
+
+        await database.ref(`leads/conferencias/${clave}`).update({
             descargado: true,
             fechaDescarga: new Date().toISOString()
         });
+
+        // Marcamos el flag público (sin datos personales) que usa
+        // verificarRegistroExistente() para bloquear futuras re-descargas.
+        await database.ref(`verificaciones/conferencias/${clave}`).set(true);
+
+        // Marcamos el diploma público como emitido oficialmente, para que
+        // validar-diploma.html deje de mostrarlo como "pendiente".
+        await database.ref(`diplomas_publicos/${codigo}`).update({ descargado: true });
 
         diplomaDescargado = true;
 
@@ -711,7 +738,9 @@ async function descargarPDF(nombre, codigo) {
 // DESCARGAR EBOOKS
 // =============================================
 function descargarEbooks() {
-    database.ref(`leads/conferencias/${registroData.cedula}_${registroData.conferencia}`).update({
+    const clave = `${registroData.cedula}_${registroData.conferencia}`;
+
+    database.ref(`leads/conferencias/${clave}`).update({
         ebooksDescargados: true
     });
 
