@@ -90,6 +90,16 @@
             font-size: 1rem;
             margin: 16px 0 8px;
         }
+        .pending-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 16px 0 8px;
+        }
 
         .mensaje-autenticidad {
             background: #f5f0eb;
@@ -166,25 +176,12 @@ async function validarDiploma(codigo) {
     const container = document.getElementById('validationResult');
 
     try {
-        const snapshot = await database.ref('leads/conferencias').once('value');
-        const data = snapshot.val();
-
-        if (!data) {
-            container.innerHTML = `
-                <div class="invalid-badge">⛔ Código no válido</div>
-                <p style="color:#5a6c7d; margin-top:12px;">No se encontró ningún diploma con este código.</p>
-                <p style="color:#94a3b8; font-size:0.85rem; margin-top:8px;">Verifica que el código sea correcto o contacta a soporte.</p>
-            `;
-            return;
-        }
-
-        let registro = null;
-        for (const key in data) {
-            if (data[key].codigoUnico === codigo) {
-                registro = { id: key, ...data[key] };
-                break;
-            }
-        }
+        // Lectura directa por código: NO se recorre la colección protegida de
+        // leads. "diplomas_publicos" es un nodo aparte que solo contiene los
+        // campos necesarios para validar (sin correo ni WhatsApp), escrito por
+        // registro.html en el momento del registro y de la descarga del PDF.
+        const snapshot = await database.ref(`diplomas_publicos/${codigo}`).once('value');
+        const registro = snapshot.val();
 
         if (!registro) {
             container.innerHTML = `
@@ -197,7 +194,7 @@ async function validarDiploma(codigo) {
 
         if (!registro.descargado) {
             container.innerHTML = `
-                <div class="invalid-badge" style="background:#fef3c7; color:#92400e;">⏳ Diploma pendiente</div>
+                <div class="pending-badge">⏳ Diploma pendiente</div>
                 <p style="color:#5a6c7d; margin-top:12px;">Este diploma aún no ha sido formalmente emitido.</p>
                 <p style="color:#94a3b8; font-size:0.85rem; margin-top:8px;">Contacta al administrador si tienes dudas.</p>
             `;
@@ -223,8 +220,7 @@ async function validarDiploma(codigo) {
             </div>
 
             <div style="margin-top:16px; font-size:0.85rem; color:#5a6c7d;">
-                <p>📧 ${registro.email} · 📱 ${registro.whatsapp}</p>
-                <p style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">${registro.pais}, ${registro.ciudad}</p>
+                <p style="font-size:0.75rem; color:#94a3b8;">${registro.pais || ''}${registro.pais && registro.ciudad ? ', ' : ''}${registro.ciudad || ''}</p>
             </div>
         `;
 
