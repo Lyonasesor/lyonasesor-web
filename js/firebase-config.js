@@ -1,7 +1,6 @@
 // ============================================================
 // FIREBASE CONFIG - Lyon Asesor (VERSIÓN CORREGIDA)
 // ============================================================
-
 // Configuración de Firebase (proyecto: lyon-asesor-panel-259ef)
 const firebaseConfig = {
   apiKey: "AIzaSyCNjzY-wmcoHC69woTEGqU5oG9mepfBBxY",
@@ -20,6 +19,11 @@ const database = firebase.database();
 // === EXPONER database GLOBALMENTE para todas las páginas ===
 window.database = database;
 
+// === EXPONER auth GLOBALMENTE (solo se usa en admin.html, pero no estorba en otras páginas) ===
+if (firebase.auth) {
+  window.auth = firebase.auth();
+}
+
 console.log('✅ Firebase configurado correctamente para Lyon Asesor');
 console.log('📡 Database URL:', firebaseConfig.databaseURL);
 
@@ -34,19 +38,21 @@ console.log('📡 Database URL:', firebaseConfig.databaseURL);
  * @returns {Promise}
  */
 function guardarLead(coleccion, datos) {
+  // Usamos push() en vez de Date.now() como key: push() genera un ID único
+  // garantizado por Firebase, evitando colisiones si dos personas envían
+  // el formulario en el mismo milisegundo.
+  const nuevaRef = database.ref(`leads/${coleccion}`).push();
   const timestamp = Date.now();
-  const referencia = database.ref(`leads/${coleccion}/${timestamp}`);
-  
+
   const registro = {
     ...datos,
     timestamp: timestamp,
     fecha: new Date().toISOString(),
     fechaLegible: new Date().toLocaleString('es-ES')
   };
-  
-  return referencia.set(registro);
-}
 
+  return nuevaRef.set(registro).then(() => nuevaRef.key);
+}
 // === EXPONER guardarLead GLOBALMENTE ===
 window.guardarLead = guardarLead;
 
@@ -77,7 +83,7 @@ function leerTodosLosLeads() {
     .then(snapshot => {
       const data = snapshot.val();
       if (!data) return { consultas: [], conferencias: [], ebooks: [], diagnosticos: [] };
-      
+
       const resultado = {};
       for (const [coleccion, items] of Object.entries(data)) {
         if (typeof items === 'object' && items !== null) {
