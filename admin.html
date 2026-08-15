@@ -114,7 +114,7 @@
         .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
         .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
 
-        /* ===== GESTIÓN DE CONFERENCIAS (TARJETAS ESTILO PANEL) ===== */
+        /* ===== GESTIÓN DE CONFERENCIAS ===== */
         .config-card {
             background: white;
             border-radius: 20px;
@@ -196,7 +196,7 @@
         }
         .conf-item .acciones .btn-conferencia:hover { background: #d45f14; transform: translateY(-2px); }
 
-        /* ===== TOGGLE SWITCH ===== */
+        /* ===== TOGGLE ===== */
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -402,7 +402,7 @@
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
         </div>
 
-        <!-- ===== GESTIÓN DE CONFERENCIAS (TARJETAS ESTILO PANEL) ===== -->
+        <!-- ===== GESTIÓN DE CONFERENCIAS ===== -->
         <div class="config-card">
             <h3>🎤 Gestión de Conferencias</h3>
             <p class="sub">Activa o desactiva cada conferencia. Solo las activas aparecerán en el formulario de registro. Haz clic en "Iniciar Presentación" para ver la conferencia.</p>
@@ -538,6 +538,7 @@
     // CARGAR TODOS LOS DATOS
     // =============================================
     async function cargarTodosLosDatos() {
+        console.log('🔄 Cargando datos...');
         await Promise.all([
             cargarLeads(),
             cargarConferencias()
@@ -549,8 +550,10 @@
     // =============================================
     async function cargarLeads() {
         try {
+            console.log('📥 Cargando leads desde Firebase...');
             const snapshot = await database.ref('leads').once('value');
             const data = snapshot.val();
+            console.log('📦 Datos de leads:', data);
 
             allLeads = [];
             if (data) {
@@ -569,13 +572,14 @@
                 }
             }
 
+            console.log(`✅ ${allLeads.length} leads cargados`);
             allLeads.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             actualizarStats();
             renderTabla();
             renderChart();
 
         } catch (error) {
-            console.error('Error cargando leads:', error);
+            console.error('❌ Error cargando leads:', error);
             document.getElementById('tableBody').innerHTML =
                 '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#c0392b;">❌ Error al cargar datos desde Firebase. Recarga la página.</td></tr>';
         }
@@ -586,10 +590,13 @@
     // =============================================
     async function cargarConferencias() {
         try {
+            console.log('📥 Cargando conferencias desde Firebase...');
             const snapshot = await database.ref('configuracion/conferencias').once('value');
             const data = snapshot.val();
+            console.log('📦 Datos de conferencias:', data);
 
             if (!data) {
+                console.log('⚠️ No hay conferencias en Firebase. Inicializando...');
                 await inicializarConferencias();
                 return cargarConferencias();
             }
@@ -597,9 +604,9 @@
             renderConferencias(data);
 
         } catch (error) {
-            console.error('Error cargando conferencias:', error);
+            console.error('❌ Error cargando conferencias:', error);
             document.getElementById('conferenciasList').innerHTML =
-                '<p style="color:#c0392b;">❌ Error al cargar configuración de conferencias.</p>';
+                '<p style="color:#c0392b;">❌ Error al cargar configuración de conferencias. Verifica conexión a Firebase.</p>';
         }
     }
 
@@ -607,21 +614,26 @@
     // INICIALIZAR CONFERENCIAS EN FIREBASE
     // =============================================
     async function inicializarConferencias() {
-        const updates = {};
-        CONFERENCES_DATA.forEach(c => {
-            updates[`configuracion/conferencias/${c.id}`] = {
-                id: c.id,
-                titulo: c.titulo,
-                descripcion: c.descripcion,
-                file: c.file,
-                activa: false,
-                fecha_creacion: new Date().toISOString(),
-                ultima_modificacion: new Date().toISOString()
-            };
-        });
+        try {
+            console.log('🚀 Inicializando conferencias en Firebase...');
+            const updates = {};
+            CONFERENCES_DATA.forEach(c => {
+                updates[`configuracion/conferencias/${c.id}`] = {
+                    id: c.id,
+                    titulo: c.titulo,
+                    descripcion: c.descripcion,
+                    file: c.file,
+                    activa: false,
+                    fecha_creacion: new Date().toISOString(),
+                    ultima_modificacion: new Date().toISOString()
+                };
+            });
 
-        await database.ref().update(updates);
-        console.log('✅ Conferencias inicializadas en Firebase');
+            await database.ref().update(updates);
+            console.log('✅ Conferencias inicializadas en Firebase');
+        } catch (error) {
+            console.error('❌ Error inicializando conferencias:', error);
+        }
     }
 
     // =============================================
@@ -629,6 +641,7 @@
     // =============================================
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
+        console.log('🎨 Renderizando conferencias:', data);
 
         let html = '<div class="conferencias-grid">';
 
@@ -657,6 +670,7 @@
 
         html += '</div>';
         container.innerHTML = html;
+        console.log('✅ Conferencias renderizadas');
     }
 
     // =============================================
@@ -669,7 +683,7 @@
             console.log(`✅ Conferencia ${id} ${activa ? 'activada' : 'desactivada'}`);
             await cargarConferencias();
         } catch (error) {
-            console.error('Error actualizando estado:', error);
+            console.error('❌ Error actualizando estado:', error);
             alert('Error al actualizar el estado de la conferencia.');
         }
     }
