@@ -93,8 +93,6 @@
         .btn-danger:hover { background: #dc2626; }
         .btn-reload { background: #2563eb; color: white; }
         .btn-reload:hover { background: #1d4ed8; }
-        .btn-success { background: #22c55e; color: white; }
-        .btn-success:hover { background: #16a34a; }
 
         /* ===== STATS ===== */
         .stats-grid {
@@ -114,7 +112,7 @@
         .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
         .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
 
-        /* ===== GESTIÓN DE CONFERENCIAS (UNIFICADO) ===== */
+        /* ===== GESTIÓN DE CONFERENCIAS ===== */
         .config-card {
             background: white;
             border-radius: 20px;
@@ -125,79 +123,34 @@
         }
         .config-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
         .config-card .sub { font-size: 0.85rem; color: #64748b; margin-bottom: 16px; }
-
-        /* === Grid de conferencias (estilo PANEL) === */
         .conferencias-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-        }
-        .conf-item {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 18px 20px;
-            border: 1px solid #f1f5f9;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 12px;
         }
-        .conf-item.activa { border-color: #dcfce7; background: #f0fdf4; }
-        .conf-item .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .conf-item .header .numero {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #cdaa7b;
-            opacity: 0.6;
-            line-height: 1;
-        }
-        .conf-item .header .estado-badge {
-            font-size: 0.65rem;
-            padding: 3px 12px;
-            border-radius: 40px;
-            font-weight: 600;
-        }
-        .conf-item .header .estado-badge.activa { background: #dcfce7; color: #166534; }
-        .conf-item .header .estado-badge.inactiva { background: #fee2e2; color: #991b1b; }
-
-        .conf-item .titulo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-        .conf-item .descripcion {
-            font-size: 0.85rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
-        .conf-item .acciones {
+        .conf-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-        .conf-item .acciones .btn-conferencia {
-            padding: 6px 18px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
             transition: 0.2s;
-            background: #e86b18;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
         }
-        .conf-item .acciones .btn-conferencia:hover { background: #d45f14; transform: translateY(-2px); }
+        .conf-item.activa { border-color: #dcfce7; background: #f0fdf4; }
+        .conf-item .info .nombre { font-weight: 600; font-size: 0.9rem; color: #0f172a; }
+        .conf-item .info .id { font-size: 0.7rem; color: #94a3b8; }
+        .conf-item .estado-badge {
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .conf-item .estado-badge.activa { background: #dcfce7; color: #166534; }
+        .conf-item .estado-badge.inactiva { background: #fee2e2; color: #991b1b; }
 
-        /* ===== TOGGLE SWITCH ===== */
+        /* ===== TOGGLE ===== */
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -282,8 +235,6 @@
         }
         .badge-pagado { background: #dcfce7; color: #166534; }
         .badge-pendiente { background: #fee2e2; color: #991b1b; }
-        .badge-descargado { background: #dcfce7; color: #166534; }
-        .badge-no-descargado { background: #fef3c7; color: #92400e; }
         .badge-tipo {
             background: #eef2ff;
             color: #4338ca;
@@ -399,16 +350,16 @@
         <!-- STATS -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card"><div class="stat-label">📋 Consultas</div><div class="stat-value" id="statConsultas">0</div><div class="stat-sub" id="statConsultasPagadas">Pagadas: 0</div></div>
-            <div class="stat-card"><div class="stat-label">🎤 Conferencias</div><div class="stat-value" id="statConferencias">0</div><div class="stat-sub" id="statConferenciasDescargadas">Descargados: 0</div></div>
+            <div class="stat-card"><div class="stat-label">🎤 Conferencias</div><div class="stat-value" id="statConferencias">0</div><div class="stat-sub" id="statConferenciasPagadas">Pagadas: 0</div></div>
             <div class="stat-card"><div class="stat-label">💰 Ingresos totales</div><div class="stat-value" id="statIngresos">$0</div><div class="stat-sub">Transacciones pagadas</div></div>
             <div class="stat-card"><div class="stat-label">📘 Ebooks</div><div class="stat-value" id="statEbooks">0</div><div class="stat-sub">Leads capturados</div></div>
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
         </div>
 
-        <!-- ===== GESTIÓN DE CONFERENCIAS (UNIFICADO) ===== -->
+        <!-- ===== GESTIÓN DE CONFERENCIAS ===== -->
         <div class="config-card">
             <h3>🎤 Gestión de Conferencias</h3>
-            <p class="sub">Activa o desactiva cada conferencia. Solo las activas aparecerán en el formulario de registro. Haz clic en "Iniciar Presentación" para ver la conferencia.</p>
+            <p class="sub">Activa o desactiva las conferencias. Solo las activas aparecerán en el formulario de registro.</p>
             <div id="conferenciasList">
                 <p style="color:#94a3b8;">Cargando conferencias...</p>
             </div>
@@ -485,28 +436,27 @@
     };
 
     // =============================================
-    // LISTA DE CONFERENCIAS (PARA TARJETAS Y ACTIVACIÓN)
+    // LISTA DE CONFERENCIAS (INICIALIZACIÓN)
     // =============================================
     const CONFERENCES_DATA = [
-        { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo', descripcion: 'El Cerebro que Inspira Equipos', file: 'conferencias/neuro-liderazgo.html' },
-        { id: 'ie40', titulo: 'Inteligencia Emocional 4.0', descripcion: 'Liderar en la Incertidumbre', file: 'conferencias/ie40.html' },
-        { id: 'factor-humano', titulo: 'El Factor Humano', descripcion: 'Autogestión Emocional en Entornos de Alta Demanda', file: 'conferencias/factor-humano.html' },
-        { id: 'autoestima', titulo: 'Autoestima Inquebrantable', descripcion: 'El Pilar del Rendimiento Personal', file: 'conferencias/autoestima.html' },
-        { id: 'neurobienestar', titulo: 'Neurobienestar', descripcion: 'Equilibrio Emocional en un Mundo Hiperconectado', file: 'conferencias/neurobienestar.html' },
-        { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones', descripcion: 'Educar con el Corazón y el Cerebro', file: 'conferencias/pedagogia-emociones.html' },
-        { id: 'poder-creencias', titulo: 'El Poder de las Creencias', descripcion: 'Reprograma tu Mente, Transforma tu Realidad', file: 'conferencias/poder-creencias.html' },
-        { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula', descripcion: 'Estrategias para un Aprendizaje Profundo', file: 'conferencias/neurociencia-aula.html' },
-        { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos', descripcion: 'Alto Rendimiento con Inteligencia Emocional', file: 'conferencias/gestion-emocional.html' },
-        { id: 'desarrollo-humano', titulo: 'Desarrollo Humano con Propósito', descripcion: 'Del Autoconocimiento a la Trascendencia', file: 'conferencias/desarrollo-humano.html' },
-        { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: 'conferencias/comunicacion-conecta.html' },
-        { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro', descripcion: 'Neuroeducación para Formadores y Docentes', file: 'conferencias/educar-corazon.html' }
+        { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo: El Cerebro que Inspira Equipos', activa: false },
+        { id: 'ie40', titulo: 'Inteligencia Emocional 4.0: Liderar en la Incertidumbre', activa: false },
+        { id: 'factor-humano', titulo: 'El Factor Humano: Autogestión Emocional en Entornos de Alta Demanda', activa: false },
+        { id: 'autoestima', titulo: 'Autoestima Inquebrantable: El Pilar del Rendimiento Personal', activa: false },
+        { id: 'neurobienestar', titulo: 'Neurobienestar: Equilibrio Emocional en un Mundo Hiperconectado', activa: false },
+        { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones: Educar con el Corazón y el Cerebro', activa: false },
+        { id: 'poder-creencias', titulo: 'El Poder de las Creencias: Reprograma tu Mente, Transforma tu Realidad', activa: false },
+        { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula: Estrategias para un Aprendizaje Profundo', activa: false },
+        { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos de Alto Rendimiento', activa: false },
+        { id: 'desarrollo-humano', titulo: 'Del Autoconocimiento a la Trascendencia: Desarrollo Humano con Propósito', activa: false },
+        { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta: Neurodiálogo para Equipos Cohesionados', activa: false },
+        { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro: Neuroeducación para Formadores y Docentes', activa: false }
     ];
 
     // =============================================
     // ESTADO
     // =============================================
     let allLeads = [];
-    let conferenciasActivas = {};
 
     // =============================================
     // AUTENTICACIÓN
@@ -559,12 +509,17 @@
             allLeads = [];
             if (data) {
                 for (const [coleccion, items] of Object.entries(data)) {
-                    for (const [id, lead] of Object.entries(items)) {
-                        allLeads.push({
-                            id: id,
-                            coleccion: coleccion,
-                            ...lead
-                        });
+                    // Asegurar que items es un objeto
+                    if (typeof items === 'object' && items !== null) {
+                        for (const [id, lead] of Object.entries(items)) {
+                            if (typeof lead === 'object' && lead !== null) {
+                                allLeads.push({
+                                    id: id,
+                                    coleccion: coleccion,
+                                    ...lead
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -576,7 +531,7 @@
 
         } catch (error) {
             console.error('Error cargando leads:', error);
-            document.getElementById('tableBody').innerHTML = 
+            document.getElementById('tableBody').innerHTML =
                 '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#c0392b;">❌ Error al cargar datos desde Firebase. Recarga la página.</td></tr>';
         }
     }
@@ -594,28 +549,23 @@
                 return cargarConferencias();
             }
 
-            conferenciasActivas = data;
             renderConferencias(data);
 
         } catch (error) {
             console.error('Error cargando conferencias:', error);
-            document.getElementById('conferenciasList').innerHTML = 
+            document.getElementById('conferenciasList').innerHTML =
                 '<p style="color:#c0392b;">❌ Error al cargar configuración de conferencias.</p>';
         }
     }
 
     // =============================================
-    // INICIALIZAR CONFERENCIAS EN FIREBASE
+    // INICIALIZAR CONFERENCIAS
     // =============================================
     async function inicializarConferencias() {
         const updates = {};
         CONFERENCES_DATA.forEach(c => {
             updates[`configuracion/conferencias/${c.id}`] = {
-                id: c.id,
-                titulo: c.titulo,
-                descripcion: c.descripcion,
-                file: c.file,
-                activa: false,
+                ...c,
                 fecha_creacion: new Date().toISOString(),
                 ultima_modificacion: new Date().toISOString()
             };
@@ -626,36 +576,30 @@
     }
 
     // =============================================
-    // RENDER CONFERENCIAS (estilo tarjetas)
+    // RENDER CONFERENCIAS
     // =============================================
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
-        
+
         let html = '<div class="conferencias-grid">';
-        
-        CONFERENCES_DATA.forEach((conf, index) => {
-            const activa = data[conf.id] && data[conf.id].activa === true;
-            const numero = String(index + 1).padStart(2, '0');
-            
+        for (const [id, conf] of Object.entries(data)) {
+            const activa = conf.activa === true;
             html += `
                 <div class="conf-item ${activa ? 'activa' : ''}">
-                    <div class="header">
-                        <div class="numero">${numero}</div>
-                        <span class="estado-badge ${activa ? 'activa' : 'inactiva'}">${activa ? '✅ Activa' : '⛔ Inactiva'}</span>
+                    <div class="info">
+                        <div class="nombre">${conf.titulo}</div>
+                        <div class="id">ID: ${id}</div>
                     </div>
-                    <div class="titulo">${conf.titulo}</div>
-                    <div class="descripcion">${conf.descripcion} · 1 hora</div>
-                    <div class="acciones">
-                        <a href="${conf.file}" class="btn-conferencia" target="_blank">🎬 Iniciar Presentación</a>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="estado-badge ${activa ? 'activa' : 'inactiva'}">${activa ? 'Activa' : 'Inactiva'}</span>
                         <label class="toggle-switch">
-                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${conf.id}" onchange="toggleConferencia('${conf.id}', this.checked)">
+                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${id}" onchange="toggleConferencia('${id}', this.checked)">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
                 </div>
             `;
-        });
-        
+        }
         html += '</div>';
         container.innerHTML = html;
     }
@@ -683,15 +627,14 @@
         const conferencias = allLeads.filter(l => l.coleccion === 'conferencias');
         const ebooks = allLeads.filter(l => l.coleccion === 'ebooks');
         const diagnosticos = allLeads.filter(l => l.coleccion === 'diagnosticos');
-        
+
         const pagadas = allLeads.filter(l => l.pagado === true);
         const ingresos = pagadas.reduce((sum, l) => sum + (l.monto || 0), 0);
-        const conferenciasDescargadas = conferencias.filter(l => l.descargado === true);
-        
+
         document.getElementById('statConsultas').textContent = consultas.length;
         document.getElementById('statConsultasPagadas').textContent = `Pagadas: ${consultas.filter(r => r.pagado).length}`;
         document.getElementById('statConferencias').textContent = conferencias.length;
-        document.getElementById('statConferenciasDescargadas').textContent = `Descargados: ${conferenciasDescargadas.length}`;
+        document.getElementById('statConferenciasPagadas').textContent = `Pagadas: ${conferencias.filter(r => r.pagado).length}`;
         document.getElementById('statIngresos').textContent = `$${ingresos}`;
         document.getElementById('statEbooks').textContent = ebooks.length;
         document.getElementById('statDiagnosticos').textContent = diagnosticos.length;
@@ -739,11 +682,11 @@
         const estadoFiltro = document.getElementById('estadoFiltro').value;
 
         let filtered = allLeads;
-        
+
         if (tipoFiltro !== 'todos') {
             filtered = filtered.filter(l => l.coleccion === tipoFiltro);
         }
-        
+
         if (estadoFiltro === 'pagado') {
             filtered = filtered.filter(l => l.pagado === true);
         } else if (estadoFiltro === 'pendiente') {
@@ -799,7 +742,7 @@
                 const coleccion = this.getAttribute('data-coleccion');
                 const wasPagado = this.getAttribute('data-pagado') === 'true';
                 const nuevoEstado = !wasPagado;
-                
+
                 try {
                     await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
                     console.log(`✅ Estado actualizado a "${nuevoEstado ? 'pagado' : 'pendiente'}"`);
@@ -823,7 +766,7 @@
     // =============================================
     document.getElementById('exportBtn').addEventListener('click', function() {
         if (allLeads.length === 0) { alert('No hay datos para exportar'); return; }
-        
+
         let csv = 'Tipo,Fecha,Nombre/Empresa,Contacto,Email,Teléfono,Detalle,Monto,Pagado\n';
         allLeads.forEach(r => {
             const tipoInfo = TIPO_MAP[r.coleccion] || { label: r.coleccion };
@@ -854,13 +797,13 @@
     checkLogin();
 
     // Recargar cada 30 segundos
-    setInterval(() => { 
+    setInterval(() => {
         if (sessionStorage.getItem('lyonPanelAuth') === 'true') {
             cargarTodosLosDatos();
         }
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor unificado cargado');
+    console.log('✅ Admin Lyon Asesor cargado con Firebase');
 </script>
 </body>
 </html>
