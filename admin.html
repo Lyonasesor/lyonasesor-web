@@ -120,6 +120,8 @@
         .btn-danger:hover { background: #dc2626; }
         .btn-reload { background: #2563eb; color: white; }
         .btn-reload:hover { background: #1d4ed8; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-success:hover { background: #16a34a; }
 
         /* ===== STATS ===== */
         .stats-grid {
@@ -152,6 +154,111 @@
             font-size: 0.85rem;
             color: #64748b;
             margin-top: 4px;
+        }
+
+        /* ===== GESTIÓN DE CONFERENCIAS ===== */
+        .config-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .config-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+        .config-card .sub {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+        .conferencias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+        .conf-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            transition: 0.2s;
+        }
+        .conf-item.activa {
+            border-color: #dcfce7;
+            background: #f0fdf4;
+        }
+        .conf-item .info .nombre {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0f172a;
+        }
+        .conf-item .info .id {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+        .conf-item .estado-badge {
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .conf-item .estado-badge.activa {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .conf-item .estado-badge.inactiva {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ===== TOGGLE SWITCH ===== */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+        .toggle-slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background: #e86b18;
+        }
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(20px);
         }
 
         /* ===== FILTROS ===== */
@@ -221,6 +328,8 @@
         }
         .badge-pagado { background: #dcfce7; color: #166534; }
         .badge-pendiente { background: #fee2e2; color: #991b1b; }
+        .badge-descargado { background: #dcfce7; color: #166534; }
+        .badge-no-descargado { background: #fef3c7; color: #92400e; }
         .badge-tipo {
             background: #eef2ff;
             color: #4338ca;
@@ -302,6 +411,7 @@
             .dashboard-header h1 { font-size: 1.3rem; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .stat-value { font-size: 1.5rem; }
+            .conferencias-grid { grid-template-columns: 1fr; }
             th, td { padding: 10px 12px; font-size: 0.8rem; }
             .filters-bar select { min-width: 120px; }
         }
@@ -340,10 +450,19 @@
         <!-- STATS -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card"><div class="stat-label">📋 Consultas</div><div class="stat-value" id="statConsultas">0</div><div class="stat-sub" id="statConsultasPagadas">Pagadas: 0</div></div>
-            <div class="stat-card"><div class="stat-label">🎤 Conferencias</div><div class="stat-value" id="statConferencias">0</div><div class="stat-sub" id="statConferenciasPagadas">Pagadas: 0</div></div>
+            <div class="stat-card"><div class="stat-label">🎤 Conferencias</div><div class="stat-value" id="statConferencias">0</div><div class="stat-sub" id="statConferenciasDescargadas">Descargados: 0</div></div>
             <div class="stat-card"><div class="stat-label">💰 Ingresos totales</div><div class="stat-value" id="statIngresos">$0</div><div class="stat-sub">Transacciones pagadas</div></div>
             <div class="stat-card"><div class="stat-label">📘 Ebooks</div><div class="stat-value" id="statEbooks">0</div><div class="stat-sub">Leads capturados</div></div>
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
+        </div>
+
+        <!-- ===== GESTIÓN DE CONFERENCIAS ===== -->
+        <div class="config-card">
+            <h3>🎤 Gestión de Conferencias</h3>
+            <p class="sub">Activa o desactiva las conferencias. Solo las activas aparecerán en el formulario de registro.</p>
+            <div id="conferenciasList">
+                <p style="color:#94a3b8;">Cargando conferencias...</p>
+            </div>
         </div>
 
         <!-- GRÁFICO + FILTROS -->
@@ -409,7 +528,6 @@
     // =============================================
     const PANEL_PASSWORD = 'lyon2025';
 
-    // Mapeo de colecciones de Firebase a nombres para mostrar
     const TIPO_MAP = {
         'consultas': { label: '📋 Consulta', coleccion: 'consultas' },
         'conferencias': { label: '🎤 Conferencia', coleccion: 'conferencias' },
@@ -421,7 +539,7 @@
     // ESTADO
     // =============================================
     let allLeads = [];
-    let currentTab = 'todos';
+    let conferenciasData = {};
 
     // =============================================
     // AUTENTICACIÓN
@@ -430,7 +548,7 @@
         const loggedIn = sessionStorage.getItem('lyonPanelAuth') === 'true';
         document.getElementById('loginSection').style.display = loggedIn ? 'none' : 'block';
         document.getElementById('adminPanel').style.display = loggedIn ? 'block' : 'none';
-        if (loggedIn) cargarDatos();
+        if (loggedIn) cargarTodosLosDatos();
     }
 
     document.getElementById('loginBtn').addEventListener('click', function() {
@@ -450,52 +568,148 @@
     });
 
     document.getElementById('reloadBtn').addEventListener('click', function() {
-        cargarDatos();
+        cargarTodosLosDatos();
     });
 
     // =============================================
-    // CARGAR DATOS DESDE FIREBASE
+    // CARGAR TODOS LOS DATOS
     // =============================================
-    async function cargarDatos() {
+    async function cargarTodosLosDatos() {
+        await Promise.all([
+            cargarLeads(),
+            cargarConferencias()
+        ]);
+    }
+
+    // =============================================
+    // CARGAR LEADS
+    // =============================================
+    async function cargarLeads() {
         try {
-            console.log('📥 Cargando datos desde Firebase...');
-            
             const snapshot = await database.ref('leads').once('value');
             const data = snapshot.val();
-            
-            if (!data) {
-                allLeads = [];
-                actualizarStats();
-                renderTabla();
-                renderChart();
-                return;
-            }
-            
-            // Procesar datos de Firebase
+
             allLeads = [];
-            for (const [coleccion, items] of Object.entries(data)) {
-                for (const [id, lead] of Object.entries(items)) {
-                    allLeads.push({
-                        id: id,
-                        coleccion: coleccion,
-                        ...lead
-                    });
+            if (data) {
+                for (const [coleccion, items] of Object.entries(data)) {
+                    for (const [id, lead] of Object.entries(items)) {
+                        allLeads.push({
+                            id: id,
+                            coleccion: coleccion,
+                            ...lead
+                        });
+                    }
                 }
             }
-            
-            // Ordenar por fecha (más reciente primero)
+
             allLeads.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-            
-            console.log(`✅ ${allLeads.length} registros cargados desde Firebase`);
-            
             actualizarStats();
             renderTabla();
             renderChart();
-            
+
         } catch (error) {
-            console.error('❌ Error cargando datos:', error);
+            console.error('Error cargando leads:', error);
             document.getElementById('tableBody').innerHTML = 
                 '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#c0392b;">❌ Error al cargar datos desde Firebase. Recarga la página.</td></tr>';
+        }
+    }
+
+    // =============================================
+    // CARGAR CONFERENCIAS (Configuración)
+    // =============================================
+    async function cargarConferencias() {
+        try {
+            const snapshot = await database.ref('configuracion/conferencias').once('value');
+            const data = snapshot.val();
+
+            if (!data) {
+                await inicializarConferencias();
+                return cargarConferencias();
+            }
+
+            conferenciasData = data;
+            renderConferencias(data);
+
+        } catch (error) {
+            console.error('Error cargando conferencias:', error);
+            document.getElementById('conferenciasList').innerHTML = 
+                '<p style="color:#c0392b;">❌ Error al cargar configuración de conferencias.</p>';
+        }
+    }
+
+    // =============================================
+    // INICIALIZAR CONFERENCIAS
+    // =============================================
+    async function inicializarConferencias() {
+        const conferencias = [
+            { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo: El Cerebro que Inspira Equipos', activa: false },
+            { id: 'ie40', titulo: 'Inteligencia Emocional 4.0: Liderar en la Incertidumbre', activa: false },
+            { id: 'factor-humano', titulo: 'El Factor Humano: Autogestión Emocional en Entornos de Alta Demanda', activa: false },
+            { id: 'autoestima', titulo: 'Autoestima Inquebrantable: El Pilar del Rendimiento Personal', activa: false },
+            { id: 'neurobienestar', titulo: 'Neurobienestar: Equilibrio Emocional en un Mundo Hiperconectado', activa: false },
+            { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones: Educar con el Corazón y el Cerebro', activa: false },
+            { id: 'poder-creencias', titulo: 'El Poder de las Creencias: Reprograma tu Mente, Transforma tu Realidad', activa: false },
+            { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula: Estrategias para un Aprendizaje Profundo', activa: false },
+            { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos de Alto Rendimiento', activa: false },
+            { id: 'desarrollo-humano', titulo: 'Del Autoconocimiento a la Trascendencia: Desarrollo Humano con Propósito', activa: false },
+            { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta: Neurodiálogo para Equipos Cohesionados', activa: false },
+            { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro: Neuroeducación para Formadores y Docentes', activa: false }
+        ];
+
+        const updates = {};
+        conferencias.forEach(c => {
+            updates[`configuracion/conferencias/${c.id}`] = {
+                ...c,
+                fecha_creacion: new Date().toISOString(),
+                ultima_modificacion: new Date().toISOString()
+            };
+        });
+
+        await database.ref().update(updates);
+        console.log('✅ Conferencias inicializadas en Firebase');
+    }
+
+    // =============================================
+    // RENDER CONFERENCIAS
+    // =============================================
+    function renderConferencias(data) {
+        const container = document.getElementById('conferenciasList');
+
+        let html = '<div class="conferencias-grid">';
+        for (const [id, conf] of Object.entries(data)) {
+            const activa = conf.activa === true;
+            html += `
+                <div class="conf-item ${activa ? 'activa' : ''}">
+                    <div class="info">
+                        <div class="nombre">${conf.titulo}</div>
+                        <div class="id">ID: ${id}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="estado-badge ${activa ? 'activa' : 'inactiva'}">${activa ? 'Activa' : 'Inactiva'}</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${id}" onchange="toggleConferencia('${id}', this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            `;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    // =============================================
+    // TOGGLE CONFERENCIA
+    // =============================================
+    async function toggleConferencia(id, activa) {
+        try {
+            await database.ref(`configuracion/conferencias/${id}/activa`).set(activa);
+            await database.ref(`configuracion/conferencias/${id}/ultima_modificacion`).set(new Date().toISOString());
+            console.log(`✅ Conferencia ${id} ${activa ? 'activada' : 'desactivada'}`);
+            await cargarConferencias();
+        } catch (error) {
+            console.error('Error actualizando estado:', error);
+            alert('Error al actualizar el estado de la conferencia.');
         }
     }
 
@@ -510,18 +724,19 @@
         
         const pagadas = allLeads.filter(l => l.pagado === true);
         const ingresos = pagadas.reduce((sum, l) => sum + (l.monto || 0), 0);
+        const conferenciasDescargadas = conferencias.filter(l => l.descargado === true);
         
         document.getElementById('statConsultas').textContent = consultas.length;
         document.getElementById('statConsultasPagadas').textContent = `Pagadas: ${consultas.filter(r => r.pagado).length}`;
         document.getElementById('statConferencias').textContent = conferencias.length;
-        document.getElementById('statConferenciasPagadas').textContent = `Pagadas: ${conferencias.filter(r => r.pagado).length}`;
+        document.getElementById('statConferenciasDescargadas').textContent = `Descargados: ${conferenciasDescargadas.length}`;
         document.getElementById('statIngresos').textContent = `$${ingresos}`;
         document.getElementById('statEbooks').textContent = ebooks.length;
         document.getElementById('statDiagnosticos').textContent = diagnosticos.length;
     }
 
     // =============================================
-    // GRÁFICO DE TORTA (CSS puro)
+    // GRÁFICO DE TORTA
     // =============================================
     function renderChart() {
         const tipos = {
@@ -573,7 +788,6 @@
             filtered = filtered.filter(l => l.pagado !== true);
         }
 
-        // Ordenar por fecha descendente
         filtered.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
         const tbody = document.getElementById('tableBody');
@@ -582,7 +796,7 @@
             return;
         }
 
-        tbody.innerHTML = filtered.map((item, index) => {
+        tbody.innerHTML = filtered.map((item) => {
             const tipoInfo = TIPO_MAP[item.coleccion] || { label: item.coleccion };
             const tipoLabel = tipoInfo.label || item.coleccion;
 
@@ -617,7 +831,6 @@
             </tr>`;
         }).join('');
 
-        // Eventos para botones de pagar
         document.querySelectorAll('.btn-pagar').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const id = this.getAttribute('data-id');
@@ -628,7 +841,7 @@
                 try {
                     await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
                     console.log(`✅ Estado actualizado a "${nuevoEstado ? 'pagado' : 'pendiente'}"`);
-                    await cargarDatos(); // Recargar
+                    await cargarLeads();
                 } catch (error) {
                     console.error('❌ Error actualizando estado:', error);
                     alert('Error al actualizar el estado.');
@@ -678,10 +891,10 @@
     // =============================================
     checkLogin();
 
-    // Recargar cada 30 segundos (opcional)
+    // Recargar cada 30 segundos
     setInterval(() => { 
         if (sessionStorage.getItem('lyonPanelAuth') === 'true') {
-            cargarDatos();
+            cargarTodosLosDatos();
         }
     }, 30000);
 
