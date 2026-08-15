@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validar Diploma | Lyon Asesor</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f0eb;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            padding: 40px 44px;
+            text-align: center;
+        }
+        @media (max-width: 600px) { .container { padding: 24px 20px; } }
+        .brand img { max-height: 60px; width: auto; margin-bottom: 8px; }
+        .brand .tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.75rem;
+            color: #cdaa7b;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a2330;
+            margin: 12px 0 4px;
+        }
+        h1 span { color: #e86b18; }
+        .subtitle { color: #5a6c7d; font-size: 0.95rem; margin-bottom: 24px; }
+
+        .validation-card {
+            background: #faf8f5;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e8ddd0;
+            text-align: left;
+        }
+        .validation-card .field {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f0ed;
+            font-size: 0.9rem;
+        }
+        .validation-card .field:last-child { border-bottom: none; }
+        .validation-card .label { color: #5a6c7d; font-weight: 500; }
+        .validation-card .value { color: #1a2330; font-weight: 600; }
+
+        .valid-badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 16px 0 8px;
+        }
+        .invalid-badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 16px 0 8px;
+        }
+
+        .mensaje-autenticidad {
+            background: #f5f0eb;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #1a2330;
+            border-left: 4px solid #e86b18;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 20px;
+            border-top: 1px solid #f1f0ed;
+            padding-top: 16px;
+        }
+        .loading { padding: 30px 0; color: #5a6c7d; }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #f1f0ed;
+            border-top-color: #e86b18;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="brand">
+        <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor">
+        <div class="tagline">Formación Profesional</div>
+    </div>
+
+    <h1>Validación de <span>Diploma</span></h1>
+    <p class="subtitle">Verifica la autenticidad de este certificado</p>
+
+    <div id="validationResult">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Verificando diploma...</p>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        © 2025 Lyon Asesor · Prof. Mtr. Álvaro Lyon
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get('codigo');
+
+    if (!codigo) {
+        document.getElementById('validationResult').innerHTML = `
+            <div class="invalid-badge">⛔ Acceso restringido</div>
+            <p style="color:#5a6c7d; margin-top:12px;">Este enlace solo está disponible a través del código QR de tu diploma.</p>
+        `;
+        return;
+    }
+
+    validarDiploma(codigo);
+});
+
+async function validarDiploma(codigo) {
+    const container = document.getElementById('validationResult');
+
+    try {
+        const snapshot = await database.ref('leads/conferencias').once('value');
+        const data = snapshot.val();
+
+        if (!data) {
+            container.innerHTML = `
+                <div class="invalid-badge">⛔ Código no válido</div>
+                <p style="color:#5a6c7d; margin-top:12px;">No se encontró ningún diploma con este código.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:8px;">Verifica que el código sea correcto o contacta a soporte.</p>
+            `;
+            return;
+        }
+
+        let registro = null;
+        for (const key in data) {
+            if (data[key].codigoUnico === codigo) {
+                registro = { id: key, ...data[key] };
+                break;
+            }
+        }
+
+        if (!registro) {
+            container.innerHTML = `
+                <div class="invalid-badge">⛔ Código no válido</div>
+                <p style="color:#5a6c7d; margin-top:12px;">No se encontró ningún diploma con este código.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:8px;">Verifica que el código sea correcto o contacta a soporte.</p>
+            `;
+            return;
+        }
+
+        if (!registro.descargado) {
+            container.innerHTML = `
+                <div class="invalid-badge" style="background:#fef3c7; color:#92400e;">⏳ Diploma pendiente</div>
+                <p style="color:#5a6c7d; margin-top:12px;">Este diploma aún no ha sido formalmente emitido.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:8px;">Contacta al administrador si tienes dudas.</p>
+            `;
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="valid-badge">✅ Diploma válido</div>
+            <p style="color:#5a6c7d; font-size:0.9rem; margin-bottom:16px;">Este certificado fue emitido oficialmente por Lyon Asesor.</p>
+
+            <div class="validation-card">
+                <div class="field"><span class="label">Participante</span><span class="value">${registro.nombre}</span></div>
+                <div class="field"><span class="label">Cédula / ID</span><span class="value">${registro.cedula}</span></div>
+                <div class="field"><span class="label">Conferencia</span><span class="value">${registro.tituloConferencia}</span></div>
+                <div class="field"><span class="label">Duración</span><span class="value">8 horas</span></div>
+                <div class="field"><span class="label">Fecha de emisión</span><span class="value">${registro.fechaLegible || registro.fecha}</span></div>
+                <div class="field"><span class="label">Código único</span><span class="value">${registro.codigoUnico}</span></div>
+            </div>
+
+            <div class="mensaje-autenticidad">
+                <strong>📜 Mensaje de autenticidad</strong><br>
+                Este diploma certifica que <strong>${registro.nombre}</strong> logró culminar y aprobar satisfactoriamente su participación en la formación "<strong>${registro.tituloConferencia}</strong>", con una duración de 8 horas de formación continua, bajo los estándares de Lyon Asesor. La verificación de este documento garantiza su validez oficial.
+            </div>
+
+            <div style="margin-top:16px; font-size:0.85rem; color:#5a6c7d;">
+                <p>📧 ${registro.email} · 📱 ${registro.whatsapp}</p>
+                <p style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">${registro.pais}, ${registro.ciudad}</p>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error('Error validando diploma:', error);
+        container.innerHTML = `
+            <div class="invalid-badge">⚠️ Error de verificación</div>
+            <p style="color:#5a6c7d; margin-top:12px;">Hubo un problema al validar el diploma. Intenta de nuevo más tarde.</p>
+        `;
+    }
+}
+</script>
+</body>
+</html>
