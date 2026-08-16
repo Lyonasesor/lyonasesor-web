@@ -11,17 +11,43 @@
     <script src="js/firebase-config.js"></script>
 
     <!-- Librerías para PDF y QR -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!--
+        CAMBIO ARQUITECTÓNICO CLAVE:
+        Se elimina html2pdf.bundle (wrapper de alto nivel que decide por su cuenta
+        cómo encajar el contenido en una página A4, causando el desencuadre) y se
+        usan html2canvas + jsPDF por separado, de forma directa, para tener control
+        total sobre: (1) qué elemento exacto se captura, (2) a qué resolución,
+        y (3) qué tamaño de página recibe el PDF (que coincidirá EXACTAMENTE con
+        las proporciones del diploma, en vez de forzar A4).
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --brand-navy: #1a2330;
+            --brand-orange: #e86b18;
+            --brand-orange-dark: #d45f14;
+            --brand-gold: #cdaa7b;
+            --brand-bg: #f5f0eb;
+            --text-muted: #5a6c7d;
+            --border-soft: #e2e8f0;
+
+            /* Lienzo del diploma: tamaño FIJO en píxeles, proporción A4 horizontal
+               (297mm x 210mm ≈ 1.414). Este tamaño nunca cambia con el viewport;
+               solo se ESCALA visualmente en pantalla con transform: scale(). */
+            --diploma-w: 1200px;
+            --diploma-h: 848px;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f0eb;
-            color: #1e293b;
+            background: var(--brand-bg);
+            color: var(--brand-navy);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -38,18 +64,30 @@
             position: relative;
         }
         @media (max-width: 600px) { .container { padding: 24px 20px; } }
-        .brand {
-            text-align: center;
-            margin-bottom: 8px;
+
+        /* Cuando el diploma está visible, el contenedor pasa a ocupar prácticamente
+           toda la altura de la ventana y se convierte en columna flexible, de modo
+           que la sección del diploma pueda calcular cuánto espacio real tiene
+           disponible y encajar sin scroll. */
+        .container.diploma-mode {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 40px);
+            max-width: 1000px;
         }
-        .brand img {
-            max-height: 64px;
-            width: auto;
+        .container.diploma-mode .brand,
+        .container.diploma-mode > h1,
+        .container.diploma-mode > .subtitle,
+        .container.diploma-mode > .footer-note {
+            display: none;
         }
+
+        .brand { text-align: center; margin-bottom: 8px; }
+        .brand img { max-height: 64px; width: auto; }
         .brand .tagline {
             font-family: 'Playfair Display', serif;
             font-size: 0.85rem;
-            color: #cdaa7b;
+            color: var(--brand-gold);
             letter-spacing: 0.2rem;
             text-transform: uppercase;
             margin-top: 4px;
@@ -59,13 +97,13 @@
             font-size: 1.8rem;
             font-weight: 700;
             text-align: center;
-            color: #1a2330;
+            color: var(--brand-navy);
             margin: 12px 0 4px;
         }
-        h1 span { color: #e86b18; }
+        h1 span { color: var(--brand-orange); }
         .subtitle {
             text-align: center;
-            color: #5a6c7d;
+            color: var(--text-muted);
             font-size: 0.95rem;
             margin-bottom: 24px;
         }
@@ -74,13 +112,13 @@
             display: block;
             font-weight: 600;
             font-size: 0.85rem;
-            color: #1a2330;
+            color: var(--brand-navy);
             margin-bottom: 4px;
         }
         .form-group input, .form-group select {
             width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid var(--border-soft);
             border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
@@ -88,21 +126,18 @@
             transition: 0.2s;
         }
         .form-group input:focus, .form-group select:focus {
-            border-color: #e86b18;
+            border-color: var(--brand-orange);
             outline: none;
             box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
         }
-        .form-group select:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        .form-group select:disabled { opacity: 0.6; cursor: not-allowed; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
 
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: #e86b18;
+            background: var(--brand-orange);
             color: white;
             border: none;
             border-radius: 40px;
@@ -113,225 +148,188 @@
             margin-top: 8px;
             font-family: 'Inter', sans-serif;
         }
-        .btn-primary:hover { background: #d45f14; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,107,24,0.3); }
+        .btn-primary:hover { background: var(--brand-orange-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,107,24,0.3); }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .error-msg {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            display: none;
+            background: #fee2e2; color: #991b1b;
+            padding: 12px 16px; border-radius: 12px;
+            font-size: 0.9rem; margin-bottom: 16px; display: none;
         }
         .success-msg {
-            background: #dcfce7;
-            color: #166534;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-            display: none;
+            background: #dcfce7; color: #166534;
+            padding: 12px 16px; border-radius: 12px;
+            font-size: 0.9rem; margin-bottom: 16px; display: none;
         }
 
+        /* =========================================================
+           SECCIÓN DEL DIPLOMA
+           Estructura: [stage con el diploma escalado] -> [botones]
+           Todo dentro de una columna flex que ocupa el alto disponible,
+           así nunca se necesita scroll.
+        ========================================================= */
         #diplomaSection {
-            display: none;
-            margin-top: 24px;
-            border-top: 2px solid #f1f0ed;
-            padding-top: 24px;
-        }
-        #diplomaContent {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
-        .download-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: none; /* se activa con JS: 'flex' */
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            align-items: center;
             justify-content: center;
-        }
-        .btn-download {
-            padding: 12px 28px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-download-pdf {
-            background: #1a2330;
-            color: white;
-        }
-        .btn-download-pdf:hover { background: #0f172a; transform: translateY(-2px); }
-        .btn-download-ebooks {
-            background: #cdaa7b;
-            color: #1a2330;
-        }
-        .btn-download-ebooks:hover { background: #b89565; transform: translateY(-2px); }
-        .btn-download:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .download-note {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-top: 12px;
+            gap: 18px;
+            padding: 8px 0;
         }
 
-        /* ===== DIPLOMA ===== */
-        .diploma-preview {
+        #diplomaStage {
             width: 100%;
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 26px 46px;
-            background: white;
-            border: 6px solid #e86b18;
-            border-radius: 16px;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* El lienzo real del diploma: tamaño fijo, nunca cambia.
+           Su apariencia en pantalla se controla SOLO con transform:scale(),
+           aplicado dinámicamente por JS según el espacio disponible. */
+        .diploma-preview {
+            width: var(--diploma-w);
+            height: var(--diploma-h);
+            flex-shrink: 0;
+            background: #ffffff;
+            border: 10px solid var(--brand-orange);
+            border-radius: 28px;
+            box-sizing: border-box;
+            padding: 55px 85px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             text-align: center;
             font-family: 'Georgia', serif;
+            transform-origin: center center;
             position: relative;
         }
-        .diploma-preview .logo-diploma {
-            max-height: 56px;
-            width: auto;
-            margin-bottom: 6px;
+        .diploma-preview .diploma-inner-border {
+            position: absolute;
+            inset: 14px;
+            border: 1.5px solid rgba(205,170,123,0.45);
+            border-radius: 18px;
+            pointer-events: none;
         }
+
+        .diploma-preview .cabecera { }
+        .diploma-preview .logo-diploma { max-height: 76px; width: auto; margin-bottom: 10px; }
         .diploma-preview .title-empresa {
-            font-size: 21px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #1a2330;
-            margin-bottom: 2px;
+            font-size: 32px; font-weight: 700; letter-spacing: 5px;
+            color: var(--brand-navy); margin-bottom: 3px;
         }
         .diploma-preview .sub-empresa {
-            font-size: 10px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #e86b18;
-            margin-bottom: 12px;
+            font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--brand-orange); margin-bottom: 14px;
         }
         .diploma-preview .line-divider {
-            width: 70px;
-            height: 2px;
-            background: #e86b18;
-            margin: 0 auto 14px;
+            width: 90px; height: 2px; background: var(--brand-orange); margin: 0 auto;
         }
-        .diploma-preview .certifica-text {
-            font-size: 15px;
-            color: #5a6c7d;
-            margin-bottom: 4px;
+
+        .diploma-preview .cuerpo {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+        .diploma-preview .certifica-text { font-size: 19px; color: var(--text-muted); }
         .diploma-preview .nombre-participante {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a2330;
-            margin: 4px 0;
+            font-size: 42px; font-weight: 700; color: var(--brand-navy); margin: 2px 0;
         }
         .diploma-preview .logro-text {
-            font-size: 14px;
-            color: #1a2330;
-            margin: 6px 0;
-            line-height: 1.5;
+            font-size: 17px; color: var(--brand-navy); line-height: 1.6; max-width: 820px;
         }
         .diploma-preview .titulo-conferencia {
-            font-size: 21px;
-            font-weight: 700;
-            color: #e86b18;
-            margin: 4px 0 8px;
-            font-style: italic;
+            font-size: 28px; font-weight: 700; color: var(--brand-orange);
+            font-style: italic; margin: 4px 0; max-width: 900px;
         }
-        .diploma-preview .horas-text {
-            font-size: 13px;
-            color: #5a6c7d;
-            margin-bottom: 10px;
-        }
-        /* Pie unificado: código+fecha / sello+firma / QR en una sola fila,
-           para que la tarjeta se ensanche en horizontal en vez de apilarse. */
+        .diploma-preview .horas-text { font-size: 15px; color: var(--text-muted); }
+
         .diploma-preview .footer-diploma {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 14px;
-            padding-top: 12px;
+            padding-top: 18px;
             border-top: 1px solid #eee;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
-        .diploma-preview .footer-diploma .footer-col {
-            flex: 1;
-            min-width: 150px;
-        }
-        .diploma-preview .footer-diploma .footer-col.left {
-            text-align: left;
-            font-size: 12px;
-            color: #5a6c7d;
-        }
-        .diploma-preview .footer-diploma .footer-col.left strong { color: #1a2330; }
-        .diploma-preview .footer-diploma .footer-col.center { text-align: center; }
+        .diploma-preview .footer-col { flex: 1; min-width: 0; }
+        .diploma-preview .footer-col.left { text-align: left; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .diploma-preview .footer-col.left strong { color: var(--brand-navy); }
+        .diploma-preview .footer-col.center { text-align: center; }
         .diploma-preview .sello-firma-inline {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
+            display: flex; justify-content: center; align-items: center; gap: 18px;
         }
-        .diploma-preview .sello-firma-inline img {
-            max-height: 46px;
-            width: auto;
-        }
-        .diploma-preview .firma-text {
-            font-size: 11px;
-            color: #5a6c7d;
-            margin-top: 3px;
-        }
-        .diploma-preview .footer-diploma .footer-col.right {
-            text-align: center;
-        }
-        .diploma-preview .footer-diploma .footer-col.right #qrcode {
-            width: 76px;
-            height: 76px;
-            margin: 0 auto;
+        .diploma-preview .sello-firma-inline img { max-height: 62px; width: auto; }
+        .diploma-preview .firma-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .diploma-preview .footer-col.right { text-align: center; }
+        .diploma-preview .footer-col.right .qr-box {
+            width: 96px; height: 96px; margin: 0 auto;
         }
         .diploma-preview .qr-label {
-            font-size: 9px;
-            color: #94a3b8;
-            letter-spacing: 0.05rem;
-            margin-top: 3px;
-        }
-        .diploma-preview .validacion-text {
-            margin-top: 10px;
-            font-size: 9px;
-            color: #94a3b8;
-            border-top: 1px solid #eee;
-            padding-top: 6px;
+            font-size: 10px; color: #94a3b8; letter-spacing: 0.05rem; margin-top: 4px;
         }
 
+        .download-actions {
+            display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; flex-shrink: 0;
+        }
+        .btn-download {
+            padding: 12px 28px; border-radius: 40px; border: none;
+            font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            transition: 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .btn-download-pdf { background: var(--brand-navy); color: white; }
+        .btn-download-pdf:hover { background: #0f172a; transform: translateY(-2px); }
+        .btn-download-ebooks { background: var(--brand-gold); color: var(--brand-navy); }
+        .btn-download-ebooks:hover { background: #b89565; transform: translateY(-2px); }
+        .btn-download:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .download-note { text-align: center; font-size: 0.78rem; color: #94a3b8; flex-shrink: 0; }
+
+        /* Overlay de carga: ahora cubre TODA la pantalla y con z-index alto.
+           Esto cumple doble función: (1) feedback visual normal, y (2) sirve de
+           "cortina" que oculta al usuario el clon de exportación en resolución
+           completa que se renderiza detrás mientras se genera el PDF. */
         .loading-overlay {
             display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(245,240,235,0.97);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 30px 0;
+            padding: 20px;
         }
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f1f0ed;
-            border-top-color: #e86b18;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 12px;
+            width: 40px; height: 40px;
+            border: 4px solid #f1f0ed; border-top-color: var(--brand-orange);
+            border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .footer-note {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 20px;
-            border-top: 1px solid #f1f0ed;
-            padding-top: 16px;
+            text-align: center; font-size: 0.75rem; color: #94a3b8;
+            margin-top: 20px; border-top: 1px solid #f1f0ed; padding-top: 16px;
+        }
+
+        /* Nodo de exportación: vive fuera del flujo visual normal (position:fixed,
+           top:0/left:0) para no afectar el scroll ni el layout de la página, pero
+           mantiene opacity:1 y visibility:visible para que html2canvas capture
+           píxeles reales. Queda oculto detrás del overlay de carga (z-index menor). */
+        #diplomaExportRoot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -406,25 +404,26 @@
         <button type="submit" class="btn-primary" id="submitBtn">🎓 Obtener mi diploma y ebooks</button>
     </form>
 
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p style="color:#5a6c7d;">Generando tu diploma... un momento</p>
-    </div>
-
     <!-- DIPLOMA -->
     <div id="diplomaSection">
-        <div id="diplomaContent"></div>
+        <div id="diplomaStage">
+            <div id="diplomaPreviewLive" class="diploma-preview"></div>
+        </div>
         <div class="download-actions">
             <button class="btn-download btn-download-pdf" id="downloadPdfBtn">📄 Descargar Diploma (PDF)</button>
             <button class="btn-download btn-download-ebooks" id="downloadEbooksBtn">📚 Descargar 4 Ebooks</button>
         </div>
-        <p class="download-note">🔒 Descarga única. Una vez descargados, no podrás volver a obtenerlos con este registro.</p>
-        <p class="download-note">✅ Verifica la autenticidad escaneando el código QR del diploma.</p>
+        <p class="download-note">🔒 Descarga única · Verifica la autenticidad escaneando el código QR del diploma.</p>
     </div>
 
     <div class="footer-note">
         © 2025 Lyon Asesor · Prof. Mtr. Álvaro Lyon · Datos protegidos y confidenciales
     </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p id="loadingText" style="color:#5a6c7d;">Generando tu diploma... un momento</p>
 </div>
 
 <script>
@@ -438,6 +437,10 @@ const EB00KS = [
     { nombre: 'Guía de autocuidado', url: 'https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-' }
 ];
 
+// Tamaño fijo del lienzo del diploma (debe coincidir con --diploma-w/--diploma-h del CSS)
+const DIPLOMA_W = 1200;
+const DIPLOMA_H = 848;
+
 // =============================================
 // ESTADO
 // =============================================
@@ -445,7 +448,6 @@ let registroData = null;
 let codigoUnico = null;
 let diplomaDescargado = false;
 let ebooksDescargados = false;
-let qrCodeInstance = null;
 
 // =============================================
 // CARGAR CONFERENCIAS ACTIVAS
@@ -455,12 +457,9 @@ async function cargarConferenciasActivas() {
         const snapshot = await database.ref('configuracion/conferencias').once('value');
         const data = snapshot.val();
         if (!data) return [];
-
         const activas = [];
         for (const [id, conf] of Object.entries(data)) {
-            if (conf.activa === true) {
-                activas.push({ id, titulo: conf.titulo });
-            }
+            if (conf.activa === true) activas.push({ id, titulo: conf.titulo });
         }
         return activas;
     } catch (error) {
@@ -492,6 +491,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('submitBtn').disabled = false;
 
     document.getElementById('registroForm').addEventListener('submit', handleSubmit);
+    window.addEventListener('resize', fitDiploma);
 });
 
 // =============================================
@@ -516,20 +516,19 @@ async function handleSubmit(e) {
         mostrarError('Por favor, completa todos los campos requeridos.');
         return;
     }
-
     if (!email.includes('@') || !email.includes('.')) {
         mostrarError('Ingresa un correo electrónico válido.');
         return;
     }
 
-    document.getElementById('loadingOverlay').style.display = 'block';
+    mostrarOverlay('Generando tu diploma... un momento');
     document.getElementById('submitBtn').disabled = true;
 
     try {
         const existe = await verificarRegistroExistente(cedula, conferenciaId);
         if (existe) {
             mostrarError('⚠️ Ya has descargado el diploma para esta conferencia. Si necesitas ayuda, contacta a soporte.');
-            document.getElementById('loadingOverlay').style.display = 'none';
+            ocultarOverlay();
             document.getElementById('submitBtn').disabled = false;
             return;
         }
@@ -565,19 +564,22 @@ async function handleSubmit(e) {
             descargado: false
         });
 
-        generarDiploma(nombre, cedula, conferenciaTitulo, codigoUnico);
+        await mostrarDiploma(nombre, cedula, conferenciaTitulo, codigoUnico);
 
-        document.getElementById('loadingOverlay').style.display = 'none';
+        ocultarOverlay();
+        document.getElementById('app').classList.add('diploma-mode');
         document.getElementById('registroForm').style.display = 'none';
-        document.getElementById('diplomaSection').style.display = 'block';
-        document.getElementById('diplomaSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('diplomaSection').style.display = 'flex';
+
+        // Esperar a que el layout se asiente antes de calcular la escala.
+        requestAnimationFrame(() => requestAnimationFrame(fitDiploma));
 
         mostrarExito('✅ ¡Registro completado! Tu diploma está listo para descargar.');
 
     } catch (error) {
         console.error('❌ Error:', error);
         mostrarError('Hubo un error al procesar tu registro. Intenta de nuevo.');
-        document.getElementById('loadingOverlay').style.display = 'none';
+        ocultarOverlay();
         document.getElementById('submitBtn').disabled = false;
     }
 }
@@ -610,72 +612,86 @@ function generarCodigo(conferenciaId) {
 }
 
 // =============================================
-// GENERAR DIPLOMA
+// MARCADO HTML DEL DIPLOMA (función pura y reutilizable)
+// Se usa TANTO para la vista previa en pantalla COMO para el clon de
+// exportación en alta resolución, garantizando que sean visualmente
+// idénticos: mismo HTML, mismas clases CSS, mismo tamaño de lienzo.
+// El único parámetro que cambia entre ambos usos es el id del contenedor
+// del QR, para poder generar dos códigos QR independientes con la misma
+// librería sin colisión de ids en el DOM.
 // =============================================
-function generarDiploma(nombre, cedula, titulo, codigo) {
-    const container = document.getElementById('diplomaContent');
-
-    const html = `
-        <div class="diploma-preview">
+function construirMarkupDiploma(nombre, titulo, codigo, qrContainerId) {
+    return `
+        <div class="diploma-inner-border"></div>
+        <div class="cabecera">
             <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma" crossorigin="anonymous">
             <div class="title-empresa">LYON ASESOR</div>
             <div class="sub-empresa">Formación Profesional</div>
             <div class="line-divider"></div>
+        </div>
 
+        <div class="cuerpo">
             <div class="certifica-text">Certifica que</div>
-            <div class="nombre-participante">${nombre}</div>
+            <div class="nombre-participante">${escapeHtml(nombre)}</div>
             <div class="logro-text">
-                Logró culminar y aprobar satisfactoriamente<br>
-                su participación en la formación
+                Logró culminar y aprobar satisfactoriamente su participación en la formación
             </div>
-            <div class="titulo-conferencia">"${titulo}"</div>
+            <div class="titulo-conferencia">"${escapeHtml(titulo)}"</div>
             <div class="horas-text">con una duración de 8 horas de formación continua.</div>
+        </div>
 
-            <div class="footer-diploma">
-                <div class="footer-col left">
-                    <strong>Código:</strong> ${codigo}<br>
-                    <strong>Fecha:</strong> ${new Date().toLocaleDateString('es-ES')}
-                </div>
-                <div class="footer-col center">
-                    <div class="sello-firma-inline">
-                        <img src="assets/img/Sello.png" alt="Sello Lyon Asesor" crossorigin="anonymous">
-                        <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon" crossorigin="anonymous">
-                    </div>
-                    <div class="firma-text">Prof. Mtr. Álvaro Lyon · Director</div>
-                </div>
-                <div class="footer-col right">
-                    <div id="qrcode"></div>
-                    <div class="qr-label">Verifica aquí</div>
-                </div>
+        <div class="footer-diploma">
+            <div class="footer-col left">
+                <strong>Código:</strong> ${codigo}<br>
+                <strong>Fecha:</strong> ${new Date().toLocaleDateString('es-ES')}
             </div>
-
-            <div class="validacion-text">
-                Verifica la autenticidad de este diploma escaneando el código QR
+            <div class="footer-col center">
+                <div class="sello-firma-inline">
+                    <img src="assets/img/Sello.png" alt="Sello Lyon Asesor" crossorigin="anonymous">
+                    <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon" crossorigin="anonymous">
+                </div>
+                <div class="firma-text">Prof. Mtr. Álvaro Lyon · Director</div>
+            </div>
+            <div class="footer-col right">
+                <div id="${qrContainerId}" class="qr-box"></div>
+                <div class="qr-label">Verifica aquí</div>
             </div>
         </div>
     `;
+}
 
-    container.innerHTML = html;
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
 
-    const urlValidacion = `https://${window.location.hostname}/validar-diploma.html?codigo=${codigo}`;
-    const qrContainer = document.getElementById('qrcode');
-    if (qrContainer) {
-        qrCodeInstance = new QRCode(qrContainer, {
-            text: urlValidacion,
-            width: 90,
-            height: 90,
-            colorDark: '#1a2330',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
+function urlValidacion(codigo) {
+    return `https://${window.location.hostname}/validar-diploma.html?codigo=${codigo}`;
+}
+
+// =============================================
+// MOSTRAR DIPLOMA EN PANTALLA (vista previa escalable)
+// =============================================
+async function mostrarDiploma(nombre, cedula, titulo, codigo) {
+    const live = document.getElementById('diplomaPreviewLive');
+    live.innerHTML = construirMarkupDiploma(nombre, titulo, codigo, 'qrcodeLive');
+
+    new QRCode(document.getElementById('qrcodeLive'), {
+        text: urlValidacion(codigo),
+        width: 96,
+        height: 96,
+        colorDark: '#1a2330',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+    });
 
     document.getElementById('downloadPdfBtn').onclick = function() {
         if (diplomaDescargado) {
             alert('⚠️ Ya has descargado tu diploma. Solo se permite una descarga por registro.');
             return;
         }
-        descargarPDF(nombre, codigo);
+        descargarPDF(nombre, codigo, titulo);
     };
 
     document.getElementById('downloadEbooksBtn').onclick = function() {
@@ -688,47 +704,96 @@ function generarDiploma(nombre, cedula, titulo, codigo) {
 }
 
 // =============================================
-// DESCARGAR PDF
+// AJUSTE DE ESCALA EN PANTALLA (sin scroll)
+// Calcula cuánto espacio vertical/horizontal real hay disponible dentro
+// del contenedor y aplica un transform:scale() al lienzo fijo del diploma
+// para que TODO (diploma + botones + nota) quepa en una sola pantalla.
+// El lienzo en sí (1200x848) nunca cambia de tamaño real: solo se ve más
+// grande o más pequeño. Esto es lo que garantiza que lo que se ve en
+// pantalla y lo que se descarga sean el mismo diseño, solo a distinta
+// resolución de salida.
 // =============================================
-// FIX #1: se capturaba un CLON del diploma a "left: -99999px" -> html2canvas
-// calculaba mal las coordenadas -> lienzo en blanco / desencuadrado.
+function fitDiploma() {
+    const section = document.getElementById('diplomaSection');
+    if (!section || getComputedStyle(section).display === 'none') return;
+
+    const stage = document.getElementById('diplomaStage');
+    const live = document.getElementById('diplomaPreviewLive');
+
+    // Reset temporal para medir tamaños "naturales" sin la escala previa.
+    live.style.transform = 'scale(1)';
+    stage.style.height = '';
+
+    const stageRect = stage.getBoundingClientRect();
+    const availableWidth = stageRect.width - 8;
+    const availableHeight = stageRect.height - 8;
+
+    const scale = Math.max(
+        0.2,
+        Math.min(availableWidth / DIPLOMA_W, availableHeight / DIPLOMA_H, 1)
+    );
+
+    live.style.transform = `scale(${scale})`;
+}
+
+// =============================================
+// DESCARGAR PDF — arquitectura de clon en alta resolución
+// =============================================
+// Por qué un clon y no el elemento visible directamente:
+// El elemento visible en pantalla (#diplomaPreviewLive) puede estar
+// escalado con transform (para caber sin scroll) y su tamaño de captura
+// dependería del zoom del navegador, densidad de píxeles, etc. En vez de
+// depender de "cómo se ve ahora mismo", se crea un segundo lienzo
+// IDÉNTICO en HTML/CSS (misma función construirMarkupDiploma), a tamaño
+// real 1200x848 sin transform alguno, oculto detrás del overlay de carga
+// (que cubre toda la pantalla). Se captura ESE, siempre igual, sin
+// importar el dispositivo o el estado de scroll de la página.
 //
-// FIX #2: se agregaron "windowWidth"/"windowHeight"/"scrollY" a html2canvas
-// para compensar el scroll -> obligaba a re-renderizar TODA la página a un
-// tamaño distinto -> el recorte quedaba mal alineado (diploma cortado
-// arriba + espacio en blanco debajo).
-//
-// FIX #3 (este, definitivo): con el clon y los overrides fuera, la captura
-// del diploma ya era correcta, pero se seguía forzando el resultado dentro
-// de una página A4 FIJA con "pagebreak: avoid-all". Como el diploma no
-// tiene exactamente la proporción de una A4, sobraba contenido que
-// simplemente se cortaba al no permitir una segunda página.
-//
-// SOLUCIÓN: en vez de encajar el diploma en un tamaño de página fijo,
-// generamos una página del PDF con el tamaño EXACTO del diploma capturado
-// (+ un margen). Así el diploma nunca se corta ni se desencuadra, sea cual
-// sea su alto/ancho real en cada dispositivo.
-async function descargarPDF(nombre, codigo) {
+// Por qué el PDF ya no se corta: en vez de forzar el contenido dentro de
+// una página A4 fija (que tiene una proporción distinta a la del
+// diploma), la página del PDF se crea con el tamaño EXACTO en pulgadas
+// que corresponde al lienzo de 1200x848px a 96dpi. El diploma llena la
+// página completa, sin sobrante y sin recorte, siempre.
+// =============================================
+async function descargarPDF(nombre, codigo, titulo) {
     const btn = document.getElementById('downloadPdfBtn');
     const textoOriginal = btn.textContent;
     btn.disabled = true;
     btn.textContent = '⏳ Generando PDF...';
 
-    try {
-        const element = document.querySelector('.diploma-preview');
-        if (!element) {
-            throw new Error('No se encontró el diploma para exportar.');
-        }
+    mostrarOverlay('Generando tu diploma en alta resolución...');
 
+    let exportRoot = null;
+
+    try {
         const clave = `${registroData.cedula}_${registroData.conferencia}`;
 
-        // Esperar a que las fuentes web (Playfair Display, Inter) estén listas.
+        // 1) Construir el clon de exportación a tamaño real, sin transform.
+        exportRoot = document.createElement('div');
+        exportRoot.id = 'diplomaExportRoot';
+
+        const exportCanvasEl = document.createElement('div');
+        exportCanvasEl.className = 'diploma-preview';
+        exportCanvasEl.style.transform = 'none';
+        exportCanvasEl.innerHTML = construirMarkupDiploma(nombre, titulo, codigo, 'qrcodeExport');
+
+        exportRoot.appendChild(exportCanvasEl);
+        document.body.appendChild(exportRoot);
+
+        new QRCode(document.getElementById('qrcodeExport'), {
+            text: urlValidacion(codigo),
+            width: 96,
+            height: 96,
+            colorDark: '#1a2330',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // 2) Esperar fuentes web (Playfair Display, Inter) + imágenes (logo, sello, firma).
         if (document.fonts && document.fonts.ready) {
             try { await document.fonts.ready; } catch (e) {}
         }
-
-        // Esperar a que todas las imágenes del diploma (logo, sello, firma) hayan cargado.
-        const imagenes = element.querySelectorAll('img');
+        const imagenes = exportCanvasEl.querySelectorAll('img');
         await Promise.all(Array.from(imagenes).map(img => {
             if (img.complete && img.naturalWidth > 0) return Promise.resolve();
             return new Promise(resolve => {
@@ -738,7 +803,10 @@ async function descargarPDF(nombre, codigo) {
             });
         }));
 
-        // Actualizar estado en Firebase (descarga única).
+        // 3) Dar un par de frames para que el QR (SVG/canvas) termine de pintarse.
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        // 4) Registrar la descarga en Firebase (descarga única).
         await database.ref(`leads/conferencias/${clave}`).update({
             descargado: true,
             fechaDescarga: new Date().toISOString()
@@ -747,26 +815,33 @@ async function descargarPDF(nombre, codigo) {
         await database.ref(`diplomas_publicos/${codigo}`).update({ descargado: true });
         diplomaDescargado = true;
 
-        const opt = {
-            margin: [0.4, 0.4, 0.4, 0.4],
-            filename: `Diploma_${nombre.replace(/\s/g, '_')}_${codigo}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                logging: false
-            },
-            jsPDF: {
-                unit: 'in',
-                format: 'a4',
-                orientation: 'landscape',
-                compress: true
-            },
-            pagebreak: { mode: ['avoid-all'] }
-        };
+        // 5) Capturar el clon a resolución completa.
+        const RESOLUTION_SCALE = 3; // ~ equivalente a impresión de alta calidad
+        const canvas = await html2canvas(exportCanvasEl, {
+            scale: RESOLUTION_SCALE,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            width: DIPLOMA_W,
+            height: DIPLOMA_H
+        });
 
-        await html2pdf().set(opt).from(element).save();
+        // 6) Construir el PDF con página del mismo tamaño/proporción del lienzo.
+        const DPI = 96;
+        const pdfWidthIn = DIPLOMA_W / DPI;
+        const pdfHeightIn = DIPLOMA_H / DPI;
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'in',
+            format: [pdfWidthIn, pdfHeightIn],
+            compress: true
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidthIn, pdfHeightIn, undefined, 'FAST');
+        pdf.save(`Diploma_${nombre.replace(/\s/g, '_')}_${codigo}.pdf`);
 
         btn.textContent = '✅ Diploma descargado';
         console.log('✅ Diploma descargado exitosamente');
@@ -776,6 +851,9 @@ async function descargarPDF(nombre, codigo) {
         alert('Hubo un error al generar el PDF: ' + error.message + '\n\nIntenta de nuevo en unos segundos.');
         btn.disabled = false;
         btn.textContent = textoOriginal;
+    } finally {
+        if (exportRoot) exportRoot.remove();
+        ocultarOverlay();
     }
 }
 
@@ -825,7 +903,16 @@ function mostrarExito(msg) {
     setTimeout(() => { el.style.display = 'none'; }, 6000);
 }
 
-console.log('✅ Registro de conferencias cargado');
+function mostrarOverlay(mensaje) {
+    document.getElementById('loadingText').textContent = mensaje;
+    document.getElementById('loadingOverlay').style.display = 'flex';
+}
+
+function ocultarOverlay() {
+    document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+console.log('✅ Registro de conferencias cargado (arquitectura de exportación v2)');
 </script>
 </body>
 </html>
