@@ -6,10 +6,9 @@
   <title>NeuroLiderazgo | Lyon Asesor</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       background-color: #0f0f0f;
-      color: #e0e0e0;
+      color: #ffffff;
       font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
       display: flex;
       flex-direction: column;
@@ -18,7 +17,6 @@
       min-height: 100vh;
       padding: 2rem;
     }
-
     .slide-container {
       max-width: 800px;
       width: 100%;
@@ -32,7 +30,6 @@
       justify-content: center;
       position: relative;
     }
-
     .slide-number {
       position: absolute;
       top: 1.5rem;
@@ -41,46 +38,12 @@
       font-size: 0.8rem;
       letter-spacing: 0.1rem;
     }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: #cdaa7b;
-      margin-bottom: 1.5rem;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: #c0c0c0;
-      margin-bottom: 1rem;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    ul li {
-      padding: 0.5rem 0;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-
-    ul li::before {
-      content: "▸";
-      position: absolute;
-      left: 0;
-      color: #cdaa7b;
-    }
-
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #cdaa7b; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #cdaa7b; }
     .highlight-box {
       background-color: #222;
       border-left: 3px solid #cdaa7b;
@@ -89,44 +52,22 @@
       border-radius: 0 8px 8px 0;
       font-style: italic;
     }
-
     .neuro-box {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       margin: 1.5rem 0;
     }
-
     .neuro-card {
       background-color: #222;
       padding: 1.2rem;
       border-radius: 8px;
       text-align: center;
     }
-
-    .neuro-card .emoji {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .neuro-card .name {
-      font-weight: 600;
-      color: #cdaa7b;
-      margin-bottom: 0.3rem;
-    }
-
-    .neuro-card .desc {
-      font-size: 0.85rem;
-      color: #a0a0a0;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 2rem;
-      gap: 1rem;
-    }
-
+    .neuro-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .neuro-card .name { font-weight: 600; color: #cdaa7b; margin-bottom: 0.3rem; }
+    .neuro-card .desc { font-size: 0.85rem; color: #e8e8e8; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
     .btn {
       background: transparent;
       border: 1px solid #cdaa7b;
@@ -140,24 +81,9 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-
-    .btn:hover {
-      background: #cdaa7b;
-      color: #0f0f0f;
-    }
-
-    .btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-
-    .progress {
-      text-align: center;
-      color: #555;
-      font-size: 0.8rem;
-      margin-top: 1rem;
-    }
-
+    .btn:hover { background: #cdaa7b; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
     .interactive-question {
       background-color: #222;
       padding: 1.5rem;
@@ -165,35 +91,18 @@
       margin: 1rem 0;
       text-align: center;
     }
-
-    .options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
     .option-btn {
       background: transparent;
-      border: 1px solid #555;
-      color: #e0e0e0;
+      border: 1px solid #666;
+      color: #ffffff;
       padding: 0.5rem 1rem;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.2s;
     }
-
-    .option-btn:hover {
-      border-color: #cdaa7b;
-      color: #cdaa7b;
-    }
-
-    .option-btn.selected {
-      background: #cdaa7b;
-      color: #0f0f0f;
-      border-color: #cdaa7b;
-    }
+    .option-btn:hover { border-color: #cdaa7b; color: #cdaa7b; }
+    .option-btn.selected { background: #cdaa7b; color: #0f0f0f; border-color: #cdaa7b; }
   </style>
 </head>
 <body>
@@ -201,38 +110,30 @@
     <span class="slide-number" id="slideNumber">1 / 10</span>
     <div id="slideContent"></div>
   </div>
-
   <div class="nav">
     <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
     <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
   </div>
-  <div class="progress" id="progress">Diapositiva 1 de 10 · NeuroLiderazgo · 1 hora</div>
-
+  <div class="progress" id="progress">Diapositiva 1 de 10 · NeuroLiderazgo · 90 minutos</div>
   <script>
     let currentSlide = 0;
-
     const slides = [
-      // Diapositiva 1 — Portada
       `
         <h1>NeuroLiderazgo</h1>
         <h2>El Cerebro que Inspira Equipos</h2>
         <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
-        <p style="color: #888; margin-top: 2rem;">Conferencia corporativa · 1 hora de duración</p>
-        <p style="color: #555;">Diploma + Ebook incluidos</p>
+        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
+        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
       `,
-
-      // Diapositiva 2 — La pregunta que incomoda
       `
         <h2>La Pregunta que Incomoda</h2>
         <p>¿Cuántos de ustedes han tenido un jefe que técnicamente era brillante, pero que drenaba la energía de todo el equipo?</p>
         <p>Ahora, levanten la mano si alguna vez trabajaron para alguien que no era el que más sabía, pero que los hacía sentir capaces, escuchados y motivados.</p>
         <div class="highlight-box">El neuroliderazgo no pregunta "¿cuánto sabes?". Pregunta "¿cómo impacta tu presencia en el cerebro de quienes te siguen?"</div>
       `,
-
-      // Diapositiva 3 — Los 4 neuroquímicos del liderazgo
       `
         <h2>La Química del Liderazgo</h2>
-        <p>Cuatro neurotransmisores gobiernan la respuesta de tu equipo hacia ti como líder [citation:8]:</p>
+        <p>Cuatro neurotransmisores gobiernan la respuesta de tu equipo hacia ti como líder:</p>
         <div class="neuro-box">
           <div class="neuro-card">
             <div class="emoji">🤝</div>
@@ -256,21 +157,17 @@
           </div>
         </div>
       `,
-
-      // Diapositiva 4 — El cerebro bajo amenaza
       `
         <h2>El Cerebro Bajo Amenaza</h2>
-        <p>Cuando un líder grita, humilla o ignora, activa en el cerebro de su equipo la <strong>amígdala</strong>, el centro del miedo [citation:5].</p>
+        <p>Cuando un líder grita, humilla o ignora, activa en el cerebro de su equipo la <strong>amígdala</strong>, el centro del miedo.</p>
         <p>Un cerebro en modo supervivencia no puede:</p>
         <ul>
           <li>Ser creativo</li>
           <li>Resolver problemas complejos</li>
           <li>Colaborar genuinamente</li>
         </ul>
-        <div class="highlight-box">"Un gerente que no agrega valor es el que utiliza la crítica indiscriminada y la desvalorización permanente." — Néstor Braidot [citation:5]</div>
+        <div class="highlight-box">"Un gerente que no agrega valor es el que utiliza la crítica indiscriminada y la desvalorización permanente." — Néstor Braidot</div>
       `,
-
-      // Diapositiva 5 — Interactiva: identifica tu estilo
       `
         <h2>Momento de Reflexión</h2>
         <p>Piensa en la última situación de presión con tu equipo. ¿Cuál fue tu primera reacción?</p>
@@ -284,8 +181,6 @@
           </div>
         </div>
       `,
-
-      // Diapositiva 6 — La ventana de tolerancia
       `
         <h2>La Ventana de Tolerancia</h2>
         <p>Cada persona tiene un umbral de estrés que puede manejar antes de que su cerebro "explote" (secuestro amigdalar).</p>
@@ -297,11 +192,9 @@
         </ul>
         <div class="highlight-box">El líder no controla las emociones del equipo. Modela cómo navegarlas.</div>
       `,
-
-      // Diapositiva 7 — Atención plena del líder
       `
         <h2>El Líder Atencional</h2>
-        <p>Néstor Braidot acuñó el concepto de <strong>densidad de atención</strong>: la cantidad de atención que un líder es capaz de focalizar [citation:5].</p>
+        <p>Néstor Braidot acuñó el concepto de <strong>densidad de atención</strong>: la cantidad de atención que un líder es capaz de focalizar.</p>
         <p>Un líder con alta densidad atencional:</p>
         <ul>
           <li>Percibe señales débiles que otros ignoran</li>
@@ -310,8 +203,6 @@
         </ul>
         <div class="highlight-box">"Una adecuada densidad de atención modela el cerebro, en un sentido literal." — Néstor Braidot</div>
       `,
-
-      // Diapositiva 8 — Plasticidad neuronal
       `
         <h2>El Cerebro se Transforma</h2>
         <p>La neuroplasticidad es la capacidad del cerebro de reorganizarse y crear nuevas conexiones a lo largo de toda la vida.</p>
@@ -321,10 +212,8 @@
           <li>Puedes entrenar tu cerebro para responder en lugar de reaccionar</li>
           <li>Cada nueva conducta de liderazgo que practicas crea un camino neuronal que se fortalece con la repetición</li>
         </ul>
-        <p style="margin-top: 1rem;">El neuroliderazgo no es un talento innato. Es una capacidad que se entrena, se mide y se mejora [citation:4].</p>
+        <p style="margin-top: 1rem;">El neuroliderazgo no es un talento innato. Es una capacidad que se entrena, se mide y se mejora.</p>
       `,
-
-      // Diapositiva 9 — Herramientas prácticas
       `
         <h2>Tres Herramientas para Empezar Hoy</h2>
         <ul>
@@ -333,57 +222,33 @@
           <li><strong>Check-in emocional:</strong> Inicia cada reunión preguntando: "¿Cómo llegan hoy?". No es terapia. Es neuroliderazgo aplicado.</li>
         </ul>
       `,
-
-      // Diapositiva 10 — Cierre épico
       `
         <h2>El Liderazgo que Inspira</h2>
         <p>No se trata de ser el que más sabe.</p>
         <p>Se trata de ser el que mejor entiende cómo funciona el cerebro humano.</p>
         <p>Y de usar ese conocimiento para que cada persona que trabaja contigo sienta que su cerebro está seguro, valorado y motivado para dar lo mejor de sí.</p>
-        <div class="highlight-box">"El desafío de un líder consiste en propiciar la formación de determinados caminos neurales, volverlos dominantes y potenciarlos en pos de la excelencia." — Néstor Braidot [citation:5]</div>
+        <div class="highlight-box">"El desafío de un líder consiste en propiciar la formación de determinados caminos neurales, volverlos dominantes y potenciarlos en pos de la excelencia." — Néstor Braidot</div>
         <p style="text-align: center; margin-top: 2rem; color: #cdaa7b;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
       `
     ];
-
     function renderSlide() {
       document.getElementById('slideContent').innerHTML = slides[currentSlide];
       document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
-      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · NeuroLiderazgo · 1 hora`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · NeuroLiderazgo · 90 minutos`;
       document.getElementById('prevBtn').disabled = (currentSlide === 0);
       document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
     }
-
-    function nextSlide() {
-      if (currentSlide < slides.length - 1) {
-        currentSlide++;
-        renderSlide();
-      }
-    }
-
-    function prevSlide() {
-      if (currentSlide > 0) {
-        currentSlide--;
-        renderSlide();
-      }
-    }
-
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
     function selectOption(btn, questionId) {
       const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
       options.forEach(opt => opt.classList.remove('selected'));
       btn.classList.add('selected');
     }
-
-    // Navegación con teclado
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-        e.preventDefault();
-        nextSlide();
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        prevSlide();
-      }
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
     });
-
     renderSlide();
   </script>
 </body>
