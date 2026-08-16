@@ -147,7 +147,6 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             margin-bottom: 20px;
-            overflow: hidden;
         }
         .download-actions {
             display: flex;
@@ -305,6 +304,24 @@
             padding-top: 8px;
         }
 
+        /* ===== CLON PARA PDF (fuera de flujo, captura fiel A4 horizontal) ===== */
+        #pdfCloneContainer {
+            position: fixed;
+            left: -99999px;
+            top: 0;
+            width: 1123px; /* ~A4 landscape a 96dpi */
+            background: white;
+            padding: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        #pdfCloneContainer .diploma-preview {
+            max-width: none;
+            width: 1043px;
+            margin: 40px auto;
+            padding: 40px 50px;
+        }
+
         .loading-overlay {
             display: none;
             text-align: center;
@@ -422,6 +439,9 @@
         © 2025 Lyon Asesor · Prof. Mtr. Álvaro Lyon · Datos protegidos y confidenciales
     </div>
 </div>
+
+<!-- Contenedor oculto para clon del PDF (NO ELIMINAR) -->
+<div id="pdfCloneContainer"></div>
 
 <script>
 // =============================================
@@ -549,9 +569,6 @@ async function handleSubmit(e) {
         await database.ref(`leads/conferencias/${cedula}_${conferenciaId}`).set(datos);
         registroData = datos;
 
-        // Guardamos una copia mínima y pública (SIN email ni WhatsApp) indexada
-        // por el código del diploma, para que validar-diploma.html pueda
-        // verificar el QR sin necesitar acceso a los leads protegidos.
         await database.ref(`diplomas_publicos/${codigoUnico}`).set({
             nombre: datos.nombre,
             cedula: datos.cedula,
@@ -584,11 +601,6 @@ async function handleSubmit(e) {
 // =============================================
 // VERIFICAR REGISTRO EXISTENTE
 // =============================================
-// IMPORTANTE: ya NO leemos toda la colección "leads/conferencias" (eso exponía
-// datos personales de todos los registrados y además está bloqueado por las
-// reglas de seguridad, que solo permiten al admin leer "leads"). En su lugar
-// consultamos un nodo público aparte que SOLO guarda un booleano por persona
-// + conferencia, sin ningún dato personal.
 async function verificarRegistroExistente(cedula, conferenciaId) {
     try {
         const clave = `${cedula}_${conferenciaId}`;
@@ -619,9 +631,10 @@ function generarCodigo(conferenciaId) {
 function generarDiploma(nombre, cedula, titulo, codigo) {
     const container = document.getElementById('diplomaContent');
 
+    // Se mantiene "8 horas de formación continua" por decisión estratégica
     const html = `
         <div class="diploma-preview">
-            <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma">
+            <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma" crossorigin="anonymous">
             <div class="title-empresa">LYON ASESOR</div>
             <div class="sub-empresa">Formación Profesional</div>
             <div class="line-divider"></div>
@@ -633,7 +646,7 @@ function generarDiploma(nombre, cedula, titulo, codigo) {
                 su participación en la formación
             </div>
             <div class="titulo-conferencia">"${titulo}"</div>
-            <div class="horas-text">con una duración de 8 horas (ocho) de formación continua.</div>
+            <div class="horas-text">con una duración de 8 horas de formación continua.</div>
 
             <div class="footer-diploma">
                 <div class="left">
@@ -647,8 +660,8 @@ function generarDiploma(nombre, cedula, titulo, codigo) {
             </div>
 
             <div class="sello-firma">
-                <img src="assets/img/Sello.png" alt="Sello Lyon Asesor">
-                <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon">
+                <img src="assets/img/Sello.png" alt="Sello Lyon Asesor" crossorigin="anonymous">
+                <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon" crossorigin="anonymous">
             </div>
             <div class="firma-text">Prof. Mtr. Álvaro Lyon · Director</div>
 
@@ -691,46 +704,105 @@ function generarDiploma(nombre, cedula, titulo, codigo) {
 }
 
 // =============================================
-// DESCARGAR PDF
+// DESCARGAR PDF - VERSIÓN CORREGIDA Y ROBUSTA
 // =============================================
 async function descargarPDF(nombre, codigo) {
+    const btn = document.getElementById('downloadPdfBtn');
+    const textoOriginal = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '⏳ Generando PDF...';
+
     try {
-        const element = document.querySelector('.diploma-preview');
-        if (!element) return;
+        const original = document.querySelector('.diploma-preview');
+        if (!original) {
+            throw new Error('No se encontró el diploma para exportar.');
+        }
 
         const clave = `${registroData.cedula}_${registroData.conferencia}`;
 
+        // 1) Crear un CLON del diploma en un contenedor oculto fuera del flujo.
+        const cloneHost = document.getElementById('pdfCloneContainer');
+        cloneHost.innerHTML = '';
+        const clone = original.cloneNode(true);
+        cloneHost.appendChild(clone);
+
+        // 2) Esperar a que las fuentes web (Playfair Display, Inter) terminen de cargar.
+        if (document.fonts && document.fonts.ready) {
+            try { await document.fonts.ready; } catch (e) {}
+        }
+
+        // 3) Esperar a que TODAS las imágenes del clon (logo, sello, firma) estén cargadas.
+        const imagenes = clone.querySelectorAll('img');
+        await Promise.all(Array.from(imagenes).map(img => {
+            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+            return new Promise(resolve => {
+                img.onload = resolve;
+                img.onerror = resolve;
+                setTimeout(resolve, 5000);
+            });
+        }));
+
+        // 4) Regenerar el QR dentro del clon (el canvas no se copia al clonar).
+        const qrCloneContainer = clone.querySelector('#qrcode');
+        if (qrCloneContainer) {
+            qrCloneContainer.innerHTML = '';
+            const urlValidacion = `https://${window.location.hostname}/validar-diploma.html?codigo=${codigo}`;
+            new QRCode(qrCloneContainer, {
+                text: urlValidacion,
+                width: 90,
+                height: 90,
+                colorDark: '#1a2330',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            await new Promise(resolve => setTimeout(resolve, 400));
+        }
+
+        // 5) Actualizar estado en Firebase
         await database.ref(`leads/conferencias/${clave}`).update({
             descargado: true,
             fechaDescarga: new Date().toISOString()
         });
-
-        // Marcamos el flag público (sin datos personales) que usa
-        // verificarRegistroExistente() para bloquear futuras re-descargas.
         await database.ref(`verificaciones/conferencias/${clave}`).set(true);
-
-        // Marcamos el diploma público como emitido oficialmente, para que
-        // validar-diploma.html deje de mostrarlo como "pendiente".
         await database.ref(`diplomas_publicos/${codigo}`).update({ descargado: true });
-
         diplomaDescargado = true;
 
+        // 6) Generar el PDF desde el CLON (formato A4 horizontal)
         const opt = {
-            margin: 0.5,
-            filename: `Diploma_${nombre.replace(/\s/g, '_')}_${codigo}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+            margin:      [0.4, 0.4, 0.4, 0.4],
+            filename:    `Diploma_${nombre.replace(/\s/g, '_')}_${codigo}.pdf`,
+            image:       { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: '#ffffff',
+                logging: false,
+                windowWidth: 1200,
+                windowHeight: clone.scrollHeight + 100
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'landscape',
+                compress: true
+            },
+            pagebreak: { mode: ['avoid-all'] }
         };
 
-        await html2pdf().set(opt).from(element).save();
-        document.getElementById('downloadPdfBtn').disabled = true;
-        document.getElementById('downloadPdfBtn').textContent = '✅ Diploma descargado';
+        await html2pdf().set(opt).from(clone).save();
+
+        // 7) Limpieza del clon
+        cloneHost.innerHTML = '';
+
+        btn.textContent = '✅ Diploma descargado';
         console.log('✅ Diploma descargado exitosamente');
 
     } catch (error) {
-        console.error('Error al descargar PDF:', error);
-        alert('Hubo un error al generar el PDF. Intenta de nuevo.');
+        console.error('❌ Error al descargar PDF:', error);
+        alert('Hubo un error al generar el PDF: ' + error.message + '\n\nIntenta de nuevo en unos segundos.');
+        btn.disabled = false;
+        btn.textContent = textoOriginal;
     }
 }
 
