@@ -966,12 +966,9 @@
         });
 
         // =============================================
-        // FORMULARIO CONSULTA - CON FIREBASE
+        // FORMULARIO CONSULTA — CORREGIDO
+        // El guardado en Firebase NO bloquea el pago.
         // =============================================
-        const modal = document.getElementById('modalPagoMovil');
-        const montoModal = document.getElementById('montoModal');
-        const cerrarModalBtn = document.getElementById('cerrarModal');
-
         document.getElementById('consultaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -990,75 +987,62 @@
             const paqueteTexto = paquete === '40' ? 'Individual' : (paquete === '100' ? '3 sesiones' : '5 sesiones');
             const monto = parseInt(paquete);
 
+            // Preparar datos
+            const datos = {
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                tipo: 'consulta',
+                paquete: paqueteTexto,
+                monto: monto,
+                motivo: motivo || 'Sin motivo específico',
+                estado: 'pendiente',
+                pagado: false
+            };
+
+            // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
             try {
-                // 🔥 GUARDAR EN FIREBASE en lugar de JSONBin
-                const datos = {
-                    nombre: nombre,
-                    email: email,
-                    telefono: telefono,
-                    tipo: 'consulta',
-                    paquete: paqueteTexto,
-                    monto: monto,
-                    motivo: motivo || 'Sin motivo específico',
-                    estado: 'pendiente',
-                    pagado: false
-                };
-                
                 await guardarLead('consultas', datos);
                 console.log('✅ Consulta guardada en Firebase');
-
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submit', { 'event_category': 'consulta' });
-                }
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead');
-                }
-
-                if (metodo === 'paypal') {
-                    let paypalLink;
-                    if (paquete === '40') {
-                        paypalLink = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
-                    } else if (paquete === '100') {
-                        paypalLink = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
-                    } else if (paquete === '150') {
-                        paypalLink = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
-                    }
-                    window.location.href = paypalLink;
-                } else {
-                    const mensaje = encodeURIComponent(
-                        `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
-                        `Nombre: ${nombre}\n` +
-                        `Email: ${email}\n` +
-                        `Teléfono: ${telefono}\n` +
-                        `Paquete: ${paqueteTexto}\n` +
-                        `Monto: $${monto}\n` +
-                        `Motivo: ${motivo || 'No especificado'}`
-                    );
-                    window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                    alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
-                }
-
             } catch (error) {
-                console.error('Error al guardar la consulta:', error);
-                alert('Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo.');
+                console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
+                // No interrumpimos el flujo
+            }
+
+            // Disparar eventos de analítica (si existen)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', { 'event_category': 'consulta' });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+
+            // Redirigir según método de pago
+            if (metodo === 'paypal') {
+                let paypalLink;
+                if (paquete === '40') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                } else if (paquete === '100') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                } else if (paquete === '150') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+                }
+                window.location.href = paypalLink;
+            } else {
+                // Pago móvil
+                const mensaje = encodeURIComponent(
+                    `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
+                    `Nombre: ${nombre}\n` +
+                    `Email: ${email}\n` +
+                    `Teléfono: ${telefono}\n` +
+                    `Paquete: ${paqueteTexto}\n` +
+                    `Monto: $${monto}\n` +
+                    `Motivo: ${motivo || 'No especificado'}`
+                );
+                window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
+                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
             }
         });
-
-        if (cerrarModalBtn) {
-            cerrarModalBtn.addEventListener('click', function() {
-                if (modal) modal.style.display = 'none';
-                alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-            });
-        }
-
-        if (modal) {
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                    alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-                }
-            };
-        }
 
         // ===== CHAT =====
         (function() {
