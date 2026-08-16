@@ -973,11 +973,9 @@
         });
 
         // =============================================
-        // FORMULARIO CONFERENCIA - CON FIREBASE
+        // FORMULARIO CONFERENCIA — CORREGIDO
+        // El guardado en Firebase NO bloquea el pago.
         // =============================================
-        const modal = document.getElementById('modalPagoMovil');
-        const cerrarModalBtn = document.getElementById('cerrarModal');
-
         document.getElementById('conferenciaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -996,73 +994,56 @@
 
             const detalle = `Tema: ${tema} | Participantes: ${participantes}`;
 
+            // Preparar datos
+            const datos = {
+                empresa: empresa,
+                contacto: contacto,
+                email: email,
+                telefono: telefono,
+                tipo: 'conferencia',
+                tema: tema,
+                participantes: participantes,
+                detalle: detalle,
+                monto: 150,
+                estado: 'pendiente',
+                pagado: false
+            };
+
+            // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
             try {
-                // 🔥 GUARDAR EN FIREBASE en lugar de JSONBin
-                const datos = {
-                    empresa: empresa,
-                    contacto: contacto,
-                    email: email,
-                    telefono: telefono,
-                    tipo: 'conferencia',
-                    tema: tema,
-                    participantes: participantes,
-                    detalle: detalle,
-                    monto: 150,
-                    estado: 'pendiente',
-                    pagado: false
-                };
-                
                 await guardarLead('conferencias', datos);
                 console.log('✅ Conferencia guardada en Firebase');
-
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submit', { 'event_category': 'conferencia' });
-                }
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead');
-                }
-
-                if (metodo === 'paypal') {
-                    window.location.href = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
-                } else {
-                    if (modal) {
-                        modal.style.display = 'flex';
-                    } else {
-                        const mensaje = encodeURIComponent(
-                            `Hola Alvaro, he seleccionado Pago Móvil para mi conferencia.\n` +
-                            `Empresa: ${empresa}\n` +
-                            `Contacto: ${contacto}\n` +
-                            `Email: ${email}\n` +
-                            `Teléfono: ${telefono}\n` +
-                            `Tema: ${tema}\n` +
-                            `Participantes: ${participantes}`
-                        );
-                        window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                        alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
-                    }
-                }
-
             } catch (error) {
-                console.error('Error al guardar la conferencia:', error);
-                alert('Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo.');
+                console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
+                // No interrumpimos el flujo
+            }
+
+            // Disparar eventos de analítica (si existen)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', { 'event_category': 'conferencia' });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+
+            // Redirigir según método de pago
+            if (metodo === 'paypal') {
+                window.location.href = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+            } else {
+                // Pago móvil
+                const mensaje = encodeURIComponent(
+                    `Hola Alvaro, he seleccionado Pago Móvil para mi conferencia.\n` +
+                    `Empresa: ${empresa}\n` +
+                    `Contacto: ${contacto}\n` +
+                    `Email: ${email}\n` +
+                    `Teléfono: ${telefono}\n` +
+                    `Tema: ${tema}\n` +
+                    `Participantes: ${participantes}`
+                );
+                window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
+                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
             }
         });
-
-        if (cerrarModalBtn) {
-            cerrarModalBtn.addEventListener('click', function() {
-                if (modal) modal.style.display = 'none';
-                alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-            });
-        }
-
-        if (modal) {
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                    alert('Gracias por tu reserva. Envía el comprobante y te confirmaremos.');
-                }
-            };
-        }
 
         // ===== CHAT =====
         (function() {
