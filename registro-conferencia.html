@@ -690,19 +690,21 @@ function generarDiploma(nombre, cedula, titulo, codigo) {
 // =============================================
 // DESCARGAR PDF
 // =============================================
-// FIX: se capturaba un CLON del diploma colocado a "left: -99999px" para
+// FIX #1: se capturaba un CLON del diploma colocado a "left: -99999px" para
 // esconderlo. html2canvas calcula mal las coordenadas de captura con
-// offsets tan extremos -> lienzo en blanco / desencuadrado. Además, la
-// página estaba desplazada (scrollIntoView) justo antes de capturar, y
-// html2canvas no compensaba ese scroll -> capturaba la región equivocada.
+// offsets tan extremos -> lienzo en blanco / desencuadrado.
 //
-// SOLUCIÓN: capturamos DIRECTAMENTE el diploma que ya está visible en
-// pantalla (el mismo que se ve bien), sin clones ni posiciones fuera de
-// rango, y le pasamos explícitamente el scroll actual para que
-// html2canvas apunte al lugar correcto. html2pdf además ajusta
-// automáticamente el contenido capturado al formato A4 horizontal
-// indicado en "jsPDF", así que el resultado queda igual de encuadrado
-// sin importar el ancho exacto con el que se renderizó en pantalla.
+// FIX #2 (este): al intentar compensar el scroll de la página se agregaron
+// "windowWidth"/"windowHeight"/"scrollY" personalizados a html2canvas. Esa
+// combinación obliga a la librería a re-renderizar TODA la página a un
+// tamaño distinto al real antes de recortar el diploma, y el recorte queda
+// mal alineado -> diploma cortado arriba + enorme espacio en blanco debajo.
+//
+// SOLUCIÓN FINAL: se captura DIRECTAMENTE el diploma visible en pantalla,
+// sin clones ni overrides de ventana/scroll. html2canvas, sin esas
+// opciones forzadas, usa el tamaño real del elemento (no el de toda la
+// página), y html2pdf ajusta automáticamente esa imagen al formato A4
+// horizontal indicado en "jsPDF".
 async function descargarPDF(nombre, codigo) {
     const btn = document.getElementById('downloadPdfBtn');
     const textoOriginal = btn.textContent;
@@ -750,14 +752,7 @@ async function descargarPDF(nombre, codigo) {
                 scale: 2,
                 useCORS: true,
                 backgroundColor: '#ffffff',
-                logging: false,
-                // Compensación de scroll: evita el bug clásico de html2canvas
-                // que captura una región desplazada cuando la página no está
-                // en la parte superior de la ventana.
-                scrollX: 0,
-                scrollY: -window.scrollY,
-                windowWidth: document.documentElement.scrollWidth,
-                windowHeight: document.documentElement.scrollHeight
+                logging: false
             },
             jsPDF: {
                 unit: 'in',
