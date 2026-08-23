@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="description" content="Información legal de Lyon Asesor: registro de marca, certificado de autoría, Registro Mercantil y RIF del Prof. Mtr. Álvaro Lyon." />
+    <meta name="robots" content="noindex" />
+    <title>Información Legal | Lyon Asesor</title>
+    <link rel="canonical" href="https://lyonasesor-web.pages.dev/legal.html" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ========== RESET Y VARIABLES (idénticas al sitio) ========== */
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --naranja-oscuro: #c95a10;
+            --navy: #1A2330;
+            --navy-light: #243042;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --text-light: #8899A6;
+            --shadow-sm: 0 2px 8px rgba(26, 35, 48, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 35, 48, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 35, 48, 0.16);
+            --shadow-orange: 0 4px 20px rgba(232, 107, 24, 0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s ease;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(232, 107, 24, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(26, 35, 48, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(232, 107, 24, 0.02) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 10px 0;
+            background: rgba(26, 35, 48, 0.97);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+        .nav-logo-icon img { width: 32px; height: 32px; object-fit: contain; }
+        .nav-logo-text .main {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem; font-weight: 700; letter-spacing: 1.5px; color: #fff; line-height: 1.2;
+        }
+        .nav-logo-text .main span { color: var(--naranja); }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            transition: var(--transition-fast); position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: var(--naranja); transition: var(--transition);
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--naranja-luz); }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
+            color: #fff !important; padding: 8px 20px; border-radius: 50px; font-weight: 600 !important;
+            box-shadow: var(--shadow-orange);
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(232, 107, 24, 0.45); }
+        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; z-index: 1001; }
+        .nav-toggle span { width: 22px; height: 2.5px; background: #fff; transition: var(--transition); }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== REVEAL ===== */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== PAGE HEADER ===== */
+        .legal-header {
+            position: relative;
+            background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 40%, var(--navy-light) 100%);
+            padding: 150px 24px 70px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .legal-header-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(232, 107, 24, 0.15);
+            border: 1px solid rgba(232, 107, 24, 0.3);
+            color: var(--naranja-luz);
+            padding: 6px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .legal-header-dot { width: 8px; height: 8px; background: var(--naranja); border-radius: 50%; }
+        .legal-header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700; color: #fff; margin-bottom: 16px;
+        }
+        .legal-header h1 span { color: var(--naranja); }
+        .legal-header p {
+            font-size: 1rem; color: rgba(255, 255, 255, 0.7);
+            max-width: 620px; margin: 0 auto; font-weight: 300;
+        }
+
+        /* ===== SECCIONES ===== */
+        .section { position: relative; z-index: 1; padding: 90px 24px; }
+        .section-inner { max-width: 1000px; margin: 0 auto; }
+        .section-header { margin-bottom: 48px; }
+        .section-label {
+            display: inline-block; font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--naranja); margin-bottom: 14px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+            font-weight: 700; color: var(--navy); margin-bottom: 14px;
+        }
+        .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 700px; }
+
+        .alt-bg { background: var(--crema); }
+
+        /* ===== TARJETA LEGAL ===== */
+        .legal-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 32px;
+            border: 1px solid rgba(26, 35, 48, 0.06);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .legal-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+        }
+        .legal-card h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.2rem; font-weight: 700; color: var(--navy);
+            margin-bottom: 6px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .legal-card .card-sub {
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;
+        }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px 28px;
+        }
+        .data-item { border-left: 3px solid rgba(232, 107, 24, 0.25); padding-left: 14px; }
+        .data-item .label {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            color: var(--naranja); margin-bottom: 4px;
+        }
+        .data-item .value {
+            font-size: 0.95rem; color: var(--text-dark); font-weight: 500; word-break: break-word;
+        }
+        .data-item .value.mono {
+            font-family: 'Courier New', monospace; font-size: 0.82rem; color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .legal-note {
+            margin-top: 20px;
+            padding: 16px 18px;
+            background: var(--crema);
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .legal-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--naranja); font-weight: 600; text-decoration: none;
+            margin-top: 18px; font-size: 0.92rem;
+            transition: var(--transition-fast);
+        }
+        .legal-link:hover { gap: 12px; color: var(--naranja-oscuro); }
+
+        .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+        .badge-pill {
+            display: inline-block;
+            background: var(--crema);
+            color: var(--navy);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+
+        /* ===== TIMELINE / TABLA PARTICIPANTES ===== */
+        .part-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.88rem; }
+        .part-table th {
+            text-align: left; color: var(--naranja); text-transform: uppercase;
+            letter-spacing: 0.5px; font-size: 0.72rem; padding: 10px 14px;
+            border-bottom: 2px solid rgba(232, 107, 24, 0.15);
+        }
+        .part-table td {
+            padding: 12px 14px; border-bottom: 1px solid rgba(26, 35, 48, 0.06); color: var(--text-dark);
+        }
+
+        /* ===== FOOTER (idéntico) ===== */
+        .footer { background: var(--navy-dark); padding: 60px 24px 30px; color: rgba(255, 255, 255, 0.6); }
+        .footer-inner { max-width: 1200px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 700;
+            color: #fff; margin-bottom: 16px; letter-spacing: 2px;
+        }
+        .footer-brand h3 span { color: var(--naranja); }
+        .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+        .footer-youtube {
+            display: inline-flex; align-items: center; gap: 10px; background: #FF0000; color: #fff;
+            padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            transition: var(--transition); box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3); margin-top: 8px;
+        }
+        .footer-youtube:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5); }
+        .footer-youtube svg { width: 22px; height: 22px; fill: currentColor; flex-shrink: 0; }
+        .footer-youtube-text { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); display: block; margin-top: 4px; }
+        .footer-social { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+        .footer-col h4 { color: #fff; font-size: 1rem; font-weight: 600; margin-bottom: 18px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul a {
+            color: rgba(255, 255, 255, 0.6); text-decoration: none; font-size: 0.9rem; transition: var(--transition-fast);
+        }
+        .footer-col ul a:hover { color: var(--naranja); padding-left: 5px; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 24px;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.82rem;
+        }
+        .footer-legal { font-size: 0.78rem; opacity: 0.7; }
+
+        .back-to-top {
+            position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px;
+            background: var(--navy); color: #fff; border: none; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: var(--transition); z-index: 997;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--naranja); transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
+                width: 100%; height: 100vh; background: rgba(26, 35, 48, 0.98); backdrop-filter: blur(20px);
+                padding: 100px 40px; gap: 28px; z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
+            .legal-header { padding: 120px 20px 50px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-social { align-items: center; }
+            .legal-card { padding: 24px 20px; }
+            .data-grid { grid-template-columns: 1fr; }
+            .part-table { display: block; overflow-x: auto; white-space: nowrap; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Psicoterapia y Desarrollo Personal" /></div>
+                <div class="nav-logo-text"><div class="main">LYON<span>ASESOR</span></div></div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#servicios">Servicios</a></li>
+                <li><a href="index.html#ebook">Biblioteca</a></li>
+                <li><a href="index.html#conferencias">Conferencias</a></li>
+                <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                <li><a href="legal.html" class="active">Legal</a></li>
+                <li><a href="consulta.html" class="nav-cta">Agendar consulta</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <!-- ===== HEADER ===== -->
+    <header class="legal-header">
+        <div class="legal-header-badge"><span class="legal-header-dot"></span>Transparencia · Registro Legal</div>
+        <h1>Información <span>Legal</span></h1>
+        <p>Datos oficiales de registro, autoría y constitución de Lyon Asesor, a cargo del Prof. Mtr. Álvaro Lyon Abreu, para tu total transparencia y confianza.</p>
+    </header>
+
+    <!-- ===== CERTIFICADO DE AUTORÍA ===== -->
+    <section class="section" id="autoria">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Propiedad Intelectual</span>
+                <h2 class="section-title">Certificado de Prueba de Autoría</h2>
+                <p class="section-desc">La marca "Lyon Asesor" cuenta con un certificado de autoría registrado y sellado en blockchain, emitido por eNotar.io, que protege sus derechos de autor a nivel internacional.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>📄 Registro de la obra</h3>
+                <p class="card-sub">Marca Lyon Asesor — Certificado de Prueba de Autoría</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">Título de la obra</div>
+                        <div class="value">Marca Lyon Asesor</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Nombre del archivo</div>
+                        <div class="value">LYON ASESOR (1).png</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Fecha de certificación</div>
+                        <div class="value">14 de octubre de 2024</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Autor registrado</div>
+                        <div class="value">Álvaro José Lyon Abreu (V-17.633.035) · Venezuela</div>
+                    </div>
+                </div>
+                <div class="legal-note">
+                    Esta prueba de autoría cumple los requisitos del Convenio de Berna, la Convención Universal sobre Derecho de Autor, la Convención de Roma y el Tratado de la OMPI sobre Derecho de Autor. Tiene cobertura en más de 179 países y es válida de por vida, más 70 años tras el fallecimiento del autor.
+                </div>
+                <a href="https://www.enotar.io/es/certificate?txid=0690c2e187ce83f6733a8269ba5353e1040a03f111f0ee0c441fc94bb775f365&name=enotario:7922ea7748dac8fe2316100d0c1ddfc0f1e50a6ad05507d53047f6cefb7d9202" target="_blank" rel="noopener" class="legal-link">
+                    Ver certificado original en eNotar.io
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🔗 Registro en Blockchain (Emercoin)</h3>
+                <p class="card-sub">Sello de tiempo público e inmutable — Identificador Único de Archivo (FUID) generado con SHA-256</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">ID único (FUID)</div>
+                        <div class="value mono">7922ea7748dac8fe2316100d0c1ddfc0f1e50a6ad05507d53047f6cefb7d9202</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Id de transacción</div>
+                        <div class="value mono">0690c2e187ce83f6733a8269ba5353e1040a03f111f0ee0c441fc94bb775f365</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Bloque hash</div>
+                        <div class="value mono">baf63cddf830c9d6681c409f9df8ffe75ce41db3753d335f13e5048c79cecd15</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Altura del bloque</div>
+                        <div class="value">691.866</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Marca de tiempo</div>
+                        <div class="value">14 oct 2024, 18:24:07 UTC</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Confirmaciones</div>
+                        <div class="value">115.330+</div>
+                    </div>
+                </div>
+                <div class="legal-note">
+                    <strong>Registro NVS:</strong> <span style="font-family:'Courier New',monospace;">enotario:7922ea7748dac8fe2316100d0c1ddfc0f1e50a6ad05507d53047f6cefb7d9202</span><br>
+                    Explorador público de la transacción: 
+                    <a href="https://explorer1.emercoin.com/block/691866" target="_blank" rel="noopener" style="color:var(--naranja); font-weight:600;">explorer1.emercoin.com/block/691866</a>
+                </div>
+                <table class="part-table">
+                    <thead>
+                        <tr><th>ID Nacional</th><th>Nombre completo</th><th>País</th><th>Rol</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>V-17.633.035</td><td>Álvaro José Lyon Abreu</td><td>Venezuela (VE)</td><td>Autor</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REGISTRO MERCANTIL ===== -->
+    <section class="section alt-bg" id="mercantil">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Constitución de la Firma</span>
+                <h2 class="section-title">Registro Mercantil en Venezuela</h2>
+                <p class="section-desc">Lyon Asesor está debidamente registrado ante el Servicio Autónomo de Registros y Notarías (SAREN) de la República Bolivariana de Venezuela.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🏛️ Registro Mercantil Primero del Estado Bolívar</h3>
+                <p class="card-sub">Servicio Autónomo de Registros y Notarías (SAREN) · Ministerio del Poder Popular para Relaciones Interiores y Justicia</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">Titular / Firma Personal</div>
+                        <div class="value">Lyon Asesor Álvaro Abreu, F.P</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Registro Mercantil</div>
+                        <div class="value">RM No. 303 — 211° y 162°</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Tomo / Número / Año</div>
+                        <div class="value">Tomo 3-B REGMERPRIBO · N.º 56 · Año 2021</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Número de expediente</div>
+                        <div class="value">303-61809</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Registrador (a) Mercantil Titular</div>
+                        <div class="value">Abogado Danilo José Jaimes Rivas</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Concepto del trámite</div>
+                        <div class="value">Otorgamiento de nombres y denominaciones de empresas mercantiles y firmas personales</div>
+                    </div>
+                </div>
+                <div class="legal-note">
+                    Certificación oficial: <em>"Que el asiento de Registro de Comercio transcrito a continuación, cuyo original está inscrito en el Tomo 3-B REGMERPRIBO, Número 56 del año 2021, así como la Participación, Nota y Documento que se copian de seguida, son traslado fiel de sus originales."</em> — SAREN, Registro Mercantil Primero del Estado Bolívar.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RIF ===== -->
+    <section class="section" id="rif">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Identificación Fiscal</span>
+                <h2 class="section-title">Registro Único de Información Fiscal (RIF)</h2>
+                <p class="section-desc">Emitido por el Servicio Nacional Integrado de Administración Aduanera y Tributaria (SENIAT).</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🧾 Datos del contribuyente</h3>
+                <p class="card-sub">SENIAT · Gerencia Regional de Tributos Internos Región Guayana</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">RIF</div>
+                        <div class="value">V-17633035-6</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Contribuyente</div>
+                        <div class="value">Álvaro José Lyon Abreu</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Fecha de inscripción</div>
+                        <div class="value">10/07/2009</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Última actualización</div>
+                        <div class="value">23/08/2026</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Firmas personales</div>
+                        <div class="value">1 — Lyon Asesor Álvaro Abreu, F.P</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Domicilio fiscal</div>
+                        <div class="value">Av. Principal, Manzana 9, Casa Nro. 232, Urb. Villa Betania, Puerto Ordaz, Ciudad Guayana, Bolívar, Zona Postal 8050</div>
+                    </div>
+                </div>
+                <div class="badge-row">
+                    <span class="badge-pill">Documento emitido electrónicamente</span>
+                    <span class="badge-pill">No requiere sello húmedo</span>
+                </div>
+                <div class="legal-note">
+                    La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto, o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER (idéntico al sitio) ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>LYON<span>ASESOR</span></h3>
+                    <p>Psicoterapia online · Desarrollo Personal · Educación Emocional para hispanohablantes en todo el mundo.</p>
+                    <div class="footer-social">
+                        <a href="https://www.youtube.com/@LyonAsesor" target="_blank" class="footer-youtube" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            Suscríbete a nuestro canal de YouTube
+                        </a>
+                        <span class="footer-youtube-text">Clases, análisis y contenido exclusivo para tu desarrollo personal.</span>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="consulta.html" style="font-weight:700; color:var(--naranja);">🌟 Proceso Terapéutico</a></li>
+                        <li><a href="conferencia.html">Conferencias</a></li>
+                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
+                        <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:lyonasesor@gmail.com">lyonasesor@gmail.com</a></li>
+                        <li><a href="https://www.youtube.com/@LyonAsesor" target="_blank">YouTube</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li>
+                        <li><a href="legal.html">Información Legal</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p>
+                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif V-17633035-6</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <script>
+        // ===== MOBILE TOGGLE =====
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // ===== REVEAL =====
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // ===== BACK TO TOP =====
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 500);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
