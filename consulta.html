@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
-    <!-- TÍTULO ÚNICO -->
     <title>Agendar Consulta Terapéutica Online | Lyon Asesor – Desde $40 USD</title>
     <meta name="description" content="Agenda tu consulta de psicoterapia online con el Prof. Mtr. Álvaro Lyon. Acompañamiento profesional para hispanohablantes en todo el mundo. Sesiones desde $40 USD." />
     <meta name="keywords" content="psicoterapia online, terapia psicológica, consulta terapéutica, salud mental, bienestar emocional, psicólogo online, terapia hispana" />
@@ -56,7 +55,7 @@
         }
     </script>
     
-    <!-- Google Analytics 4 — ID REAL -->
+    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4CZ7YNGE4Z"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -65,7 +64,7 @@
         gtag('config', 'G-4CZ7YNGE4Z');
     </script>
     
-    <!-- Meta Pixel — Placeholder -->
+    <!-- Meta Pixel -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -89,12 +88,1164 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
-    <!-- Estilos (no se modifican, son los mismos) -->
     <style>
-        /* ... (todos los estilos existentes, sin cambios) ... */
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --naranja-oscuro: #c95a10;
+            --navy: #1A2330;
+            --navy-light: #243042;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --text-light: #8899A6;
+            --shadow-sm: 0 2px 8px rgba(26,35,48,0.08);
+            --shadow-md: 0 4px 20px rgba(26,35,48,0.12);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: 0.2s ease;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--blanco-calido);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(232,107,24,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(26,35,48,0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(232,107,24,0.02) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== NAV ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: var(--transition);
+            background: transparent;
+        }
+        .nav.scrolled {
+            background: rgba(26, 35, 48, 0.97);
+            backdrop-filter: blur(20px);
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-logo-icon img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
+        }
+        .nav-logo-text .main {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .nav-logo-text .main span { color: var(--naranja); }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--naranja);
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
+            color: #fff !important;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            box-shadow: var(--shadow-orange);
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(232,107,24,0.45);
+        }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            z-index: 1001;
+        }
+        .nav-toggle span {
+            width: 22px;
+            height: 2.5px;
+            background: #fff;
+            transition: var(--transition);
+        }
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .hero-section {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-top: 80px;
+            margin-bottom: 60px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 4vw, 3.2rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .hero-section h1 span { color: var(--naranja); }
+        .hero-section .sub {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .hero-section .description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
+
+        .section-block {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .section-block h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        .section-block h2 span { color: var(--naranja); }
+        .section-block p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 1.5rem 0;
+        }
+        .problem-item {
+            background: var(--crema);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border-left: 4px solid var(--naranja);
+        }
+        .problem-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
+        .problem-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 1.5rem 0;
+        }
+        .benefit-item {
+            background: var(--blanco-calido);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border-top: 4px solid var(--naranja);
+        }
+        .benefit-item h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.3rem; }
+        .benefit-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        .author-section {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            border: 1px solid rgba(26,35,48,0.06);
+            text-align: center;
+        }
+        .author-section h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        .author-section h2 span { color: var(--naranja); }
+        .author-section h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+        .author-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .faq-item {
+            background: var(--blanco-calido);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .faq-item h4 { color: var(--navy); margin-bottom: 0.3rem; }
+        .faq-item p { color: var(--text-muted); font-size: 0.9rem; }
+
+        #formSection {
+            background: var(--navy);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        #formSection h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        #formSection h2 span { color: var(--naranja); }
+        #formSection p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        .form-container .btn-primary { width: 100%; }
+
+        .redirect-alert {
+            background: #fff3e0;
+            border-left: 4px solid #e65100;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            text-align: left;
+        }
+        .redirect-alert p {
+            color: #1e293b !important;
+            font-size: 0.95rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* ===== FOOTER CON YOUTUBE ===== */
+        .footer {
+            background: var(--navy-dark);
+            padding: 60px 24px 30px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 60px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-brand h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .footer-brand h3 span { color: var(--naranja); }
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .footer-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #FF0000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            margin-top: 8px;
+        }
+        .footer-youtube:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
+        }
+        .footer-youtube svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+        .footer-youtube-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: block;
+            margin-top: 4px;
+        }
+        .footer-social {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .footer-col h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .footer-col ul a:hover {
+            color: var(--naranja);
+            padding-left: 5px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.82rem;
+        }
+        .footer-legal {
+            font-size: 0.78rem;
+            opacity: 0.7;
+        }
+
+        /* ===== CHAT ===== */
+        .chat-float {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            background: var(--naranja);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            animation: floatPulseChat 3s infinite;
+        }
+        .chat-float:hover {
+            transform: scale(1.12);
+            box-shadow: 0 6px 30px rgba(232,107,24,0.6);
+        }
+        .chat-float svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        @keyframes floatPulseChat {
+            0%, 100% { box-shadow: 0 4px 20px rgba(232,107,24,0.4); }
+            50% { box-shadow: 0 4px 35px rgba(232,107,24,0.65); }
+        }
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            width: 380px;
+            max-width: calc(100vw - 56px);
+            max-height: 80vh;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 998;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(26,35,48,0.08);
+            animation: slideUp 0.3s ease;
+        }
+        .chat-window.open { display: flex; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .chat-header {
+            background: var(--navy);
+            color: #fff;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .chat-header h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .chat-header h3 span { color: var(--naranja); }
+        .chat-header .close-chat {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 4px;
+        }
+        .chat-header .close-chat:hover { color: #fff; }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+            max-height: 400px;
+        }
+        .chat-message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 90%;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            animation: messageIn 0.3s ease;
+        }
+        .chat-message.bot {
+            background: #fff;
+            border: 1px solid rgba(26,35,48,0.06);
+            align-self: flex-start;
+            box-shadow: var(--shadow-sm);
+        }
+        .chat-message.user {
+            background: var(--naranja);
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-message .product-btn {
+            display: inline-block;
+            margin: 6px 4px 0 0;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--naranja);
+            border-radius: 30px;
+            color: var(--naranja);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .chat-message .product-btn:hover {
+            background: var(--naranja);
+            color: #fff;
+        }
+        .chat-message .product-btn.humano {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+        .chat-message .product-btn.humano:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+        .chat-message .paypal-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 20px;
+            background: #0070ba;
+            color: #fff;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .chat-message .paypal-btn:hover { background: #005ea6; }
+        .chat-input-area {
+            display: flex;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(26,35,48,0.06);
+            background: #fff;
+            flex-shrink: 0;
+            gap: 8px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition-fast);
+        }
+        .chat-input-area input:focus {
+            border-color: var(--naranja);
+            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
+        }
+        .chat-input-area input:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
+        .chat-input-area button {
+            padding: 10px 20px;
+            background: var(--naranja);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .chat-input-area button:hover:not(:disabled) { background: var(--naranja-oscuro); }
+        .chat-input-area button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .faq-grid { grid-template-columns: 1fr; }
+            .hero-section { padding: 2rem; margin-top: 70px; }
+            .hero-section h1 { font-size: clamp(1.9rem, 7vw, 2.5rem); }
+            .section-block { padding: 1.5rem; }
+            #formSection { padding: 2rem; }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(26,35,48,0.98);
+                backdrop-filter: blur(20px);
+                padding: 100px 40px;
+                gap: 28px;
+                z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-social { align-items: center; }
+            .chat-window {
+                bottom: 80px;
+                right: 12px;
+                width: calc(100vw - 24px);
+                max-height: 70vh;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-section { padding: 1.5rem; }
+            .hero-section h1 { font-size: clamp(1.5rem, 8vw, 2rem); line-height: 1.2; }
+            .chat-window {
+                bottom: 70px;
+                right: 8px;
+                width: calc(100vw - 16px);
+                max-height: 65vh;
+            }
+            .footer-youtube { font-size: 0.8rem; padding: 8px 16px; }
+        }
     </style>
 </head>
 <body>
-    <!-- ... (todo el contenido HTML de la página, sin cambios) ... -->
+    <!-- ===== NAV ===== -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Psicoterapia y Desarrollo Personal" /></div>
+                <div class="nav-logo-text">
+                    <div class="main">LYON<span>ASESOR</span></div>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#servicios">Servicios</a></li>
+                <li><a href="ebook.html">Biblioteca</a></li>
+                <li><a href="index.html#conferencias">Conferencias</a></li>
+                <li><a href="index.html#curso">Curso</a></li>
+                <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                <li><a href="consulta.html" class="nav-cta">Agendar consulta</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+
+        <div class="hero-section">
+            <h1>Acompañamiento <span>Terapéutico</span></h1>
+            <div class="sub">Para quienes deciden mirar hacia adentro con valentía</div>
+            <p class="description">
+                No es una consulta más. Es un espacio donde tus emociones, tu historia y tu potencial 
+                son escuchados con respeto, ciencia y calidez. Inicia tu proceso hoy, desde cualquier país.
+            </p>
+            <a href="#formSection" class="btn-primary">📅 Agendar mi primera sesión</a>
+        </div>
+
+        <div class="section-block">
+            <h2>¿Para quién es este <span>proceso?</span></h2>
+            <p>Si sientes que llevas tiempo cargando algo que no sabes nombrar, si las emociones te desbordan o si simplemente necesitas un espacio seguro para ordenar tu mundo interior, este acompañamiento es para ti.</p>
+            <div class="problem-grid">
+                <div class="problem-item"><h3>🌪️ Desborde emocional</h3><p>Cuando las emociones se vuelven un torbellino que no puedes controlar.</p></div>
+                <div class="problem-item"><h3>🧩 Patrones repetitivos</h3><p>Relaciones, decisiones o conductas que se repiten una y otra vez sin explicación.</p></div>
+                <div class="problem-item"><h3>🕳️ Vacío o falta de propósito</h3><p>Esa sensación de que algo falta, pero no sabes qué es.</p></div>
+                <div class="problem-item"><h3>🔒 Heridas del pasado</h3><p>Experiencias que siguen pesando y condicionando tu presente.</p></div>
+            </div>
+        </div>
+
+        <div class="section-block">
+            <h2>¿Qué <span>recibirás</span> al iniciar?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item"><h3>🧭 Diagnóstico inicial</h3><p>Una sesión de exploración para entender tu punto de partida.</p></div>
+                <div class="benefit-item"><h3>🗺️ Mapa de ruta personalizado</h3><p>Un plan de trabajo único, diseñado para ti y tu contexto.</p></div>
+                <div class="benefit-item"><h3>🛠️ Herramientas prácticas</h3><p>Técnicas y ejercicios que puedes aplicar desde el primer día.</p></div>
+                <div class="benefit-item"><h3>🤝 Acompañamiento continuo</h3><p>Sesiones regulares con seguimiento y ajuste permanente.</p></div>
+            </div>
+        </div>
+
+        <div class="author-section">
+            <h2>Sobre tu <span>guía</span></h2>
+            <h3>Prof. Mtr. Álvaro Lyon Abreu</h3>
+            <p>
+                Psicoterapeuta · Master Internacional · Director de Lyon Asesor, f.p.
+                Con más de una década de experiencia acompañando procesos de transformación personal, 
+                Álvaro Lyon ha diseñado una metodología que integra la neuropsicología, la inteligencia emocional 
+                y la calidez humana. Su enfoque no es la teoría genérica, sino la experiencia real y aplicada.
+            </p>
+        </div>
+
+        <div class="section-block">
+            <h2>Preguntas <span>frecuentes</span></h2>
+            <div class="faq-grid">
+                <div class="faq-item"><h4>¿Cuánto dura una sesión?</h4><p>Las sesiones tienen una duración aproximada de 45 a 60 minutos, dependiendo de las necesidades del consultante.</p></div>
+                <div class="faq-item"><h4>¿Las sesiones son confidenciales?</h4><p>Sí, toda la información compartida en el proceso es estrictamente confidencial, protegida por el secreto profesional.</p></div>
+                <div class="faq-item"><h4>¿Puedo pagar en moneda local?</h4><p>Sí, aceptamos pagos en bolívares (Venezuela), pesos (México/Colombia/Argentina), euros (España) y dólares a través de PayPal, Zelle o transferencia.</p></div>
+                <div class="faq-item"><h4>¿Qué pasa si no puedo pagar el monto completo?</h4><p>Conversemos. Puedes consultar opciones de pago fraccionado o ajustes según tu realidad.</p></div>
+            </div>
+        </div>
+
+        <div id="formSection">
+            <h2>Comienza hoy. Un <span>paso</span> que cambiará <span>todo.</span></h2>
+            <p>Completa tus datos y serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás las instrucciones para agendar tu sesión en la página de agradecimiento.</p>
+
+            <div class="redirect-alert">
+                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, serás llevado a una página donde podrás contactar directamente con Álvaro por WhatsApp para coordinar tu primera sesión.</p>
+            </div>
+
+            <form id="consultaForm" class="form-container">
+                <input type="text" id="nombre" placeholder="Nombre completo" required>
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+                <input type="tel" id="telefono" placeholder="Teléfono (WhatsApp)" required>
+
+                <label for="paquete" style="color:#fff; text-align:left; font-weight:600;">Selecciona tu paquete</label>
+                <select id="paquete">
+                    <option value="40">Sesión Individual – $40 USD</option>
+                    <option value="100">Paquete 3 sesiones – $100 USD</option>
+                    <option value="150">Paquete 5 sesiones – $150 USD</option>
+                </select>
+
+                <label for="metodo" style="color:#fff; text-align:left; font-weight:600;">Método de pago</label>
+                <select id="metodo">
+                    <option value="paypal">PayPal (tarjeta/cuenta)</option>
+                    <option value="p movil">Transferencia / Pago Móvil</option>
+                </select>
+
+                <textarea rows="3" id="motivo" placeholder="¿Qué te trae a consulta? (opcional)"></textarea>
+
+                <button type="submit" class="btn-primary">📩 Enviar y continuar con el pago</button>
+                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Tus datos están seguros y no serán compartidos.</p>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- ===== FOOTER CON YOUTUBE ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>LYON<span>ASESOR</span></h3>
+                    <p>Psicoterapia online · Desarrollo Personal · Educación Emocional para hispanohablantes en todo el mundo.</p>
+                    <div class="footer-social">
+                        <a href="https://www.youtube.com/@LyonAsesor" target="_blank" class="footer-youtube" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            Suscríbete a nuestro canal de YouTube
+                        </a>
+                        <span class="footer-youtube-text">Clases, análisis y contenido exclusivo para tu desarrollo personal.</span>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="consulta.html" style="font-weight:700; color:var(--naranja);">🌟 Proceso Terapéutico</a></li>
+                        <li><a href="conferencia.html">Conferencias</a></li>
+                        <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
+                        <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Cursos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:lyonasesor@gmail.com">lyonasesor@gmail.com</a></li>
+                        <li><a href="https://www.youtube.com/@LyonAsesor" target="_blank">YouTube</a></li>
+                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Lyon Asesor™. Todos los derechos reservados.</p>
+                <p class="footer-legal">Prof. Mtr. Álvaro Lyon · CI V-17633035 · Rif J-17633035-6</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== CHAT ===== -->
+    <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
+    </button>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>LYON <span>ASESOR</span></h3>
+            <button class="close-chat" id="chatClose">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." disabled>
+            <button id="chatSend" disabled>Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== NAV =====
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // =============================================
+        // FORMULARIO CONSULTA — CORREGIDO
+        // El guardado en Firebase NO bloquea el pago.
+        // =============================================
+        document.getElementById('consultaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const paquete = document.getElementById('paquete').value;
+            const metodo = document.getElementById('metodo').value;
+            const motivo = document.getElementById('motivo').value.trim();
+
+            if (!nombre || !email || !telefono) {
+                alert('Por favor, completa tu nombre, correo y teléfono.');
+                return;
+            }
+
+            const paqueteTexto = paquete === '40' ? 'Individual' : (paquete === '100' ? '3 sesiones' : '5 sesiones');
+            const monto = parseInt(paquete);
+
+            // Preparar datos
+            const datos = {
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                tipo: 'consulta',
+                paquete: paqueteTexto,
+                monto: monto,
+                motivo: motivo || 'Sin motivo específico',
+                estado: 'pendiente',
+                pagado: false
+            };
+
+            // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
+            try {
+                await guardarLead('consultas', datos);
+                console.log('✅ Consulta guardada en Firebase');
+            } catch (error) {
+                console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
+                // No interrumpimos el flujo
+            }
+
+            // Disparar eventos de analítica (si existen)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', { 'event_category': 'consulta' });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+            }
+
+            // Redirigir según método de pago
+            if (metodo === 'paypal') {
+                let paypalLink;
+                if (paquete === '40') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                } else if (paquete === '100') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                } else if (paquete === '150') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+                }
+                window.location.href = paypalLink;
+            } else {
+                // Pago móvil
+                const mensaje = encodeURIComponent(
+                    `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
+                    `Nombre: ${nombre}\n` +
+                    `Email: ${email}\n` +
+                    `Teléfono: ${telefono}\n` +
+                    `Paquete: ${paqueteTexto}\n` +
+                    `Monto: $${monto}\n` +
+                    `Motivo: ${motivo || 'No especificado'}`
+                );
+                window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
+                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
+            }
+        });
+
+        // ===== CHAT =====
+        (function() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initChat);
+            } else {
+                initChat();
+            }
+
+            function initChat() {
+                const chatToggle = document.getElementById('chatToggle');
+                const chatWindow = document.getElementById('chatWindow');
+                const chatClose = document.getElementById('chatClose');
+                const chatMessages = document.getElementById('chatMessages');
+                const chatInput = document.getElementById('chatInput');
+                const chatSend = document.getElementById('chatSend');
+
+                if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatInput || !chatSend) {
+                    console.warn('Chat: Elementos no encontrados');
+                    return;
+                }
+
+                let chatOpen = false;
+
+                const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
+                const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
+                const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
+
+                function addMessage(text, sender, options = {}) {
+                    const div = document.createElement('div');
+                    div.className = `chat-message ${sender}`;
+                    if (sender === 'bot' && options.buttons) {
+                        div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
+                    } else {
+                        div.textContent = text;
+                    }
+                    chatMessages.appendChild(div);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+
+                function escapeHtml(str) {
+                    const d = document.createElement('div');
+                    d.textContent = str;
+                    return d.innerHTML.replace(/\n/g, '<br>');
+                }
+
+                function setInputEnabled(enabled) {
+                    chatInput.disabled = !enabled;
+                    chatSend.disabled = !enabled;
+                    if (enabled) chatInput.focus();
+                }
+
+                function botonHumano() {
+                    return `<div style="margin-top:6px;">
+                        <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a>
+                    </div>`;
+                }
+
+                function startChat() {
+                    chatMessages.innerHTML = '';
+                    chatInput.value = '';
+                    setInputEnabled(false);
+
+                    const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
+
+Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
+
+¿Qué te gustaría explorar?`;
+
+                    const botones = `
+                        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
+                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
+                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
+                            <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
+                        </div>
+                        ${botonHumano()}
+                    `;
+                    addMessage(bienvenida, 'bot', { buttons: botones });
+                }
+
+                function handleProductSelection(producto) {
+                    let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
+
+                    if (producto === 'biblioteca') {
+                        nombreProducto = '📚 Biblioteca Lyon Asesor';
+                        precio = '$9.99';
+                        descripcion = '4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
+                        botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
+                    } else if (producto === 'consulta') {
+                        nombreProducto = '🧘 Proceso Terapéutico';
+                        precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
+                        descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos. Selecciona tu paquete.';
+                        botonesPayPal = `
+                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                                <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
+                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
+                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
+                            </div>
+                        `;
+                    } else if (producto === 'conferencia') {
+                        nombreProducto = '🎤 Conferencia';
+                        precio = '$150 (tarifa plana)';
+                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
+                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                    }
+
+                    const mensaje = `Has seleccionado: **${nombreProducto}**
+
+${descripcion}
+
+**Precio:** ${precio}
+
+Haz clic en el botón de pago para completar tu compra:`;
+
+                    const botones = `
+                        <div style="margin-top:8px;">
+                            ${botonesPayPal}
+                            <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
+                            <div style="margin-top:8px;">
+                                <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
+                                <a href="mailto:lyonasesor@gmail.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
+                            </div>
+                        </div>
+                        ${botonHumano()}
+                    `;
+
+                    addMessage(mensaje, 'bot', { buttons: botones });
+                }
+
+                chatMessages.addEventListener('click', function(e) {
+                    const btn = e.target.closest('.product-btn[data-role]');
+                    if (!btn) return;
+                    const rol = btn.dataset.role;
+
+                    if (rol === 'producto') {
+                        handleProductSelection(btn.dataset.producto);
+                        return;
+                    }
+
+                    if (rol === 'accion') {
+                        const accion = btn.dataset.action;
+                        if (accion === 'volver') {
+                            startChat();
+                        } else if (accion === 'diagnostico') {
+                            window.location.href = 'diagnostico.html';
+                        }
+                    }
+                });
+
+                chatSend.addEventListener('click', function() {
+                    const input = chatInput.value.trim();
+                    if (!input) return;
+
+                    addMessage(input, 'user');
+                    chatInput.value = '';
+
+                    setInputEnabled(false);
+                    const msg = encodeURIComponent(`Mensaje desde el chat de lyonasesor.com: ${input}`);
+                    window.open(`https://wa.me/584148610464?text=${msg}`, '_blank');
+                    
+                    addMessage('Gracias por tu mensaje. He abierto un chat con Álvaro para que pueda responderte personalmente. 💬', 'bot');
+                    setInputEnabled(true);
+                });
+
+                chatInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') chatSend.click();
+                });
+
+                chatToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (chatWindow.classList.contains('open')) {
+                        chatWindow.classList.remove('open');
+                        chatOpen = false;
+                    } else {
+                        chatWindow.classList.add('open');
+                        chatOpen = true;
+                        if (chatMessages.children.length === 0) startChat();
+                        if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300);
+                    }
+                });
+
+                chatClose.addEventListener('click', function() {
+                    chatWindow.classList.remove('open');
+                    chatOpen = false;
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && chatOpen) {
+                        chatWindow.classList.remove('open');
+                        chatOpen = false;
+                    }
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
