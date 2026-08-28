@@ -12,6 +12,7 @@
     <script src="/js/firebase-config.js"></script>
 
     <style>
+        /* ===== RESET Y BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
@@ -475,9 +476,7 @@
     // =============================================
     // CONFIGURACIÓN
     // =============================================
-    // Correo autorizado para administrar el panel. Debe coincidir EXACTAMENTE
-    // con el usuario creado en Firebase → Authentication → Email/Password,
-    // y con el correo usado en las reglas de seguridad (database.rules.json).
+    // Correo autorizado para administrar el panel
     const ADMIN_EMAIL = 'lyonasesor@gmail.com';
 
     const TIPO_MAP = {
@@ -488,21 +487,21 @@
     };
 
     // =============================================
-    // LISTA DE CONFERENCIAS (COMPLETA CON ARCHIVOS)
+    // LISTA DE CONFERENCIAS - NOMBRES EXACTOS DE ARCHIVO
     // =============================================
     const CONFERENCES_DATA = [
-        { id: 'neuroliderazgo', titulo: 'NeuroLiderazgo', descripcion: 'El Cerebro que Inspira Equipos', file: '/conferencias/neuro-liderazgo.html' },
-        { id: 'ie40', titulo: 'Inteligencia Emocional 4.0', descripcion: 'Liderar en la Incertidumbre', file: '/conferencias/ie40.html' },
-        { id: 'factor-humano', titulo: 'El Factor Humano', descripcion: 'Autogestión Emocional en Entornos de Alta Demanda', file: '/conferencias/factor-humano.html' },
-        { id: 'autoestima', titulo: 'Autoestima Inquebrantable', descripcion: 'El Pilar del Rendimiento Personal', file: '/conferencias/autoestima.html' },
-        { id: 'neurobienestar', titulo: 'Neurobienestar', descripcion: 'Equilibrio Emocional en un Mundo Hiperconectado', file: '/conferencias/neurobienestar.html' },
-        { id: 'pedagogia-emociones', titulo: 'Pedagogía de las Emociones', descripcion: 'Educar con el Corazón y el Cerebro', file: '/conferencias/pedagogia-emociones.html' },
-        { id: 'poder-creencias', titulo: 'El Poder de las Creencias', descripcion: 'Reprograma tu Mente, Transforma tu Realidad', file: '/conferencias/poder-creencias.html' },
-        { id: 'neurociencia-aula', titulo: 'Neurociencia Aplicada al Aula', descripcion: 'Estrategias para un Aprendizaje Profundo', file: '/conferencias/neurociencia-aula.html' },
-        { id: 'gestion-emocional', titulo: 'Gestión Emocional para Equipos', descripcion: 'Alto Rendimiento con Inteligencia Emocional', file: '/conferencias/gestion-emocional.html' },
-        { id: 'desarrollo-humano', titulo: 'Desarrollo Humano con Propósito', descripcion: 'Del Autoconocimiento a la Trascendencia', file: '/conferencias/desarrollo-humano.html' },
-        { id: 'comunicacion-conecta', titulo: 'Comunicación que Conecta', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: '/conferencias/comunicacion-conecta.html' },
-        { id: 'educar-corazon', titulo: 'Educar con el Corazón y el Cerebro', descripcion: 'Neuroeducación para Formadores y Docentes', file: '/conferencias/educar-corazon.html' }
+        { id: 'autoestima-corporativa', titulo: 'Autoestima Corporativa', descripcion: 'El Pilar del Rendimiento Personal', file: '/conferencias/autoestima-corporativa.html' },
+        { id: 'bienestar-estres', titulo: 'Bienestar y Estrés', descripcion: 'Equilibrio Emocional en un Mundo Hiperconectado', file: '/conferencias/bienestar-estres.html' },
+        { id: 'codigo-familiar', titulo: 'Código Familiar', descripcion: 'Educar con el Corazón y el Cerebro', file: '/conferencias/codigo-familiar.html' },
+        { id: 'comunicacion-consciente', titulo: 'Comunicación Consciente', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: '/conferencias/comunicacion-consciente.html' },
+        { id: 'integracion-cierre', titulo: 'Integración y Cierre', descripcion: 'Del Autoconocimiento a la Trascendencia', file: '/conferencias/integracion-cierre.html' },
+        { id: 'liderazgo-alma', titulo: 'Liderazgo con Alma', descripcion: 'El Cerebro que Inspira Equipos', file: '/conferencias/liderazgo-alma.html' },
+        { id: 'neuro-liderazgo', titulo: 'NeuroLiderazgo', descripcion: 'El Cerebro que Inspira Equipos', file: '/conferencias/neuro-liderazgo.html' },
+        { id: 'neuroeducacion', titulo: 'Neuroeducación', descripcion: 'Estrategias para un Aprendizaje Profundo', file: '/conferencias/neuroeducacion.html' },
+        { id: 'proposito-legado', titulo: 'Propósito y Legado', descripcion: 'Del Autoconocimiento a la Trascendencia', file: '/conferencias/proposito-legado.html' },
+        { id: 'reconfigura-mente', titulo: 'Reconfigura Mente', descripcion: 'Reprograma tu Mente, Transforma tu Realidad', file: '/conferencias/reconfigura-mente.html' },
+        { id: 'resiliencia-organizacional', titulo: 'Resiliencia Organizacional', descripcion: 'Autogestión Emocional en Entornos de Alta Demanda', file: '/conferencias/resiliencia-organizacional.html' },
+        { id: 'vinculos-que-sanan', titulo: 'Vínculos que Sanan', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: '/conferencias/vinculos-que-sanan.html' }
     ];
 
     // =============================================
@@ -511,7 +510,7 @@
     let allLeads = [];
 
     // =============================================
-    // AUTENTICACIÓN (Firebase Auth real)
+    // AUTENTICACIÓN (Firebase Auth)
     // =============================================
     document.getElementById('loginBtn').addEventListener('click', async function() {
         const pass = document.getElementById('loginPassword').value;
@@ -529,7 +528,6 @@
 
         try {
             await firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pass);
-            // onAuthStateChanged se encarga de mostrar el panel
         } catch (error) {
             console.error('❌ Error de autenticación:', error.code, error.message);
             if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
@@ -559,7 +557,6 @@
         cargarTodosLosDatos();
     });
 
-    // Único punto de verdad para mostrar login vs. panel: el estado real de Firebase Auth
     firebase.auth().onAuthStateChanged(function(user) {
         const isAdmin = !!user && user.email === ADMIN_EMAIL;
 
@@ -570,7 +567,6 @@
             document.getElementById('loginPassword').value = '';
             cargarTodosLosDatos();
         } else if (user && user.email !== ADMIN_EMAIL) {
-            // Sesión válida pero de otro correo: no debería ocurrir, pero por seguridad cerramos sesión
             firebase.auth().signOut();
         }
     });
@@ -594,7 +590,6 @@
             console.log('📥 Cargando leads desde Firebase...');
             const snapshot = await database.ref('leads').once('value');
             const data = snapshot.val();
-            console.log('📦 Datos de leads:', data);
 
             allLeads = [];
             if (data) {
@@ -634,7 +629,6 @@
             console.log('📥 Cargando conferencias desde Firebase...');
             const snapshot = await database.ref('configuracion/conferencias').once('value');
             const data = snapshot.val();
-            console.log('📦 Datos de conferencias:', data);
 
             if (!data) {
                 console.log('⚠️ No hay conferencias en Firebase. Inicializando...');
@@ -678,11 +672,10 @@
     }
 
     // =============================================
-    // RENDER CONFERENCIAS (estilo tarjetas con botón de presentación)
+    // RENDER CONFERENCIAS
     // =============================================
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
-        console.log('🎨 Renderizando conferencias:', data);
 
         let html = '<div class="conferencias-grid">';
 
@@ -699,7 +692,7 @@
                     <div class="titulo">${conf.titulo}</div>
                     <div class="descripcion">${conf.descripcion} · 1 hora</div>
                     <div class="acciones">
-                        <a href="${conf.file}" class="btn-conferencia" target="_blank">🎬 Iniciar Presentación</a>
+                        <a href="${conf.file}" class="btn-conferencia" target="_blank" rel="noopener">🎬 Iniciar Presentación</a>
                         <label class="toggle-switch">
                             <input type="checkbox" ${activa ? 'checked' : ''} data-id="${conf.id}" onchange="toggleConferencia('${conf.id}', this.checked)">
                             <span class="toggle-slider"></span>
@@ -711,7 +704,6 @@
 
         html += '</div>';
         container.innerHTML = html;
-        console.log('✅ Conferencias renderizadas');
     }
 
     // =============================================
@@ -902,7 +894,7 @@
     });
 
     // =============================================
-    // RECARGAR CADA 30 SEGUNDOS (solo si sigue autenticado)
+    // RECARGAR CADA 30 SEGUNDOS
     // =============================================
     setInterval(() => {
         const user = firebase.auth().currentUser;
@@ -915,4 +907,3 @@
 </script>
 </body>
 </html>
-
