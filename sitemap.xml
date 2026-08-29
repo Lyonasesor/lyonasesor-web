@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://lyonasesor-web.pages.dev/</loc>
+      <loc>https://lyonasesor.com/</loc>
       <priority>1.0</priority>
    </url>
    <url>
-      <loc>https://lyonasesor-web.pages.dev/ebook.html</loc>
+      <loc>https://lyonasesor.com/ebook.html</loc>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://lyonasesor-web.pages.dev/diagnostico.html</loc>
+      <loc>https://lyonasesor.com/diagnostico.html</loc>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://lyonasesor-web.pages.dev/consulta.html</loc>
+      <loc>https://lyonasesor.com/consulta.html</loc>
       <priority>0.7</priority>
    </url>
    <url>
-      <loc>https://lyonasesor-web.pages.dev/conferencia.html</loc>
+      <loc>https://lyonasesor.com/conferencia.html</loc>
       <priority>0.7</priority>
    </url>
    <url>
-      <loc>https://lyonasesor-web.pages.dev/legal.html</loc>
+      <loc>https://lyonasesor.com/legal.html</loc>
       <priority>0.5</priority>
    </url>
 </urlset>

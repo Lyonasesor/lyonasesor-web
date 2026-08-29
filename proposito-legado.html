@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-003ZC6TLH3');
+    </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propósito y Legado | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px;
+      width: 100%;
+      background-color: #181818;
+      border: 1px solid #bfa77a;
+      box-shadow: 0 0 20px rgba(191, 167, 122, 0.15);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .slide-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: #bfa77a;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+      background: #222;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #bfa77a; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #bfa77a; }
+    .highlight-box {
+      background-color: #1e1e1e;
+      border-left: 3px solid #bfa77a;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .col-box {
+      background-color: #1e1e1e;
+      padding: 1.2rem;
+      border-radius: 8px;
+    }
+    .col-box h3 { color: #bfa77a; margin-bottom: 0.5rem; font-size: 1rem; }
+    .col-box p { font-size: 0.9rem; color: #e8e8e8; }
+    .icon-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .icon-card {
+      background-color: #1e1e1e;
+      padding: 1.2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .icon-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .icon-card .name { font-weight: 600; color: #bfa77a; margin-bottom: 0.3rem; }
+    .icon-card .desc { font-size: 0.8rem; color: #e8e8e8; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+    .btn {
+      background: transparent;
+      border: 1px solid #bfa77a;
+      color: #bfa77a;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #bfa77a; color: #181818; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+    .interactive-box {
+      background-color: #1e1e1e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .option-btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { border-color: #bfa77a; color: #bfa77a; }
+    .option-btn.selected { background: #bfa77a; color: #181818; border-color: #bfa77a; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Propósito y Legado · 90 minutos</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Propósito y Legado</h1>
+        <h2>Neurociencia del Sentido de Vida</h2>
+        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
+        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
+      `,
+      `
+        <h2>La Pregunta Más Antigua</h2>
+        <p>Desde que el ser humano tiene conciencia de sí mismo, se pregunta: ¿para qué estoy aquí? ¿Qué sentido tiene mi vida?</p>
+        <p>Viktor Frankl, neurólogo y psiquiatra vienés, sobrevivió a cuatro campos de concentración nazis. Allí observó que quienes encontraban un propósito —aunque fuera mínimo— sobrevivían. Quienes perdían el sentido, morían.</p>
+        <p>Su obra "El hombre en busca de sentido" es una de las más influyentes del siglo XX. Y sus enseñanzas son hoy validadas por la neurociencia.</p>
+        <div class="highlight-box">"Quien tiene un porqué para vivir, puede soportar casi cualquier cómo." — Friedrich Nietzsche, citado por Frankl</div>
+      `,
+      `
+        <h2>El Cerebro que Busca Significado</h2>
+        <p>La neurociencia ha identificado circuitos cerebrales específicos dedicados a procesar el sentido y el propósito. La red neuronal por defecto (Default Mode Network, DMN) se activa cuando reflexionamos sobre nosotros mismos, nuestro pasado y nuestro futuro.</p>
+        <p>Estudios de la Universidad de Wisconsin-Madison muestran que las personas con un propósito vital claro tienen menor inflamación sistémica, menor riesgo cardiovascular y mejor salud mental.</p>
+        <p>El propósito no es un lujo filosófico. Es un predictor de salud física y longevidad.</p>
+      `,
+      `
+        <h2>Los Tres Pilares del Sentido</h2>
+        <p>Según Frankl, el sentido se encuentra en tres direcciones: crear, experimentar y transformar.</p>
+        <div class="icon-box">
+          <div class="icon-card">
+            <div class="emoji">🎨</div>
+            <div class="name">Crear</div>
+            <div class="desc">Construir algo valioso: una obra, un proyecto, un equipo, un legado profesional. Dejar huella.</div>
+          </div>
+          <div class="icon-card">
+            <div class="emoji">❤️</div>
+            <div class="name">Experimentar</div>
+            <div class="desc">Amar, conectar, disfrutar. El amor y la belleza son fuentes primarias de sentido.</div>
+          </div>
+          <div class="icon-card">
+            <div class="emoji">🦋</div>
+            <div class="name">Transformar</div>
+            <div class="desc">Convertir el sufrimiento en crecimiento. Cuando no podemos cambiar una situación, podemos cambiar nuestra actitud.</div>
+          </div>
+        </div>
+      `,
+      `
+        <h2>Propósito vs. Metas</h2>
+        <p>Una meta es concreta y tiene fecha de caducidad: "quiero ascender este año". El propósito es más amplio y nunca se agota: "quiero ser un líder que desarrolle a otros".</p>
+        <p>La psicología organizacional positiva ha demostrado que los equipos con propósito trascienden los incentivos económicos. Un empleado con propósito está más comprometido, es más creativo y se recupera más rápido de los contratiempos.</p>
+        <p>Los equipos con un fuerte sentido de propósito tienen niveles de engagement significativamente mayores que aquellos que solo persiguen metas financieras.</p>
+      `,
+      `
+        <h2>La Neuroquímica del Propósito</h2>
+        <p>Cuando actuamos alineados con nuestros valores, el cerebro libera una combinación de dopamina y serotonina. Esto genera una satisfacción duradera, no el placer momentáneo del logro externo.</p>
+        <p>Cuando hay desconexión entre nuestras acciones y nuestros valores, experimentamos disonancia cognitiva. El cerebro registra esta incoherencia como una amenaza leve pero constante, que eleva el cortisol de fondo y agota los recursos mentales.</p>
+        <div class="highlight-box">Vivir sin propósito no es solo triste. Es neurológicamente desgastante.</div>
+      `,
+      `
+        <h2>Momento de Introspección</h2>
+        <p>Te invito a hacerte la pregunta que Frankl les hacía a sus pacientes, y que hoy la neurociencia respalda como una herramienta de salud.</p>
+        <div class="interactive-box">
+          <p style="margin-bottom: 1rem;">¿Qué te daría más sentido a tu vida hoy?</p>
+          <div class="options" id="q11Options">
+            <button class="option-btn" onclick="selectOption(this, 'q11')">Crear algo valioso</button>
+            <button class="option-btn" onclick="selectOption(this, 'q11')">Sanar una relación</button>
+            <button class="option-btn" onclick="selectOption(this, 'q11')">Encontrar un nuevo propósito</button>
+            <button class="option-btn" onclick="selectOption(this, 'q11')">Aceptar una pérdida</button>
+          </div>
+        </div>
+      `,
+      `
+        <h2>El Legado que Construimos</h2>
+        <p>El legado no es lo que dejamos al morir. Es lo que construimos cada día, en cada interacción. No se trata de monumentos. Se trata de cómo hacemos sentir a los demás, de lo que enseñamos, de lo que transformamos.</p>
+        <p>La teoría de la "generatividad" de Erik Erikson sostiene que, en la edad adulta, la principal tarea del desarrollo es contribuir a las generaciones futuras. Una vida plena no se mide en lo que acumulamos, sino en lo que contribuimos.</p>
+        <div class="highlight-box">"No le pregunto a la vida cuál es su sentido. Es la vida la que me pregunta a mí, y yo respondo con mis acciones." — Viktor Frankl</div>
+      `,
+      `
+        <h2>Tres Preguntas para tu Legado</h2>
+        <p>No necesitas tener 80 años para pensar en tu legado. Puedes empezar hoy, aquí, ahora.</p>
+        <ul>
+          <li><strong>¿Qué te gustaría que dijeran de ti las personas con las que trabajas cuando no estés presente?</strong> No en tu funeral. En la pausa del café de mañana.</li>
+          <li><strong>¿Qué habilidad, conocimiento o actitud estás transmitiendo a quienes te rodean?</strong> El legado se contagia. ¿Estás contagiando miedo o confianza? ¿Pesimismo o propósito?</li>
+          <li><strong>Si hoy fuera tu último día de trabajo, ¿qué proyecto inconcluso lamentarías no haber terminado?</strong> Ese proyecto es tu propósito en acción. Dale prioridad esta semana.</li>
+        </ul>
+      `,
+      `
+        <h2>Vivir con Sentido Hoy</h2>
+        <p>El propósito no se encuentra en un retiro espiritual de seis meses. Se construye en las pequeñas decisiones diarias de actuar con coherencia, de ayudar a otros, de elegir proyectos que valgan la pena.</p>
+        <p>No necesitas tener todas las respuestas. Basta con hacerte las preguntas correctas. Y actuar, paso a paso, en la dirección de lo que intuyes que importa.</p>
+        <div class="highlight-box">Una vida con propósito no es una vida perfecta. Es una vida que, incluso en el dolor, encuentra razones para seguir.</div>
+        <p style="text-align: center; margin-top: 2rem; color: #bfa77a;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Propósito y Legado · 90 minutos`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    function selectOption(btn, questionId) {
+      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>

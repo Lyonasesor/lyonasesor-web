@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-003ZC6TLH3');
+    </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vínculos que Sanan | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f;
+      background-image: radial-gradient(circle at 30% 50%, #1a1a1a 0%, #0f0f0f 60%);
+      color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px;
+      width: 100%;
+      background-color: #1a1a1a;
+      border: 1px solid #3a3a3a;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .slide-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: #b8875a;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+      background: #222;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #b8875a; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #b8875a; }
+    .highlight-box {
+      background-color: #1f1f1f;
+      border-left: 3px solid #b8875a;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .col-box {
+      background-color: #1f1f1f;
+      padding: 1.2rem;
+      border-radius: 8px;
+    }
+    .col-box h3 { color: #b8875a; margin-bottom: 0.5rem; font-size: 1rem; }
+    .col-box p { font-size: 0.9rem; color: #e8e8e8; }
+    .icon-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .icon-card {
+      background-color: #1f1f1f;
+      padding: 1.2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .icon-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .icon-card .name { font-weight: 600; color: #b8875a; margin-bottom: 0.3rem; }
+    .icon-card .desc { font-size: 0.8rem; color: #e8e8e8; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+    .btn {
+      background: transparent;
+      border: 1px solid #b8875a;
+      color: #b8875a;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #b8875a; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+    .interactive-box {
+      background-color: #1f1f1f;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .option-btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { border-color: #b8875a; color: #b8875a; }
+    .option-btn.selected { background: #b8875a; color: #0f0f0f; border-color: #b8875a; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Vínculos que Sanan · 90 minutos</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Vínculos que Sanan</h1>
+        <h2>Neurobiología de las Relaciones Saludables</h2>
+        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
+        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
+      `,
+      `
+        <h2>La Biología de la Conexión</h2>
+        <p>No estamos diseñados para la soledad. El cerebro humano evolucionó para conectar con otros cerebros.</p>
+        <p>La neurociencia social, liderada por investigadores como John Cacioppo (Universidad de Chicago), ha demostrado que la soledad crónica aumenta el cortisol, eleva la presión arterial y debilita el sistema inmunológico.</p>
+        <p>El aislamiento social prolongado puede ser tan dañino para la salud como fumar 15 cigarrillos al día.</p>
+        <div class="highlight-box">La conexión no es un lujo emocional. Es una necesidad biológica.</div>
+      `,
+      `
+        <h2>La Oxitocina: La Molécula del Vínculo</h2>
+        <p>Conocida como la hormona del amor, la oxitocina se libera durante el abrazo, la mirada sostenida o incluso una conversación significativa.</p>
+        <p>Sus efectos son profundos: reduce el cortisol, disminuye la actividad de la amígdala y promueve la confianza.</p>
+        <p>Pero la oxitocina no discrimina: también puede fortalecer el favoritismo hacia el propio grupo y la desconfianza hacia los extraños. El contexto social la modula.</p>
+        <p>La investigación de Paul Zak (Center for Neuroeconomics Studies) demuestra que las dosis regulares de oxitocina aumentan la generosidad y la cooperación en equipos.</p>
+      `,
+      `
+        <h2>Las Tres Dimensiones del Vínculo</h2>
+        <p>Según la teoría del apego de John Bowlby y Mary Ainsworth, necesitamos tres experiencias para construir relaciones seguras:</p>
+        <div class="icon-box">
+          <div class="icon-card">
+            <div class="emoji">👁️</div>
+            <div class="name">Ser Visto</div>
+            <div class="desc">El otro percibe mis estados internos. No me ignora ni me etiqueta.</div>
+          </div>
+          <div class="icon-card">
+            <div class="emoji">🤲</div>
+            <div class="name">Ser Sostenido</div>
+            <div class="desc">El otro responde cuando lo necesito. Mi vulnerabilidad no es castigada.</div>
+          </div>
+          <div class="icon-card">
+            <div class="emoji">🔐</div>
+            <div class="name">Ser Seguro</div>
+            <div class="desc">Puedo ser yo mismo sin temor. La relación no es condicional.</div>
+          </div>
+        </div>
+      `,
+      `
+        <h2>El Cerebro Social en el Trabajo</h2>
+        <p>Las relaciones laborales no son distintas de las relaciones personales. La biología es la misma.</p>
+        <p>El Proyecto Aristóteles de Google reveló que la seguridad psicológica era el predictor número uno del éxito de los equipos. No la inteligencia, no la experiencia. La seguridad de que nadie te humillará por equivocarte.</p>
+        <p>David Rock, creador del modelo SCARF (NeuroLeadership Institute), identifica cinco dominios sociales que el cerebro procesa con los mismos circuitos que las amenazas físicas: Estatus, Certidumbre, Autonomía, Relación y Equidad.</p>
+      `,
+      `
+        <h2>Momento de Reflexión</h2>
+        <p>Piensa en la relación más significativa de tu vida. Personal o profesional. ¿Por qué fue significativa?</p>
+        <div class="interactive-box">
+          <p style="margin-bottom: 1rem;">¿Qué elemento estuvo más presente?</p>
+          <div class="options" id="q8Options">
+            <button class="option-btn" onclick="selectOption(this, 'q8')">Me sentí genuinamente escuchado/a</button>
+            <button class="option-btn" onclick="selectOption(this, 'q8')">Pude ser yo mismo/a sin miedo</button>
+            <button class="option-btn" onclick="selectOption(this, 'q8')">Recibí apoyo en un momento difícil</button>
+            <button class="option-btn" onclick="selectOption(this, 'q8')">Crecí gracias a esa relación</button>
+          </div>
+        </div>
+      `,
+      `
+        <h2>La Herida del Vínculo y la Reparación</h2>
+        <p>En toda relación ocurren rupturas. Lo que define la salud del vínculo no es la ausencia de conflicto, sino la capacidad de reparar.</p>
+        <p>La Dra. Sue Johnson, creadora de la Terapia Centrada en las Emociones, dice: "El conflicto no es el problema. La falta de sintonía es el problema."</p>
+        <p>Cuando una ruptura se repara con empatía y responsabilidad, el vínculo no solo se restaura: se fortalece. La reparación es el verdadero pegamento de las relaciones.</p>
+        <div class="highlight-box">No busques relaciones perfectas. Busca relaciones reparables.</div>
+      `,
+      `
+        <h2>Tres Herramientas para Fortalecer Vínculos</h2>
+        <ul>
+          <li><strong>Validación antes que solución:</strong> Ante una emoción del otro, resiste el impulso de aconsejar. Primero, valida: "Entiendo por qué te sientes así." La validación no es acuerdo. Es reconocimiento.</li>
+          <li><strong>Disculpa con responsabilidad plena:</strong> "Lamento haberte hecho sentir así." No es una disculpa. Una disculpa responsable es: "Lamento haber hecho X. Veo que te afectó así. Estoy trabajando en cambiar eso."</li>
+          <li><strong>Presencia de calidad, no de cantidad:</strong> 15 minutos de atención plena valen más que 2 horas de presencia distraída. El cerebro registra la calidad de la presencia, no su duración.</li>
+        </ul>
+      `,
+      `
+        <h2>La Soledad en la Era de la Conexión</h2>
+        <p>Nunca hemos estado más "conectados" digitalmente. Y sin embargo, la soledad es una epidemia global.</p>
+        <p>El cirujano general de Estados Unidos, Dr. Vivek Murthy, en su informe "Our Epidemic of Loneliness and Isolation" (2023), compara el impacto de la soledad en la salud con fumar 15 cigarrillos al día.</p>
+        <p>La presencia física importa. Un mensaje de WhatsApp no libera oxitocina. Un abrazo sí.</p>
+        <p>Las relaciones que sanan no son las que tienen más likes. Son las que ocurren en el mismo espacio, con los mismos olores, con la misma vulnerabilidad compartida.</p>
+      `,
+      `
+        <h2>Construir una Cultura de Vínculo</h2>
+        <p>No puedes obligar a las personas a conectar. Pero puedes crear las condiciones para que la conexión ocurra.</p>
+        <p>La psicología organizacional positiva ha demostrado que los equipos con relaciones de alta calidad tienen menos rotación, más innovación y mejor salud mental.</p>
+        <p>Invertir en vínculos no es un programa de recursos humanos. Es una decisión estratégica de liderazgo.</p>
+        <div class="highlight-box">Los vínculos que sanan no eliminan el dolor. Lo hacen llevadero. Y a veces, eso lo cambia todo.</div>
+        <p style="text-align: center; margin-top: 2rem; color: #cdaa7b;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Vínculos que Sanan · 90 minutos`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    function selectOption(btn, questionId) {
+      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>

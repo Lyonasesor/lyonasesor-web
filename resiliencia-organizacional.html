@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-003ZC6TLH3');
+    </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resiliencia Organizacional | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f;
+      background-image: radial-gradient(circle at 20% 50%, #1a1a1a 0.5px, transparent 0.5px);
+      background-size: 20px 20px;
+      color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px;
+      width: 100%;
+      background-color: #1c1d1f;
+      border: 1px solid #b8a99a;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(184, 169, 154, 0.08);
+    }
+    .slide-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: #b8a99a;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+      background: #2a2b2d;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #b8a99a; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #b8a99a; }
+    .highlight-box {
+      background-color: #252628;
+      border-left: 3px solid #b8a99a;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    .pillar-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .pillar-card {
+      background-color: #252628;
+      padding: 1.2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .pillar-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .pillar-card .name { font-weight: 600; color: #b8a99a; margin-bottom: 0.3rem; }
+    .pillar-card .desc { font-size: 0.8rem; color: #e8e8e8; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+    .btn {
+      background: transparent;
+      border: 1px solid #b8a99a;
+      color: #b8a99a;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { background: #b8a99a; color: #1c1d1f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+    .interactive-box {
+      background-color: #252628;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .option-btn {
+      background: transparent;
+      border: 1px solid #666;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-btn:hover { border-color: #b8a99a; color: #b8a99a; }
+    .option-btn.selected { background: #b8a99a; color: #1c1d1f; border-color: #b8a99a; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Resiliencia Organizacional · 90 minutos</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Resiliencia Organizacional</h1>
+        <h2>Equipos que se Adaptan y Crecen</h2>
+        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
+        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
+      `,
+      `
+        <h2>La Fragilidad No es Opción</h2>
+        <p>En un mundo de cambios exponenciales, crisis inesperadas y mercados volátiles, la resiliencia dejó de ser una cualidad deseable para convertirse en la principal ventaja competitiva.</p>
+        <p>La consultora McKinsey, en un estudio de 2023, encontró que las organizaciones con alta capacidad de adaptación superaban a sus competidores en un 60% en retorno total para los accionistas durante períodos de crisis.</p>
+        <p>Pero la resiliencia organizacional no es simplemente aguantar. No es apretar los dientes y esperar que pase la tormenta.</p>
+        <div class="highlight-box">La resiliencia real es la capacidad de un sistema para absorber la disrupción, reorganizarse mientras ocurre y emerger no solo intacto, sino mejorado.</div>
+      `,
+      `
+        <h2>La Biología de la Resiliencia</h2>
+        <p>La resiliencia tiene una base neurobiológica. No es un rasgo místico. Es un conjunto de procesos cerebrales que pueden fortalecerse.</p>
+        <p>El neurocientífico Dennis Charney (Mount Sinai) estudió a prisioneros de guerra, sobrevivientes de abuso y víctimas de trauma. Identificó 10 factores que distinguen a las personas altamente resilientes.</p>
+        <p>Entre ellos: optimismo realista, brújula moral, modelo de rol resiliente, apoyo social y entrenamiento físico. Ninguno es innato. Todos pueden desarrollarse.</p>
+        <p>Lo que aplica para individuos, aplica para equipos.</p>
+      `,
+      `
+        <h2>Los Tres Pilares de la Resiliencia Organizacional</h2>
+        <div class="pillar-box">
+          <div class="pillar-card">
+            <div class="emoji">🛡️</div>
+            <div class="name">Absorción</div>
+            <div class="desc">Capacidad de recibir el impacto sin colapsar. Márgenes de seguridad, redundancia, reservas.</div>
+          </div>
+          <div class="pillar-card">
+            <div class="emoji">🔄</div>
+            <div class="name">Adaptación</div>
+            <div class="desc">Flexibilidad para cambiar procesos, roles o estrategias en tiempo real. Sin rigidez.</div>
+          </div>
+          <div class="pillar-card">
+            <div class="emoji">🌱</div>
+            <div class="name">Crecimiento Post-Traumático</div>
+            <div class="desc">Capacidad de extraer aprendizaje de la crisis y fortalecerse. No volver al punto anterior, sino a uno mejor.</div>
+          </div>
+        </div>
+      `,
+      `
+        <h2>El Estrés No es el Enemigo</h2>
+        <p>La psicóloga Kelly McGonigal (Stanford) demostró que el estrés solo es dañino cuando creemos que lo es. Cambiar nuestra percepción del estrés reduce su impacto fisiológico.</p>
+        <p>En las organizaciones, el estrés inevitable no debe eliminarse artificialmente. Debe canalizarse. El deporte de alto rendimiento lo sabe: el músculo crece al romperse y repararse. El equipo también.</p>
+        <p>Un equipo que nunca ha enfrentado una crisis es un equipo que no sabe si puede sobrevivir a ella.</p>
+        <div class="highlight-box">No se trata de eliminar la presión. Se trata de que el sistema aprenda a crecer bajo presión.</div>
+      `,
+      `
+        <h2>El Cerebro del Equipo</h2>
+        <p>La resiliencia no es solo individual. Es colectiva. Las neuronas espejo y el contagio emocional hacen que los estados de ánimo se propaguen.</p>
+        <p>Un líder que entra en pánico activa la amígdala de todo su equipo. Uno que mantiene la calma bajo presión activa la corteza prefrontal de los demás.</p>
+        <p>El concepto de "co-regulación" (Stephen Porges, Teoría Polivagal) es clave: los sistemas nerviosos se sincronizan. Un equipo resiliente es un equipo que practica la co-regulación, no la co-desregulación.</p>
+      `,
+      `
+        <h2>Momento de Diagnóstico Organizacional</h2>
+        <p>Evalúa a tu equipo frente a la última crisis que enfrentaron.</p>
+        <div class="interactive-box">
+          <p style="margin-bottom: 1rem;">¿Cuál fue su respuesta predominante?</p>
+          <div class="options" id="q10Options">
+            <button class="option-btn" onclick="selectOption(this, 'q10')">Nos paralizamos o entramos en pánico</button>
+            <button class="option-btn" onclick="selectOption(this, 'q10')">Aguantamos estoicamente, pero quedamos agotados</button>
+            <button class="option-btn" onclick="selectOption(this, 'q10')">Nos reorganizamos y encontramos nuevas soluciones</button>
+            <button class="option-btn" onclick="selectOption(this, 'q10')">Salimos fortalecidos y con nuevos aprendizajes</button>
+          </div>
+        </div>
+      `,
+      `
+        <h2>Cómo Construir un Equipo Resiliente</h2>
+        <ul>
+          <li><strong>1. Crea seguridad psicológica:</strong> El Proyecto Aristóteles de Google lo confirmó. Sin seguridad para equivocarse, no hay resiliencia. Solo supervivencia.</li>
+          <li><strong>2. Desarrolla la flexibilidad cognitiva:</strong> Practica escenarios hipotéticos. "¿Qué haríamos si perdemos a nuestro principal cliente?" "¿Cómo responderíamos si cambia la regulación?" Anticipar es preparar.</li>
+          <li><strong>3. Celebra los fracasos inteligentes:</strong> Diferencia entre negligencia y experimentación. Si alguien intentó algo nuevo y falló, celébralo. Está construyendo el músculo de la resiliencia.</li>
+          <li><strong>4. Invierte en conexión humana:</strong> La principal variable que predice la resiliencia colectiva es la calidad de las relaciones entre los miembros del equipo. No los recursos. No el talento individual. La conexión genuina.</li>
+        </ul>
+      `,
+      `
+        <h2>La Analogía del Bambú</h2>
+        <p>El bambú es una de las plantas más resilientes del planeta. Soporta vientos huracanados que derriban árboles mucho más gruesos. Pero su secreto no es la rigidez, sino la flexibilidad. Y sobre todo, sus raíces.</p>
+        <p>Un bosque de bambúes es, en realidad, un solo organismo. Sus raíces están conectadas bajo tierra. Cuando el viento golpea, se doblan juntos. Se sostienen mutuamente. No compiten por el sol: crecen como una red solidaria.</p>
+        <div class="highlight-box">Una organización resiliente no es un conjunto de individuos fuertes. Es un sistema de raíces profundas, conexiones genuinas y flexibilidad compartida.</div>
+      `,
+      `
+        <h2>El Legado de la Resiliencia</h2>
+        <p>Las organizaciones que sobreviven no son las más grandes ni las más ricas. Son las que aprenden más rápido que su entorno.</p>
+        <p>Las crisis no van a dejar de llegar. La pregunta no es si enfrentarán tormentas, sino cómo las enfrentarán: como árboles rígidos que se quiebran o como bambúes que se doblan, se sostienen mutuamente y, cuando el viento pasa, están más fuertes que antes.</p>
+        <div class="highlight-box">La resiliencia no se compra con un seminario. Se construye en cada micro-decisión diaria de apoyar, escuchar y adaptarse.</div>
+        <p style="text-align: center; margin-top: 2rem; color: #b8a99a;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Resiliencia Organizacional · 90 minutos`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    function selectOption(btn, questionId) {
+      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>
