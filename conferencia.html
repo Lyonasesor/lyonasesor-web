@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
-    <title>Conferencias de Liderazgo y Neurociencia | Lyon Asesor – $150 USD</title>
-    <meta name="description" content="Contrata las conferencias de Lyon Asesor para tu empresa. Temas de liderazgo, neurociencia, inteligencia emocional y bienestar corporativo. Incluye diploma y ebook de regalo. Para toda Iberoamérica." />
-    <meta name="keywords" content="conferencias liderazgo, neurociencia organizacional, inteligencia emocional empresarial, bienestar corporativo, formación de equipos, conferencias motivacionales" />
+    <title>Conferencias de Liderazgo y Neurociencia | Lyon Asesor – Empresas $150 / Individual $10</title>
+    <meta name="description" content="Inscríbete a las conferencias de Lyon Asesor. Modalidad para empresas o para personas individuales. Incluye certificado y material descargable." />
+    <meta name="keywords" content="conferencias liderazgo, neurociencia organizacional, inteligencia emocional, bienestar corporativo, formación de equipos, conferencias motivacionales" />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
     <meta name="application-name" content="Lyon Asesor" />
     <meta name="robots" content="index, follow" />
@@ -15,8 +15,8 @@
     <!-- OPEN GRAPH -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/conferencia.html" />
-    <meta property="og:title" content="Conferencias de Liderazgo y Neurociencia | Lyon Asesor – $150 USD" />
-    <meta property="og:description" content="12 temáticas transformadoras sobre liderazgo, neurociencia, inteligencia emocional y bienestar corporativo. Incluye diploma y ebook." />
+    <meta property="og:title" content="Conferencias de Liderazgo y Neurociencia | Lyon Asesor – $150 / $10" />
+    <meta property="og:description" content="12 temáticas transformadoras. Modalidad para empresas o individual. Incluye certificado y material descargable." />
     <meta property="og:image" content="https://lyonasesor.com/og-conferencia.png" />
     <meta property="og:image:secure_url" content="https://lyonasesor.com/og-conferencia.png" />
     <meta property="og:image:width" content="1200" />
@@ -29,7 +29,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@LyonAsesor" />
     <meta name="twitter:title" content="Conferencias de Liderazgo y Neurociencia | Lyon Asesor" />
-    <meta name="twitter:description" content="12 temáticas transformadoras para empresas. Incluye diploma y ebook." />
+    <meta name="twitter:description" content="12 temáticas transformadoras. Incluye certificado y material descargable." />
     <meta name="twitter:image" content="https://lyonasesor.com/og-conferencia.png" />
     <meta name="twitter:image:alt" content="Conferencias de Liderazgo y Neurociencia – Lyon Asesor" />
     
@@ -42,7 +42,7 @@
             "@context": "https://schema.org",
             "@type": "Event",
             "name": "Conferencias de Lyon Asesor",
-            "description": "12 temáticas transformadoras sobre liderazgo, neurociencia, inteligencia emocional y bienestar corporativo para empresas en toda Iberoamérica.",
+            "description": "12 temáticas transformadoras sobre liderazgo, neurociencia, inteligencia emocional y bienestar corporativo.",
             "url": "https://lyonasesor.com/conferencia.html",
             "organizer": {
                 "@type": "ProfessionalService",
@@ -52,12 +52,22 @@
                     "name": ["España", "México", "Colombia", "Argentina", "Chile", "Perú", "Ecuador", "Venezuela", "Estados Unidos"]
                 }
             },
-            "offers": {
-                "@type": "Offer",
-                "price": "150",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
-            }
+            "offers": [
+                {
+                    "@type": "Offer",
+                    "price": "150",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "eligibleCustomerType": "https://schema.org/Business"
+                },
+                {
+                    "@type": "Offer",
+                    "price": "10",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "eligibleCustomerType": "https://schema.org/Individual"
+                }
+            ]
         }
     </script>
     
@@ -70,7 +80,7 @@
         gtag('config', 'G-003ZC6TLH3');
     </script>
     
-    <!-- Meta Pixel -->
+    <!-- Meta Pixel (reemplaza con tu ID) -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -95,6 +105,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
     <style>
+        /* ===== ESTILOS ===== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -136,7 +147,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
@@ -144,8 +154,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* ===== NAV ===== */
         .nav {
             position: fixed;
             top: 0;
@@ -257,7 +265,6 @@
         .nav-toggle.active span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
         }
-
         .hero-section {
             background: #fff;
             border-radius: var(--radius);
@@ -303,7 +310,6 @@
             font-size: 1rem;
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
-
         .section-block {
             background: #fff;
             border-radius: var(--radius);
@@ -319,7 +325,6 @@
         }
         .section-block h2 span { color: var(--naranja); }
         .section-block p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
-
         .problem-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -335,7 +340,6 @@
         }
         .problem-item h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.3rem; }
         .problem-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-
         .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -351,7 +355,6 @@
         }
         .benefit-item h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.3rem; }
         .benefit-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-
         .author-section {
             background: #fff;
             border-radius: var(--radius);
@@ -380,7 +383,6 @@
             max-width: 700px;
             margin: 0 auto;
         }
-
         .faq-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -394,7 +396,6 @@
         }
         .faq-item h4 { color: var(--navy); margin-bottom: 0.3rem; }
         .faq-item p { color: var(--text-muted); font-size: 0.9rem; }
-
         #formSection {
             background: var(--navy);
             color: #fff;
@@ -406,7 +407,6 @@
         #formSection h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; margin-bottom: 0.5rem; }
         #formSection h2 span { color: var(--naranja); }
         #formSection p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
-
         .form-container {
             max-width: 600px;
             margin: 0 auto;
@@ -423,7 +423,19 @@
             font-size: 1rem;
         }
         .form-container .btn-primary { width: 100%; }
-
+        .form-container label {
+            text-align: left;
+            font-weight: 600;
+            color: #fff;
+        }
+        .form-container .price-display {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--naranja);
+        }
         .redirect-alert {
             background: #fff3e0;
             border-left: 4px solid #e65100;
@@ -438,8 +450,6 @@
             margin: 0;
             font-weight: 500;
         }
-
-        /* ===== FOOTER CON YOUTUBE ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -542,8 +552,6 @@
             font-size: 0.78rem;
             opacity: 0.7;
         }
-
-        /* ===== CHAT ===== */
         .chat-float {
             position: fixed;
             bottom: 28px;
@@ -737,7 +745,6 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @media (max-width: 768px) {
             .faq-grid { grid-template-columns: 1fr; }
             .hero-section { padding: 2rem; margin-top: 70px; }
@@ -805,38 +812,41 @@
 
     <div class="page-wrapper">
 
+        <!-- ===== HERO ===== -->
         <div class="hero-section">
-            <h1>Conferencias que <span>transforman equipos</span></h1>
+            <h1>Conferencias que <span>transforman</span></h1>
             <div class="sub">12 temáticas diseñadas para generar un impacto real y medible</div>
             <p class="description">
-                Una conferencia de Lyon Asesor no es una charla más. Es una experiencia vivencial que activa 
-                la inteligencia emocional, la resiliencia y el liderazgo consciente en tu organización. 
-                Con diploma y ebook de regalo. Disponible en toda Iberoamérica.
+                Ya sea para tu empresa o para tu desarrollo personal, nuestras conferencias activan la inteligencia emocional, 
+                la resiliencia y el liderazgo consciente. Incluyen certificado y material descargable.
             </p>
-            <a href="#formSection" class="btn-primary">🎤 Reservar mi conferencia</a>
+            <a href="#formSection" class="btn-primary">🎤 Inscríbete ahora</a>
         </div>
 
+        <!-- ===== PROBLEMAS ===== -->
         <div class="section-block">
             <h2>¿Para quién es esta <span>conferencia?</span></h2>
-            <p>Si tu equipo enfrenta estrés, falta de comunicación o liderazgo desconectado, esta conferencia es el punto de inflexión que necesitan.</p>
+            <p>Ideal para equipos que enfrentan estrés, falta de comunicación o liderazgo desconectado, y también para personas que buscan crecimiento personal.</p>
             <div class="problem-grid">
-                <div class="problem-item"><h3>😰 Agotamiento laboral</h3><p>El estrés crónico que afecta el rendimiento y el clima organizacional.</p></div>
+                <div class="problem-item"><h3>😰 Agotamiento laboral</h3><p>Estrés crónico que afecta el rendimiento y el clima organizacional.</p></div>
                 <div class="problem-item"><h3>🔇 Comunicación rota</h3><p>Conflictos que se repiten porque las personas no saben cómo escucharse.</p></div>
                 <div class="problem-item"><h3>🚫 Falta de motivación</h3><p>Equipos que funcionan por inercia, sin propósito ni energía compartida.</p></div>
-                <div class="problem-item"><h3>🌪️ Desconexión emocional</h3><p>Líderes que no entienden cómo sus emociones impactan a quienes dirigen.</p></div>
+                <div class="problem-item"><h3>🌪️ Desconexión emocional</h3><p>Líderes y personas que no entienden cómo sus emociones impactan su vida.</p></div>
             </div>
         </div>
 
+        <!-- ===== BENEFICIOS ===== -->
         <div class="section-block">
-            <h2>¿Qué <span>recibirás</span> al contratar?</h2>
+            <h2>¿Qué <span>recibirás</span> al inscribirte?</h2>
             <div class="benefits-grid">
-                <div class="benefit-item"><h3>📜 Diploma personalizado</h3><p>Certificado de participación para cada asistente, con valor curricular.</p></div>
-                <div class="benefit-item"><h3>📘 Ebook de regalo</h3><p>Acceso al programa completo "Este Día Es Tuyo" para seguir trabajando el contenido.</p></div>
-                <div class="benefit-item"><h3>🎓 Material descargable</h3><p>Guías y ejercicios prácticos para aplicar después de la conferencia.</p></div>
-                <div class="benefit-item"><h3>🤝 Acompañamiento post-evento</h3><p>Segundas consultas para aclarar dudas y profundizar en los temas tratados.</p></div>
+                <div class="benefit-item"><h3>📜 Certificado oficial</h3><p>Diploma personalizado con valor curricular para cada asistente.</p></div>
+                <div class="benefit-item"><h3>📘 Ebook de regalo</h3><p>Acceso al programa "Este Día Es Tuyo" para seguir trabajando el contenido.</p></div>
+                <div class="benefit-item"><h3>📄 Material descargable</h3><p>Guías y ejercicios prácticos para aplicar después de la conferencia.</p></div>
+                <div class="benefit-item"><h3>🤝 Acompañamiento post-evento</h3><p>Consultas adicionales para aclarar dudas y profundizar en los temas.</p></div>
             </div>
         </div>
 
+        <!-- ===== AUTOR ===== -->
         <div class="author-section">
             <h2>Tu <span>conferencista</span></h2>
             <h3>Prof. Mtr. Álvaro Lyon Abreu</h3>
@@ -848,31 +858,43 @@
             </p>
         </div>
 
+        <!-- ===== FAQ ===== -->
         <div class="section-block">
             <h2>Preguntas <span>frecuentes</span></h2>
             <div class="faq-grid">
-                <div class="faq-item"><h4>¿Cuánto dura la conferencia?</h4><p>Las conferencias tienen una duración de 2 a 3 horas, con opción de adaptarse según la disponibilidad de la organización.</p></div>
-                <div class="faq-item"><h4>¿Puede ser online?</h4><p>Sí, la conferencia se puede dictar de forma presencial o virtual, según tus necesidades.</p></div>
-                <div class="faq-item"><h4>¿Cuál es el precio?</h4><p>La tarifa plana es de $150 USD. Incluye todos los materiales y el diploma para los participantes.</p></div>
-                <div class="faq-item"><h4>¿Necesitan algo para agendar?</h4><p>Solo necesitamos la confirmación de la fecha, el número de participantes y los datos de contacto.</p></div>
+                <div class="faq-item"><h4>¿Cuánto dura la conferencia?</h4><p>De 2 a 3 horas, con opción de adaptarse según disponibilidad.</p></div>
+                <div class="faq-item"><h4>¿Puede ser online?</h4><p>Sí, se puede dictar de forma presencial o virtual.</p></div>
+                <div class="faq-item"><h4>¿Cuál es el precio?</h4><p>Empresas: $150 (tarifa plana). Individual: $10 (tarifa plana). Ambos incluyen certificado y material.</p></div>
+                <div class="faq-item"><h4>¿Qué necesito para inscribirme?</h4><p>Completar el formulario y realizar el pago. Luego recibirás los detalles.</p></div>
             </div>
         </div>
 
+        <!-- ===== FORMULARIO ===== -->
         <div id="formSection">
-            <h2>Reserva tu conferencia. <span>Transforma</span> tu equipo.</h2>
-            <p>Completa los datos y serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás los detalles de tu conferencia en la página de agradecimiento.</p>
+            <h2>Inscríbete a la conferencia. <span>Transforma</span> tu vida o tu equipo.</h2>
+            <p>Elige tu modalidad y completa los datos. Serás redirigido a PayPal para el pago.</p>
 
             <div class="redirect-alert">
-                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, serás llevado a una página donde podrás contactar directamente con Álvaro por WhatsApp para coordinar los detalles de la conferencia.</p>
+                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal según la modalidad seleccionada. Una vez confirmado el pago, recibirás instrucciones para coordinar la conferencia.</p>
             </div>
 
             <form id="conferenciaForm" class="form-container">
-                <input type="text" id="empresa" placeholder="Nombre de la empresa / organización" required>
-                <input type="text" id="contacto" placeholder="Nombre de la persona de contacto" required>
+                <!-- Modalidad -->
+                <label for="modalidad">Modalidad de inscripción</label>
+                <select id="modalidad" required>
+                    <option value="empresa">🏢 Empresa / Organización – $150 USD</option>
+                    <option value="individual">🧑 Persona individual – $10 USD</option>
+                </select>
+
+                <!-- Precio dinámico -->
+                <div class="price-display" id="priceDisplay">💰 Monto a pagar: $150 USD</div>
+
+                <input type="text" id="empresa" placeholder="Nombre de la empresa (si aplica)" />
+                <input type="text" id="contacto" placeholder="Nombre completo" required>
                 <input type="email" id="email" placeholder="Correo electrónico" required>
                 <input type="tel" id="telefono" placeholder="Teléfono (WhatsApp)" required>
 
-                <label for="tema" style="color:#fff; text-align:left; font-weight:600;">Selecciona el tema</label>
+                <label for="tema">Selecciona el tema</label>
                 <select id="tema">
                     <option value="NeuroLiderazgo">NeuroLiderazgo: El Cerebro que Inspira Equipos</option>
                     <option value="Autoestima Corporativa">Autoestima Corporativa: El Pilar del Éxito Sostenible</option>
@@ -888,12 +910,12 @@
                     <option value="Integración y Cierre">Integración y Cierre: Consolidando el Nuevo Paradigma</option>
                 </select>
 
-                <input type="text" id="participantes" placeholder="Número estimado de participantes" required>
+                <input type="text" id="participantes" placeholder="Número estimado de participantes (opcional)" />
 
-                <label for="metodo" style="color:#fff; text-align:left; font-weight:600;">Método de pago</label>
+                <label for="metodo">Método de pago</label>
                 <select id="metodo">
                     <option value="paypal">PayPal (tarjeta/cuenta)</option>
-                    <option value="p movil">Transferencia / Pago Móvil</option>
+                    <option value="p movil">Transferencia / Pago Móvil (solo Venezuela)</option>
                 </select>
 
                 <button type="submit" class="btn-primary">📩 Enviar y continuar con el pago</button>
@@ -903,7 +925,7 @@
 
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -949,7 +971,6 @@
     <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
         <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
     </button>
-
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
             <h3>LYON <span>ASESOR</span></h3>
@@ -968,7 +989,6 @@
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
         });
-
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
         navToggle.addEventListener('click', () => {
@@ -982,13 +1002,24 @@
             });
         });
 
-        // =============================================
-        // FORMULARIO CONFERENCIA — CORREGIDO
-        // El guardado en Firebase NO bloquea el pago.
-        // =============================================
+        // ===== PRECIO DINÁMICO =====
+        const modalidadSelect = document.getElementById('modalidad');
+        const priceDisplay = document.getElementById('priceDisplay');
+
+        modalidadSelect.addEventListener('change', function() {
+            const value = this.value;
+            if (value === 'empresa') {
+                priceDisplay.textContent = '💰 Monto a pagar: $150 USD';
+            } else {
+                priceDisplay.textContent = '💰 Monto a pagar: $10 USD';
+            }
+        });
+
+        // ===== FORMULARIO CON ENVÍO Y REDIRECCIÓN =====
         document.getElementById('conferenciaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const modalidad = document.getElementById('modalidad').value;
             const empresa = document.getElementById('empresa').value.trim();
             const contacto = document.getElementById('contacto').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -997,63 +1028,86 @@
             const participantes = document.getElementById('participantes').value.trim();
             const metodo = document.getElementById('metodo').value;
 
-            if (!empresa || !contacto || !email || !telefono || !participantes) {
-                alert('Por favor, completa todos los campos obligatorios.');
+            if (!contacto || !email || !telefono) {
+                alert('Por favor, completa todos los campos obligatorios (Nombre, Correo, Teléfono).');
                 return;
             }
 
-            const detalle = `Tema: ${tema} | Participantes: ${participantes}`;
+            // Determinar monto
+            const monto = modalidad === 'empresa' ? 150 : 10;
 
-            // Preparar datos
+            // Datos para Firebase
             const datos = {
-                empresa: empresa,
+                modalidad: modalidad,
+                empresa: empresa || (modalidad === 'individual' ? 'Individual' : ''),
                 contacto: contacto,
                 email: email,
                 telefono: telefono,
                 tipo: 'conferencia',
                 tema: tema,
-                participantes: participantes,
-                detalle: detalle,
-                monto: 150,
+                participantes: participantes || '1',
+                monto: monto,
                 estado: 'pendiente',
                 pagado: false
             };
 
-            // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
+            // Guardar en Firebase (si falla, no interrumpe)
             try {
                 await guardarLead('conferencias', datos);
                 console.log('✅ Conferencia guardada en Firebase');
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
-                // No interrumpimos el flujo
             }
 
-            // Disparar eventos de analítica (si existen)
+            // Eventos de analítica
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit', { 'event_category': 'conferencia' });
+                gtag('event', 'form_submit', { 'event_category': 'conferencia', 'modalidad': modalidad });
             }
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'Lead');
             }
 
-            // Redirigir según método de pago
+            // Redirigir según método de pago y modalidad
             if (metodo === 'paypal') {
-                window.location.href = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                let paypalLink = '';
+                if (modalidad === 'empresa') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                } else {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
+                }
+                window.location.href = paypalLink;
             } else {
-                // Pago móvil
+                // Pago móvil (WhatsApp)
                 const mensaje = encodeURIComponent(
-                    `Hola Alvaro, he seleccionado Pago Móvil para mi conferencia.\n` +
-                    `Empresa: ${empresa}\n` +
-                    `Contacto: ${contacto}\n` +
+                    `Hola Álvaro, he seleccionado Pago Móvil para mi conferencia (${modalidad === 'empresa' ? 'Empresa' : 'Individual'}).\n` +
+                    `Nombre: ${contacto}\n` +
+                    `Empresa: ${empresa || 'N/A'}\n` +
                     `Email: ${email}\n` +
                     `Teléfono: ${telefono}\n` +
                     `Tema: ${tema}\n` +
-                    `Participantes: ${participantes}`
+                    `Participantes: ${participantes || '1'}\n` +
+                    `Monto: $${monto} USD`
                 );
                 window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
+                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu inscripción.');
             }
         });
+
+        // ===== FUNCIÓN GUARDAR (si Firebase está configurado) =====
+        async function guardarLead(coleccion, datos) {
+            if (typeof firebase === 'undefined' || typeof firebase.database === 'undefined') {
+                console.warn('Firebase no disponible. No se guardó el lead.');
+                return;
+            }
+            try {
+                const db = firebase.database();
+                const ref = db.ref(coleccion);
+                await ref.push(datos);
+            } catch (error) {
+                console.error('Error al guardar en Firebase:', error);
+                throw error;
+            }
+        }
 
         // ===== CHAT =====
         (function() {
@@ -1083,6 +1137,7 @@
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
                 const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const PAYPAL_CONFERENCIA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
                 const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
 
                 function addMessage(text, sender, options = {}) {
@@ -1130,7 +1185,7 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
                             <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
-                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
+                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button>
                             <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
                         </div>
                         ${botonHumano()}
@@ -1159,9 +1214,14 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                         `;
                     } else if (producto === 'conferencia') {
                         nombreProducto = '🎤 Conferencia';
-                        precio = '$150 (tarifa plana)';
-                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
-                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                        precio = '$150 (empresa) / $10 (individual)';
+                        descripcion = '12 temáticas transformadoras. Incluye certificado y material descargable.';
+                        botonesPayPal = `
+                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                                <a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (Empresa)</a>
+                                <a href="${PAYPAL_CONFERENCIA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $10 (Individual)</a>
+                            </div>
+                        `;
                     }
 
                     const mensaje = `Has seleccionado: **${nombreProducto}**
