@@ -630,6 +630,34 @@
         return `${prefijo}-${codigo}`;
     }
 
+    // Extrae el primer número de un texto de precio libre (ej. "$149.94 (pago único)" -> 149.94)
+    function parsePrecioNumero(precioStr) {
+        if (!precioStr) return 0;
+        const match = String(precioStr).match(/[\d,]+\.?\d*/);
+        if (!match) return 0;
+        return parseFloat(match[0].replace(/,/g, '')) || 0;
+    }
+
+    // Acredita la comisión de afiliado (30%) sobre una membresía aprobada, si la solicitud
+    // trae un refAfiliado válido y ese código de afiliado existe realmente.
+    async function acreditarComisionSiAplica(solicitud) {
+        if (!solicitud.refAfiliado) return;
+        const afSnap = await database.ref('afiliados/' + solicitud.refAfiliado).once('value');
+        if (!afSnap.exists()) return; // código de referido inválido/expirado: no se acredita nada
+        const monto = parsePrecioNumero(solicitud.precio);
+        if (monto <= 0) return;
+        const comision = +(monto * 0.30).toFixed(2);
+        await database.ref('afiliados_ventas/' + solicitud.refAfiliado).push({
+            producto: 'Membresía ' + (solicitud.planLabel || solicitud.plan || ''),
+            monto: monto,
+            comision: comision,
+            estadoComision: 'pendiente',
+            timestamp: Date.now(),
+            fecha: new Date().toISOString(),
+            fechaLegible: new Date().toLocaleString('es-ES')
+        });
+    }
+
     // =============================================
     // SOLICITUDES PENDIENTES (membresía + afiliado)
     // =============================================
@@ -693,6 +721,7 @@
                 fechaInicio: Date.now(), estado: 'activo', clasesCompletadas: {}, diplomasDescargados: {}
             });
             await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
+            await acreditarComisionSiAplica(s);
             alert(`Membresía activada.\nCódigo de acceso a entregar a ${s.nombre}: ${codigo}\n(Compártelo por correo o WhatsApp — no se envía automáticamente.)`);
         } else {
             const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
