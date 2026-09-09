@@ -1055,8 +1055,8 @@
             };
 
             try {
-                await guardarLead('membresias', datos);
-                console.log('✅ Inscripción de membresía guardada en Firebase');
+                await guardarLead('solicitudes_membresia', datos);
+                console.log('✅ Inscripción de membresía guardada en Firebase (solicitud pendiente de aprobación)');
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
@@ -1309,3 +1309,4 @@ Haz clic en el botón de pago para completar tu compra:`;
     </script>
 </body>
 </html>
+ 
