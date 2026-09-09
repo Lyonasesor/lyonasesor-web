@@ -988,8 +988,8 @@
             };
 
             try {
-                await guardarLead('afiliados', datos);
-                console.log('✅ Registro de afiliado guardado en Firebase');
+                await guardarLead('solicitudes_afiliado', datos);
+                console.log('✅ Registro de afiliado guardado en Firebase (solicitud pendiente de aprobación)');
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase:', error);
             }
