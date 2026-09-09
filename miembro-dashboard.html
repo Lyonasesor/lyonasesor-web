@@ -149,14 +149,21 @@ function intentarLogin() {
     const codigo = document.getElementById('codigoAccesoInput').value.trim();
     if (!codigo) return;
     document.getElementById('loginSubmitBtn').textContent = 'Verificando...';
+    document.getElementById('loginError').style.display = 'none';
     buscarMembresia(codigo).then(data => {
         document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
         if (!data) {
+            document.getElementById('loginError').textContent = 'Código no encontrado. Verifica que esté bien escrito o contáctanos por info@lyonasesor.com.';
             document.getElementById('loginError').style.display = 'block';
             return;
         }
         sessionStorage.setItem('lyon_miembro_codigo', data.codigo);
         cargarDashboard(data);
+    }).catch(err => {
+        document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
+        console.error('Error al buscar membresía:', err);
+        document.getElementById('loginError').textContent = 'Error de conexión con el servidor. Revisa tu internet e intenta de nuevo. (' + (err.code || err.message || err) + ')';
+        document.getElementById('loginError').style.display = 'block';
     });
 }
 
