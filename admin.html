@@ -669,7 +669,7 @@
     }
 
     // =============================================
-    // APROBAR SOLICITUD (CORREGIDA)
+    // APROBAR SOLICITUD (CORREGIDA Y MEJORADA)
     // =============================================
     async function aprobarSolicitud(tipo, id) {
         try {
@@ -678,13 +678,21 @@
                 const s = snap.val();
                 if (!s) throw new Error('Solicitud no encontrada');
 
+                console.log('📥 Datos de solicitud de membresía:', s);
+
+                // 🔥 Obtener datos de forma flexible
+                const nombre = s.nombre || s.nombreCompleto || s.full_name || s.name || 'Estudiante';
+                const email = s.email || s.correo || '';
+                const telefono = s.telefono || s.phone || s.celular || '';
+                const plan = s.plan || s.tipoPlan || 'extendido';
+
                 const codigo = generarCodigoAccesoAdmin('LYON');
 
                 await database.ref('membresias/' + codigo).set({
-                    nombre: s.nombre,
-                    email: s.email,
-                    telefono: s.telefono,
-                    plan: s.plan || 'extendido',
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono,
+                    plan: plan,
                     fechaInicio: Date.now(),
                     estado: 'activo',
                     clasesCompletadas: {},
@@ -693,14 +701,13 @@
 
                 await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
 
-                // Acreditar comisión si viene de referido
                 if (s.refAfiliado) {
                     await acreditarComisionSiAplica(s);
                 }
 
                 mostrarCodigoModal(
                     '🎓 Membresía aprobada',
-                    `El código de acceso para <strong>${s.nombre}</strong> es:`,
+                    `El código de acceso para <strong>${nombre}</strong> es:`,
                     codigo,
                     'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía para acceder a su dashboard.'
                 );
@@ -716,14 +723,21 @@
                 const s = snap.val();
                 if (!s) throw new Error('Solicitud no encontrada');
 
+                console.log('📥 Datos de solicitud de afiliado:', s);
+
+                const nombre = s.nombre || s.nombreCompleto || s.full_name || s.name || 'Afiliado';
+                const email = s.email || s.correo || '';
+                const telefono = s.telefono || s.phone || s.celular || '';
+                const pais = s.pais || s.country || '';
+
                 const codigo = generarCodigoAccesoAdmin('AF');
                 const clave = generarCodigoAccesoAdmin('').replace('-', '');
 
                 await database.ref('afiliados/' + codigo).set({
-                    nombre: s.nombre,
-                    email: s.email,
-                    telefono: s.telefono,
-                    pais: s.pais || '',
+                    nombre: nombre,
+                    email: email,
+                    telefono: telefono,
+                    pais: pais,
                     claveAcceso: clave,
                     fechaRegistro: Date.now(),
                     estado: 'activo'
@@ -746,7 +760,7 @@
             }
         } catch (error) {
             console.error('❌ Error al aprobar solicitud:', error);
-            alert('⚠️ Error al aprobar: ' + error.message);
+            alert('⚠️ Error al aprobar: ' + error.message + '\nRevisa la consola para más detalles.');
         }
     }
 
@@ -819,10 +833,10 @@
                 <tr>
                     <td>${f.tipo === 'Membresía' ? '🎓 Membresía' : '🤝 Afiliado'}</td>
                     <td>${f.fechaLegible || ''}</td>
-                    <td>${f.nombre || ''}</td>
-                    <td>${f.email || ''}</td>
-                    <td>${f.telefono || ''}</td>
-                    <td>${f.plan || f.experiencia || '—'}</td>
+                    <td>${f.nombre || f.nombreCompleto || ''}</td>
+                    <td>${f.email || f.correo || ''}</td>
+                    <td>${f.telefono || f.phone || ''}</td>
+                    <td>${f.plan || f.tipoPlan || f.experiencia || '—'}</td>
                     <td>${f.metodoPago || '—'}</td>
                     <td><button class="btn-pagar" data-tipo="${f.tipo}" data-id="${f.id}">✅ Aprobar</button></td>
                 </tr>
