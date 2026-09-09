@@ -11,6 +11,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
+<script>
+    // Inicializar la base de datos GLOBALMENTE
+    const database = firebase.database();
+    console.log('✅ Firebase Database inicializada en panel de afiliado');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -34,6 +40,39 @@
     .instructions-list { list-style: none; padding: 0; }
     .instructions-list li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
     .instructions-list li strong { color: var(--navy); }
+    .login-wrap { max-width: 480px; margin: 20vh auto; padding: 0 20px; }
+    .login-box { background: #fff; padding: 40px 32px; border-radius: 24px; box-shadow: var(--shadow-md); text-align: center; }
+    .login-box h2 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 8px; }
+    .login-box p { color: var(--text-muted); font-size: 0.95rem; }
+    .form-group { margin: 16px 0; }
+    .form-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 1rem; }
+    .form-submit { width: 100%; padding: 14px; background: var(--naranja); color: #fff; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    .form-submit:hover { background: var(--naranja-oscuro); }
+    .form-note { margin-top: 16px; font-size: 0.85rem; color: var(--text-muted); }
+    .form-note a { color: var(--naranja); font-weight: 600; text-decoration: none; }
+    .hidden { display: none !important; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); text-align: center; }
+    .metric-value { font-size: 1.8rem; font-weight: 700; color: var(--naranja); }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .dash-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .dash-table th { background: #f8fafc; padding: 12px 16px; text-align: left; border-bottom: 2px solid #e2e8f0; }
+    .dash-table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+    .status-badge { padding: 3px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; }
+    .status-badge.activo { background: #dcfce7; color: #166534; }
+    .status-badge.inactivo { background: #fee2e2; color: #991b1b; }
+    .status-badge.pendiente { background: #fef9c3; color: #854d0e; }
+    .status-badge.pagada { background: #dcfce7; color: #166534; }
+    .copyright-footer { text-align: center; padding: 40px 0 20px; color: var(--text-muted); font-size: 0.8rem; }
+    .step-btn {
+        display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; background: var(--naranja);
+        color: #fff; border: none; border-radius: 30px; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+        margin-top: 8px; transition: var(--transition-fast); font-family: 'Inter', sans-serif;
+    }
+    .step-btn:hover { background: var(--naranja-oscuro); }
+    .step-btn.outline { background: #fff; color: var(--naranja); border: 1.5px solid var(--naranja); }
+    .diploma-form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .diploma-form-row input { flex: 1; min-width: 180px; padding: 12px 14px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; }
 </style>
 </head>
 <body>
@@ -58,7 +97,7 @@
     <div class="login-box">
         <h2>Panel de Afiliado</h2>
         <p>Ingresa tu código de afiliado y tu clave de acceso.</p>
-        <div class="form-group"><input type="text" id="codigoInput" placeholder="Código de afiliado (ej. AF-LUCIA23)" style="text-align:center;" /></div>
+        <div class="form-group"><input type="text" id="codigoInput" placeholder="Código de afiliado (ej. AF-XL9VLM)" style="text-align:center;" /></div>
         <div class="form-group"><input type="password" id="claveInput" placeholder="Clave de acceso" style="text-align:center;" /></div>
         <button class="form-submit" id="loginSubmitBtn">Ingresar</button>
         <p id="loginError" style="color:#c0392b; font-size:0.85rem; margin-top:14px; display:none;">Código o clave incorrectos.</p>
@@ -119,20 +158,40 @@
     </div>
 </div>
 
-<script src="assets/js/lyon-lms.js"></script>
-<script src="assets/js/lyon-shared.js"></script>
 <script>
+// =============================================
+// FUNCIONES DE BÚSQUEDA
+// =============================================
+function buscarAfiliado(codigo) {
+    return database.ref('afiliados/' + codigo).once('value').then(snap => {
+        if (!snap.exists()) return null;
+        const data = snap.val();
+        return { ...data, codigo };
+    });
+}
+
+// =============================================
+// VARIABLES GLOBALES
+// =============================================
 let AFILIADO = null;
 let CODIGO_AF = null;
 
+// =============================================
+// LOGIN
+// =============================================
 document.getElementById('loginSubmitBtn').addEventListener('click', intentarLogin);
+document.getElementById('codigoInput').addEventListener('keydown', e => { if (e.key === 'Enter') intentarLogin(); });
+document.getElementById('claveInput').addEventListener('keydown', e => { if (e.key === 'Enter') intentarLogin(); });
 
 function intentarLogin() {
-    const codigo = document.getElementById('codigoInput').value.trim();
+    const codigo = document.getElementById('codigoInput').value.trim().toUpperCase();
     const clave = document.getElementById('claveInput').value.trim();
     if (!codigo || !clave) return;
     document.getElementById('loginError').style.display = 'none';
+    document.getElementById('loginSubmitBtn').textContent = 'Verificando...';
+
     buscarAfiliado(codigo).then(data => {
+        document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
         if (!data || data.claveAcceso !== clave) {
             document.getElementById('loginError').textContent = 'Código o clave incorrectos.';
             document.getElementById('loginError').style.display = 'block';
@@ -142,6 +201,7 @@ function intentarLogin() {
         sessionStorage.setItem('lyon_afiliado_clave', clave);
         cargarDashboard(data);
     }).catch(err => {
+        document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
         console.error('Error al buscar afiliado:', err);
         document.getElementById('loginError').textContent = 'Error de conexión con el servidor. Revisa tu internet e intenta de nuevo. (' + (err.code || err.message || err) + ')';
         document.getElementById('loginError').style.display = 'block';
@@ -165,6 +225,9 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
     location.reload();
 });
 
+// =============================================
+// DASHBOARD
+// =============================================
 function cargarDashboard(data) {
     AFILIADO = data;
     CODIGO_AF = data.codigo;
@@ -172,13 +235,17 @@ function cargarDashboard(data) {
     document.getElementById('dashboardApp').style.display = 'block';
     document.getElementById('logoutBtn').style.display = 'inline-block';
     document.getElementById('nombreAfiliado').textContent = data.nombre || 'Afiliado';
+
     const estadoEl = document.getElementById('estadoAfiliado');
     estadoEl.textContent = (data.estado || 'activo').charAt(0).toUpperCase() + (data.estado || 'activo').slice(1);
     estadoEl.className = 'status-badge ' + (data.estado || 'activo');
 
     const refLink = `https://lyonasesor.com/?ref=${data.codigo}`;
     document.getElementById('refLinkInput').value = refLink;
-    document.getElementById('materialZipLink').href = LYON_MATERIAL_AFILIADOS_ZIP;
+
+    // Enlace al material ZIP (configura la variable global o ruta fija)
+    const zipUrl = 'https://drive.google.com/uc?export=download&id=1SVEBlfLZh8kNIIea1nssLFvZe14H92uZ';
+    document.getElementById('materialZipLink').href = zipUrl;
 
     cargarMetricas();
 }
@@ -194,13 +261,16 @@ document.getElementById('copiarRefBtn').addEventListener('click', () => {
     });
 });
 
+// =============================================
+// MÉTRICAS
+// =============================================
 function cargarMetricas() {
-    window.database.ref('afiliados_clics/' + CODIGO_AF).once('value').then(snap => {
+    database.ref('afiliados_clics/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
         document.getElementById('metricClics').textContent = Object.keys(data).length;
     });
 
-    window.database.ref('afiliados_ventas/' + CODIGO_AF).once('value').then(snap => {
+    database.ref('afiliados_ventas/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
         const ventas = Object.values(data);
         document.getElementById('metricVentas').textContent = ventas.length;
@@ -224,10 +294,13 @@ function cargarMetricas() {
     });
 }
 
+// =============================================
+// CAMBIAR CLAVE
+// =============================================
 document.getElementById('cambiarClaveBtn').addEventListener('click', () => {
     const nueva = document.getElementById('nuevaClaveInput').value.trim();
     if (!nueva || nueva.length < 4) { alert('La clave debe tener al menos 4 caracteres.'); return; }
-    window.database.ref('afiliados/' + CODIGO_AF + '/claveAcceso').set(nueva).then(() => {
+    database.ref('afiliados/' + CODIGO_AF + '/claveAcceso').set(nueva).then(() => {
         sessionStorage.setItem('lyon_afiliado_clave', nueva);
         document.getElementById('claveActualizadaMsg').classList.remove('hidden');
         document.getElementById('nuevaClaveInput').value = '';
