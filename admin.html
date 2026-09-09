@@ -672,12 +672,12 @@
 
             const dataMemb = snapMemb.val() || {};
             Object.entries(dataMemb).forEach(([id, s]) => {
-                if (s.estado !== 'pendiente') return;
+                if (s.estado === 'aprobada') return;
                 filas.push({ tipo: 'Membresía', id, ...s });
             });
             const dataAfil = snapAfil.val() || {};
             Object.entries(dataAfil).forEach(([id, s]) => {
-                if (s.estado !== 'pendiente') return;
+                if (s.estado === 'aprobada') return;
                 filas.push({ tipo: 'Afiliado', id, ...s });
             });
 
