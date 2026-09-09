@@ -166,6 +166,7 @@ function buscarAfiliado(codigo) {
     return database.ref('afiliados/' + codigo).once('value').then(snap => {
         if (!snap.exists()) return null;
         const data = snap.val();
+        console.log('🔍 Datos del afiliado encontrados:', data);
         return { ...data, codigo };
     });
 }
@@ -202,7 +203,7 @@ function intentarLogin() {
         cargarDashboard(data);
     }).catch(err => {
         document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
-        console.error('Error al buscar afiliado:', err);
+        console.error('❌ Error al buscar afiliado:', err);
         document.getElementById('loginError').textContent = 'Error de conexión con el servidor. Revisa tu internet e intenta de nuevo. (' + (err.code || err.message || err) + ')';
         document.getElementById('loginError').style.display = 'block';
     });
@@ -226,32 +227,68 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
 });
 
 // =============================================
-// DASHBOARD
+// DASHBOARD (CORREGIDO CON DEPURACIÓN)
 // =============================================
 function cargarDashboard(data) {
+    console.log('📋 Cargando dashboard con datos:', data);
+
+    // Guardar datos globales
     AFILIADO = data;
     CODIGO_AF = data.codigo;
-    document.getElementById('loginGate').classList.add('hidden');
-    document.getElementById('dashboardApp').style.display = 'block';
-    document.getElementById('logoutBtn').style.display = 'inline-block';
-    document.getElementById('nombreAfiliado').textContent = data.nombre || 'Afiliado';
 
-    const estadoEl = document.getElementById('estadoAfiliado');
-    estadoEl.textContent = (data.estado || 'activo').charAt(0).toUpperCase() + (data.estado || 'activo').slice(1);
-    estadoEl.className = 'status-badge ' + (data.estado || 'activo');
+    try {
+        // Ocultar login y mostrar dashboard
+        document.getElementById('loginGate').classList.add('hidden');
+        document.getElementById('dashboardApp').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
 
-    const refLink = `https://lyonasesor.com/?ref=${data.codigo}`;
-    document.getElementById('refLinkInput').value = refLink;
+        // Asignar nombre (con fallback)
+        const nombreElement = document.getElementById('nombreAfiliado');
+        if (nombreElement) {
+            nombreElement.textContent = data.nombre || 'Afiliado';
+        } else {
+            console.warn('⚠️ Elemento #nombreAfiliado no encontrado');
+        }
 
-    // Enlace al material ZIP (configura la variable global o ruta fija)
-    const zipUrl = 'https://drive.google.com/uc?export=download&id=1SVEBlfLZh8kNIIea1nssLFvZe14H92uZ';
-    document.getElementById('materialZipLink').href = zipUrl;
+        // Asignar estado
+        const estadoEl = document.getElementById('estadoAfiliado');
+        if (estadoEl) {
+            const estado = data.estado || 'activo';
+            estadoEl.textContent = estado.charAt(0).toUpperCase() + estado.slice(1);
+            estadoEl.className = 'status-badge ' + estado;
+        }
 
-    cargarMetricas();
+        // Generar enlace de referencia
+        const refLinkInput = document.getElementById('refLinkInput');
+        if (refLinkInput) {
+            const refLink = `https://lyonasesor.com/?ref=${data.codigo}`;
+            refLinkInput.value = refLink;
+        }
+
+        // Enlace al material ZIP (configura la variable global o ruta fija)
+        const zipUrl = 'https://drive.google.com/uc?export=download&id=1SVEBlfLZh8kNIIea1nssLFvZe14H92uZ';
+        const zipLink = document.getElementById('materialZipLink');
+        if (zipLink) {
+            zipLink.href = zipUrl;
+        }
+
+        // Cargar métricas (estadísticas)
+        cargarMetricas();
+
+        console.log('✅ Dashboard cargado correctamente');
+
+    } catch (error) {
+        console.error('❌ Error al cargar el dashboard:', error);
+        alert('Ocurrió un error al cargar el dashboard. Revisa la consola para más detalles.');
+    }
 }
 
+// =============================================
+// BOTÓN COPIAR ENLACE
+// =============================================
 document.getElementById('copiarRefBtn').addEventListener('click', () => {
     const input = document.getElementById('refLinkInput');
+    if (!input) return;
     input.select();
     navigator.clipboard.writeText(input.value).then(() => {
         const btn = document.getElementById('copiarRefBtn');
@@ -265,32 +302,61 @@ document.getElementById('copiarRefBtn').addEventListener('click', () => {
 // MÉTRICAS
 // =============================================
 function cargarMetricas() {
+    if (!CODIGO_AF) {
+        console.warn('⚠️ No hay código de afiliado para cargar métricas');
+        return;
+    }
+
+    console.log('📊 Cargando métricas para afiliado:', CODIGO_AF);
+
+    // Cargar clics
     database.ref('afiliados_clics/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
-        document.getElementById('metricClics').textContent = Object.keys(data).length;
+        const totalClics = Object.keys(data).length;
+        const metricClics = document.getElementById('metricClics');
+        if (metricClics) metricClics.textContent = totalClics;
+        console.log(`✅ Clics cargados: ${totalClics}`);
+    }).catch(err => {
+        console.error('❌ Error cargando clics:', err);
     });
 
+    // Cargar ventas
     database.ref('afiliados_ventas/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
         const ventas = Object.values(data);
-        document.getElementById('metricVentas').textContent = ventas.length;
+        const totalVentas = ventas.length;
         const totalComision = ventas.reduce((s, v) => s + (v.comision || 0), 0);
         const pendiente = ventas.filter(v => v.estadoComision === 'pendiente').reduce((s, v) => s + (v.comision || 0), 0);
-        document.getElementById('metricComisionTotal').textContent = '$' + totalComision.toFixed(2);
-        document.getElementById('metricComisionPendiente').textContent = '$' + pendiente.toFixed(2);
 
+        const metricVentas = document.getElementById('metricVentas');
+        const metricComisionTotal = document.getElementById('metricComisionTotal');
+        const metricComisionPendiente = document.getElementById('metricComisionPendiente');
+
+        if (metricVentas) metricVentas.textContent = totalVentas;
+        if (metricComisionTotal) metricComisionTotal.textContent = '$' + totalComision.toFixed(2);
+        if (metricComisionPendiente) metricComisionPendiente.textContent = '$' + pendiente.toFixed(2);
+
+        // Renderizar tabla de ventas
         const tbody = document.getElementById('ventasTableBody');
-        if (ventas.length === 0) return;
-        ventas.sort((a, b) => b.timestamp - a.timestamp);
-        tbody.innerHTML = ventas.map(v => `
-            <tr>
-                <td>${v.fechaLegible || new Date(v.timestamp).toLocaleDateString('es-ES')}</td>
-                <td>${v.producto || '—'}</td>
-                <td>$${(v.monto || 0).toFixed(2)}</td>
-                <td>$${(v.comision || 0).toFixed(2)}</td>
-                <td><span class="status-badge ${v.estadoComision === 'pagada' ? 'pagada' : 'pendiente'}">${v.estadoComision === 'pagada' ? 'Pagada' : 'Pendiente'}</span></td>
-            </tr>
-        `).join('');
+        if (tbody) {
+            if (ventas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-light);">Sin ventas registradas aún.</td></tr>';
+            } else {
+                ventas.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                tbody.innerHTML = ventas.map(v => `
+                    <tr>
+                        <td>${v.fechaLegible || new Date(v.timestamp).toLocaleDateString('es-ES')}</td>
+                        <td>${v.producto || '—'}</td>
+                        <td>$${(v.monto || 0).toFixed(2)}</td>
+                        <td>$${(v.comision || 0).toFixed(2)}</td>
+                        <td><span class="status-badge ${v.estadoComision === 'pagada' ? 'pagada' : 'pendiente'}">${v.estadoComision === 'pagada' ? 'Pagada' : 'Pendiente'}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+        console.log(`✅ Ventas cargadas: ${totalVentas}, comisión total: $${totalComision.toFixed(2)}`);
+    }).catch(err => {
+        console.error('❌ Error cargando ventas:', err);
     });
 }
 
