@@ -7,14 +7,18 @@
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
+<!-- NO DECLARES database aquí, ya está disponible globalmente desde firebase-config.js -->
 <script>
-    // Inicializar la base de datos GLOBALMENTE
-    const database = firebase.database();
-    console.log('✅ Firebase Database inicializada en panel de miembro');
+    if (typeof database === 'undefined') {
+        console.error('❌ database no está definida. Revisa firebase-config.js');
+    } else {
+        console.log('✅ database disponible globalmente en panel-de-miembro');
+    }
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
