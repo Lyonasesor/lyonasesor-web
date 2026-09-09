@@ -131,14 +131,20 @@ function intentarLogin() {
     const codigo = document.getElementById('codigoInput').value.trim();
     const clave = document.getElementById('claveInput').value.trim();
     if (!codigo || !clave) return;
+    document.getElementById('loginError').style.display = 'none';
     buscarAfiliado(codigo).then(data => {
         if (!data || data.claveAcceso !== clave) {
+            document.getElementById('loginError').textContent = 'Código o clave incorrectos.';
             document.getElementById('loginError').style.display = 'block';
             return;
         }
         sessionStorage.setItem('lyon_afiliado_codigo', data.codigo);
         sessionStorage.setItem('lyon_afiliado_clave', clave);
         cargarDashboard(data);
+    }).catch(err => {
+        console.error('Error al buscar afiliado:', err);
+        document.getElementById('loginError').textContent = 'Error de conexión con el servidor. Revisa tu internet e intenta de nuevo. (' + (err.code || err.message || err) + ')';
+        document.getElementById('loginError').style.display = 'block';
     });
 }
 
