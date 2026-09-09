@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mi Membresía | Lyon Asesor</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/lyon-shared.css" />
+<link rel="stylesheet" href="assets/css/lyon-components.css" />
+
+<style>
+    body { padding-top: 0; }
+    .app-header {
+        background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+        padding: 110px 20px 36px;
+        color: #fff;
+    }
+    .app-header-inner { max-width: 980px; margin: 0 auto; }
+    .app-header .greeting { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; margin-bottom: 4px; }
+    .app-header .plan-line { color: rgba(255,255,255,0.7); font-size: 0.92rem; margin-bottom: 20px; }
+    .app-main { max-width: 980px; margin: -20px auto 60px; padding: 0 20px; }
+    .class-panel { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 32px 28px; margin-bottom: 24px; }
+    .class-panel h2 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); font-size: 1.5rem; margin-bottom: 4px; }
+    .class-panel .class-num { color: var(--naranja); font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
+    .step-btn {
+        display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; background: var(--naranja);
+        color: #fff; border: none; border-radius: 30px; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+        margin-top: 8px; transition: var(--transition-fast); font-family: 'Inter', sans-serif;
+    }
+    .step-btn:hover { background: var(--naranja-oscuro); }
+    .step-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .step-btn.outline { background: #fff; color: var(--naranja); border: 1.5px solid var(--naranja); }
+    .hidden { display: none !important; }
+    .diploma-form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .diploma-form-row input { flex: 1; min-width: 180px; padding: 12px 14px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; }
+    .diploma-preview {
+        margin-top: 18px; border: 2px solid var(--naranja); border-radius: 12px; padding: 30px; text-align: center;
+        background: var(--crema);
+    }
+    .diploma-preview h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); font-size: 1.3rem; margin-bottom: 8px; }
+    .final-diploma-box {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; border-radius: var(--radius);
+        padding: 40px 30px; text-align: center; margin-bottom: 24px;
+    }
+    .final-diploma-box h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; margin-bottom: 10px; }
+    .final-diploma-box .gold { color: #f0c987; }
+    .closing-note { background: rgba(232,107,24,0.08); border-left: 3px solid var(--naranja); padding: 14px 18px; border-radius: 8px; font-size: 0.9rem; color: var(--text-dark); margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor" /></div>
+            <div class="nav-logo-text"><div class="main">LYON<span>ASESOR</span></div></div>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="membresia.html">Membresía</a></li>
+            <li><a href="legal.html">Legal</a></li>
+            <li><a href="#" id="logoutBtn" class="nav-cta" style="display:none;">Cerrar sesión</a></li>
+        </ul>
+        <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<!-- ===== LOGIN GATE ===== -->
+<div class="login-wrap" id="loginGate">
+    <div class="login-box">
+        <h2>Accede a tu Membresía</h2>
+        <p>Ingresa el código de acceso que recibiste por correo o WhatsApp al confirmar tu inscripción.</p>
+        <div class="form-group">
+            <input type="text" id="codigoAccesoInput" placeholder="Ej. LYON-8F3K2Q" style="text-align:center; letter-spacing:1px; font-weight:600;" />
+        </div>
+        <button class="form-submit" id="loginSubmitBtn">Ingresar</button>
+        <p id="loginError" style="color:#c0392b; font-size:0.85rem; margin-top:14px; display:none;">Código no encontrado. Verifica que esté bien escrito o contáctanos por info@lyonasesor.com.</p>
+        <p class="form-note">¿Aún no tienes membresía? <a href="membresia.html" style="color:var(--naranja); font-weight:600;">Ver planes</a></p>
+    </div>
+</div>
+
+<!-- ===== APP (oculto hasta login) ===== -->
+<div id="dashboardApp" class="hidden">
+
+    <div class="app-header">
+        <div class="app-header-inner">
+            <div class="greeting">Hola, <span id="nombreMiembro">—</span> 👋</div>
+            <div class="plan-line">Plan <span id="planMiembro">—</span> · Estado: <span id="estadoMiembro" class="status-badge activo">Activo</span></div>
+            <div class="progress-label"><span>Progreso del programa</span><span id="progresoTexto">0/12 clases</span></div>
+            <div class="progress-track"><div class="progress-fill" id="progresoFill" style="width:0%;"></div></div>
+        </div>
+    </div>
+
+    <div class="app-main">
+        <div class="closing-note reveal visible" style="margin-bottom:24px;">
+            El cierre del programa será un evento online en videoconferencia. Al finalizar las 12 clases, podrás acceder a tu diploma del Programa Completo (300 horas académicas).
+        </div>
+
+        <div class="class-tabs" id="classTabs"></div>
+
+        <div id="classContent"></div>
+
+        <div id="finalDiplomaSection" class="hidden">
+            <div class="final-diploma-box">
+                <h2>🎓 Completaste las <span class="gold">12 clases</span></h2>
+                <p style="color:rgba(255,255,255,0.85); max-width:520px; margin:0 auto 20px;">Ya puedes solicitar tu Diploma del Programa Completo — 300 horas académicas, Programa Integral en NeuroLiderazgo y Transformación Humana.</p>
+                <div id="finalDiplomaFormWrap">
+                    <div class="diploma-form-row" style="justify-content:center;">
+                        <input type="text" id="finalNombre" placeholder="Nombre completo" style="max-width:260px;" />
+                        <input type="text" id="finalCedula" placeholder="Cédula / ID" style="max-width:180px;" />
+                    </div>
+                    <button class="step-btn" id="finalDiplomaBtn" style="margin-top:14px;">Solicitar Diploma del Programa Completo</button>
+                </div>
+                <div id="finalDiplomaResult" class="hidden" style="margin-top:16px; background:rgba(255,255,255,0.1); border-radius:12px; padding:18px;">
+                    <p style="font-size:0.9rem;">✅ Diploma emitido. Código de validación:</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.2rem; color:#f0c987; margin:6px 0;" id="finalCodigoTexto"></p>
+                    <a href="#" id="finalValidarLink" target="_blank" style="color:#fff; text-decoration:underline; font-size:0.85rem;">Ver página de validación</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright-footer">Lyon Asesor 2026</div>
+    </div>
+</div>
+
+<script src="assets/js/lyon-lms.js"></script>
+<script src="assets/js/lyon-clases-contenido.js"></script>
+<script src="assets/js/lyon-shared.js"></script>
+
+<script>
+let MEMBRESIA = null;
+let CODIGO_ACTUAL = null;
+let claseActivaIdx = 0;
+
+document.getElementById('loginSubmitBtn').addEventListener('click', intentarLogin);
+document.getElementById('codigoAccesoInput').addEventListener('keydown', e => { if (e.key === 'Enter') intentarLogin(); });
+
+function intentarLogin() {
+    const codigo = document.getElementById('codigoAccesoInput').value.trim();
+    if (!codigo) return;
+    document.getElementById('loginSubmitBtn').textContent = 'Verificando...';
+    buscarMembresia(codigo).then(data => {
+        document.getElementById('loginSubmitBtn').textContent = 'Ingresar';
+        if (!data) {
+            document.getElementById('loginError').style.display = 'block';
+            return;
+        }
+        sessionStorage.setItem('lyon_miembro_codigo', data.codigo);
+        cargarDashboard(data);
+    });
+}
+
+// Auto-login si ya había sesión
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = sessionStorage.getItem('lyon_miembro_codigo');
+    if (saved) {
+        buscarMembresia(saved).then(data => { if (data) cargarDashboard(data); });
+    }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem('lyon_miembro_codigo');
+    location.reload();
+});
+
+function cargarDashboard(data) {
+    MEMBRESIA = data;
+    CODIGO_ACTUAL = data.codigo;
+    document.getElementById('loginGate').classList.add('hidden');
+    document.getElementById('dashboardApp').classList.remove('hidden');
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+
+    document.getElementById('nombreMiembro').textContent = data.nombre || 'Estudiante';
+    document.getElementById('planMiembro').textContent = data.plan === 'acelerado' ? 'Acelerado (6 meses)' : 'Extendido (12 meses)';
+    const estadoEl = document.getElementById('estadoMiembro');
+    estadoEl.textContent = (data.estado || 'activo').charAt(0).toUpperCase() + (data.estado || 'activo').slice(1);
+    estadoEl.className = 'status-badge ' + (data.estado || 'activo');
+
+    renderTabs();
+    const completadas = Object.keys(data.clasesCompletadas || {}).length;
+    if (completadas >= 12) {
+        seleccionarClase(12);
+        mostrarSeccionFinal();
+    } else {
+        seleccionarClase(completadas + 1 > 12 ? 12 : completadas + 1);
+    }
+    actualizarProgreso();
+}
+
+function claseDesbloqueada(n) {
+    if (!MEMBRESIA.fechaInicio) return n === 1;
+    const fechaDesbloqueo = calcularFechaDesbloqueo(MEMBRESIA.fechaInicio, MEMBRESIA.plan, n);
+    return Date.now() >= fechaDesbloqueo;
+}
+
+function claseCompletada(n) {
+    return !!(MEMBRESIA.clasesCompletadas && MEMBRESIA.clasesCompletadas[n]);
+}
+
+function renderTabs() {
+    const wrap = document.getElementById('classTabs');
+    wrap.innerHTML = '';
+    LYON_CLASES.forEach(c => {
+        const btn = document.createElement('button');
+        const desbloqueada = claseDesbloqueada(c.n);
+        const completada = claseCompletada(c.n);
+        btn.className = 'class-tab' + (completada ? ' completed' : '') + (!desbloqueada ? ' locked' : '');
+        btn.innerHTML = (!desbloqueada ? '<span class="lock-icon">🔒</span>' : (completada ? '✓ ' : '')) + 'Clase ' + c.n;
+        btn.addEventListener('click', () => { if (desbloqueada) seleccionarClase(c.n); });
+        wrap.appendChild(btn);
+    });
+}
+
+function seleccionarClase(n) {
+    claseActivaIdx = n;
+    [...document.querySelectorAll('.class-tab')].forEach((el, i) => el.classList.toggle('active', i === n - 1));
+    renderClase(n);
+}
+
+function renderClase(n) {
+    const clase = LYON_CLASES.find(c => c.n === n);
+    const contenido = LYON_CONTENIDO_CLASES[n];
+    const desbloqueada = claseDesbloqueada(n);
+    const container = document.getElementById('classContent');
+
+    if (!desbloqueada) {
+        const fechaDesbloqueo = new Date(calcularFechaDesbloqueo(MEMBRESIA.fechaInicio, MEMBRESIA.plan, n));
+        container.innerHTML = `
+            <div class="locked-panel">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <h3>Clase ${n} — Próximamente</h3>
+                <p>Se desbloquea el ${fechaDesbloqueo.toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' })}</p>
+            </div>`;
+        return;
+    }
+
+    const videoId = clase.video.split('/').pop();
+    const yaCompletada = claseCompletada(n);
+    const diplomaClaseDescargado = !!(MEMBRESIA.diplomasDescargados && MEMBRESIA.diplomasDescargados[n]);
+
+    container.innerHTML = `
+        <div class="class-panel">
+            <div class="class-num">Clase ${String(n).padStart(2,'0')} de 12</div>
+            <h2>${clase.titulo}</h2>
+            <div class="video-wrap" style="margin-top:16px;">
+                <iframe src="https://www.youtube-nocookie.com/embed/${videoId}" allowfullscreen title="${clase.titulo}"></iframe>
+                <div class="video-watermark">LYON ASESOR · ${MEMBRESIA.nombre || ''}</div>
+            </div>
+            <div class="info-paragraphs" style="margin-top:20px;">
+                ${contenido.parrafosVideo.map(p => `<p>${p}</p>`).join('')}
+            </div>
+            <p style="color:var(--text-muted); margin-top:16px; line-height:1.7;"><strong>Sobre esta clase:</strong> ${contenido.descripcion}</p>
+
+            <button class="step-btn" id="siguienteBtn_${n}">Siguiente: guía de ejercicios →</button>
+
+            <div id="pdfSection_${n}" class="hidden" style="margin-top:24px;">
+                <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--navy); margin-bottom:12px;">Guía de ejercicios</h3>
+                <div class="pdf-frame-wrap">
+                    <iframe src="${LYON_PDFS[n].replace('uc?export=download&id=', 'file/d/') + '/preview'}"></iframe>
+                </div>
+                <button class="step-btn ${diplomaClaseDescargado ? '' : 'outline'}" id="descargarGuiaBtn_${n}" ${yaCompletada ? 'disabled' : ''}>
+                    ${yaCompletada ? '✓ Guía descargada' : '⬇ Descargar guía (una sola vez)'}
+                </button>
+                <div class="info-paragraphs" style="margin-top:20px;">
+                    ${contenido.parrafosPDF.map(p => `<p>${p}</p>`).join('')}
+                </div>
+            </div>
+
+            <div id="diplomaSection_${n}" class="${yaCompletada ? '' : 'hidden'}" style="margin-top:28px; border-top:1px solid #f1f5f9; padding-top:24px;">
+                <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--navy); margin-bottom:10px;">Diploma de esta clase</h3>
+                ${diplomaClaseDescargado ? `
+                    <p style="color:var(--text-muted); font-size:0.9rem;">✓ Ya descargaste el diploma de esta clase.</p>
+                ` : `
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:10px;">Completa tus datos para emitir tu diploma de esta clase (descarga única).</p>
+                    <div class="diploma-form-row">
+                        <input type="text" id="diplomaNombre_${n}" placeholder="Nombre completo" value="${MEMBRESIA.nombre || ''}" />
+                        <input type="text" id="diplomaCedula_${n}" placeholder="Cédula / ID" />
+                    </div>
+                    <button class="step-btn" id="emitirDiplomaBtn_${n}" style="margin-top:10px;">Emitir diploma de esta clase</button>
+                `}
+                <div id="diplomaPreview_${n}" class="hidden"></div>
+
+                <div class="closing-note" style="margin-top:20px;">
+                    <strong>Análisis de cierre:</strong> ${contenido.analisisCierre}
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById(`siguienteBtn_${n}`).addEventListener('click', () => {
+        document.getElementById(`pdfSection_${n}`).classList.remove('hidden');
+        document.getElementById(`siguienteBtn_${n}`).classList.add('hidden');
+    });
+
+    const descargarBtn = document.getElementById(`descargarGuiaBtn_${n}`);
+    if (descargarBtn && !yaCompletada) {
+        descargarBtn.addEventListener('click', () => {
+            window.open(LYON_PDFS[n], '_blank');
+            marcarClaseCompletada(CODIGO_ACTUAL, n).then(() => {
+                MEMBRESIA.clasesCompletadas = MEMBRESIA.clasesCompletadas || {};
+                MEMBRESIA.clasesCompletadas[n] = Date.now();
+                document.getElementById(`diplomaSection_${n}`).classList.remove('hidden');
+                descargarBtn.disabled = true;
+                descargarBtn.textContent = '✓ Guía descargada';
+                renderTabs();
+                actualizarProgreso();
+                if (Object.keys(MEMBRESIA.clasesCompletadas).length >= 12) mostrarSeccionFinal();
+            });
+        });
+    }
+
+    const emitirBtn = document.getElementById(`emitirDiplomaBtn_${n}`);
+    if (emitirBtn) {
+        emitirBtn.addEventListener('click', () => {
+            const nombre = document.getElementById(`diplomaNombre_${n}`).value.trim();
+            const cedula = document.getElementById(`diplomaCedula_${n}`).value.trim();
+            if (!nombre || !cedula) { alert('Completa nombre y cédula.'); return; }
+            const codigoUnico = generarCodigoAcceso('LYON');
+            window.database.ref('diplomas_publicos/' + codigoUnico).set({
+                nombre, cedula, tituloConferencia: clase.titulo, descargado: true,
+                fecha: new Date().toISOString(), fechaLegible: new Date().toLocaleDateString('es-ES'),
+                codigoUnico
+            }).then(() => {
+                marcarDiplomaDescargado(CODIGO_ACTUAL, n);
+                document.getElementById(`diplomaPreview_${n}`).classList.remove('hidden');
+                document.getElementById(`diplomaPreview_${n}`).innerHTML = `
+                    <div class="diploma-preview">
+                        <h3>🎓 Diploma emitido — ${clase.titulo}</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">Código: <strong>${codigoUnico}</strong></p>
+                        <a href="validar-diploma.html?codigo=${codigoUnico}" target="_blank" class="step-btn" style="margin-top:12px;">Ver validación</a>
+                    </div>`;
+                emitirBtn.style.display = 'none';
+            });
+        });
+    }
+}
+
+function actualizarProgreso() {
+    const completadas = Object.keys(MEMBRESIA.clasesCompletadas || {}).length;
+    document.getElementById('progresoTexto').textContent = `${completadas}/12 clases`;
+    document.getElementById('progresoFill').style.width = ((completadas / 12) * 100) + '%';
+}
+
+function mostrarSeccionFinal() {
+    document.getElementById('finalDiplomaSection').classList.remove('hidden');
+    if (MEMBRESIA.diplomasDescargados && MEMBRESIA.diplomasDescargados.programaCompleto) {
+        document.getElementById('finalDiplomaFormWrap').classList.add('hidden');
+    }
+}
+
+document.getElementById('finalDiplomaBtn').addEventListener('click', () => {
+    const nombre = document.getElementById('finalNombre').value.trim();
+    const cedula = document.getElementById('finalCedula').value.trim();
+    if (!nombre || !cedula) { alert('Completa nombre y cédula.'); return; }
+    const codigoUnico = generarCodigoAcceso('LYONPROG');
+    window.database.ref('diplomas_programa_publicos/' + codigoUnico).set({
+        nombre, cedula, plan: MEMBRESIA.plan, descargado: true,
+        fecha: new Date().toISOString(), fechaLegible: new Date().toLocaleDateString('es-ES'),
+        codigoUnico
+    }).then(() => {
+        marcarDiplomaDescargado(CODIGO_ACTUAL, 'programaCompleto');
+        document.getElementById('finalDiplomaFormWrap').classList.add('hidden');
+        document.getElementById('finalDiplomaResult').classList.remove('hidden');
+        document.getElementById('finalCodigoTexto').textContent = codigoUnico;
+        document.getElementById('finalValidarLink').href = 'validacion-programa-completo.html?codigo=' + codigoUnico;
+    });
+});
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validar Diploma | Lyon Asesor</title>
+    <title>Validación de Diploma - Programa Completo | Lyon Asesor</title>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -109,7 +109,7 @@
             font-size: 0.9rem;
             line-height: 1.7;
             color: #1a2330;
-            border-left: 4px solid #e86b18;
+            border-left: 4px solid #cdaa7b;
         }
 
         .footer-note {
@@ -159,7 +159,7 @@
             width: 32px;
             height: 32px;
             border: 3px solid #f1f0ed;
-            border-top-color: #e86b18;
+            border-top-color: #cdaa7b;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 12px;
@@ -172,11 +172,11 @@
 <div class="container">
     <div class="brand">
         <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor">
-        <div class="tagline">Formación Profesional</div>
+        <div class="tagline">Programa Integral · 300 Horas Académicas</div>
     </div>
 
-    <h1>Validación de <span>Diploma</span></h1>
-    <p class="subtitle">Verifica la autenticidad de este certificado</p>
+    <h1>Validación de Diploma<br><span>Programa Completo</span></h1>
+    <p class="subtitle">Programa Lyon de NeuroLiderazgo y Transformación Humana</p>
 
     <div id="validationResult">
         <div class="loading">
@@ -214,7 +214,7 @@ async function validarDiploma(codigo) {
         // leads. "diplomas_publicos" es un nodo aparte que solo contiene los
         // campos necesarios para validar (sin correo ni WhatsApp), escrito por
         // registro.html en el momento del registro y de la descarga del PDF.
-        const snapshot = await database.ref(`diplomas_publicos/${codigo}`).once('value');
+        const snapshot = await database.ref(`diplomas_programa_publicos/${codigo}`).once('value');
         const registro = snapshot.val();
 
         if (!registro) {
@@ -242,15 +242,16 @@ async function validarDiploma(codigo) {
             <div class="validation-card">
                 <div class="field"><span class="label">Participante</span><span class="value">${registro.nombre}</span></div>
                 <div class="field"><span class="label">Cédula / ID</span><span class="value">${registro.cedula}</span></div>
-                <div class="field"><span class="label">Conferencia</span><span class="value">${registro.tituloConferencia}</span></div>
-                <div class="field"><span class="label">Duración</span><span class="value">8 horas</span></div>
+                <div class="field"><span class="label">Programa</span><span class="value">Programa Integral en NeuroLiderazgo y Transformación Humana</span></div>
+                <div class="field"><span class="label">Duración</span><span class="value">300 horas académicas</span></div>
+                <div class="field"><span class="label">Plan cursado</span><span class="value">${registro.plan === 'acelerado' ? 'Acelerado (6 meses)' : 'Extendido (12 meses)'}</span></div>
                 <div class="field"><span class="label">Fecha de emisión</span><span class="value">${registro.fechaLegible || registro.fecha}</span></div>
                 <div class="field"><span class="label">Código único</span><span class="value">${registro.codigoUnico}</span></div>
             </div>
 
             <div class="mensaje-autenticidad">
                 <strong>📜 Mensaje de autenticidad</strong><br>
-                Este diploma certifica que <strong>${registro.nombre}</strong> logró culminar y aprobar satisfactoriamente su participación en la formación "<strong>${registro.tituloConferencia}</strong>", con una duración de 8 horas de formación continua, bajo los estándares de Lyon Asesor. La verificación de este documento garantiza su validez oficial.
+                Este diploma certifica que <strong>${registro.nombre}</strong> culminó y aprobó satisfactoriamente las 12 clases del "<strong>Programa Integral en NeuroLiderazgo y Transformación Humana</strong>", con una duración de 300 horas académicas, bajo los estándares de Lyon Asesor. La verificación de este documento garantiza su validez oficial.
             </div>
 
             <div style="margin-top:16px; font-size:0.85rem; color:#5a6c7d;">
@@ -262,7 +263,7 @@ async function validarDiploma(codigo) {
 
                 <div class="legal-section">
                     <h4>✅ Validez en Venezuela</h4>
-                    <p>Este diploma acredita la formación recibida en la conferencia "<strong>${registro.tituloConferencia}</strong>" de Lyon Asesor, con una carga horaria de <strong>8 horas académicas</strong>, en el marco de la educación no formal reconocida por:</p>
+                    <p>Este diploma acredita la formación recibida en el <strong>Programa Lyon de NeuroLiderazgo y Transformación Humana</strong>, con una carga horaria de <strong>300 horas académicas</strong>, en el marco de la educación no formal reconocida por:</p>
                     <ul>
                         <li><strong>Constitución de la República Bolivariana de Venezuela</strong> (Artículos 102, 103 y 106) — derecho a la educación permanente y creación de instituciones educativas privadas.</li>
                         <li><strong>Ley Orgánica de Educación</strong> (Artículos 25 y 46) — acreditación de aprendizajes adquiridos fuera del sistema formal.</li>
@@ -294,7 +295,7 @@ async function validarDiploma(codigo) {
 
                 <div class="verification-status">
                     <p><strong>Este diploma es verificable en línea mediante el código QR o el código de validación:</strong> <span class="code">${registro.codigoUnico}</span></p>
-                    <p>Fecha de emisión: ${registro.fechaLegible || registro.fecha} · Horas académicas: 8 horas</p>
+                    <p>Fecha de emisión: ${registro.fechaLegible || registro.fecha} · Horas académicas: 300 horas</p>
                 </div>
             </div>
         `;

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Panel de Afiliado | Lyon Asesor</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/lyon-shared.css" />
+<link rel="stylesheet" href="assets/css/lyon-components.css" />
+
+<style>
+    .app-header {
+        background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
+        padding: 110px 20px 36px; color: #fff; text-align: center;
+    }
+    .app-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; margin-bottom: 6px; }
+    .app-main { max-width: 980px; margin: -20px auto 60px; padding: 0 20px; }
+    .ref-box {
+        background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 24px 28px;
+        display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .ref-box input { flex: 1; min-width: 220px; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.9rem; }
+    .panel-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 28px; margin-bottom: 24px; }
+    .panel-card h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 16px; }
+    .instructions-list { list-style: none; padding: 0; }
+    .instructions-list li { display: flex; gap: 10px; margin-bottom: 12px; font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+    .instructions-list li strong { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor" /></div>
+            <div class="nav-logo-text"><div class="main">LYON<span>ASESOR</span></div></div>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="afiliados.html">Afiliados</a></li>
+            <li><a href="legal.html">Legal</a></li>
+            <li><a href="#" id="logoutBtn" class="nav-cta" style="display:none;">Cerrar sesión</a></li>
+        </ul>
+        <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="login-wrap" id="loginGate">
+    <div class="login-box">
+        <h2>Panel de Afiliado</h2>
+        <p>Ingresa tu código de afiliado y tu clave de acceso.</p>
+        <div class="form-group"><input type="text" id="codigoInput" placeholder="Código de afiliado (ej. AF-LUCIA23)" style="text-align:center;" /></div>
+        <div class="form-group"><input type="password" id="claveInput" placeholder="Clave de acceso" style="text-align:center;" /></div>
+        <button class="form-submit" id="loginSubmitBtn">Ingresar</button>
+        <p id="loginError" style="color:#c0392b; font-size:0.85rem; margin-top:14px; display:none;">Código o clave incorrectos.</p>
+        <p class="form-note">¿Aún no eres afiliado? <a href="afiliados.html" style="color:var(--naranja); font-weight:600;">Regístrate aquí</a></p>
+    </div>
+</div>
+
+<div id="dashboardApp" class="hidden" style="display:none;">
+    <div class="app-header">
+        <h1>Hola, <span id="nombreAfiliado">—</span> 🤝</h1>
+        <p style="color:rgba(255,255,255,0.75);">Estado: <span id="estadoAfiliado" class="status-badge activo">Activo</span></p>
+    </div>
+
+    <div class="app-main">
+        <div class="ref-box">
+            <input type="text" id="refLinkInput" readonly />
+            <button class="step-btn" id="copiarRefBtn">📋 Copiar enlace</button>
+        </div>
+
+        <div class="metrics-grid" style="margin-bottom:24px;">
+            <div class="metric-card"><div class="metric-value" id="metricClics">0</div><div class="metric-label">Clics totales</div></div>
+            <div class="metric-card"><div class="metric-value" id="metricVentas">0</div><div class="metric-label">Ventas generadas</div></div>
+            <div class="metric-card"><div class="metric-value" id="metricComisionTotal">$0</div><div class="metric-label">Comisiones totales</div></div>
+            <div class="metric-card"><div class="metric-value" id="metricComisionPendiente">$0</div><div class="metric-label">Comisiones pendientes</div></div>
+        </div>
+
+        <div class="panel-card">
+            <h3>Historial de ventas</h3>
+            <div class="dash-table-wrap">
+                <table class="dash-table">
+                    <thead><tr><th>Fecha</th><th>Producto</th><th>Monto</th><th>Comisión</th><th>Estado</th></tr></thead>
+                    <tbody id="ventasTableBody"><tr><td colspan="5" style="text-align:center; color:var(--text-light);">Sin ventas registradas aún.</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <h3>Material de difusión</h3>
+            <ul class="instructions-list">
+                <li>📦 <span><strong>Descarga el ZIP</strong> con banners, guías y piezas para redes — disponible de forma indefinida, sin límite de descargas.</span></li>
+                <li>📱 <span><strong>Comparte tu enlace</strong> (arriba) en tus redes, WhatsApp o blog — cada clic queda registrado a tu favor por 45 días.</span></li>
+                <li>🎥 <span><strong>Usa la presentación de ventas</strong> para reuniones o llamadas con prospectos corporativos.</span></li>
+                <li>💰 <span><strong>Comisión del 30%</strong> sobre cada venta atribuida a tu enlace — se acredita automáticamente al registrarse el pago.</span></li>
+            </ul>
+            <a href="#" id="materialZipLink" target="_blank" class="step-btn" style="margin-top:10px;">⬇ Descargar material de difusión (ZIP)</a>
+        </div>
+
+        <div class="panel-card">
+            <h3>Cambiar clave de acceso</h3>
+            <div class="diploma-form-row">
+                <input type="password" id="nuevaClaveInput" placeholder="Nueva clave" />
+                <button class="step-btn outline" id="cambiarClaveBtn">Actualizar clave</button>
+            </div>
+            <p id="claveActualizadaMsg" class="hidden" style="color:#1a8a4d; font-size:0.85rem; margin-top:8px;">✓ Clave actualizada.</p>
+        </div>
+
+        <div class="copyright-footer">Lyon Asesor 2026</div>
+    </div>
+</div>
+
+<script src="assets/js/lyon-lms.js"></script>
+<script src="assets/js/lyon-shared.js"></script>
+<script>
+let AFILIADO = null;
+let CODIGO_AF = null;
+
+document.getElementById('loginSubmitBtn').addEventListener('click', intentarLogin);
+
+function intentarLogin() {
+    const codigo = document.getElementById('codigoInput').value.trim();
+    const clave = document.getElementById('claveInput').value.trim();
+    if (!codigo || !clave) return;
+    buscarAfiliado(codigo).then(data => {
+        if (!data || data.claveAcceso !== clave) {
+            document.getElementById('loginError').style.display = 'block';
+            return;
+        }
+        sessionStorage.setItem('lyon_afiliado_codigo', data.codigo);
+        sessionStorage.setItem('lyon_afiliado_clave', clave);
+        cargarDashboard(data);
+    });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = sessionStorage.getItem('lyon_afiliado_codigo');
+    const savedClave = sessionStorage.getItem('lyon_afiliado_clave');
+    if (saved && savedClave) {
+        buscarAfiliado(saved).then(data => {
+            if (data && data.claveAcceso === savedClave) cargarDashboard(data);
+        });
+    }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem('lyon_afiliado_codigo');
+    sessionStorage.removeItem('lyon_afiliado_clave');
+    location.reload();
+});
+
+function cargarDashboard(data) {
+    AFILIADO = data;
+    CODIGO_AF = data.codigo;
+    document.getElementById('loginGate').classList.add('hidden');
+    document.getElementById('dashboardApp').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+    document.getElementById('nombreAfiliado').textContent = data.nombre || 'Afiliado';
+    const estadoEl = document.getElementById('estadoAfiliado');
+    estadoEl.textContent = (data.estado || 'activo').charAt(0).toUpperCase() + (data.estado || 'activo').slice(1);
+    estadoEl.className = 'status-badge ' + (data.estado || 'activo');
+
+    const refLink = `https://lyonasesor.com/?ref=${data.codigo}`;
+    document.getElementById('refLinkInput').value = refLink;
+    document.getElementById('materialZipLink').href = LYON_MATERIAL_AFILIADOS_ZIP;
+
+    cargarMetricas();
+}
+
+document.getElementById('copiarRefBtn').addEventListener('click', () => {
+    const input = document.getElementById('refLinkInput');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+        const btn = document.getElementById('copiarRefBtn');
+        const original = btn.textContent;
+        btn.textContent = '✓ Copiado';
+        setTimeout(() => btn.textContent = original, 2000);
+    });
+});
+
+function cargarMetricas() {
+    window.database.ref('afiliados_clics/' + CODIGO_AF).once('value').then(snap => {
+        const data = snap.val() || {};
+        document.getElementById('metricClics').textContent = Object.keys(data).length;
+    });
+
+    window.database.ref('afiliados_ventas/' + CODIGO_AF).once('value').then(snap => {
+        const data = snap.val() || {};
+        const ventas = Object.values(data);
+        document.getElementById('metricVentas').textContent = ventas.length;
+        const totalComision = ventas.reduce((s, v) => s + (v.comision || 0), 0);
+        const pendiente = ventas.filter(v => v.estadoComision === 'pendiente').reduce((s, v) => s + (v.comision || 0), 0);
+        document.getElementById('metricComisionTotal').textContent = '$' + totalComision.toFixed(2);
+        document.getElementById('metricComisionPendiente').textContent = '$' + pendiente.toFixed(2);
+
+        const tbody = document.getElementById('ventasTableBody');
+        if (ventas.length === 0) return;
+        ventas.sort((a, b) => b.timestamp - a.timestamp);
+        tbody.innerHTML = ventas.map(v => `
+            <tr>
+                <td>${v.fechaLegible || new Date(v.timestamp).toLocaleDateString('es-ES')}</td>
+                <td>${v.producto || '—'}</td>
+                <td>$${(v.monto || 0).toFixed(2)}</td>
+                <td>$${(v.comision || 0).toFixed(2)}</td>
+                <td><span class="status-badge ${v.estadoComision === 'pagada' ? 'pagada' : 'pendiente'}">${v.estadoComision === 'pagada' ? 'Pagada' : 'Pendiente'}</span></td>
+            </tr>
+        `).join('');
+    });
+}
+
+document.getElementById('cambiarClaveBtn').addEventListener('click', () => {
+    const nueva = document.getElementById('nuevaClaveInput').value.trim();
+    if (!nueva || nueva.length < 4) { alert('La clave debe tener al menos 4 caracteres.'); return; }
+    window.database.ref('afiliados/' + CODIGO_AF + '/claveAcceso').set(nueva).then(() => {
+        sessionStorage.setItem('lyon_afiliado_clave', nueva);
+        document.getElementById('claveActualizadaMsg').classList.remove('hidden');
+        document.getElementById('nuevaClaveInput').value = '';
+    });
+});
+</script>
+</body>
+</html>

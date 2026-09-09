@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Presentación de Cierre del Programa | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f; color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px; width: 100%; background-color: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 16px; padding: 3rem 2rem; min-height: 450px;
+      display: flex; flex-direction: column; justify-content: center; position: relative;
+    }
+    .slide-number { position: absolute; top: 1.5rem; right: 1.5rem; color: #e86b18; font-size: 0.8rem; letter-spacing: 0.1rem; }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #e86b18; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #e86b18; }
+    .highlight-box { background-color: #222; border-left: 3px solid #e86b18; padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; }
+    .question-box { background: #222; border: 1px solid #e86b18; border-radius: 12px; padding: 1.2rem 1.5rem; margin: 0.8rem 0; font-size: 1.15rem; color: #f28c4e; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; max-width: 800px; width: 100%; }
+    .btn { background: transparent; border: 1px solid #e86b18; color: #e86b18; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; cursor: pointer; transition: all 0.2s ease; }
+    .btn:hover { background: #e86b18; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Evento de Cierre · Lyon Asesor</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Cierre del Programa Lyon</h1>
+        <h2>Programa Lyon de NeuroLiderazgo y Transformación Humana</h2>
+        <p>Prof. Mtr. Álvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color:#cccccc; margin-top:2rem;">Guion del evento de cierre en videoconferencia</p>
+        <p style="color:#999999;">Uso interno / solo para el autor</p>
+      `,
+      `
+        <h2>Bienvenida</h2>
+        <p>Llegar hasta aquí — 12 clases, 300 horas académicas — no es un dato administrativo, es un recorrido real. Antes de entregar el diploma, este espacio es para nombrar lo que ese recorrido significó.</p>
+        <div class="highlight-box">Abrir el encuentro agradeciendo la constancia, no solo la finalización.</div>
+      `,
+      `
+        <h2>Primera ronda: la experiencia</h2>
+        <div class="question-box">¿Qué sintieron al empezar el Programa, y qué sienten hoy al terminarlo?</div>
+        <p>Dar espacio real a cada persona que quiera compartir, sin apuro. Esta ronda es el corazón del cierre.</p>
+      `,
+      `
+        <h2>Segunda ronda: lo aplicado</h2>
+        <div class="question-box">¿Qué herramienta de las 12 clases realmente usaron, y en qué situación concreta?</div>
+        <p>Buscar ejemplos específicos, no generalidades. La especificidad es lo que da valor al testimonio.</p>
+      `,
+      `
+        <h2>Tercera ronda: los bloqueos</h2>
+        <div class="question-box">¿Qué les costó aplicar? ¿Dónde sintieron resistencia — propia o del equipo?</div>
+        <p>Normalizar la dificultad. Nombrar que la resistencia es parte esperable del cambio real, no una señal de fracaso.</p>
+      `,
+      `
+        <h2>Cuarta ronda: lo que cambió</h2>
+        <div class="question-box">Si tuvieran que nombrar un cambio concreto en cómo lideran o se relacionan hoy, ¿cuál sería?</div>
+        <p>Esta pregunta suele traer los testimonios más útiles para futuro material de la marca — pedir permiso para citarlos.</p>
+      `,
+      `
+        <h2>Reconocer el recorrido completo</h2>
+        <p>Repasar brevemente las 12 temáticas recorridas, nombrando el hilo conductor: de la autoestima individual al propósito y legado colectivo.</p>
+        <div class="highlight-box">No es una lista de contenidos, es un mapa de transformación ya recorrido por cada persona presente.</div>
+      `,
+      `
+        <h2>Entrega simbólica del diploma</h2>
+        <p>Anunciar la apertura del formulario de descarga del Diploma del Programa Completo (300 horas académicas), disponible desde el dashboard de cada estudiante.</p>
+        <p>Explicar brevemente su validez: verificable en línea por código QR, con marco legal venezolano e internacional.</p>
+      `,
+      `
+        <h2>Qué sigue después del cierre</h2>
+        <ul>
+          <li>Acceso permanente y de por vida a los 12 videos y guías ya vistos, en modo solo lectura</li>
+          <li>Invitación abierta a seguir en contacto vía WhatsApp o correo para próximos pasos</li>
+          <li>Espacio para que cada persona comparta si desea seguir profundizando (consulta individual, próxima conferencia)</li>
+        </ul>
+      `,
+      `
+        <h2>Cierre</h2>
+        <p>Agradecer nuevamente, de forma personal y humana — este es un cierre de contacto, no un trámite.</p>
+        <div class="highlight-box">"Lo que transforma equipos, empieza con una persona." — y hoy, esa persona son ustedes.</div>
+        <p style="text-align:center; margin-top:2rem; color:#e86b18;">Lyon Asesor 2026</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Evento de Cierre · Lyon Asesor`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>

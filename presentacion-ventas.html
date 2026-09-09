@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Presentación de Ventas | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f; color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px; width: 100%; background-color: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 16px; padding: 3rem 2rem; min-height: 450px;
+      display: flex; flex-direction: column; justify-content: center; position: relative;
+    }
+    .slide-number { position: absolute; top: 1.5rem; right: 1.5rem; color: #e86b18; font-size: 0.8rem; letter-spacing: 0.1rem; }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #e86b18; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #e86b18; }
+    .highlight-box { background-color: #222; border-left: 3px solid #e86b18; padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; }
+    .pillar-box { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .pillar-card { background-color: #222; padding: 1.2rem; border-radius: 8px; text-align: center; }
+    .pillar-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .pillar-card .name { font-weight: 600; color: #e86b18; margin-bottom: 0.3rem; }
+    .pillar-card .desc { font-size: 0.8rem; color: #e8e8e8; }
+    .price-box { background: #222; border: 1px solid #e86b18; border-radius: 12px; padding: 1.2rem; margin: 0.8rem 0; }
+    .price-box .plan { font-weight: 700; color: #fff; }
+    .price-box .amount { color: #e86b18; font-size: 1.3rem; font-weight: 700; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; max-width: 800px; width: 100%; }
+    .btn { background: transparent; border: 1px solid #e86b18; color: #e86b18; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; cursor: pointer; transition: all 0.2s ease; }
+    .btn:hover { background: #e86b18; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Presentación de Ventas · Lyon Asesor</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Lyon Asesor</h1>
+        <h2>Educación Emocional · Desarrollo Humano · Transformación</h2>
+        <p>Prof. Mtr. Álvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color:#cccccc; margin-top:2rem;">Presentación de ventas — conferencias y membresías</p>
+        <p style="color:#999999;">Uso interno / equipo de afiliados</p>
+      `,
+      `
+        <h2>El problema que resolvemos</h2>
+        <p>Los equipos y las personas no fallan por falta de talento — fallan por falta de herramientas emocionales para sostener la exigencia diaria.</p>
+        <div class="highlight-box">Liderazgo sin autoconocimiento, comunicación sin consciencia, resultados sin bienestar: ese es el ciclo que Lyon Asesor rompe.</div>
+      `,
+      `
+        <h2>Dos formas de trabajar con nosotros</h2>
+        <div class="pillar-box">
+          <div class="pillar-card"><div class="emoji">🎤</div><div class="name">Conferencias</div><div class="desc">Experiencia puntual de alto impacto, 90 minutos, para un equipo o evento.</div></div>
+          <div class="pillar-card"><div class="emoji">🎓</div><div class="name">Membresía</div><div class="desc">Recorrido de transformación de 12 clases y 300 horas académicas, a lo largo de 6 o 12 meses.</div></div>
+        </div>
+      `,
+      `
+        <h2>Conferencias — 12 temáticas</h2>
+        <p>NeuroLiderazgo, Autoestima Corporativa, Comunicación Consciente, Liderazgo con Alma, Estrategias de Bienestar, Neuroeducación, Vínculos que Sanan, Código Familiar, Resiliencia Organizacional, Propósito y Legado, Reconfigura tu Mente, Integración y Cierre.</p>
+        <p>Cada conferencia incluye diploma de 8 horas académicas y ebook de regalo.</p>
+        <div class="price-box"><span class="plan">Individual</span> — <span class="amount">$10 USD</span> por persona</div>
+        <div class="price-box"><span class="plan">Empresarial</span> — <span class="amount">$150 USD</span> tarifa plana</div>
+      `,
+      `
+        <h2>Membresía — el Programa Lyon completo</h2>
+        <p>12 clases en video + guía de ejercicios en PDF + diploma por clase, culminando en el Diploma del Programa Completo de 300 horas académicas.</p>
+        <p>Acceso de por vida a todo el contenido una vez desbloqueado. Cierre del programa con evento en vivo por videoconferencia.</p>
+      `,
+      `
+        <h2>Planes de Membresía</h2>
+        <div class="price-box"><span class="plan">⚡ Acelerado (6 meses)</span> — <span class="amount">$24.99/mes</span> o $149.94 pago completo</div>
+        <div class="price-box"><span class="plan">🌱 Extendido (12 meses)</span> — <span class="amount">$10.99/mes</span> o $131.88 pago completo</div>
+        <div class="price-box"><span class="plan">🏢 Corporativa Básica</span> — <span class="amount">$499/año</span> — hasta 30 personas</div>
+        <div class="price-box"><span class="plan">🏢 Corporativa Premium</span> — <span class="amount">$999/año</span> — hasta 50 personas</div>
+      `,
+      `
+        <h2>¿Por qué el modelo por hitos funciona?</h2>
+        <ul>
+          <li>El desbloqueo progresivo genera un hábito real, no una maratón de contenido que se abandona</li>
+          <li>Cada clase se acompaña de diploma, generando motivación tangible en el camino</li>
+          <li>El cierre en vivo genera comunidad y compromiso hasta el final del programa</li>
+        </ul>
+      `,
+      `
+        <h2>Respaldo y validez</h2>
+        <p>Todos los diplomas —de conferencia y del Programa Completo— son verificables en línea mediante código QR, con marco legal venezolano e internacional (Constitución, Ley Orgánica de Educación, Convención UNESCO 2019).</p>
+        <div class="highlight-box">Formación no formal reconocida, con datos institucionales verificables: Registro Mercantil y RIF de Lyon Asesor.</div>
+      `,
+      `
+        <h2>Formas de pago</h2>
+        <p>PayPal (pago inmediato con confirmación automática) o Pago Móvil para Venezuela (validación manual en menos de 24 horas).</p>
+        <p>Sin letra pequeña, sin permanencia forzosa — el acceso ya desbloqueado es permanente incluso si el plan termina.</p>
+      `,
+      `
+        <h2>Siguiente paso</h2>
+        <p>Agenda una conferencia para tu equipo o inscribe tu membresía hoy mismo en <strong>lyonasesor.com/membresia.html</strong>.</p>
+        <div class="highlight-box">"Lo que transforma equipos, empieza con una persona." — Prof. Mtr. Álvaro Lyon</div>
+        <p style="text-align:center; margin-top:2rem; color:#e86b18;">Lyon Asesor 2026</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Presentación de Ventas · Lyon Asesor`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>

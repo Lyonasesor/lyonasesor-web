@@ -469,6 +469,40 @@
                 </table>
             </div>
         </div>
+
+        <!-- ===== SOLICITUDES PENDIENTES (Membresías y Afiliados) ===== -->
+        <div class="table-wrapper" style="margin-top:32px;">
+            <h2 style="padding:1.2rem 1.2rem 0;">⏳ Solicitudes Pendientes</h2>
+            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Aprueba manualmente para activar la cuenta (membresía o afiliado). Al aprobar se genera el código de acceso.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Tipo</th><th>Fecha</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Plan / Detalle</th><th>Pago</th><th>Acción</th></tr></thead>
+                    <tbody id="solicitudesTableBody"><tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== GESTIÓN DE MIEMBROS ===== -->
+        <div class="table-wrapper" style="margin-top:32px;">
+            <h2 style="padding:1.2rem 1.2rem 0;">🎓 Gestión de Miembros</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th><th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th><th>Acción</th></tr></thead>
+                    <tbody id="miembrosTableBody"><tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== GESTIÓN DE AFILIADOS ===== -->
+        <div class="table-wrapper" style="margin-top:32px;">
+            <h2 style="padding:1.2rem 1.2rem 0;">🤝 Gestión de Afiliados</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead><tr><th>Código</th><th>Nombre</th><th>Registro</th><th>Estado</th><th>Clics</th><th>Ventas</th><th>Com. total</th><th>Com. pendiente</th><th>Última venta</th><th>Inactivo (días)</th><th>Acción</th></tr></thead>
+                    <tbody id="afiliadosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -477,7 +511,7 @@
     // CONFIGURACIÓN
     // =============================================
     // Correo autorizado para administrar el panel
-    const ADMIN_EMAIL = 'lyonasesor@gmail.com';
+    const ADMIN_EMAIL = 'info@lyonasesor.com';
 
     const TIPO_MAP = {
         'consultas': { label: '📋 Consulta', coleccion: 'consultas' },
@@ -578,9 +612,226 @@
         console.log('🔄 Cargando datos...');
         await Promise.all([
             cargarLeads(),
-            cargarConferencias()
+            cargarConferencias(),
+            cargarSolicitudes(),
+            cargarMiembros(),
+            cargarAfiliados()
         ]);
     }
+
+    // =============================================
+    // GENERADOR DE CÓDIGO DE ACCESO (igual al de lyon-lms.js,
+    // duplicado aquí porque admin.html no carga ese archivo)
+    // =============================================
+    function generarCodigoAccesoAdmin(prefijo) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let codigo = '';
+        for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+        return `${prefijo}-${codigo}`;
+    }
+
+    // =============================================
+    // SOLICITUDES PENDIENTES (membresía + afiliado)
+    // =============================================
+    async function cargarSolicitudes() {
+        const tbody = document.getElementById('solicitudesTableBody');
+        try {
+            const [snapMemb, snapAfil] = await Promise.all([
+                database.ref('solicitudes_membresia').once('value'),
+                database.ref('solicitudes_afiliado').once('value')
+            ]);
+            const filas = [];
+
+            const dataMemb = snapMemb.val() || {};
+            Object.entries(dataMemb).forEach(([id, s]) => {
+                if (s.estado !== 'pendiente') return;
+                filas.push({ tipo: 'Membresía', id, ...s });
+            });
+            const dataAfil = snapAfil.val() || {};
+            Object.entries(dataAfil).forEach(([id, s]) => {
+                if (s.estado !== 'pendiente') return;
+                filas.push({ tipo: 'Afiliado', id, ...s });
+            });
+
+            filas.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            if (filas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">No hay solicitudes pendientes.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filas.map(f => `
+                <tr>
+                    <td>${f.tipo === 'Membresía' ? '🎓 Membresía' : '🤝 Afiliado'}</td>
+                    <td>${f.fechaLegible || ''}</td>
+                    <td>${f.nombre || ''}</td>
+                    <td>${f.email || ''}</td>
+                    <td>${f.telefono || ''}</td>
+                    <td>${f.plan || f.experiencia || '—'}</td>
+                    <td>${f.metodoPago || '—'}</td>
+                    <td><button class="btn-pagar" data-tipo="${f.tipo}" data-id="${f.id}">✅ Aprobar</button></td>
+                </tr>
+            `).join('');
+
+            tbody.querySelectorAll('button[data-tipo]').forEach(btn => {
+                btn.addEventListener('click', () => aprobarSolicitud(btn.dataset.tipo, btn.dataset.id));
+            });
+        } catch (e) {
+            console.error('Error cargando solicitudes:', e);
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    async function aprobarSolicitud(tipo, id) {
+        if (tipo === 'Membresía') {
+            const snap = await database.ref('solicitudes_membresia/' + id).once('value');
+            const s = snap.val();
+            if (!s) return;
+            const codigo = generarCodigoAccesoAdmin('LYON');
+            await database.ref('membresias/' + codigo).set({
+                nombre: s.nombre, email: s.email, telefono: s.telefono, plan: s.plan || 'extendido',
+                fechaInicio: Date.now(), estado: 'activo', clasesCompletadas: {}, diplomasDescargados: {}
+            });
+            await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
+            alert(`Membresía activada.\nCódigo de acceso a entregar a ${s.nombre}: ${codigo}\n(Compártelo por correo o WhatsApp — no se envía automáticamente.)`);
+        } else {
+            const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
+            const s = snap.val();
+            if (!s) return;
+            const codigo = generarCodigoAccesoAdmin('AF');
+            const clave = generarCodigoAccesoAdmin('').replace('-', '');
+            await database.ref('afiliados/' + codigo).set({
+                nombre: s.nombre, email: s.email, telefono: s.telefono, pais: s.pais || '',
+                claveAcceso: clave, fechaRegistro: Date.now(), estado: 'activo'
+            });
+            await database.ref('solicitudes_afiliado/' + id + '/estado').set('aprobada');
+            alert(`Afiliado activado.\nCódigo: ${codigo}\nClave: ${clave}\n(Compártelo por correo o WhatsApp — no se envía automáticamente.)`);
+        }
+        cargarSolicitudes();
+        cargarMiembros();
+        cargarAfiliados();
+    }
+
+    // =============================================
+    // GESTIÓN DE MIEMBROS
+    // =============================================
+    async function cargarMiembros() {
+        const tbody = document.getElementById('miembrosTableBody');
+        try {
+            const snap = await database.ref('membresias').once('value');
+            const data = snap.val() || {};
+            const codigos = Object.keys(data);
+            if (codigos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Sin miembros activos aún.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = codigos.map(codigo => {
+                const m = data[codigo];
+                const completadas = Object.keys(m.clasesCompletadas || {}).length;
+                const diplomas = Object.keys(m.diplomasDescargados || {}).length;
+                const dias = m.plan === 'acelerado' ? 14 : 30;
+                const proxNum = Math.min(completadas + 1, 12);
+                const proxFecha = new Date((m.fechaInicio || Date.now()) + dias * (proxNum - 1) * 86400000);
+                return `
+                <tr>
+                    <td>${codigo}</td>
+                    <td>${m.nombre || ''}</td>
+                    <td>${m.email || ''}</td>
+                    <td>${m.plan === 'acelerado' ? 'Acelerado' : 'Extendido'}</td>
+                    <td>${m.fechaInicio ? new Date(m.fechaInicio).toLocaleDateString('es-ES') : '—'}</td>
+                    <td>${completadas}/12</td>
+                    <td>${completadas >= 12 ? '—' : proxFecha.toLocaleDateString('es-ES')}</td>
+                    <td>${diplomas}</td>
+                    <td>${m.estado || 'activo'}</td>
+                    <td>
+                        <select onchange="cambiarEstadoMiembro('${codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
+                            <option value="activo" ${m.estado==='activo'?'selected':''}>Activo</option>
+                            <option value="pausado" ${m.estado==='pausado'?'selected':''}>Pausado</option>
+                            <option value="finalizado" ${m.estado==='finalizado'?'selected':''}>Finalizado</option>
+                        </select>
+                    </td>
+                </tr>`;
+            }).join('');
+        } catch (e) {
+            console.error('Error cargando miembros:', e);
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    window.cambiarEstadoMiembro = function(codigo, estado) {
+        database.ref('membresias/' + codigo + '/estado').set(estado);
+    };
+
+    // =============================================
+    // GESTIÓN DE AFILIADOS
+    // =============================================
+    async function cargarAfiliados() {
+        const tbody = document.getElementById('afiliadosTableBody');
+        try {
+            const snap = await database.ref('afiliados').once('value');
+            const data = snap.val() || {};
+            const codigos = Object.keys(data);
+            if (codigos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Sin afiliados registrados aún.</td></tr>';
+                return;
+            }
+
+            const filas = await Promise.all(codigos.map(async codigo => {
+                const a = data[codigo];
+                const [clicsSnap, ventasSnap] = await Promise.all([
+                    database.ref('afiliados_clics/' + codigo).once('value'),
+                    database.ref('afiliados_ventas/' + codigo).once('value')
+                ]);
+                const clics = Object.keys(clicsSnap.val() || {}).length;
+                const ventasObj = ventasSnap.val() || {};
+                const ventas = Object.values(ventasObj);
+                const comisionTotal = ventas.reduce((s, v) => s + (v.comision || 0), 0);
+                const comisionPendiente = ventas.filter(v => v.estadoComision === 'pendiente').reduce((s, v) => s + (v.comision || 0), 0);
+                const ultimaVenta = ventas.length ? Math.max(...ventas.map(v => v.timestamp || 0)) : null;
+                const diasInactivo = ultimaVenta ? Math.floor((Date.now() - ultimaVenta) / 86400000) : (a.fechaRegistro ? Math.floor((Date.now() - a.fechaRegistro) / 86400000) : 0);
+                return { codigo, a, clics, ventasCount: ventas.length, comisionTotal, comisionPendiente, ultimaVenta, diasInactivo, ventasKeys: Object.keys(ventasObj) };
+            }));
+
+            tbody.innerHTML = filas.map(f => `
+                <tr>
+                    <td>${f.codigo}</td>
+                    <td>${f.a.nombre || ''}</td>
+                    <td>${f.a.fechaRegistro ? new Date(f.a.fechaRegistro).toLocaleDateString('es-ES') : '—'}</td>
+                    <td>
+                        <select onchange="cambiarEstadoAfiliado('${f.codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
+                            <option value="activo" ${f.a.estado==='activo'?'selected':''}>Activo</option>
+                            <option value="inactivo" ${f.a.estado==='inactivo'?'selected':''}>Inactivo</option>
+                        </select>
+                    </td>
+                    <td>${f.clics}</td>
+                    <td>${f.ventasCount}</td>
+                    <td>$${f.comisionTotal.toFixed(2)}</td>
+                    <td>$${f.comisionPendiente.toFixed(2)}</td>
+                    <td>${f.ultimaVenta ? new Date(f.ultimaVenta).toLocaleDateString('es-ES') : '—'}</td>
+                    <td>${f.diasInactivo}</td>
+                    <td>${f.comisionPendiente > 0 ? `<button class="btn-pagar" onclick="marcarComisionesPagadas('${f.codigo}')">💸 Marcar pagadas</button>` : '—'}</td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            console.error('Error cargando afiliados:', e);
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    window.cambiarEstadoAfiliado = function(codigo, estado) {
+        database.ref('afiliados/' + codigo + '/estado').set(estado);
+    };
+
+    window.marcarComisionesPagadas = async function(codigo) {
+        const snap = await database.ref('afiliados_ventas/' + codigo).once('value');
+        const ventas = snap.val() || {};
+        const updates = {};
+        Object.entries(ventas).forEach(([key, v]) => {
+            if (v.estadoComision === 'pendiente') updates[`afiliados_ventas/${codigo}/${key}/estadoComision`] = 'pagada';
+        });
+        await database.ref().update(updates);
+        cargarAfiliados();
+    };
 
     // =============================================
     // CARGAR LEADS

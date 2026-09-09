@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Presentación para Afiliados | Lyon Asesor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0f0f0f; color: #ffffff;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem;
+    }
+    .slide-container {
+      max-width: 800px; width: 100%; background-color: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 16px; padding: 3rem 2rem; min-height: 450px;
+      display: flex; flex-direction: column; justify-content: center; position: relative;
+    }
+    .slide-number { position: absolute; top: 1.5rem; right: 1.5rem; color: #e86b18; font-size: 0.8rem; letter-spacing: 0.1rem; }
+    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #e86b18; margin-bottom: 1.5rem; }
+    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
+    ul { list-style: none; padding: 0; }
+    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
+    ul li::before { content: "▸"; position: absolute; left: 0; color: #e86b18; }
+    .highlight-box { background-color: #222; border-left: 3px solid #e86b18; padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; }
+    .pillar-box { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .pillar-card { background-color: #222; padding: 1.2rem; border-radius: 8px; text-align: center; }
+    .pillar-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .pillar-card .name { font-weight: 600; color: #e86b18; margin-bottom: 0.3rem; }
+    .pillar-card .desc { font-size: 0.8rem; color: #e8e8e8; }
+    .price-box { background: #222; border: 1px solid #e86b18; border-radius: 12px; padding: 1.2rem; margin: 0.8rem 0; }
+    .price-box .plan { font-weight: 700; color: #fff; }
+    .price-box .amount { color: #e86b18; font-size: 1.3rem; font-weight: 700; }
+    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; max-width: 800px; width: 100%; }
+    .btn { background: transparent; border: 1px solid #e86b18; color: #e86b18; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; cursor: pointer; transition: all 0.2s ease; }
+    .btn:hover { background: #e86b18; color: #0f0f0f; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="slide-container" id="slideContainer">
+    <span class="slide-number" id="slideNumber">1 / 10</span>
+    <div id="slideContent"></div>
+  </div>
+  <div class="nav">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+  </div>
+  <div class="progress" id="progress">Diapositiva 1 de 10 · Presentación de Afiliados · Lyon Asesor</div>
+  <script>
+    let currentSlide = 0;
+    const slides = [
+      `
+        <h1>Programa de Afiliados</h1>
+        <h2>Lyon Asesor · Educación Emocional y Desarrollo Humano</h2>
+        <p>Prof. Mtr. Álvaro Lyon · Lyon Asesor, f.p.</p>
+        <p style="color:#cccccc; margin-top:2rem;">Presentación para captación y orientación de afiliados</p>
+        <p style="color:#999999;">Uso interno / equipo administrativo</p>
+      `,
+      `
+        <h2>¿Por qué ser afiliado Lyon Asesor?</h2>
+        <p>Te unes a una marca de educación emocional con producto real, contenido probado y comisiones altas — sin necesidad de crear nada tú mismo.</p>
+        <div class="highlight-box">Compartes algo en lo que ya crees: desarrollo personal, liderazgo consciente y bienestar corporativo.</div>
+      `,
+      `
+        <h2>Tu comisión</h2>
+        <div class="price-box"><span class="plan">Todos los productos</span> — <span class="amount">30%</span> de comisión sobre cada venta</div>
+        <p>Se acredita automáticamente cuando alguien compra a través de tu enlace de referencia personal, y queda visible en tiempo real en tu panel.</p>
+      `,
+      `
+        <h2>Qué puedes vender</h2>
+        <ul>
+          <li>Membresías del Programa Lyon (Acelerado y Extendido)</li>
+          <li>Membresías corporativas (Básica y Premium)</li>
+          <li>Conferencias individuales y empresariales</li>
+          <li>Biblioteca digital Lyon Asesor</li>
+        </ul>
+      `,
+      `
+        <h2>Tu enlace de referencia</h2>
+        <p>Al registrarte recibes un enlace único: <strong>lyonasesor.com/?ref=TUCODIGO</strong>.</p>
+        <p>Cada clic queda registrado por 30-60 días. Si esa persona compra en ese período, la venta es tuya.</p>
+      `,
+      `
+        <h2>Material de difusión incluido</h2>
+        <ul>
+          <li>Banners y piezas para redes sociales, listos para publicar</li>
+          <li>Guías de producto por cada conferencia y por la membresía</li>
+          <li>Esta misma presentación, para reuniones de venta 1 a 1</li>
+        </ul>
+        <p>Descarga disponible de forma indefinida desde tu panel de afiliado, sin límite de veces.</p>
+      `,
+      `
+        <h2>Cómo vender bien: el criterio central</h2>
+        <p>No se trata de convencer, se trata de identificar a quién sí le sirve esto ahora — y con quién no insistir.</p>
+        <div class="highlight-box">Vende con quién ya reconoce un problema de liderazgo, comunicación o bienestar en su equipo o en sí mismo. No vendas con quién solo busca algo gratis o "para después".</div>
+      `,
+      `
+        <h2>Cuándo sí y cuándo no</h2>
+        <ul>
+          <li>Sí: cuando la persona pregunta por precio o por cómo empezar — ahí se cierra, no se sigue "educando"</li>
+          <li>No: cuando la objeción real es de confianza en el formato online — ahí se resuelve la duda, no se presiona el pago</li>
+          <li>Sí: seguimiento a los 3-4 días si quedó interesado pero no compró de inmediato</li>
+          <li>No: más de dos seguimientos sin respuesta — se retoma más adelante, no se satura</li>
+        </ul>
+      `,
+      `
+        <h2>Frente a evasivas frecuentes</h2>
+        <p>"Lo voy a pensar" → pregunta qué es específicamente lo que necesita pensar; casi siempre es precio o tiempo, y ambos tienen respuesta concreta (planes desde $10.99/mes, contenido a su propio ritmo).</p>
+        <p>"No tengo tiempo ahora" → el Programa está diseñado para eso: una clase cada 2 o 4 semanas, no un curso intensivo.</p>
+      `,
+      `
+        <h2>Empieza hoy</h2>
+        <p>Regístrate en <strong>lyonasesor.com/afiliados.html</strong>, recibe tus credenciales y tu enlace, y descarga tu material de difusión.</p>
+        <div class="highlight-box">"Lo que transforma equipos, empieza con una persona." — Prof. Mtr. Álvaro Lyon</div>
+        <p style="text-align:center; margin-top:2rem; color:#e86b18;">Lyon Asesor 2026</p>
+      `
+    ];
+    function renderSlide() {
+      document.getElementById('slideContent').innerHTML = slides[currentSlide];
+      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
+      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Presentación de Afiliados · Lyon Asesor`;
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+    }
+    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    });
+    renderSlide();
+  </script>
+</body>
+</html>

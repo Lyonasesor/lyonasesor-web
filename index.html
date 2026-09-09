@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
     <!-- TÍTULO ÚNICO Y DESCRIPTIVO -->
-    <title>Lyon Asesor | Psicoterapia y Desarrollo Personal · Consulta Online</title>
+    <title>Lyon Asesor | Educación Emocional · Desarrollo Humano · Transformación</title>
     <meta name="description" content="Psicoterapia profesional, desarrollo personal y educación emocional para hispanohablantes. Agenda tu primera consulta con el Prof. Mtr. Álvaro Lyon." />
     <meta name="keywords" content="psicoterapia, desarrollo personal, educación emocional, conferencias, talleres, bienestar, salud mental" />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
@@ -193,6 +193,7 @@
             width: 32px;
             height: 32px;
             object-fit: contain;
+            border-radius: 50%;
             alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
@@ -550,10 +551,15 @@
 
         /* ===== SERVICIOS ===== */
         .services-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 900px;
+            margin: 0 auto;
             gap: 28px;
+        }
+        .services-grid .service-card { max-width: none; width: 100%; }
+        @media (max-width: 640px) {
+            .services-grid { grid-template-columns: 1fr; }
         }
         .service-card {
             background: #fff;
@@ -1440,12 +1446,13 @@
                 </div>
             </a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="consulta.html">Consulta</a></li>
                 <li><a href="#ebook">Biblioteca</a></li>
                 <li><a href="#conferencias">Conferencias</a></li>
                 <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                <li><a href="afiliados.html">Afiliados</a></li>
                 <li><a href="legal.html">Legal</a></li>
-                <li><a href="consulta.html" class="nav-cta">Agendar consulta</a></li>
+                <li><a href="membresia.html" class="nav-cta">Membresía</a></li>
             </ul>
             <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         </div>
@@ -1462,7 +1469,7 @@
             </svg>
         </div>
         <div class="hero-content">
-            <div class="hero-badge"><span class="hero-badge-dot"></span>Psicoterapia · Desarrollo Personal · Educación Emocional</div>
+            <div class="hero-badge"><span class="hero-badge-dot"></span>Educación Emocional · Desarrollo Humano · Transformación</div>
             <h1 class="hero-title">
                 <span class="line1">Lo que transforma equipos,</span>
                 <span class="line2">empieza con <span class="accent">una persona.</span></span>
@@ -1492,6 +1499,20 @@
             </div>
             <div class="services-grid">
                 <div class="service-card reveal">
+                    <div class="service-icon"><span>🎙️</span></div>
+                    <h3 class="service-title">Conferencias</h3>
+                    <span class="service-price">$10 USD / persona · $150 USD empresarial</span>
+                    <p class="service-desc">12 temas transformadores. Modalidad individual o para tu equipo. Diploma + ebook incluidos.</p>
+                    <a href="conferencia.html" class="service-link">Ver temáticas <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><span>🎓</span></div>
+                    <h3 class="service-title">Membresías</h3>
+                    <span class="service-price">Desde $10.99 USD/mes</span>
+                    <p class="service-desc">Programa Lyon de NeuroLiderazgo y Transformación Humana: 12 clases, 300 horas académicas, diploma incluido.</p>
+                    <a href="membresia.html" class="service-link">Ver planes <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+                </div>
+                <div class="service-card reveal">
                     <div class="service-icon"><span>📚</span></div>
                     <h3 class="service-title">Biblioteca Lyon Asesor</h3>
                     <span class="service-price">$9.99 USD</span>
@@ -1504,14 +1525,6 @@
                     <span class="service-price">Desde $40 USD / sesión</span>
                     <p class="service-desc">Acompañamiento profesional y personalizado. Sesiones individuales para tu crecimiento emocional.</p>
                     <a href="consulta.html" class="service-link">Agendar consulta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-                </div>
-                <div class="service-card reveal">
-                    <div class="service-icon"><span>🎙️</span></div>
-                    <h3 class="service-title">Conferencias</h3>
-                    <!-- Cambio solicitado: mostramos ambos precios -->
-                    <span class="service-price">$10 USD / persona · $150 USD empresarial</span>
-                    <p class="service-desc">12 temas transformadores. Modalidad individual o para tu equipo. Diploma + ebook incluidos.</p>
-                    <a href="conferencia.html" class="service-link">Ver temáticas <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
                 </div>
             </div>
         </div>
@@ -1542,6 +1555,11 @@
             <div style="text-align:center; margin-top:48px;" class="reveal">
                 <a href="conferencia.html" class="btn btn-primary">Reservar Conferencia <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>
+            <div class="reveal" style="text-align:center; margin-top:56px; padding:40px 24px; background:#fff; border-radius: var(--radius); max-width:720px; margin-left:auto; margin-right:auto; border:1px solid rgba(26,35,48,0.06);">
+                <h3 style="font-family:'Playfair Display', Georgia, serif; font-size:1.6rem; margin-bottom:12px; color:#1A2330;">Membresía Lyon Asesor</h3>
+                <p style="color:#5A6C7D; max-width:560px; margin:0 auto 24px; line-height:1.6;">Un recorrido de 12 clases y 300 horas académicas para transformar tu liderazgo y tu vida emocional, a tu propio ritmo, con acompañamiento y diploma incluidos.</p>
+                <a href="membresia.html" class="btn btn-primary">Accede a tu Membresía <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
         </div>
     </section>
 
@@ -1549,7 +1567,7 @@
     <section class="stats">
         <div class="stats-grid">
             <div class="stat-item reveal"><div class="stat-number">12</div><div class="stat-label">Conferencias disponibles</div></div>
-            <div class="stat-item reveal"><div class="stat-number">7</div><div class="stat-label">Masterclass en desarrollo</div></div>
+            <div class="stat-item reveal"><div class="stat-number">300</div><div class="stat-label">Horas académicas en membresía</div></div>
             <div class="stat-item reveal"><div class="stat-number">10+</div><div class="stat-label">Años de experiencia</div></div>
             <div class="stat-item reveal"><div class="stat-number">500+</div><div class="stat-label">Vidas transformadas</div></div>
         </div>
@@ -1697,13 +1715,13 @@
                         <li><a href="conferencia.html">Conferencias</a></li>
                         <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
                         <li><a href="diagnostico.html">Brújula Emocional</a></li>
-                        <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Membresía</a></li>
+                        <li><a href="membresia.html">Membresía</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Contacto</h4>
                     <ul>
-                        <li><a href="mailto:lyonasesor@gmail.com">lyonasesor@gmail.com</a></li>
+                        <li><a href="mailto:info@lyonasesor.com">info@lyonasesor.com</a></li>
                         <li><a href="https://www.youtube.com/@LyonAsesor" target="_blank">YouTube</a></li>
                         <li><a href="https://whatsapp.com/channel/0029Vb7WVr30G0XnA5K3sg32" target="_blank">Canal de WhatsApp</a></li>
                         <li><a href="legal.html">Información Legal</a></li>
@@ -1981,6 +1999,7 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
 
                     const botones = `
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <button class="product-btn" data-role="accion" data-action="membresia">🎓 Membresía</button>
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
                             <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
                             <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
@@ -2031,7 +2050,7 @@ Haz clic en el botón de pago para completar tu compra:`;
                             <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
                             <div style="margin-top:8px;">
                                 <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                                <a href="mailto:lyonasesor@gmail.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
+                                <a href="mailto:info@lyonasesor.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
                             </div>
                         </div>
                         ${botonHumano()}
@@ -2056,6 +2075,8 @@ Haz clic en el botón de pago para completar tu compra:`;
                             startChat();
                         } else if (accion === 'diagnostico') {
                             window.location.href = 'diagnostico.html';
+                        } else if (accion === 'membresia') {
+                            window.location.href = 'membresia.html';
                         }
                     }
                 });
