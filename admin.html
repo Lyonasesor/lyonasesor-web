@@ -745,6 +745,7 @@
                     <td>${m.estado || 'activo'}</td>
                     <td>
                         <select onchange="cambiarEstadoMiembro('${codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
+                            ${m.estado === 'pendiente_activacion' ? '<option value="pendiente_activacion" selected>⚠️ Pendiente activación</option>' : ''}
                             <option value="activo" ${m.estado==='activo'?'selected':''}>Activo</option>
                             <option value="pausado" ${m.estado==='pausado'?'selected':''}>Pausado</option>
                             <option value="finalizado" ${m.estado==='finalizado'?'selected':''}>Finalizado</option>
@@ -799,6 +800,7 @@
                     <td>${f.a.fechaRegistro ? new Date(f.a.fechaRegistro).toLocaleDateString('es-ES') : '—'}</td>
                     <td>
                         <select onchange="cambiarEstadoAfiliado('${f.codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
+                            ${f.a.estado === 'pendiente_activacion' ? '<option value="pendiente_activacion" selected>⚠️ Pendiente activación</option>' : ''}
                             <option value="activo" ${f.a.estado==='activo'?'selected':''}>Activo</option>
                             <option value="inactivo" ${f.a.estado==='inactivo'?'selected':''}>Inactivo</option>
                         </select>
