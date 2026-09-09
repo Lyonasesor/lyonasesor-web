@@ -14,12 +14,11 @@ const firebaseConfig = {
 
 // Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
-// === EXPONER database GLOBALMENTE para todas las páginas ===
-window.database = database;
+// === EXPONER database GLOBALMENTE para TODAS las páginas ===
+window.database = firebase.database();
 
-// === EXPONER auth GLOBALMENTE (solo se usa en admin.html, pero no estorba en otras páginas) ===
+// === EXPONER auth GLOBALMENTE (solo se usa en admin.html) ===
 if (firebase.auth) {
   window.auth = firebase.auth();
 }
@@ -38,10 +37,7 @@ console.log('📡 Database URL:', firebaseConfig.databaseURL);
  * @returns {Promise}
  */
 function guardarLead(coleccion, datos) {
-  // Usamos push() en vez de Date.now() como key: push() genera un ID único
-  // garantizado por Firebase, evitando colisiones si dos personas envían
-  // el formulario en el mismo milisegundo.
-  const nuevaRef = database.ref(`leads/${coleccion}`).push();
+  const nuevaRef = window.database.ref(`leads/${coleccion}`).push();
   const timestamp = Date.now();
 
   const registro = {
@@ -62,7 +58,7 @@ window.guardarLead = guardarLead;
  * @returns {Promise<Array>}
  */
 function leerLeads(coleccion) {
-  return database.ref(`leads/${coleccion}`).once('value')
+  return window.database.ref(`leads/${coleccion}`).once('value')
     .then(snapshot => {
       const data = snapshot.val();
       if (!data) return [];
@@ -79,7 +75,7 @@ window.leerLeads = leerLeads;
  * @returns {Promise<Object>}
  */
 function leerTodosLosLeads() {
-  return database.ref('leads').once('value')
+  return window.database.ref('leads').once('value')
     .then(snapshot => {
       const data = snapshot.val();
       if (!data) return { consultas: [], conferencias: [], ebooks: [], diagnosticos: [] };
