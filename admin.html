@@ -11,6 +11,12 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="/js/firebase-config.js"></script>
 
+    <script>
+        // Inicializar la base de datos GLOBALMENTE
+        const database = firebase.database();
+        console.log('✅ Firebase Database inicializada en admin');
+    </script>
+
     <style>
         /* ===== RESET Y BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -355,6 +361,29 @@
             margin-right: 8px;
         }
 
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex;
+            align-items: center; justify-content: center; z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+        .modal-box {
+            background: white; max-width: 500px; width: 90%; padding: 32px; border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
+        }
+        .modal-box h2 { font-size: 1.8rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+        .modal-box p { color: #475569; margin-bottom: 16px; }
+        .modal-box .codigo-box {
+            background: #f1f5f9; border-radius: 12px; padding: 16px; font-family: monospace;
+            font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px; color: #e86b18;
+        }
+        .modal-box .instrucciones { color: #64748b; font-size: 0.9rem; margin-bottom: 24px; }
+        .modal-box .btn-modal {
+            background: #e86b18; color: white; border: none; padding: 12px 32px; border-radius: 40px;
+            font-weight: 600; cursor: pointer;
+        }
+        .modal-box .btn-modal:hover { background: #d45f14; }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
             body { padding: 12px; }
@@ -445,7 +474,7 @@
             </div>
         </div>
 
-        <!-- TABLA -->
+        <!-- TABLA PRINCIPAL -->
         <div class="table-wrapper">
             <div class="table-scroll">
                 <table>
@@ -510,7 +539,6 @@
     // =============================================
     // CONFIGURACIÓN
     // =============================================
-    // Correo autorizado para administrar el panel
     const ADMIN_EMAIL = 'info@lyonasesor.com';
 
     const TIPO_MAP = {
@@ -521,7 +549,7 @@
     };
 
     // =============================================
-    // LISTA DE CONFERENCIAS - NOMBRES EXACTOS DE ARCHIVO
+    // LISTA DE CONFERENCIAS
     // =============================================
     const CONFERENCES_DATA = [
         { id: 'autoestima-corporativa', titulo: 'Autoestima Corporativa', descripcion: 'El Pilar del Rendimiento Personal', file: '/conferencias/autoestima-corporativa.html' },
@@ -606,22 +634,7 @@
     });
 
     // =============================================
-    // CARGAR TODOS LOS DATOS
-    // =============================================
-    async function cargarTodosLosDatos() {
-        console.log('🔄 Cargando datos...');
-        await Promise.all([
-            cargarLeads(),
-            cargarConferencias(),
-            cargarSolicitudes(),
-            cargarMiembros(),
-            cargarAfiliados()
-        ]);
-    }
-
-    // =============================================
-    // GENERADOR DE CÓDIGO DE ACCESO (igual al de lyon-lms.js,
-    // duplicado aquí porque admin.html no carga ese archivo)
+    // FUNCIONES DE GENERACIÓN Y PARSEO
     // =============================================
     function generarCodigoAccesoAdmin(prefijo) {
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -630,7 +643,6 @@
         return `${prefijo}-${codigo}`;
     }
 
-    // Extrae el primer número de un texto de precio libre (ej. "$149.94 (pago único)" -> 149.94)
     function parsePrecioNumero(precioStr) {
         if (!precioStr) return 0;
         const match = String(precioStr).match(/[\d,]+\.?\d*/);
@@ -638,12 +650,113 @@
         return parseFloat(match[0].replace(/,/g, '')) || 0;
     }
 
-    // Acredita la comisión de afiliado (30%) sobre una membresía aprobada, si la solicitud
-    // trae un refAfiliado válido y ese código de afiliado existe realmente.
+    // =============================================
+    // MODAL PARA MOSTRAR CÓDIGOS
+    // =============================================
+    function mostrarCodigoModal(titulo, mensaje, codigo, instrucciones) {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal-box">
+                <h2>${titulo}</h2>
+                <p>${mensaje}</p>
+                <div class="codigo-box">${codigo}</div>
+                <p class="instrucciones">${instrucciones}</p>
+                <button class="btn-modal" onclick="this.closest('.modal-overlay').remove()">Entendido</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+
+    // =============================================
+    // APROBAR SOLICITUD (CORREGIDA)
+    // =============================================
+    async function aprobarSolicitud(tipo, id) {
+        try {
+            if (tipo === 'Membresía') {
+                const snap = await database.ref('solicitudes_membresia/' + id).once('value');
+                const s = snap.val();
+                if (!s) throw new Error('Solicitud no encontrada');
+
+                const codigo = generarCodigoAccesoAdmin('LYON');
+
+                await database.ref('membresias/' + codigo).set({
+                    nombre: s.nombre,
+                    email: s.email,
+                    telefono: s.telefono,
+                    plan: s.plan || 'extendido',
+                    fechaInicio: Date.now(),
+                    estado: 'activo',
+                    clasesCompletadas: {},
+                    diplomasDescargados: {}
+                });
+
+                await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
+
+                // Acreditar comisión si viene de referido
+                if (s.refAfiliado) {
+                    await acreditarComisionSiAplica(s);
+                }
+
+                mostrarCodigoModal(
+                    '🎓 Membresía aprobada',
+                    `El código de acceso para <strong>${s.nombre}</strong> es:`,
+                    codigo,
+                    'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía para acceder a su dashboard.'
+                );
+
+                await Promise.all([
+                    cargarSolicitudes(),
+                    cargarMiembros(),
+                    cargarAfiliados()
+                ]);
+
+            } else if (tipo === 'Afiliado') {
+                const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
+                const s = snap.val();
+                if (!s) throw new Error('Solicitud no encontrada');
+
+                const codigo = generarCodigoAccesoAdmin('AF');
+                const clave = generarCodigoAccesoAdmin('').replace('-', '');
+
+                await database.ref('afiliados/' + codigo).set({
+                    nombre: s.nombre,
+                    email: s.email,
+                    telefono: s.telefono,
+                    pais: s.pais || '',
+                    claveAcceso: clave,
+                    fechaRegistro: Date.now(),
+                    estado: 'activo'
+                });
+
+                await database.ref('solicitudes_afiliado/' + id + '/estado').set('aprobada');
+
+                mostrarCodigoModal(
+                    '🤝 Afiliado aprobado',
+                    `Código de afiliado: <strong>${codigo}</strong><br>Clave de acceso: <strong>${clave}</strong>`,
+                    `${codigo} · ${clave}`,
+                    'Entrégale estas credenciales al afiliado. Deberá ingresarlas en la página de acceso de afiliados.'
+                );
+
+                await Promise.all([
+                    cargarSolicitudes(),
+                    cargarMiembros(),
+                    cargarAfiliados()
+                ]);
+            }
+        } catch (error) {
+            console.error('❌ Error al aprobar solicitud:', error);
+            alert('⚠️ Error al aprobar: ' + error.message);
+        }
+    }
+
+    // =============================================
+    // ACREDITAR COMISIÓN
+    // =============================================
     async function acreditarComisionSiAplica(solicitud) {
         if (!solicitud.refAfiliado) return;
         const afSnap = await database.ref('afiliados/' + solicitud.refAfiliado).once('value');
-        if (!afSnap.exists()) return; // código de referido inválido/expirado: no se acredita nada
+        if (!afSnap.exists()) return;
         const monto = parsePrecioNumero(solicitud.precio);
         if (monto <= 0) return;
         const comision = +(monto * 0.30).toFixed(2);
@@ -659,7 +772,21 @@
     }
 
     // =============================================
-    // SOLICITUDES PENDIENTES (membresía + afiliado)
+    // CARGAR TODOS LOS DATOS
+    // =============================================
+    async function cargarTodosLosDatos() {
+        console.log('🔄 Cargando datos...');
+        await Promise.all([
+            cargarLeads(),
+            cargarConferencias(),
+            cargarSolicitudes(),
+            cargarMiembros(),
+            cargarAfiliados()
+        ]);
+    }
+
+    // =============================================
+    // CARGAR SOLICITUDES PENDIENTES
     // =============================================
     async function cargarSolicitudes() {
         const tbody = document.getElementById('solicitudesTableBody');
@@ -708,37 +835,6 @@
             console.error('Error cargando solicitudes:', e);
             tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
         }
-    }
-
-    async function aprobarSolicitud(tipo, id) {
-        if (tipo === 'Membresía') {
-            const snap = await database.ref('solicitudes_membresia/' + id).once('value');
-            const s = snap.val();
-            if (!s) return;
-            const codigo = generarCodigoAccesoAdmin('LYON');
-            await database.ref('membresias/' + codigo).set({
-                nombre: s.nombre, email: s.email, telefono: s.telefono, plan: s.plan || 'extendido',
-                fechaInicio: Date.now(), estado: 'activo', clasesCompletadas: {}, diplomasDescargados: {}
-            });
-            await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
-            await acreditarComisionSiAplica(s);
-            alert(`Membresía activada.\nCódigo de acceso a entregar a ${s.nombre}: ${codigo}\n(Compártelo por correo o WhatsApp — no se envía automáticamente.)`);
-        } else {
-            const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
-            const s = snap.val();
-            if (!s) return;
-            const codigo = generarCodigoAccesoAdmin('AF');
-            const clave = generarCodigoAccesoAdmin('').replace('-', '');
-            await database.ref('afiliados/' + codigo).set({
-                nombre: s.nombre, email: s.email, telefono: s.telefono, pais: s.pais || '',
-                claveAcceso: clave, fechaRegistro: Date.now(), estado: 'activo'
-            });
-            await database.ref('solicitudes_afiliado/' + id + '/estado').set('aprobada');
-            alert(`Afiliado activado.\nCódigo: ${codigo}\nClave: ${clave}\n(Compártelo por correo o WhatsApp — no se envía automáticamente.)`);
-        }
-        cargarSolicitudes();
-        cargarMiembros();
-        cargarAfiliados();
     }
 
     // =============================================
@@ -819,7 +915,7 @@
                 const comisionPendiente = ventas.filter(v => v.estadoComision === 'pendiente').reduce((s, v) => s + (v.comision || 0), 0);
                 const ultimaVenta = ventas.length ? Math.max(...ventas.map(v => v.timestamp || 0)) : null;
                 const diasInactivo = ultimaVenta ? Math.floor((Date.now() - ultimaVenta) / 86400000) : (a.fechaRegistro ? Math.floor((Date.now() - a.fechaRegistro) / 86400000) : 0);
-                return { codigo, a, clics, ventasCount: ventas.length, comisionTotal, comisionPendiente, ultimaVenta, diasInactivo, ventasKeys: Object.keys(ventasObj) };
+                return { codigo, a, clics, ventasCount: ventas.length, comisionTotal, comisionPendiente, ultimaVenta, diasInactivo };
             }));
 
             tbody.innerHTML = filas.map(f => `
@@ -904,7 +1000,7 @@
     }
 
     // =============================================
-    // CARGAR CONFERENCIAS (Configuración)
+    // CARGAR CONFERENCIAS
     // =============================================
     async function cargarConferencias() {
         try {
@@ -927,9 +1023,6 @@
         }
     }
 
-    // =============================================
-    // INICIALIZAR CONFERENCIAS EN FIREBASE
-    // =============================================
     async function inicializarConferencias() {
         try {
             console.log('🚀 Inicializando conferencias en Firebase...');
@@ -953,9 +1046,6 @@
         }
     }
 
-    // =============================================
-    // RENDER CONFERENCIAS
-    // =============================================
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
 
@@ -988,9 +1078,6 @@
         container.innerHTML = html;
     }
 
-    // =============================================
-    // TOGGLE CONFERENCIA
-    // =============================================
     async function toggleConferencia(id, activa) {
         try {
             await database.ref(`configuracion/conferencias/${id}/activa`).set(activa);
@@ -1004,7 +1091,7 @@
     }
 
     // =============================================
-    // ACTUALIZAR ESTADÍSTICAS
+    // ESTADÍSTICAS
     // =============================================
     function actualizarStats() {
         const consultas = allLeads.filter(l => l.coleccion === 'consultas');
@@ -1025,7 +1112,7 @@
     }
 
     // =============================================
-    // GRÁFICO DE TORTA
+    // GRÁFICO
     // =============================================
     function renderChart() {
         const tipos = {
@@ -1059,7 +1146,7 @@
     }
 
     // =============================================
-    // RENDER TABLA
+    // TABLA PRINCIPAL
     // =============================================
     function renderTabla() {
         const tipoFiltro = document.getElementById('tipoFiltro').value;
@@ -1176,7 +1263,7 @@
     });
 
     // =============================================
-    // RECARGAR CADA 30 SEGUNDOS
+    // RECARGAR PERIÓDICO
     // =============================================
     setInterval(() => {
         const user = firebase.auth().currentUser;
