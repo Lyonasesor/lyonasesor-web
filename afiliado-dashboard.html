@@ -7,14 +7,19 @@
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
+<!-- NO DECLARES database aquí, ya está disponible globalmente desde firebase-config.js -->
 <script>
-    // Inicializar la base de datos GLOBALMENTE
-    const database = firebase.database();
-    console.log('✅ Firebase Database inicializada en panel de afiliado');
+    // Verificar que database esté disponible
+    if (typeof database === 'undefined') {
+        console.error('❌ database no está definida. Revisa firebase-config.js');
+    } else {
+        console.log('✅ database disponible globalmente en afiliado-dashboard');
+    }
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -232,17 +237,14 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
 function cargarDashboard(data) {
     console.log('📋 Cargando dashboard con datos:', data);
 
-    // Guardar datos globales
     AFILIADO = data;
     CODIGO_AF = data.codigo;
 
     try {
-        // Ocultar login y mostrar dashboard
         document.getElementById('loginGate').classList.add('hidden');
         document.getElementById('dashboardApp').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
 
-        // Asignar nombre (con fallback)
         const nombreElement = document.getElementById('nombreAfiliado');
         if (nombreElement) {
             nombreElement.textContent = data.nombre || 'Afiliado';
@@ -250,7 +252,6 @@ function cargarDashboard(data) {
             console.warn('⚠️ Elemento #nombreAfiliado no encontrado');
         }
 
-        // Asignar estado
         const estadoEl = document.getElementById('estadoAfiliado');
         if (estadoEl) {
             const estado = data.estado || 'activo';
@@ -258,23 +259,19 @@ function cargarDashboard(data) {
             estadoEl.className = 'status-badge ' + estado;
         }
 
-        // Generar enlace de referencia
         const refLinkInput = document.getElementById('refLinkInput');
         if (refLinkInput) {
             const refLink = `https://lyonasesor.com/?ref=${data.codigo}`;
             refLinkInput.value = refLink;
         }
 
-        // Enlace al material ZIP (configura la variable global o ruta fija)
         const zipUrl = 'https://drive.google.com/uc?export=download&id=1SVEBlfLZh8kNIIea1nssLFvZe14H92uZ';
         const zipLink = document.getElementById('materialZipLink');
         if (zipLink) {
             zipLink.href = zipUrl;
         }
 
-        // Cargar métricas (estadísticas)
         cargarMetricas();
-
         console.log('✅ Dashboard cargado correctamente');
 
     } catch (error) {
@@ -309,7 +306,6 @@ function cargarMetricas() {
 
     console.log('📊 Cargando métricas para afiliado:', CODIGO_AF);
 
-    // Cargar clics
     database.ref('afiliados_clics/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
         const totalClics = Object.keys(data).length;
@@ -320,7 +316,6 @@ function cargarMetricas() {
         console.error('❌ Error cargando clics:', err);
     });
 
-    // Cargar ventas
     database.ref('afiliados_ventas/' + CODIGO_AF).once('value').then(snap => {
         const data = snap.val() || {};
         const ventas = Object.values(data);
@@ -336,7 +331,6 @@ function cargarMetricas() {
         if (metricComisionTotal) metricComisionTotal.textContent = '$' + totalComision.toFixed(2);
         if (metricComisionPendiente) metricComisionPendiente.textContent = '$' + pendiente.toFixed(2);
 
-        // Renderizar tabla de ventas
         const tbody = document.getElementById('ventasTableBody');
         if (tbody) {
             if (ventas.length === 0) {
