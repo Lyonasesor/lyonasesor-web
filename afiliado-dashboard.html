@@ -14,7 +14,6 @@
 
 <!-- NO DECLARES database aquí, ya está disponible globalmente desde firebase-config.js -->
 <script>
-    // Verificar que database esté disponible
     if (typeof database === 'undefined') {
         console.error('❌ database no está definida. Revisa firebase-config.js');
     } else {
@@ -110,7 +109,8 @@
     </div>
 </div>
 
-<div id="dashboardApp" class="hidden" style="display:none;">
+<!-- ===== CORRECCIÓN: ELIMINADA LA CLASE 'hidden' ===== -->
+<div id="dashboardApp" style="display:none;">
     <div class="app-header">
         <h1>Hola, <span id="nombreAfiliado">—</span> 🤝</h1>
         <p style="color:rgba(255,255,255,0.75);">Estado: <span id="estadoAfiliado" class="status-badge activo">Activo</span></p>
