@@ -11,6 +11,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
+<script>
+    // Inicializar la base de datos GLOBALMENTE
+    const database = firebase.database();
+    console.log('✅ Firebase Database inicializada en panel de miembro');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -54,6 +60,40 @@
     .final-diploma-box h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; margin-bottom: 10px; }
     .final-diploma-box .gold { color: #f0c987; }
     .closing-note { background: rgba(232,107,24,0.08); border-left: 3px solid var(--naranja); padding: 14px 18px; border-radius: 8px; font-size: 0.9rem; color: var(--text-dark); margin-top: 20px; }
+    .login-wrap { max-width: 480px; margin: 20vh auto; padding: 0 20px; }
+    .login-box { background: #fff; padding: 40px 32px; border-radius: 24px; box-shadow: var(--shadow-md); text-align: center; }
+    .login-box h2 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 8px; }
+    .login-box p { color: var(--text-muted); font-size: 0.95rem; }
+    .form-group { margin: 16px 0; }
+    .form-group input { width: 100%; padding: 14px 18px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 1rem; }
+    .form-submit { width: 100%; padding: 14px; background: var(--naranja); color: #fff; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    .form-submit:hover { background: var(--naranja-oscuro); }
+    .form-note { margin-top: 16px; font-size: 0.85rem; color: var(--text-muted); }
+    .form-note a { color: var(--naranja); font-weight: 600; text-decoration: none; }
+    .hidden { display: none !important; }
+    .locked-panel { background: #f8fafc; border-radius: var(--radius); padding: 40px 30px; text-align: center; }
+    .locked-panel h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+    .progress-track { background: rgba(255,255,255,0.2); border-radius: 30px; height: 8px; overflow: hidden; }
+    .progress-fill { background: var(--naranja); height: 100%; width: 0%; transition: width 0.5s ease; }
+    .class-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .class-tab { padding: 10px 20px; border-radius: 40px; border: 1.5px solid #e2e8f0; background: #fff; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; color: var(--text-muted); }
+    .class-tab.active { border-color: var(--naranja); background: var(--naranja); color: #fff; }
+    .class-tab.completed { border-color: #22c55e; background: #f0fdf4; color: #166534; }
+    .class-tab.locked { opacity: 0.5; cursor: not-allowed; }
+    .class-tab.locked .lock-icon { margin-right: 4px; }
+    .copyright-footer { text-align: center; padding: 40px 0 20px; color: var(--text-muted); font-size: 0.8rem; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .video-watermark {
+        position: absolute; bottom: 16px; right: 20px; background: rgba(0,0,0,0.6); color: rgba(255,255,255,0.7);
+        font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px; pointer-events: none;
+        font-family: 'Inter', sans-serif; font-weight: 600;
+    }
+    .pdf-frame-wrap { position: relative; padding-bottom: 75%; height: 0; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0; background: #f8fafc; }
+    .pdf-frame-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .info-paragraphs p { background: #f8fafc; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; color: var(--text-dark); line-height: 1.6; border-left: 3px solid var(--naranja); }
+    .info-paragraphs p:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -133,6 +173,7 @@
     </div>
 </div>
 
+<!-- Scripts externos (debes tener estos archivos en tu proyecto) -->
 <script src="assets/js/lyon-lms.js"></script>
 <script src="assets/js/lyon-clases-contenido.js"></script>
 <script src="assets/js/lyon-shared.js"></script>
@@ -205,6 +246,16 @@ function cargarDashboard(data) {
     actualizarProgreso();
 }
 
+// La función buscarMembresia debe estar definida en lyon-lms.js,
+// pero la duplicamos aquí por si acaso:
+function buscarMembresia(codigo) {
+    return database.ref('membresias/' + codigo).once('value').then(snap => {
+        if (!snap.exists()) return null;
+        const data = snap.val();
+        return { ...data, codigo };
+    });
+}
+
 function claseDesbloqueada(n) {
     if (!MEMBRESIA.fechaInicio) return n === 1;
     const fechaDesbloqueo = calcularFechaDesbloqueo(MEMBRESIA.fechaInicio, MEMBRESIA.plan, n);
@@ -218,6 +269,11 @@ function claseCompletada(n) {
 function renderTabs() {
     const wrap = document.getElementById('classTabs');
     wrap.innerHTML = '';
+    // LYON_CLASES debe estar definido en lyon-clases-contenido.js
+    if (typeof LYON_CLASES === 'undefined') {
+        wrap.innerHTML = '<p style="color:red;">Error: no se cargó LYON_CLASES</p>';
+        return;
+    }
     LYON_CLASES.forEach(c => {
         const btn = document.createElement('button');
         const desbloqueada = claseDesbloqueada(c.n);
@@ -334,7 +390,7 @@ function renderClase(n) {
             const cedula = document.getElementById(`diplomaCedula_${n}`).value.trim();
             if (!nombre || !cedula) { alert('Completa nombre y cédula.'); return; }
             const codigoUnico = generarCodigoAcceso('LYON');
-            window.database.ref('diplomas_publicos/' + codigoUnico).set({
+            database.ref('diplomas_publicos/' + codigoUnico).set({
                 nombre, cedula, tituloConferencia: clase.titulo, descargado: true,
                 fecha: new Date().toISOString(), fechaLegible: new Date().toLocaleDateString('es-ES'),
                 codigoUnico
@@ -371,7 +427,7 @@ document.getElementById('finalDiplomaBtn').addEventListener('click', () => {
     const cedula = document.getElementById('finalCedula').value.trim();
     if (!nombre || !cedula) { alert('Completa nombre y cédula.'); return; }
     const codigoUnico = generarCodigoAcceso('LYONPROG');
-    window.database.ref('diplomas_programa_publicos/' + codigoUnico).set({
+    database.ref('diplomas_programa_publicos/' + codigoUnico).set({
         nombre, cedula, plan: MEMBRESIA.plan, descargado: true,
         fecha: new Date().toISOString(), fechaLegible: new Date().toLocaleDateString('es-ES'),
         codigoUnico
@@ -383,6 +439,27 @@ document.getElementById('finalDiplomaBtn').addEventListener('click', () => {
         document.getElementById('finalValidarLink').href = 'validacion-programa-completo.html?codigo=' + codigoUnico;
     });
 });
+
+// Funciones auxiliares (deben estar en lyon-lms.js, pero las duplicamos por seguridad)
+function calcularFechaDesbloqueo(fechaInicio, plan, n) {
+    const dias = plan === 'acelerado' ? 14 : 30;
+    return new Date(fechaInicio + (n - 1) * dias * 86400000);
+}
+
+function generarCodigoAcceso(prefijo) {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let codigo = '';
+    for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+    return `${prefijo}-${codigo}`;
+}
+
+function marcarClaseCompletada(codigo, n) {
+    return database.ref('membresias/' + codigo + '/clasesCompletadas/' + n).set(Date.now());
+}
+
+function marcarDiplomaDescargado(codigo, n) {
+    return database.ref('membresias/' + codigo + '/diplomasDescargados/' + n).set(true);
+}
 </script>
 </body>
 </html>
