@@ -153,7 +153,6 @@
         .btn-pagar.desmarcar { background: #94a3b8; }
         .btn-pagar.desmarcar:hover { background: #64748b; }
 
-        /* Botón especial para "Asistió al cierre" */
         .btn-cierre {
             padding: 5px 14px; border-radius: 40px; border: none; font-size: 0.72rem;
             font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap;
@@ -314,7 +313,6 @@
             </div>
         </div>
 
-        <!-- ===== GESTIÓN DE MIEMBROS (con columna Asistió al cierre) ===== -->
         <div class="table-wrapper" style="margin-top:32px;">
             <h2 style="padding:1.2rem 1.2rem 0;">🎓 Gestión de Miembros</h2>
             <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Marca <strong>"Asistió al cierre"</strong> para desbloquear el diploma del Programa Completo (300 horas) para el miembro.</p>
@@ -371,7 +369,25 @@
 
     let allLeads = [];
 
-    // ===== AUTENTICACIÓN =====
+    // =============================================
+    // 🔧 FUNCIONES AUXILIARES DE PLAN
+    // =============================================
+    function esPlanAcelerado(plan) {
+        if (!plan || typeof plan !== 'string') return false;
+        return plan.toLowerCase().includes('acelerado');
+    }
+
+    function etiquetaPlanCorta(plan) {
+        return esPlanAcelerado(plan) ? 'Acelerado' : 'Extendido';
+    }
+
+    function diasEntreClases(plan) {
+        return esPlanAcelerado(plan) ? 14 : 30;
+    }
+
+    // =============================================
+    // AUTENTICACIÓN
+    // =============================================
     document.getElementById('loginBtn').addEventListener('click', async function() {
         const pass = document.getElementById('loginPassword').value;
         const errorDiv = document.getElementById('loginError');
@@ -426,7 +442,9 @@
         }
     });
 
-    // ===== UTILIDADES =====
+    // =============================================
+    // UTILIDADES
+    // =============================================
     function generarCodigoAccesoAdmin(prefijo) {
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let codigo = '';
@@ -455,7 +473,9 @@
         document.body.appendChild(overlay);
     }
 
-    // ===== APROBAR SOLICITUD =====
+    // =============================================
+    // APROBAR SOLICITUD
+    // =============================================
     async function aprobarSolicitud(tipo, id) {
         try {
             if (tipo === 'Membresía') {
@@ -557,7 +577,9 @@
         ]);
     }
 
-    // ===== SOLICITUDES =====
+    // =============================================
+    // SOLICITUDES
+    // =============================================
     async function cargarSolicitudes() {
         const tbody = document.getElementById('solicitudesTableBody');
         try {
@@ -606,7 +628,9 @@
         }
     }
 
-    // ===== GESTIÓN DE MIEMBROS (con columna "Asistió al cierre") =====
+    // =============================================
+    // GESTIÓN DE MIEMBROS (con correcciones de plan)
+    // =============================================
     async function cargarMiembros() {
         const tbody = document.getElementById('miembrosTableBody');
         try {
@@ -621,13 +645,16 @@
                 const m = data[codigo];
                 const completadas = Object.keys(m.clasesCompletadas || {}).length;
                 const diplomas = Object.keys(m.diplomasDescargados || {}).length;
-                const dias = m.plan === 'acelerado' ? 14 : 30;
+
+                // 🔧 CORRECCIÓN: usar funciones auxiliares para detectar el plan correctamente
+                const dias = diasEntreClases(m.plan);
+                const etiquetaPlan = etiquetaPlanCorta(m.plan);
+
                 const proxNum = Math.min(completadas + 1, 12);
                 const proxFecha = new Date((m.fechaInicio || Date.now()) + dias * (proxNum - 1) * 86400000);
                 const asistio = m.asistioCierre === true;
                 const clasesCompletas = completadas >= 12;
 
-                // Botón de "Asistió al cierre": solo tiene sentido si ya completó 12 clases
                 let botonCierre;
                 if (clasesCompletas) {
                     botonCierre = asistio
@@ -642,7 +669,7 @@
                     <td>${codigo}</td>
                     <td>${m.nombre || ''}</td>
                     <td>${m.email || ''}</td>
-                    <td>${m.plan === 'acelerado' ? 'Acelerado' : 'Extendido'}</td>
+                    <td>${etiquetaPlan}</td>
                     <td>${m.fechaInicio ? new Date(m.fechaInicio).toLocaleDateString('es-ES') : '—'}</td>
                     <td>${completadas}/12</td>
                     <td>${completadas >= 12 ? '—' : proxFecha.toLocaleDateString('es-ES')}</td>
@@ -668,7 +695,6 @@
         database.ref('membresias/' + codigo + '/estado').set(estado);
     };
 
-    // NUEVA: Toggle "asistió al cierre"
     window.toggleAsistioCierre = async function(codigo, valor) {
         if (!confirm(valor
             ? '¿Confirmas que este miembro SÍ asistió al evento de cierre? Se desbloqueará su diploma del Programa Completo (300h).'
@@ -686,7 +712,9 @@
         }
     };
 
-    // ===== GESTIÓN DE AFILIADOS =====
+    // =============================================
+    // GESTIÓN DE AFILIADOS
+    // =============================================
     async function cargarAfiliados() {
         const tbody = document.getElementById('afiliadosTableBody');
         try {
@@ -755,7 +783,9 @@
         cargarAfiliados();
     };
 
-    // ===== LEADS =====
+    // =============================================
+    // LEADS
+    // =============================================
     async function cargarLeads() {
         try {
             const snapshot = await database.ref('leads').once('value');
@@ -783,7 +813,9 @@
         }
     }
 
-    // ===== CONFERENCIAS =====
+    // =============================================
+    // CONFERENCIAS
+    // =============================================
     async function cargarConferencias() {
         try {
             const snapshot = await database.ref('configuracion/conferencias').once('value');
@@ -855,7 +887,9 @@
         }
     };
 
-    // ===== STATS =====
+    // =============================================
+    // STATS
+    // =============================================
     function actualizarStats() {
         const consultas = allLeads.filter(l => l.coleccion === 'consultas');
         const conferencias = allLeads.filter(l => l.coleccion === 'conferencias');
@@ -873,7 +907,9 @@
         document.getElementById('statDiagnosticos').textContent = diagnosticos.length;
     }
 
-    // ===== CHART =====
+    // =============================================
+    // CHART
+    // =============================================
     function renderChart() {
         const tipos = {
             consulta: allLeads.filter(l => l.coleccion === 'consultas' && l.pagado).length,
@@ -898,7 +934,9 @@
         ).join('');
     }
 
-    // ===== TABLA PRINCIPAL =====
+    // =============================================
+    // TABLA PRINCIPAL
+    // =============================================
     function renderTabla() {
         const tipoFiltro = document.getElementById('tipoFiltro').value;
         const estadoFiltro = document.getElementById('estadoFiltro').value;
@@ -961,7 +999,9 @@
     document.getElementById('tipoFiltro').addEventListener('change', renderTabla);
     document.getElementById('estadoFiltro').addEventListener('change', renderTabla);
 
-    // ===== EXPORTAR CSV =====
+    // =============================================
+    // EXPORTAR CSV
+    // =============================================
     document.getElementById('exportBtn').addEventListener('click', function() {
         if (allLeads.length === 0) { alert('No hay datos'); return; }
         let csv = 'Tipo,Fecha,Nombre,Email,Teléfono,Monto,Pagado\n';
@@ -984,7 +1024,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con soporte de "Asistió al cierre"');
+    console.log('✅ Admin Lyon Asesor cargado con detección correcta de planes');
 </script>
 </body>
 </html>
