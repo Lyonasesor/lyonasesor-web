@@ -99,6 +99,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <!-- 🔧 CORRECCIÓN: Añadido lyon-shared.js para capturar ?ref= y exponer obtenerAfiliadoActivo() -->
+    <script src="assets/js/lyon-shared.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -196,7 +198,6 @@
             height: 32px;
             object-fit: contain;
             border-radius: 50%;
-            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -1038,7 +1039,7 @@
             // Determinar monto
             const monto = modalidad === 'empresa' ? 150 : 10;
 
-            // Datos para Firebase
+            // 🔧 CORRECCIÓN: Datos para Firebase con refAfiliado y fechaLegible
             const datos = {
                 modalidad: modalidad,
                 empresa: empresa || (modalidad === 'individual' ? 'Individual' : ''),
@@ -1050,13 +1051,15 @@
                 participantes: participantes || '1',
                 monto: monto,
                 estado: 'pendiente',
-                pagado: false
+                pagado: false,
+                fechaLegible: new Date().toLocaleString('es-ES'),
+                refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
             // Guardar en Firebase (si falla, no interrumpe)
             try {
                 await guardarLead('conferencias', datos);
-                console.log('✅ Conferencia guardada en Firebase');
+                console.log('✅ Conferencia guardada en Firebase', datos.refAfiliado ? `(ref: ${datos.refAfiliado})` : '(sin afiliado)');
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
@@ -1095,7 +1098,8 @@
             }
         });
 
-        // ===== FUNCIÓN GUARDAR (si Firebase está configurado) =====
+        // ===== FUNCIÓN GUARDAR (CORREGIDA) =====
+        // 🔧 CORRECCIÓN: Se prefija con 'leads/' para que el admin lo lea correctamente
         async function guardarLead(coleccion, datos) {
             if (typeof firebase === 'undefined' || typeof firebase.database === 'undefined') {
                 console.warn('Firebase no disponible. No se guardó el lead.');
@@ -1103,7 +1107,7 @@
             }
             try {
                 const db = firebase.database();
-                const ref = db.ref(coleccion);
+                const ref = db.ref('leads/' + coleccion);
                 await ref.push(datos);
             } catch (error) {
                 console.error('Error al guardar en Firebase:', error);
