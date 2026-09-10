@@ -95,6 +95,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <!-- 🔧 CORRECCIÓN: Añadido lyon-shared.js para capturar ?ref= y exponer obtenerAfiliadoActivo() -->
+    <script src="assets/js/lyon-shared.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -179,7 +181,6 @@
             height: 32px;
             object-fit: contain;
             border-radius: 50%;
-            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -481,7 +482,7 @@
             color: #1b5e20;
         }
 
-        /* ===== FOOTER CON YOUTUBE ===== */
+        /* ===== FOOTER ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -857,7 +858,8 @@
                 </p>
                 <div class="price-tag">$9.99 <small>USD</small></div>
                 <br>
-                <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary">💳 Pagar con PayPal</a>
+                <!-- 🔧 CORRECCIÓN: Botón PayPal con clase identificable para tracking de afiliado -->
+                <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary paypal-ebook-btn" data-producto="Biblioteca Lyon Asesor" data-monto="9.99">💳 Pagar con PayPal</a>
                 <br><br>
                 <p style="font-size:0.9rem; color: var(--text-muted);">Aceptamos tarjetas de crédito/débito y PayPal en todo el mundo.</p>
 
@@ -940,7 +942,8 @@
                 <div class="payment-method">
                     <h3>💳 PayPal (Internacional)</h3>
                     <p>Haz clic en el botón para pagar con tarjeta o cuenta PayPal en cualquier país.</p>
-                    <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary" style="padding:12px 24px; font-size:0.9rem;">Pagar con PayPal</a>
+                    <!-- 🔧 CORRECCIÓN: Segundo botón PayPal también con clase para tracking -->
+                    <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary paypal-ebook-btn" data-producto="Biblioteca Lyon Asesor" data-monto="9.99" style="padding:12px 24px; font-size:0.9rem;">Pagar con PayPal</a>
                 </div>
                 <div class="payment-method">
                     <h3>📱 Pago Móvil / Transferencia</h3>
@@ -983,7 +986,7 @@
         </div>
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -1077,7 +1080,7 @@
             }
 
             try {
-                // 🔥 GUARDAR EN FIREBASE en lugar de JSONBin
+                // 🔧 CORRECCIÓN: Objeto con refAfiliado y fechaLegible
                 const datos = {
                     nombre: nombre,
                     email: email,
@@ -1085,11 +1088,13 @@
                     tipo: 'ebook',
                     producto: 'Biblioteca Lyon Asesor',
                     precio: '9.99',
-                    estado: 'lead'
+                    estado: 'lead',
+                    fechaLegible: new Date().toLocaleString('es-ES'),
+                    refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
                 };
                 
                 await guardarLead('ebooks', datos);
-                console.log('✅ Lead de Ebook guardado en Firebase');
+                console.log('✅ Lead de Ebook guardado en Firebase', datos.refAfiliado ? `(ref: ${datos.refAfiliado})` : '(sin afiliado)');
 
                 alert('¡Registro exitoso! Pronto recibirás novedades. ¡Gracias por confiar en Lyon Asesor!');
                 document.getElementById('leadForm').reset();
@@ -1105,6 +1110,82 @@
                 alert('Hubo un error al guardar tus datos. Por favor, intenta de nuevo.');
             }
         });
+
+        // =============================================
+        // 🔧 NUEVO: Tracking de afiliado al hacer clic en PayPal (ebook)
+        // Como el ebook se vende con un link directo a PayPal, registramos
+        // una "venta pendiente" con el código del afiliado activo para que
+        // el admin pueda acreditarla manualmente al confirmar el pago.
+        // =============================================
+        (function trackEbookPayPalClick() {
+            // Esperar a que el DOM esté listo
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initTracking);
+            } else {
+                initTracking();
+            }
+
+            function initTracking() {
+                const paypalButtons = document.querySelectorAll('.paypal-ebook-btn');
+                if (paypalButtons.length === 0) {
+                    console.log('📚 No se encontraron botones de PayPal para trackear.');
+                    return;
+                }
+
+                paypalButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const codigo = (typeof obtenerAfiliadoActivo === 'function') ? obtenerAfiliadoActivo() : null;
+
+                        if (!codigo) {
+                            console.log('📚 Clic en PayPal sin afiliado activo. Sin tracking.');
+                            return;
+                        }
+
+                        if (!window.database) {
+                            console.warn('📚 Firebase no disponible. No se pudo registrar la venta del afiliado.');
+                            return;
+                        }
+
+                        const producto = this.dataset.producto || 'Biblioteca Lyon Asesor';
+                        const monto = parseFloat(this.dataset.monto || '9.99');
+                        const comision = +(monto * 0.30).toFixed(2); // 30% de comisión
+
+                        // Registrar la venta potencial en Firebase
+                        window.database.ref('afiliados_ventas/' + codigo).push({
+                            producto: producto,
+                            monto: monto,
+                            comision: comision,
+                            estadoComision: 'pendiente',
+                            estadoPago: 'clic_paypal_sin_confirmar',
+                            timestamp: Date.now(),
+                            fecha: new Date().toISOString(),
+                            fechaLegible: new Date().toLocaleString('es-ES')
+                        }).then(() => {
+                            console.log(`📚 Venta potencial de ebook registrada para afiliado ${codigo}: $${monto} → comisión $${comision}`);
+                        }).catch(err => {
+                            console.error('❌ Error al registrar venta potencial:', err);
+                        });
+                    });
+                });
+            }
+        })();
+
+        // ===== FUNCIÓN GUARDAR (CORREGIDA) =====
+        // 🔧 CORRECCIÓN: Se prefija con 'leads/' para que el admin lo lea correctamente
+        async function guardarLead(coleccion, datos) {
+            if (typeof firebase === 'undefined' || typeof firebase.database === 'undefined') {
+                console.warn('Firebase no disponible. No se guardó el lead.');
+                return;
+            }
+            try {
+                const db = firebase.database();
+                const ref = db.ref('leads/' + coleccion);
+                await ref.push(datos);
+            } catch (error) {
+                console.error('Error al guardar en Firebase:', error);
+                throw error;
+            }
+        }
 
         // ===== CHAT =====
         (function() {
@@ -1134,6 +1215,7 @@
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
                 const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const PAYPAL_CONFERENCIA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
                 const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
 
                 function addMessage(text, sender, options = {}) {
@@ -1181,7 +1263,7 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
                             <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
-                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
+                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button>
                             <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
                         </div>
                         ${botonHumano()}
@@ -1210,9 +1292,14 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                         `;
                     } else if (producto === 'conferencia') {
                         nombreProducto = '🎤 Conferencia';
-                        precio = '$150 (tarifa plana)';
-                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
-                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                        precio = '$150 (empresa) / $10 (individual)';
+                        descripcion = '12 temáticas transformadoras. Incluye certificado y material descargable.';
+                        botonesPayPal = `
+                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                                <a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (Empresa)</a>
+                                <a href="${PAYPAL_CONFERENCIA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $10 (Individual)</a>
+                            </div>
+                        `;
                     }
 
                     const mensaje = `Has seleccionado: **${nombreProducto}**
