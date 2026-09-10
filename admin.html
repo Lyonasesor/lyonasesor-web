@@ -5,20 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin · Lyon Asesor</title>
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="/js/firebase-config.js"></script>
 
     <script>
-        // Inicializar la base de datos GLOBALMENTE
         const database = firebase.database();
         console.log('✅ Firebase Database inicializada en admin');
     </script>
 
     <style>
-        /* ===== RESET Y BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
@@ -28,317 +25,154 @@
         }
         .container { max-width: 1400px; margin: 0 auto; }
 
-        /* ===== LOGIN ===== */
         .login-box {
-            max-width: 400px;
-            margin: 10vh auto;
-            background: white;
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            text-align: center;
+            max-width: 400px; margin: 10vh auto; background: white; padding: 40px 30px;
+            border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); text-align: center;
         }
         .login-box h2 { font-weight: 600; font-size: 1.6rem; margin-bottom: 8px; color: #0f172a; }
         .login-box p { color: #64748b; margin-bottom: 24px; }
         .login-box input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            margin-bottom: 16px;
-            transition: 0.2s;
+            width: 100%; padding: 14px 18px; border: 1.5px solid #e2e8f0; border-radius: 12px;
+            font-size: 1rem; margin-bottom: 16px; transition: 0.2s;
         }
         .login-box input:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.15); }
         .login-box button {
-            width: 100%;
-            padding: 14px;
-            background: #e86b18;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
+            width: 100%; padding: 14px; background: #e86b18; color: white; border: none;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: 0.2s;
         }
         .login-box button:disabled { opacity: 0.6; cursor: not-allowed; }
         .login-box button:hover:not(:disabled) { background: #d45f14; }
         .login-error { color: #dc2626; margin-top: 12px; font-size: 0.9rem; min-height: 1.2em; }
 
-        /* ===== DASHBOARD ===== */
         .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px; margin-bottom: 24px;
         }
         .dashboard-header h1 { font-size: 1.8rem; font-weight: 700; color: #0f172a; }
         .dashboard-header h1 span { color: #e86b18; }
         .header-actions { display: flex; gap: 12px; flex-wrap: wrap; }
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 20px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.2s;
-            background: white;
-            color: #1e293b;
+            display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px;
+            border-radius: 40px; border: none; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: 0.2s; background: white; color: #1e293b;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
-        .btn-primary { background: #e86b18; color: white; }
-        .btn-primary:hover { background: #d45f14; }
         .btn-secondary { background: #1e293b; color: white; }
         .btn-secondary:hover { background: #0f172a; }
         .btn-danger { background: #ef4444; color: white; }
         .btn-danger:hover { background: #dc2626; }
         .btn-reload { background: #2563eb; color: white; }
         .btn-reload:hover { background: #1d4ed8; }
-        .btn-success { background: #22c55e; color: white; }
-        .btn-success:hover { background: #16a34a; }
 
-        /* ===== STATS ===== */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin-bottom: 32px;
         }
         .stat-card {
-            background: white;
-            padding: 20px 24px;
-            border-radius: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            border: 1px solid #f1f5f9;
+            background: white; padding: 20px 24px; border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;
         }
         .stat-card .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 600; }
         .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
         .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
 
-        /* ===== GESTIÓN DE CONFERENCIAS ===== */
         .config-card {
-            background: white;
-            border-radius: 20px;
-            border: 1px solid #f1f5f9;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            background: white; border-radius: 20px; border: 1px solid #f1f5f9;
+            padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
         .config-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
         .config-card .sub { font-size: 0.85rem; color: #64748b; margin-bottom: 16px; }
 
         .conferencias-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
         }
         .conf-item {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 18px 20px;
-            border: 1px solid #f1f5f9;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            background: #f8fafc; border-radius: 16px; padding: 18px 20px;
+            border: 1px solid #f1f5f9; transition: 0.2s;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .conf-item.activa { border-color: #dcfce7; background: #f0fdf4; }
-        .conf-item .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .conf-item .header .numero {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #cdaa7b;
-            opacity: 0.6;
-            line-height: 1;
-        }
-        .conf-item .header .estado-badge {
-            font-size: 0.65rem;
-            padding: 3px 12px;
-            border-radius: 40px;
-            font-weight: 600;
-        }
+        .conf-item .header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .conf-item .header .numero { font-size: 1.8rem; font-weight: 700; color: #cdaa7b; opacity: 0.6; line-height: 1; }
+        .conf-item .header .estado-badge { font-size: 0.65rem; padding: 3px 12px; border-radius: 40px; font-weight: 600; }
         .conf-item .header .estado-badge.activa { background: #dcfce7; color: #166534; }
         .conf-item .header .estado-badge.inactiva { background: #fee2e2; color: #991b1b; }
-
-        .conf-item .titulo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #0f172a;
-        }
-        .conf-item .descripcion {
-            font-size: 0.85rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
-        .conf-item .acciones {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
+        .conf-item .titulo { font-weight: 700; font-size: 1.1rem; color: #0f172a; }
+        .conf-item .descripcion { font-size: 0.85rem; color: #64748b; line-height: 1.5; }
+        .conf-item .acciones { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
         .conf-item .acciones .btn-conferencia {
-            padding: 6px 18px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #e86b18;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
+            padding: 6px 18px; border-radius: 40px; border: none; font-weight: 600;
+            font-size: 0.75rem; cursor: pointer; transition: 0.2s; background: #e86b18;
+            color: white; text-decoration: none; display: inline-block;
         }
         .conf-item .acciones .btn-conferencia:hover { background: #d45f14; transform: translateY(-2px); }
 
-        /* ===== TOGGLE ===== */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-            flex-shrink: 0;
-        }
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #cbd5e1;
-            transition: .3s;
-            border-radius: 34px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background: #cbd5e1; transition: .3s; border-radius: 34px;
         }
         .toggle-slider::before {
-            content: "";
-            position: absolute;
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background: white;
-            transition: .3s;
-            border-radius: 50%;
+            content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background: white; transition: .3s; border-radius: 50%;
         }
         .toggle-switch input:checked + .toggle-slider { background: #e86b18; }
         .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
-        .toggle-switch input:disabled + .toggle-slider { opacity: 0.5; cursor: not-allowed; }
 
-        /* ===== FILTROS ===== */
-        .filters-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+        .filters-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 24px; }
         .filters-bar select {
-            padding: 10px 16px;
-            border-radius: 40px;
-            border: 1.5px solid #e2e8f0;
-            background: white;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #1e293b;
-            cursor: pointer;
-            min-width: 160px;
+            padding: 10px 16px; border-radius: 40px; border: 1.5px solid #e2e8f0;
+            background: white; font-size: 0.9rem; font-weight: 500; color: #1e293b;
+            cursor: pointer; min-width: 160px;
         }
         .filters-bar select:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
 
-        /* ===== TABLA ===== */
         .table-wrapper {
-            background: white;
-            border-radius: 20px;
-            border: 1px solid #f1f5f9;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            background: white; border-radius: 20px; border: 1px solid #f1f5f9;
+            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
         .table-scroll { overflow-x: auto; padding: 4px 0; }
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th {
-            background: #f8fafc;
-            color: #475569;
-            font-weight: 600;
-            text-align: left;
-            padding: 16px 20px;
-            border-bottom: 2px solid #e2e8f0;
-            white-space: nowrap;
+            background: #f8fafc; color: #475569; font-weight: 600; text-align: left;
+            padding: 16px 20px; border-bottom: 2px solid #e2e8f0; white-space: nowrap;
         }
         td { padding: 14px 20px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
         tr:hover td { background: #fafbfc; }
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; }
         .badge-pagado { background: #dcfce7; color: #166534; }
         .badge-pendiente { background: #fee2e2; color: #991b1b; }
-        .badge-tipo {
-            background: #eef2ff;
-            color: #4338ca;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
+        .badge-tipo { background: #eef2ff; color: #4338ca; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
         .btn-pagar {
-            padding: 4px 14px;
-            border-radius: 40px;
-            border: none;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #e86b18;
-            color: white;
+            padding: 4px 14px; border-radius: 40px; border: none; font-size: 0.75rem;
+            font-weight: 600; cursor: pointer; transition: 0.2s; background: #e86b18; color: white;
         }
         .btn-pagar:hover { background: #d45f14; }
         .btn-pagar.desmarcar { background: #94a3b8; }
         .btn-pagar.desmarcar:hover { background: #64748b; }
 
-        /* ===== GRÁFICO ===== */
-        .chart-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
+        /* Botón especial para "Asistió al cierre" */
+        .btn-cierre {
+            padding: 5px 14px; border-radius: 40px; border: none; font-size: 0.72rem;
+            font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap;
         }
+        .btn-cierre.no { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-cierre.no:hover { background: #fecaca; }
+        .btn-cierre.si { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .btn-cierre.si:hover { background: #bbf7d0; }
+
+        .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
         @media (max-width: 700px) { .chart-section { grid-template-columns: 1fr; } }
         .chart-card {
-            background: white;
-            border-radius: 20px;
-            padding: 24px;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            background: white; border-radius: 20px; padding: 24px;
+            border: 1px solid #f1f5f9; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
         }
         .chart-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; color: #1e293b; }
-        .pie-container {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
+        .pie-container { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
         .pie {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+            width: 120px; height: 120px; border-radius: 50%;
             background: conic-gradient(
                 #e86b18 0% var(--p-consulta, 0%),
                 #3b82f6 var(--p-consulta, 0%) calc(var(--p-consulta, 0%) + var(--p-conferencia, 0%)),
@@ -347,25 +181,12 @@
             );
             flex-shrink: 0;
         }
-        .pie-legend {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 0.85rem;
-        }
-        .pie-legend .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 4px;
-            margin-right: 8px;
-        }
+        .pie-legend { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+        .pie-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 4px; margin-right: 8px; }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex;
-            align-items: center; justify-content: center; z-index: 9999;
-            backdrop-filter: blur(4px);
+            align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(4px);
         }
         .modal-box {
             background: white; max-width: 500px; width: 90%; padding: 32px; border-radius: 24px;
@@ -379,12 +200,11 @@
         }
         .modal-box .instrucciones { color: #64748b; font-size: 0.9rem; margin-bottom: 24px; }
         .modal-box .btn-modal {
-            background: #e86b18; color: white; border: none; padding: 12px 32px; border-radius: 40px;
-            font-weight: 600; cursor: pointer;
+            background: #e86b18; color: white; border: none; padding: 12px 32px;
+            border-radius: 40px; font-weight: 600; cursor: pointer;
         }
         .modal-box .btn-modal:hover { background: #d45f14; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
             body { padding: 12px; }
             .dashboard-header h1 { font-size: 1.3rem; }
@@ -394,15 +214,12 @@
             th, td { padding: 10px 12px; font-size: 0.8rem; }
             .filters-bar select { min-width: 120px; }
         }
-        @media (max-width: 400px) {
-            .stats-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 400px) { .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 <div class="container" id="app">
 
-    <!-- LOGIN -->
     <div id="loginSection" style="display: none;">
         <div class="login-box">
             <h2>🔐 Panel de Control</h2>
@@ -413,10 +230,8 @@
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="adminPanel" style="display: none;">
 
-        <!-- HEADER -->
         <div class="dashboard-header">
             <h1>📊 Panel <span>Lyon Asesor</span></h1>
             <div class="header-actions">
@@ -426,7 +241,6 @@
             </div>
         </div>
 
-        <!-- STATS -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card"><div class="stat-label">📋 Consultas</div><div class="stat-value" id="statConsultas">0</div><div class="stat-sub" id="statConsultasPagadas">Pagadas: 0</div></div>
             <div class="stat-card"><div class="stat-label">🎤 Conferencias</div><div class="stat-value" id="statConferencias">0</div><div class="stat-sub" id="statConferenciasPagadas">Pagadas: 0</div></div>
@@ -435,7 +249,6 @@
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
         </div>
 
-        <!-- ===== GESTIÓN DE CONFERENCIAS ===== -->
         <div class="config-card">
             <h3>🎤 Gestión de Conferencias</h3>
             <p class="sub">Activa o desactiva cada conferencia. Solo las activas aparecerán en el formulario de registro. Haz clic en "Iniciar Presentación" para ver la conferencia.</p>
@@ -444,7 +257,6 @@
             </div>
         </div>
 
-        <!-- GRÁFICO + FILTROS -->
         <div class="chart-section">
             <div class="chart-card">
                 <h3>📈 Distribución de ventas</h3>
@@ -474,22 +286,14 @@
             </div>
         </div>
 
-        <!-- TABLA PRINCIPAL -->
         <div class="table-wrapper">
             <div class="table-scroll">
                 <table>
                     <thead>
                         <tr>
-                            <th>Tipo</th>
-                            <th>Fecha</th>
-                            <th>Nombre / Empresa</th>
-                            <th>Contacto</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Detalle</th>
-                            <th>Monto</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
+                            <th>Tipo</th><th>Fecha</th><th>Nombre / Empresa</th><th>Contacto</th>
+                            <th>Email</th><th>Teléfono</th><th>Detalle</th><th>Monto</th>
+                            <th>Estado</th><th>Acción</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -499,7 +303,6 @@
             </div>
         </div>
 
-        <!-- ===== SOLICITUDES PENDIENTES (Membresías y Afiliados) ===== -->
         <div class="table-wrapper" style="margin-top:32px;">
             <h2 style="padding:1.2rem 1.2rem 0;">⏳ Solicitudes Pendientes</h2>
             <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Aprueba manualmente para activar la cuenta (membresía o afiliado). Al aprobar se genera el código de acceso.</p>
@@ -511,18 +314,24 @@
             </div>
         </div>
 
-        <!-- ===== GESTIÓN DE MIEMBROS ===== -->
+        <!-- ===== GESTIÓN DE MIEMBROS (con columna Asistió al cierre) ===== -->
         <div class="table-wrapper" style="margin-top:32px;">
             <h2 style="padding:1.2rem 1.2rem 0;">🎓 Gestión de Miembros</h2>
+            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Marca <strong>"Asistió al cierre"</strong> para desbloquear el diploma del Programa Completo (300 horas) para el miembro.</p>
             <div class="table-scroll">
                 <table>
-                    <thead><tr><th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th><th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th><th>Acción</th></tr></thead>
-                    <tbody id="miembrosTableBody"><tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                    <thead>
+                        <tr>
+                            <th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th>
+                            <th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th>
+                            <th>Cierre</th><th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="miembrosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ===== GESTIÓN DE AFILIADOS ===== -->
         <div class="table-wrapper" style="margin-top:32px;">
             <h2 style="padding:1.2rem 1.2rem 0;">🤝 Gestión de Afiliados</h2>
             <div class="table-scroll">
@@ -536,9 +345,6 @@
 </div>
 
 <script>
-    // =============================================
-    // CONFIGURACIÓN
-    // =============================================
     const ADMIN_EMAIL = 'info@lyonasesor.com';
 
     const TIPO_MAP = {
@@ -548,9 +354,6 @@
         'diagnosticos': { label: '🧠 Diagnóstico', coleccion: 'diagnosticos' }
     };
 
-    // =============================================
-    // LISTA DE CONFERENCIAS
-    // =============================================
     const CONFERENCES_DATA = [
         { id: 'autoestima-corporativa', titulo: 'Autoestima Corporativa', descripcion: 'El Pilar del Rendimiento Personal', file: '/conferencias/autoestima-corporativa.html' },
         { id: 'bienestar-estres', titulo: 'Bienestar y Estrés', descripcion: 'Equilibrio Emocional en un Mundo Hiperconectado', file: '/conferencias/bienestar-estres.html' },
@@ -566,24 +369,16 @@
         { id: 'vinculos-que-sanan', titulo: 'Vínculos que Sanan', descripcion: 'Neurodiálogo para Equipos Cohesionados', file: '/conferencias/vinculos-que-sanan.html' }
     ];
 
-    // =============================================
-    // ESTADO
-    // =============================================
     let allLeads = [];
 
-    // =============================================
-    // AUTENTICACIÓN (Firebase Auth)
-    // =============================================
+    // ===== AUTENTICACIÓN =====
     document.getElementById('loginBtn').addEventListener('click', async function() {
         const pass = document.getElementById('loginPassword').value;
         const errorDiv = document.getElementById('loginError');
         const btn = document.getElementById('loginBtn');
         errorDiv.textContent = '';
 
-        if (!pass) {
-            errorDiv.textContent = '⚠️ Ingresa tu contraseña';
-            return;
-        }
+        if (!pass) { errorDiv.textContent = '⚠️ Ingresa tu contraseña'; return; }
 
         btn.disabled = true;
         btn.textContent = 'Verificando...';
@@ -597,7 +392,7 @@
             } else if (error.code === 'auth/user-not-found') {
                 errorDiv.textContent = '❌ Usuario no configurado en Firebase Authentication';
             } else if (error.code === 'auth/too-many-requests') {
-                errorDiv.textContent = '⏳ Demasiados intentos. Espera un momento e intenta de nuevo.';
+                errorDiv.textContent = '⏳ Demasiados intentos. Espera un momento.';
             } else {
                 errorDiv.textContent = '❌ Error al iniciar sesión (' + error.code + ')';
             }
@@ -621,10 +416,8 @@
 
     firebase.auth().onAuthStateChanged(function(user) {
         const isAdmin = !!user && user.email === ADMIN_EMAIL;
-
         document.getElementById('loginSection').style.display = isAdmin ? 'none' : 'block';
         document.getElementById('adminPanel').style.display = isAdmin ? 'block' : 'none';
-
         if (isAdmin) {
             document.getElementById('loginPassword').value = '';
             cargarTodosLosDatos();
@@ -633,9 +426,7 @@
         }
     });
 
-    // =============================================
-    // FUNCIONES DE GENERACIÓN Y PARSEO
-    // =============================================
+    // ===== UTILIDADES =====
     function generarCodigoAccesoAdmin(prefijo) {
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let codigo = '';
@@ -650,9 +441,6 @@
         return parseFloat(match[0].replace(/,/g, '')) || 0;
     }
 
-    // =============================================
-    // MODAL PARA MOSTRAR CÓDIGOS
-    // =============================================
     function mostrarCodigoModal(titulo, mensaje, codigo, instrucciones) {
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
@@ -663,14 +451,11 @@
                 <div class="codigo-box">${codigo}</div>
                 <p class="instrucciones">${instrucciones}</p>
                 <button class="btn-modal" onclick="this.closest('.modal-overlay').remove()">Entendido</button>
-            </div>
-        `;
+            </div>`;
         document.body.appendChild(overlay);
     }
 
-    // =============================================
-    // APROBAR SOLICITUD (CORREGIDA Y MEJORADA)
-    // =============================================
+    // ===== APROBAR SOLICITUD =====
     async function aprobarSolicitud(tipo, id) {
         try {
             if (tipo === 'Membresía') {
@@ -678,9 +463,6 @@
                 const s = snap.val();
                 if (!s) throw new Error('Solicitud no encontrada');
 
-                console.log('📥 Datos de solicitud de membresía:', s);
-
-                // 🔥 Obtener datos de forma flexible
                 const nombre = s.nombre || s.nombreCompleto || s.full_name || s.name || 'Estudiante';
                 const email = s.email || s.correo || '';
                 const telefono = s.telefono || s.phone || s.celular || '';
@@ -689,41 +471,31 @@
                 const codigo = generarCodigoAccesoAdmin('LYON');
 
                 await database.ref('membresias/' + codigo).set({
-                    nombre: nombre,
-                    email: email,
-                    telefono: telefono,
-                    plan: plan,
+                    nombre, email, telefono, plan,
                     fechaInicio: Date.now(),
                     estado: 'activo',
                     clasesCompletadas: {},
-                    diplomasDescargados: {}
+                    diplomasDescargados: {},
+                    asistioCierre: false
                 });
 
                 await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
 
-                if (s.refAfiliado) {
-                    await acreditarComisionSiAplica(s);
-                }
+                if (s.refAfiliado) await acreditarComisionSiAplica(s);
 
                 mostrarCodigoModal(
                     '🎓 Membresía aprobada',
                     `El código de acceso para <strong>${nombre}</strong> es:`,
                     codigo,
-                    'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía para acceder a su dashboard.'
+                    'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía.'
                 );
 
-                await Promise.all([
-                    cargarSolicitudes(),
-                    cargarMiembros(),
-                    cargarAfiliados()
-                ]);
+                await Promise.all([cargarSolicitudes(), cargarMiembros(), cargarAfiliados()]);
 
             } else if (tipo === 'Afiliado') {
                 const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
                 const s = snap.val();
                 if (!s) throw new Error('Solicitud no encontrada');
-
-                console.log('📥 Datos de solicitud de afiliado:', s);
 
                 const nombre = s.nombre || s.nombreCompleto || s.full_name || s.name || 'Afiliado';
                 const email = s.email || s.correo || '';
@@ -734,10 +506,7 @@
                 const clave = generarCodigoAccesoAdmin('').replace('-', '');
 
                 await database.ref('afiliados/' + codigo).set({
-                    nombre: nombre,
-                    email: email,
-                    telefono: telefono,
-                    pais: pais,
+                    nombre, email, telefono, pais,
                     claveAcceso: clave,
                     fechaRegistro: Date.now(),
                     estado: 'activo'
@@ -749,24 +518,17 @@
                     '🤝 Afiliado aprobado',
                     `Código de afiliado: <strong>${codigo}</strong><br>Clave de acceso: <strong>${clave}</strong>`,
                     `${codigo} · ${clave}`,
-                    'Entrégale estas credenciales al afiliado. Deberá ingresarlas en la página de acceso de afiliados.'
+                    'Entrégale estas credenciales al afiliado.'
                 );
 
-                await Promise.all([
-                    cargarSolicitudes(),
-                    cargarMiembros(),
-                    cargarAfiliados()
-                ]);
+                await Promise.all([cargarSolicitudes(), cargarMiembros(), cargarAfiliados()]);
             }
         } catch (error) {
             console.error('❌ Error al aprobar solicitud:', error);
-            alert('⚠️ Error al aprobar: ' + error.message + '\nRevisa la consola para más detalles.');
+            alert('⚠️ Error al aprobar: ' + error.message);
         }
     }
 
-    // =============================================
-    // ACREDITAR COMISIÓN
-    // =============================================
     async function acreditarComisionSiAplica(solicitud) {
         if (!solicitud.refAfiliado) return;
         const afSnap = await database.ref('afiliados/' + solicitud.refAfiliado).once('value');
@@ -776,8 +538,7 @@
         const comision = +(monto * 0.30).toFixed(2);
         await database.ref('afiliados_ventas/' + solicitud.refAfiliado).push({
             producto: 'Membresía ' + (solicitud.planLabel || solicitud.plan || ''),
-            monto: monto,
-            comision: comision,
+            monto, comision,
             estadoComision: 'pendiente',
             timestamp: Date.now(),
             fecha: new Date().toISOString(),
@@ -785,9 +546,6 @@
         });
     }
 
-    // =============================================
-    // CARGAR TODOS LOS DATOS
-    // =============================================
     async function cargarTodosLosDatos() {
         console.log('🔄 Cargando datos...');
         await Promise.all([
@@ -799,9 +557,7 @@
         ]);
     }
 
-    // =============================================
-    // CARGAR SOLICITUDES PENDIENTES
-    // =============================================
+    // ===== SOLICITUDES =====
     async function cargarSolicitudes() {
         const tbody = document.getElementById('solicitudesTableBody');
         try {
@@ -810,7 +566,6 @@
                 database.ref('solicitudes_afiliado').once('value')
             ]);
             const filas = [];
-
             const dataMemb = snapMemb.val() || {};
             Object.entries(dataMemb).forEach(([id, s]) => {
                 if (s.estado === 'aprobada') return;
@@ -851,9 +606,7 @@
         }
     }
 
-    // =============================================
-    // GESTIÓN DE MIEMBROS
-    // =============================================
+    // ===== GESTIÓN DE MIEMBROS (con columna "Asistió al cierre") =====
     async function cargarMiembros() {
         const tbody = document.getElementById('miembrosTableBody');
         try {
@@ -861,7 +614,7 @@
             const data = snap.val() || {};
             const codigos = Object.keys(data);
             if (codigos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Sin miembros activos aún.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Sin miembros activos aún.</td></tr>';
                 return;
             }
             tbody.innerHTML = codigos.map(codigo => {
@@ -871,6 +624,19 @@
                 const dias = m.plan === 'acelerado' ? 14 : 30;
                 const proxNum = Math.min(completadas + 1, 12);
                 const proxFecha = new Date((m.fechaInicio || Date.now()) + dias * (proxNum - 1) * 86400000);
+                const asistio = m.asistioCierre === true;
+                const clasesCompletas = completadas >= 12;
+
+                // Botón de "Asistió al cierre": solo tiene sentido si ya completó 12 clases
+                let botonCierre;
+                if (clasesCompletas) {
+                    botonCierre = asistio
+                        ? `<button class="btn-cierre si" onclick="toggleAsistioCierre('${codigo}', false)">✅ Sí asistió</button>`
+                        : `<button class="btn-cierre no" onclick="toggleAsistioCierre('${codigo}', true)">⛔ No asistió</button>`;
+                } else {
+                    botonCierre = `<span style="color:#cbd5e1; font-size:0.7rem;">—</span>`;
+                }
+
                 return `
                 <tr>
                     <td>${codigo}</td>
@@ -882,9 +648,9 @@
                     <td>${completadas >= 12 ? '—' : proxFecha.toLocaleDateString('es-ES')}</td>
                     <td>${diplomas}</td>
                     <td>${m.estado || 'activo'}</td>
+                    <td>${botonCierre}</td>
                     <td>
                         <select onchange="cambiarEstadoMiembro('${codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
-                            ${m.estado === 'pendiente_activacion' ? '<option value="pendiente_activacion" selected>⚠️ Pendiente activación</option>' : ''}
                             <option value="activo" ${m.estado==='activo'?'selected':''}>Activo</option>
                             <option value="pausado" ${m.estado==='pausado'?'selected':''}>Pausado</option>
                             <option value="finalizado" ${m.estado==='finalizado'?'selected':''}>Finalizado</option>
@@ -894,7 +660,7 @@
             }).join('');
         } catch (e) {
             console.error('Error cargando miembros:', e);
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
         }
     }
 
@@ -902,9 +668,25 @@
         database.ref('membresias/' + codigo + '/estado').set(estado);
     };
 
-    // =============================================
-    // GESTIÓN DE AFILIADOS
-    // =============================================
+    // NUEVA: Toggle "asistió al cierre"
+    window.toggleAsistioCierre = async function(codigo, valor) {
+        if (!confirm(valor
+            ? '¿Confirmas que este miembro SÍ asistió al evento de cierre? Se desbloqueará su diploma del Programa Completo (300h).'
+            : '¿Marcar como NO asistió? Se bloqueará el diploma del Programa Completo hasta que lo marques de nuevo.')) return;
+        try {
+            await database.ref('membresias/' + codigo + '/asistioCierre').set(valor);
+            if (valor) {
+                await database.ref('membresias/' + codigo + '/fechaAsistenciaCierre').set(Date.now());
+            }
+            console.log(`✅ asistioCierre actualizado a ${valor} para ${codigo}`);
+            await cargarMiembros();
+        } catch (e) {
+            console.error('❌ Error al actualizar asistioCierre:', e);
+            alert('Error: ' + e.message);
+        }
+    };
+
+    // ===== GESTIÓN DE AFILIADOS =====
     async function cargarAfiliados() {
         const tbody = document.getElementById('afiliadosTableBody');
         try {
@@ -939,7 +721,6 @@
                     <td>${f.a.fechaRegistro ? new Date(f.a.fechaRegistro).toLocaleDateString('es-ES') : '—'}</td>
                     <td>
                         <select onchange="cambiarEstadoAfiliado('${f.codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
-                            ${f.a.estado === 'pendiente_activacion' ? '<option value="pendiente_activacion" selected>⚠️ Pendiente activación</option>' : ''}
                             <option value="activo" ${f.a.estado==='activo'?'selected':''}>Activo</option>
                             <option value="inactivo" ${f.a.estado==='inactivo'?'selected':''}>Inactivo</option>
                         </select>
@@ -974,87 +755,63 @@
         cargarAfiliados();
     };
 
-    // =============================================
-    // CARGAR LEADS
-    // =============================================
+    // ===== LEADS =====
     async function cargarLeads() {
         try {
-            console.log('📥 Cargando leads desde Firebase...');
             const snapshot = await database.ref('leads').once('value');
             const data = snapshot.val();
-
             allLeads = [];
             if (data) {
                 for (const [coleccion, items] of Object.entries(data)) {
                     if (typeof items === 'object' && items !== null) {
                         for (const [id, lead] of Object.entries(items)) {
                             if (typeof lead === 'object' && lead !== null) {
-                                allLeads.push({
-                                    id: id,
-                                    coleccion: coleccion,
-                                    ...lead
-                                });
+                                allLeads.push({ id, coleccion, ...lead });
                             }
                         }
                     }
                 }
             }
-
-            console.log(`✅ ${allLeads.length} leads cargados`);
             allLeads.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             actualizarStats();
             renderTabla();
             renderChart();
-
         } catch (error) {
             console.error('❌ Error cargando leads:', error);
             document.getElementById('tableBody').innerHTML =
-                '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#c0392b;">❌ Error al cargar datos desde Firebase (' + error.code + '). Verifica que tu usuario esté creado en Authentication y que las reglas estén publicadas.</td></tr>';
+                '<tr><td colspan="10" style="text-align:center;padding:2rem;color:#c0392b;">❌ Error al cargar datos desde Firebase (' + error.code + ').</td></tr>';
         }
     }
 
-    // =============================================
-    // CARGAR CONFERENCIAS
-    // =============================================
+    // ===== CONFERENCIAS =====
     async function cargarConferencias() {
         try {
-            console.log('📥 Cargando conferencias desde Firebase...');
             const snapshot = await database.ref('configuracion/conferencias').once('value');
             const data = snapshot.val();
-
             if (!data) {
-                console.log('⚠️ No hay conferencias en Firebase. Inicializando...');
                 await inicializarConferencias();
                 return cargarConferencias();
             }
-
             renderConferencias(data);
-
         } catch (error) {
             console.error('❌ Error cargando conferencias:', error);
             document.getElementById('conferenciasList').innerHTML =
-                '<p style="color:#c0392b;">❌ Error al cargar configuración de conferencias (' + error.code + ').</p>';
+                '<p style="color:#c0392b;">❌ Error al cargar configuración.</p>';
         }
     }
 
     async function inicializarConferencias() {
         try {
-            console.log('🚀 Inicializando conferencias en Firebase...');
             const updates = {};
             CONFERENCES_DATA.forEach(c => {
                 updates[`configuracion/conferencias/${c.id}`] = {
-                    id: c.id,
-                    titulo: c.titulo,
-                    descripcion: c.descripcion,
-                    file: c.file,
+                    id: c.id, titulo: c.titulo, descripcion: c.descripcion, file: c.file,
                     activa: false,
                     fecha_creacion: new Date().toISOString(),
                     ultima_modificacion: new Date().toISOString()
                 };
             });
-
             await database.ref().update(updates);
-            console.log('✅ Conferencias inicializadas en Firebase');
         } catch (error) {
             console.error('❌ Error inicializando conferencias:', error);
         }
@@ -1062,13 +819,10 @@
 
     function renderConferencias(data) {
         const container = document.getElementById('conferenciasList');
-
         let html = '<div class="conferencias-grid">';
-
         CONFERENCES_DATA.forEach((conf, index) => {
             const activa = data[conf.id] && data[conf.id].activa === true;
             const numero = String(index + 1).padStart(2, '0');
-
             html += `
                 <div class="conf-item ${activa ? 'activa' : ''}">
                     <div class="header">
@@ -1080,39 +834,33 @@
                     <div class="acciones">
                         <a href="${conf.file}" class="btn-conferencia" target="_blank" rel="noopener">🎬 Iniciar Presentación</a>
                         <label class="toggle-switch">
-                            <input type="checkbox" ${activa ? 'checked' : ''} data-id="${conf.id}" onchange="toggleConferencia('${conf.id}', this.checked)">
+                            <input type="checkbox" ${activa ? 'checked' : ''} onchange="toggleConferencia('${conf.id}', this.checked)">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
-
         html += '</div>';
         container.innerHTML = html;
     }
 
-    async function toggleConferencia(id, activa) {
+    window.toggleConferencia = async function(id, activa) {
         try {
             await database.ref(`configuracion/conferencias/${id}/activa`).set(activa);
             await database.ref(`configuracion/conferencias/${id}/ultima_modificacion`).set(new Date().toISOString());
-            console.log(`✅ Conferencia ${id} ${activa ? 'activada' : 'desactivada'}`);
             await cargarConferencias();
         } catch (error) {
             console.error('❌ Error actualizando estado:', error);
-            alert('Error al actualizar el estado de la conferencia (' + error.code + ').');
+            alert('Error al actualizar el estado.');
         }
-    }
+    };
 
-    // =============================================
-    // ESTADÍSTICAS
-    // =============================================
+    // ===== STATS =====
     function actualizarStats() {
         const consultas = allLeads.filter(l => l.coleccion === 'consultas');
         const conferencias = allLeads.filter(l => l.coleccion === 'conferencias');
         const ebooks = allLeads.filter(l => l.coleccion === 'ebooks');
         const diagnosticos = allLeads.filter(l => l.coleccion === 'diagnosticos');
-
         const pagadas = allLeads.filter(l => l.pagado === true);
         const ingresos = pagadas.reduce((sum, l) => sum + (l.monto || 0), 0);
 
@@ -1125,9 +873,7 @@
         document.getElementById('statDiagnosticos').textContent = diagnosticos.length;
     }
 
-    // =============================================
-    // GRÁFICO
-    // =============================================
+    // ===== CHART =====
     function renderChart() {
         const tipos = {
             consulta: allLeads.filter(l => l.coleccion === 'consultas' && l.pagado).length,
@@ -1136,17 +882,10 @@
             diagnostico: allLeads.filter(l => l.coleccion === 'diagnosticos').length
         };
         const total = Object.values(tipos).reduce((a, b) => a + b, 0) || 1;
-
-        const pConsulta = (tipos.consulta / total) * 100;
-        const pConferencia = (tipos.conferencia / total) * 100;
-        const pEbook = (tipos.ebook / total) * 100;
-        const pDiagnostico = (tipos.diagnostico / total) * 100;
-
         const pie = document.getElementById('pieChart');
-        pie.style.setProperty('--p-consulta', pConsulta + '%');
-        pie.style.setProperty('--p-conferencia', pConferencia + '%');
-        pie.style.setProperty('--p-ebook', pEbook + '%');
-
+        pie.style.setProperty('--p-consulta', ((tipos.consulta / total) * 100) + '%');
+        pie.style.setProperty('--p-conferencia', ((tipos.conferencia / total) * 100) + '%');
+        pie.style.setProperty('--p-ebook', ((tipos.ebook / total) * 100) + '%');
         const legend = document.getElementById('pieLegend');
         const items = [
             { label: 'Consultas', value: tipos.consulta, color: '#e86b18' },
@@ -1159,62 +898,45 @@
         ).join('');
     }
 
-    // =============================================
-    // TABLA PRINCIPAL
-    // =============================================
+    // ===== TABLA PRINCIPAL =====
     function renderTabla() {
         const tipoFiltro = document.getElementById('tipoFiltro').value;
         const estadoFiltro = document.getElementById('estadoFiltro').value;
-
         let filtered = allLeads;
-
-        if (tipoFiltro !== 'todos') {
-            filtered = filtered.filter(l => l.coleccion === tipoFiltro);
-        }
-
-        if (estadoFiltro === 'pagado') {
-            filtered = filtered.filter(l => l.pagado === true);
-        } else if (estadoFiltro === 'pendiente') {
-            filtered = filtered.filter(l => l.pagado !== true);
-        }
-
+        if (tipoFiltro !== 'todos') filtered = filtered.filter(l => l.coleccion === tipoFiltro);
+        if (estadoFiltro === 'pagado') filtered = filtered.filter(l => l.pagado === true);
+        else if (estadoFiltro === 'pendiente') filtered = filtered.filter(l => l.pagado !== true);
         filtered.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
         const tbody = document.getElementById('tableBody');
         if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">No hay registros en esta categoría</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">No hay registros.</td></tr>`;
             return;
         }
 
         tbody.innerHTML = filtered.map((item) => {
             const tipoInfo = TIPO_MAP[item.coleccion] || { label: item.coleccion };
-            const tipoLabel = tipoInfo.label || item.coleccion;
-
             const fecha = item.fechaLegible || (item.timestamp ? new Date(item.timestamp).toLocaleString('es-ES') : '-');
-            const nombre = item.nombre || item.empresa || item.nombreEmpresa || '';
-            const contacto = item.contacto || item.paquete || '';
+            const nombre = item.nombre || item.empresa || '';
             const email = item.email || '-';
             const telefono = item.telefono || '-';
-            const detalle = item.detalle || item.motivo || item.perfil || '';
             const monto = item.monto || 0;
             const pagado = item.pagado || false;
-
             const estadoBadge = pagado
                 ? '<span class="badge badge-pagado">Pagado</span>'
                 : '<span class="badge badge-pendiente">Pendiente</span>';
-
             const accionBtn = (item.coleccion === 'consultas' || item.coleccion === 'conferencias')
                 ? `<button class="btn-pagar ${pagado ? 'desmarcar' : ''}" data-id="${item.id}" data-coleccion="${item.coleccion}" data-pagado="${pagado}">${pagado ? 'Desmarcar' : 'Marcar'}</button>`
-                : '<span style="color:#94a3b8; font-size:0.75rem;">—</span>';
+                : '—';
 
             return `<tr>
-                <td><span class="badge badge-tipo">${tipoLabel}</span></td>
+                <td><span class="badge badge-tipo">${tipoInfo.label}</span></td>
                 <td>${fecha}</td>
                 <td><strong>${nombre}</strong></td>
-                <td>${contacto}</td>
+                <td>${item.contacto || ''}</td>
                 <td>${email}</td>
                 <td>${telefono}</td>
-                <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${detalle}">${detalle}</td>
+                <td>${item.detalle || item.motivo || ''}</td>
                 <td>$${monto}</td>
                 <td>${estadoBadge}</td>
                 <td>${accionBtn}</td>
@@ -1226,67 +948,43 @@
                 const id = this.getAttribute('data-id');
                 const coleccion = this.getAttribute('data-coleccion');
                 const wasPagado = this.getAttribute('data-pagado') === 'true';
-                const nuevoEstado = !wasPagado;
-
                 try {
-                    await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
-                    console.log(`✅ Estado actualizado a "${nuevoEstado ? 'pagado' : 'pendiente'}"`);
+                    await database.ref(`leads/${coleccion}/${id}/pagado`).set(!wasPagado);
                     await cargarLeads();
                 } catch (error) {
-                    console.error('❌ Error actualizando estado:', error);
-                    alert('Error al actualizar el estado (' + error.code + ').');
+                    alert('Error al actualizar.');
                 }
             });
         });
     }
 
-    // =============================================
-    // FILTROS
-    // =============================================
     document.getElementById('tipoFiltro').addEventListener('change', renderTabla);
     document.getElementById('estadoFiltro').addEventListener('change', renderTabla);
 
-    // =============================================
-    // EXPORTAR CSV
-    // =============================================
+    // ===== EXPORTAR CSV =====
     document.getElementById('exportBtn').addEventListener('click', function() {
-        if (allLeads.length === 0) { alert('No hay datos para exportar'); return; }
-
-        let csv = 'Tipo,Fecha,Nombre/Empresa,Contacto,Email,Teléfono,Detalle,Monto,Pagado\n';
+        if (allLeads.length === 0) { alert('No hay datos'); return; }
+        let csv = 'Tipo,Fecha,Nombre,Email,Teléfono,Monto,Pagado\n';
         allLeads.forEach(r => {
             const tipoInfo = TIPO_MAP[r.coleccion] || { label: r.coleccion };
             csv += [
-                tipoInfo.label || r.coleccion,
-                r.fechaLegible || new Date(r.timestamp).toLocaleString('es-ES'),
-                r.nombre || r.empresa || r.nombreEmpresa || '',
-                r.contacto || r.paquete || '',
-                r.email || '',
-                r.telefono || '',
-                (r.detalle || r.motivo || r.perfil || '').replace(/,/g, ';'),
-                r.monto || 0,
-                r.pagado ? 'Sí' : 'No'
+                tipoInfo.label, r.fechaLegible || '', r.nombre || '',
+                r.email || '', r.telefono || '', r.monto || 0, r.pagado ? 'Sí' : 'No'
             ].join(',') + '\n';
         });
         const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
-        a.download = 'lyon_asesor_dashboard.csv';
-        a.click();
+        a.href = url; a.download = 'lyon_asesor_dashboard.csv'; a.click();
         URL.revokeObjectURL(url);
     });
 
-    // =============================================
-    // RECARGAR PERIÓDICO
-    // =============================================
     setInterval(() => {
         const user = firebase.auth().currentUser;
-        if (user && user.email === ADMIN_EMAIL) {
-            cargarTodosLosDatos();
-        }
+        if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor unificado cargado');
+    console.log('✅ Admin Lyon Asesor cargado con soporte de "Asistió al cierre"');
 </script>
 </body>
 </html>
