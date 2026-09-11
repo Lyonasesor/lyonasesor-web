@@ -162,7 +162,6 @@
         .btn-cierre.si { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .btn-cierre.si:hover { background: #bbf7d0; }
 
-        /* Botones de confirmación de ventas ebook */
         .btn-confirmar {
             padding: 5px 14px; border-radius: 40px; border: none; font-size: 0.72rem;
             font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap;
@@ -357,7 +356,7 @@
         <!-- 🔧 NUEVA SECCIÓN: Ventas de Ebooks pendientes de confirmar -->
         <div class="table-wrapper" style="margin-top:32px;">
             <h2 style="padding:1.2rem 1.2rem 0;">📘 Ventas de Ebooks Pendientes de Confirmar</h2>
-            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Estas son las ventas potenciales de ebooks generadas cuando un visitante con link de afiliado hizo clic en PayPal. Confirma las que realmente pagaron para acreditar la comisión.</p>
+            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Estas son las ventas potenciales de ebooks generadas cuando un visitante con link de afiliado hizo clic en un método de pago (PayPal o Pago Móvil). Confirma las que realmente pagaron para acreditar la comisión.</p>
             <div class="table-scroll">
                 <table>
                     <thead>
@@ -365,6 +364,7 @@
                             <th>Fecha</th>
                             <th>Afiliado</th>
                             <th>Producto</th>
+                            <th>Método</th>
                             <th>Monto</th>
                             <th>Comisión</th>
                             <th>Estado</th>
@@ -372,7 +372,7 @@
                         </tr>
                     </thead>
                     <tbody id="ventasEbookTableBody">
-                        <tr><td colspan="7" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                        <tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -605,7 +605,7 @@
         });
     }
 
-    // 🔧 NUEVA: acreditar comisión de conferencia
+    // 🔧 Acreditar comisión de conferencia
     async function acreditarComisionConferencia(lead) {
         if (!lead.refAfiliado) return;
         const afSnap = await database.ref('afiliados/' + lead.refAfiliado).once('value');
@@ -793,7 +793,7 @@
                 ]);
                 const clics = Object.keys(clicsSnap.val() || {}).length;
                 const ventasObj = ventasSnap.val() || {};
-                // 🔧 Solo contamos como "ventas" las que tienen estadoComision pendiente o pagada (no las canceladas)
+                // Solo contamos como "ventas" las que tienen estadoComision pendiente o pagada (no las canceladas)
                 const ventas = Object.values(ventasObj).filter(v =>
                     v.estadoComision === 'pendiente' || v.estadoComision === 'pagada'
                 );
@@ -846,7 +846,7 @@
     };
 
     // =============================================
-    // 🔧 NUEVA: VENTAS DE EBOOK PENDIENTES DE CONFIRMAR
+    // 🔧 VENTAS DE EBOOK PENDIENTES DE CONFIRMAR
     // =============================================
     async function cargarVentasEbookPendientes() {
         const tbody = document.getElementById('ventasEbookTableBody');
@@ -859,7 +859,8 @@
                 const ventasSnap = await database.ref('afiliados_ventas/' + codigo).once('value');
                 const ventas = ventasSnap.val() || {};
                 for (const [pushId, venta] of Object.entries(ventas)) {
-                    if (venta.estadoPago === 'clic_paypal_sin_confirmar') {
+                    // 🔧 CORRECCIÓN: Acepta cualquier método de pago que esté sin confirmar
+                    if (venta.estadoPago && venta.estadoPago.startsWith('clic_') && venta.estadoPago.endsWith('_sin_confirmar')) {
                         filas.push({
                             codigoAfiliado: codigo,
                             nombreAfiliado: afiliados[codigo].nombre || '',
@@ -873,15 +874,19 @@
             filas.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
             if (filas.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:2rem; color:#94a3b8;">No hay ventas de ebooks pendientes de confirmar.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">No hay ventas de ebooks pendientes de confirmar.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = filas.map(f => `
+            // 🔧 CORRECCIÓN: Añadida columna "Método" con etiqueta dinámica
+            tbody.innerHTML = filas.map(f => {
+                const metodoLabel = f.metodoPago === 'pago_movil' ? '📱 Pago Móvil' : '💳 PayPal';
+                return `
                 <tr>
                     <td>${f.fechaLegible || new Date(f.timestamp).toLocaleString('es-ES')}</td>
                     <td>${f.nombreAfiliado} <small style="color:#94a3b8;">(${f.codigoAfiliado})</small></td>
                     <td>${f.producto || '—'}</td>
+                    <td>${metodoLabel}</td>
                     <td>$${(f.monto || 0).toFixed(2)}</td>
                     <td>$${(f.comision || 0).toFixed(2)}</td>
                     <td><span class="badge badge-pendiente">Pendiente</span></td>
@@ -890,10 +895,11 @@
                         <button class="btn-rechazar" onclick="rechazarVentaEbook('${f.codigoAfiliado}', '${f.pushId}')">❌ Rechazar</button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         } catch (e) {
             console.error('Error cargando ventas de ebooks:', e);
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
         }
     }
 
@@ -1121,7 +1127,7 @@
             </tr>`;
         }).join('');
 
-        // 🔧 CORRECCIÓN: Acreditar comisión al marcar una CONFERENCIA como pagada
+        // Acreditar comisión al marcar una CONFERENCIA como pagada
         document.querySelectorAll('.btn-pagar').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const id = this.getAttribute('data-id');
@@ -1130,12 +1136,10 @@
                 const nuevoEstado = !wasPagado;
 
                 try {
-                    // Buscar el lead completo en el array
                     const lead = allLeads.find(l => l.id === id && l.coleccion === coleccion);
-
                     await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
 
-                    // 🔧 Si es una conferencia que pasa de pendiente → pagado, acreditar comisión al afiliado
+                    // Si es una conferencia que pasa de pendiente → pagado, acreditar comisión al afiliado
                     if (coleccion === 'conferencias' && nuevoEstado === true && lead && lead.refAfiliado) {
                         await acreditarComisionConferencia(lead);
                     }
