@@ -95,7 +95,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
-    <!-- 🔧 CORRECCIÓN: Añadido lyon-shared.js para capturar ?ref= y exponer obtenerAfiliadoActivo() -->
+    <!-- 🔧 CORRECCIÓN: lyon-shared.js para tracking de afiliados -->
     <script src="assets/js/lyon-shared.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -858,8 +858,14 @@
                 </p>
                 <div class="price-tag">$9.99 <small>USD</small></div>
                 <br>
-                <!-- 🔧 CORRECCIÓN: Botón PayPal con clase identificable para tracking de afiliado -->
-                <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary paypal-ebook-btn" data-producto="Biblioteca Lyon Asesor" data-monto="9.99">💳 Pagar con PayPal</a>
+                <!-- 🔧 CORRECCIÓN: Botón PayPal con data-metodo y rel -->
+                <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" 
+                   target="_blank" 
+                   rel="noopener"
+                   class="btn-primary paypal-ebook-btn" 
+                   data-producto="Biblioteca Lyon Asesor" 
+                   data-monto="9.99" 
+                   data-metodo="paypal">💳 Pagar con PayPal</a>
                 <br><br>
                 <p style="font-size:0.9rem; color: var(--text-muted);">Aceptamos tarjetas de crédito/débito y PayPal en todo el mundo.</p>
 
@@ -942,8 +948,15 @@
                 <div class="payment-method">
                     <h3>💳 PayPal (Internacional)</h3>
                     <p>Haz clic en el botón para pagar con tarjeta o cuenta PayPal en cualquier país.</p>
-                    <!-- 🔧 CORRECCIÓN: Segundo botón PayPal también con clase para tracking -->
-                    <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" target="_blank" class="btn-primary paypal-ebook-btn" data-producto="Biblioteca Lyon Asesor" data-monto="9.99" style="padding:12px 24px; font-size:0.9rem;">Pagar con PayPal</a>
+                    <!-- 🔧 CORRECCIÓN: Segundo botón PayPal con data-metodo y rel -->
+                    <a href="https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S" 
+                       target="_blank" 
+                       rel="noopener"
+                       class="btn-primary paypal-ebook-btn" 
+                       data-producto="Biblioteca Lyon Asesor" 
+                       data-monto="9.99" 
+                       data-metodo="paypal"
+                       style="padding:12px 24px; font-size:0.9rem;">Pagar con PayPal</a>
                 </div>
                 <div class="payment-method">
                     <h3>📱 Pago Móvil / Transferencia</h3>
@@ -952,7 +965,14 @@
                     <p><strong>Teléfono:</strong> +58 414-8610464</p>
                     <p><strong>Tasa:</strong> Cambio del día (BCV / Dólar paralelo)</p>
                     <p style="font-size:0.85rem; color:var(--text-muted);">Envía el comprobante por WhatsApp para recibir tus archivos.</p>
-                    <a href="https://wa.me/584148610464?text=Hola%20Alvaro%2C%20ya%20realic%C3%A9%20el%20pago%20por%20la%20biblioteca%20de%20desarrollo%20personal" target="_blank" class="btn-secondary">📲 Enviar comprobante</a>
+                    <!-- 🔧 CORRECCIÓN: Botón WhatsApp con clase y data-attributes -->
+                    <a href="https://wa.me/584148610464?text=Hola%20Alvaro%2C%20ya%20realic%C3%A9%20el%20pago%20por%20la%20biblioteca%20de%20desarrollo%20personal" 
+                       target="_blank" 
+                       rel="noopener"
+                       class="btn-secondary whatsapp-ebook-btn" 
+                       data-producto="Biblioteca Lyon Asesor" 
+                       data-monto="9.99" 
+                       data-metodo="pago_movil">📲 Enviar comprobante</a>
                 </div>
             </div>
         </div>
@@ -1080,7 +1100,6 @@
             }
 
             try {
-                // 🔧 CORRECCIÓN: Objeto con refAfiliado y fechaLegible
                 const datos = {
                     nombre: nombre,
                     email: email,
@@ -1112,43 +1131,41 @@
         });
 
         // =============================================
-        // 🔧 NUEVO: Tracking de afiliado al hacer clic en PayPal (ebook)
-        // Como el ebook se vende con un link directo a PayPal, registramos
-        // una "venta pendiente" con el código del afiliado activo para que
-        // el admin pueda acreditarla manualmente al confirmar el pago.
+        // 🔧 CORRECCIÓN v2: Tracking unificado para CUALQUIER método de compra del ebook
+        // Cubre: PayPal (hero + sección inferior) y Pago Móvil/WhatsApp
+        // Usa 'mousedown' para garantizar el registro ANTES de la navegación.
         // =============================================
-        (function trackEbookPayPalClick() {
-            // Esperar a que el DOM esté listo
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initTracking);
-            } else {
-                initTracking();
-            }
-
-            function initTracking() {
-                const paypalButtons = document.querySelectorAll('.paypal-ebook-btn');
-                if (paypalButtons.length === 0) {
-                    console.log('📚 No se encontraron botones de PayPal para trackear.');
+        (function trackEbookPurchaseClicks() {
+            function init() {
+                const botonesCompra = document.querySelectorAll('.paypal-ebook-btn, .whatsapp-ebook-btn');
+                
+                if (botonesCompra.length === 0) {
+                    console.warn('📚 No se encontraron botones de compra para trackear.');
                     return;
                 }
 
-                paypalButtons.forEach(btn => {
-                    btn.addEventListener('click', function() {
+                console.log(`📚 ${botonesCompra.length} botón(es) de compra detectado(s) para tracking de afiliados.`);
+
+                botonesCompra.forEach(btn => {
+                    // Usamos 'mousedown' (se dispara antes que 'click') para asegurar
+                    // que el registro se complete antes de que la nueva pestaña se abra.
+                    btn.addEventListener('mousedown', function(e) {
                         const codigo = (typeof obtenerAfiliadoActivo === 'function') ? obtenerAfiliadoActivo() : null;
 
                         if (!codigo) {
-                            console.log('📚 Clic en PayPal sin afiliado activo. Sin tracking.');
+                            console.log('📚 Clic en botón de compra sin afiliado activo. Sin tracking.');
                             return;
                         }
 
                         if (!window.database) {
-                            console.warn('📚 Firebase no disponible. No se pudo registrar la venta del afiliado.');
+                            console.warn('📚 Firebase no disponible. No se registró la venta potencial.');
                             return;
                         }
 
                         const producto = this.dataset.producto || 'Biblioteca Lyon Asesor';
                         const monto = parseFloat(this.dataset.monto || '9.99');
                         const comision = +(monto * 0.30).toFixed(2); // 30% de comisión
+                        const metodoPago = this.dataset.metodo || 'paypal';
 
                         // Registrar la venta potencial en Firebase
                         window.database.ref('afiliados_ventas/' + codigo).push({
@@ -1156,22 +1173,28 @@
                             monto: monto,
                             comision: comision,
                             estadoComision: 'pendiente',
-                            estadoPago: 'clic_paypal_sin_confirmar',
+                            estadoPago: 'clic_' + metodoPago + '_sin_confirmar',
+                            metodoPago: metodoPago,
                             timestamp: Date.now(),
                             fecha: new Date().toISOString(),
                             fechaLegible: new Date().toLocaleString('es-ES')
                         }).then(() => {
-                            console.log(`📚 Venta potencial de ebook registrada para afiliado ${codigo}: $${monto} → comisión $${comision}`);
+                            console.log(`✅ Venta potencial registrada (${metodoPago}) para afiliado ${codigo}: $${monto} → comisión $${comision}`);
                         }).catch(err => {
                             console.error('❌ Error al registrar venta potencial:', err);
                         });
                     });
                 });
             }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
         })();
 
         // ===== FUNCIÓN GUARDAR (CORREGIDA) =====
-        // 🔧 CORRECCIÓN: Se prefija con 'leads/' para que el admin lo lea correctamente
         async function guardarLead(coleccion, datos) {
             if (typeof firebase === 'undefined' || typeof firebase.database === 'undefined') {
                 console.warn('Firebase no disponible. No se guardó el lead.');
