@@ -9,6 +9,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="/js/firebase-config.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <script>
         const database = firebase.database();
@@ -64,6 +66,8 @@
         .btn-danger:hover { background: #dc2626; }
         .btn-reload { background: #2563eb; color: white; }
         .btn-reload:hover { background: #1d4ed8; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-success:hover { background: #16a34a; }
 
         .stats-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -76,6 +80,58 @@
         .stat-card .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 600; }
         .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
         .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
+
+        /* ============================================
+           SECCIONES COLAPSABLES
+           ============================================ */
+        .collapsible-section {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            margin-top: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+            background: white;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .collapsible-header:hover { background: #f8fafc; }
+        .collapsible-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .collapsible-header .subtitle {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+        .collapsible-header .toggle-icon {
+            font-size: 1.3rem;
+            color: #64748b;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .collapsible-section.collapsed .collapsible-body { display: none; }
+        .collapsible-section.collapsed .collapsible-header .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        .collapsible-body {
+            padding: 0 24px 24px;
+        }
 
         .config-card {
             background: white; border-radius: 20px; border: 1px solid #f1f5f9;
@@ -121,30 +177,32 @@
         .toggle-switch input:checked + .toggle-slider { background: #e86b18; }
         .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
 
-        .filters-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 24px; }
-        .filters-bar select {
+        .filters-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
+        .filters-bar select, .filters-bar input {
             padding: 10px 16px; border-radius: 40px; border: 1.5px solid #e2e8f0;
             background: white; font-size: 0.9rem; font-weight: 500; color: #1e293b;
             cursor: pointer; min-width: 160px;
         }
-        .filters-bar select:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
+        .filters-bar select:focus, .filters-bar input:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
 
         .table-wrapper {
-            background: white; border-radius: 20px; border: 1px solid #f1f5f9;
-            overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            background: white; border-radius: 16px; border: 1px solid #f1f5f9;
+            overflow: hidden;
         }
         .table-scroll { overflow-x: auto; padding: 4px 0; }
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th {
             background: #f8fafc; color: #475569; font-weight: 600; text-align: left;
-            padding: 16px 20px; border-bottom: 2px solid #e2e8f0; white-space: nowrap;
+            padding: 14px 16px; border-bottom: 2px solid #e2e8f0; white-space: nowrap;
         }
-        td { padding: 14px 20px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
         tr:hover td { background: #fafbfc; }
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.72rem; font-weight: 600; }
         .badge-pagado { background: #dcfce7; color: #166534; }
         .badge-pendiente { background: #fee2e2; color: #991b1b; }
         .badge-tipo { background: #eef2ff; color: #4338ca; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .badge-ncf-si { background: #dcfce7; color: #166534; }
+        .badge-ncf-no { background: #fef9c3; color: #854d0e; }
         .btn-pagar {
             padding: 4px 14px; border-radius: 40px; border: none; font-size: 0.75rem;
             font-weight: 600; cursor: pointer; transition: 0.2s; background: #e86b18; color: white;
@@ -174,6 +232,32 @@
             background: #ef4444; color: white;
         }
         .btn-rechazar:hover { background: #dc2626; }
+
+        .ncf-input {
+            padding: 6px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            width: 130px;
+        }
+        .ncf-input:focus {
+            border-color: #e86b18;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
+        }
+        .ncf-save-btn {
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+            margin-left: 4px;
+        }
+        .ncf-save-btn:hover { background: #1d4ed8; }
 
         .chart-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
         @media (max-width: 700px) { .chart-section { grid-template-columns: 1fr; } }
@@ -217,6 +301,18 @@
         }
         .modal-box .btn-modal:hover { background: #d45f14; }
 
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #0d47a1;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .info-box strong { color: #0d47a1; }
+
         @media (max-width: 600px) {
             body { padding: 12px; }
             .dashboard-header h1 { font-size: 1.3rem; }
@@ -224,7 +320,9 @@
             .stat-card .stat-value { font-size: 1.5rem; }
             .conferencias-grid { grid-template-columns: 1fr; }
             th, td { padding: 10px 12px; font-size: 0.8rem; }
-            .filters-bar select { min-width: 120px; }
+            .filters-bar select, .filters-bar input { min-width: 120px; }
+            .collapsible-header { padding: 16px; }
+            .collapsible-body { padding: 0 16px 16px; }
         }
         @media (max-width: 400px) { .stats-grid { grid-template-columns: 1fr; } }
     </style>
@@ -248,7 +346,6 @@
             <h1>📊 Panel <span>Lyon Asesor</span></h1>
             <div class="header-actions">
                 <button id="reloadBtn" class="btn btn-reload">🔄 Recargar</button>
-                <button id="exportBtn" class="btn btn-secondary">📎 Exportar CSV</button>
                 <button id="logoutBtn" class="btn btn-danger">Cerrar sesión</button>
             </div>
         </div>
@@ -261,15 +358,26 @@
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
         </div>
 
-        <div class="config-card">
-            <h3>🎤 Gestión de Conferencias</h3>
-            <p class="sub">Activa o desactiva cada conferencia. Solo las activas aparecerán en el formulario de registro. Haz clic en "Iniciar Presentación" para ver la conferencia.</p>
-            <div id="conferenciasList">
-                <p style="color:#94a3b8;">Cargando conferencias...</p>
+        <!-- ============================================
+             SECCIÓN: Gestión de Conferencias (colapsable)
+             ============================================ -->
+        <div class="collapsible-section" id="sectionConferencias">
+            <div class="collapsible-header" onclick="toggleSection('sectionConferencias')">
+                <div>
+                    <h2>🎤 Gestión de Conferencias</h2>
+                    <div class="subtitle">Activa o desactiva cada conferencia para el formulario de registro</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div id="conferenciasList">
+                    <p style="color:#94a3b8;">Cargando conferencias...</p>
+                </div>
             </div>
         </div>
 
-        <div class="chart-section">
+        <!-- CHART SECTION (siempre visible, es compacta) -->
+        <div class="chart-section" style="margin-top: 32px;">
             <div class="chart-card">
                 <h3>📈 Distribución de ventas</h3>
                 <div class="pie-container">
@@ -278,7 +386,7 @@
                 </div>
             </div>
             <div class="chart-card">
-                <h3>🔍 Filtros</h3>
+                <h3>🔍 Filtros de leads</h3>
                 <div class="filters-bar">
                     <select id="tipoFiltro">
                         <option value="todos">Todos los tipos</option>
@@ -294,87 +402,257 @@
                     </select>
                 </div>
                 <p style="font-size:0.85rem; color:#94a3b8; margin-top:12px;">📌 Datos almacenados en Firebase Realtime Database.</p>
-                <p style="font-size:0.8rem; color:#94a3b8; margin-top:4px;">🔄 Los datos se actualizan en tiempo real.</p>
             </div>
         </div>
 
-        <div class="table-wrapper">
-            <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tipo</th><th>Fecha</th><th>Nombre / Empresa</th><th>Contacto</th>
-                            <th>Email</th><th>Teléfono</th><th>Detalle</th><th>Monto</th>
-                            <th>Estado</th><th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando datos desde Firebase...</td></tr>
-                    </tbody>
-                </table>
+        <!-- ============================================
+             SECCIÓN: Registros de Leads (colapsable)
+             ============================================ -->
+        <div class="collapsible-section collapsed" id="sectionLeads">
+            <div class="collapsible-header" onclick="toggleSection('sectionLeads')">
+                <div>
+                    <h2>📋 Registros de Leads</h2>
+                    <div class="subtitle">Consultas, conferencias, ebooks y diagnósticos</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th><th>Fecha</th><th>Nombre / Empresa</th><th>Contacto</th>
+                                    <th>Email</th><th>Teléfono</th><th>Detalle</th><th>Monto</th>
+                                    <th>Estado</th><th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr><td colspan="10" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando datos desde Firebase...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="table-wrapper" style="margin-top:32px;">
-            <h2 style="padding:1.2rem 1.2rem 0;">⏳ Solicitudes Pendientes</h2>
-            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Aprueba manualmente para activar la cuenta (membresía o afiliado). Al aprobar se genera el código de acceso.</p>
-            <div class="table-scroll">
-                <table>
-                    <thead><tr><th>Tipo</th><th>Fecha</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Plan / Detalle</th><th>Pago</th><th>Acción</th></tr></thead>
-                    <tbody id="solicitudesTableBody"><tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
-                </table>
+        <!-- ============================================
+             SECCIÓN: Solicitudes Pendientes (colapsable)
+             ============================================ -->
+        <div class="collapsible-section" id="sectionSolicitudes">
+            <div class="collapsible-header" onclick="toggleSection('sectionSolicitudes')">
+                <div>
+                    <h2>⏳ Solicitudes Pendientes</h2>
+                    <div class="subtitle">Aprueba membresías y afiliados manualmente</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead><tr><th>Tipo</th><th>Fecha</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Plan / Detalle</th><th>Pago</th><th>Acción</th></tr></thead>
+                            <tbody id="solicitudesTableBody"><tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="table-wrapper" style="margin-top:32px;">
-            <h2 style="padding:1.2rem 1.2rem 0;">🎓 Gestión de Miembros</h2>
-            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Marca <strong>"Asistió al cierre"</strong> para desbloquear el diploma del Programa Completo (300 horas) para el miembro.</p>
-            <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th>
-                            <th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th>
-                            <th>Cierre</th><th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="miembrosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
-                </table>
+        <!-- ============================================
+             SECCIÓN: Gestión de Miembros (colapsable)
+             ============================================ -->
+        <div class="collapsible-section" id="sectionMiembros">
+            <div class="collapsible-header" onclick="toggleSection('sectionMiembros')">
+                <div>
+                    <h2>🎓 Gestión de Miembros</h2>
+                    <div class="subtitle">Marca "Asistió al cierre" para desbloquear el diploma del Programa Completo</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th>
+                                    <th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th>
+                                    <th>Cierre</th><th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="miembrosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="table-wrapper" style="margin-top:32px;">
-            <h2 style="padding:1.2rem 1.2rem 0;">🤝 Gestión de Afiliados</h2>
-            <div class="table-scroll">
-                <table>
-                    <thead><tr><th>Código</th><th>Nombre</th><th>Registro</th><th>Estado</th><th>Clics</th><th>Ventas</th><th>Com. total</th><th>Com. pendiente</th><th>Última venta</th><th>Inactivo (días)</th><th>Acción</th></tr></thead>
-                    <tbody id="afiliadosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
-                </table>
+        <!-- ============================================
+             SECCIÓN: Gestión de Afiliados (colapsable)
+             ============================================ -->
+        <div class="collapsible-section" id="sectionAfiliados">
+            <div class="collapsible-header" onclick="toggleSection('sectionAfiliados')">
+                <div>
+                    <h2>🤝 Gestión de Afiliados</h2>
+                    <div class="subtitle">Clics, ventas y comisiones acumuladas</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead><tr><th>Código</th><th>Nombre</th><th>Registro</th><th>Estado</th><th>Clics</th><th>Ventas</th><th>Com. total</th><th>Com. pendiente</th><th>Última venta</th><th>Inactivo (días)</th><th>Acción</th></tr></thead>
+                            <tbody id="afiliadosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 🔧 NUEVA SECCIÓN: Ventas de Ebooks pendientes de confirmar -->
-        <div class="table-wrapper" style="margin-top:32px;">
-            <h2 style="padding:1.2rem 1.2rem 0;">📘 Ventas de Ebooks Pendientes de Confirmar</h2>
-            <p style="padding:0 1.2rem; font-size:0.85rem; color:#94a3b8;">Estas son las ventas potenciales de ebooks generadas cuando un visitante con link de afiliado hizo clic en un método de pago (PayPal o Pago Móvil). Confirma las que realmente pagaron para acreditar la comisión.</p>
-            <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Afiliado</th>
-                            <th>Producto</th>
-                            <th>Método</th>
-                            <th>Monto</th>
-                            <th>Comisión</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ventasEbookTableBody">
-                        <tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
-                    </tbody>
-                </table>
+        <!-- ============================================
+             SECCIÓN: Ventas de Ebooks Pendientes (colapsable)
+             ============================================ -->
+        <div class="collapsible-section" id="sectionVentasEbook">
+            <div class="collapsible-header" onclick="toggleSection('sectionVentasEbook')">
+                <div>
+                    <h2>📘 Ventas de Ebooks Pendientes</h2>
+                    <div class="subtitle">Confirma las ventas que realmente pagaron para acreditar la comisión</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Afiliado</th>
+                                    <th>Producto</th>
+                                    <th>Método</th>
+                                    <th>Monto</th>
+                                    <th>Comisión</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ventasEbookTableBody">
+                                <tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECCIÓN: LIBRO DE VENTAS (NUEVA - colapsable)
+             ============================================ -->
+        <div class="collapsible-section collapsed" id="sectionLibroVentas">
+            <div class="collapsible-header" onclick="toggleSection('sectionLibroVentas')">
+                <div>
+                    <h2>📒 Libro de Ventas</h2>
+                    <div class="subtitle">Registro fiscal de operaciones electrónicas (Providencia 102)</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="info-box">
+                    📌 <strong>Importante:</strong> Este registro se completa automáticamente cuando apruebas una membresía, marcas una conferencia como pagada o confirmas una venta de ebook. El único campo editable manualmente es el <strong>NCF</strong> que te entrega tu imprenta digital. Recuerda consultar con tu contador el tratamiento del IVA (16% nacional / 0% exportación).
+                </div>
+
+                <div class="filters-bar">
+                    <select id="filtroMesLibro" onchange="renderLibroVentas()">
+                        <option value="todos">Todos los meses</option>
+                    </select>
+                    <select id="filtroNCFLibro" onchange="renderLibroVentas()">
+                        <option value="todos">Todos los estados NCF</option>
+                        <option value="pendiente">Sin NCF</option>
+                        <option value="registrado">Con NCF</option>
+                    </select>
+                    <select id="filtroUbicacionLibro" onchange="renderLibroVentas()">
+                        <option value="todos">Todas las ubicaciones</option>
+                        <option value="VE">Venezuela (IVA 16%)</option>
+                        <option value="exterior">Exterior (IVA 0%)</option>
+                    </select>
+                    <button class="btn btn-reload" onclick="exportarLibroVentasCSV()">📎 Exportar CSV</button>
+                    <button class="btn btn-secondary" onclick="exportarLibroVentasPDF()">📄 Exportar PDF</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Cliente</th>
+                                    <th>Ubicación</th>
+                                    <th>Base Imponible</th>
+                                    <th>IVA</th>
+                                    <th>Total</th>
+                                    <th>NCF</th>
+                                    <th>Tipo Doc.</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="libroVentasTableBody">
+                                <tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECCIÓN: APROBACIÓN DEL CONTADOR (NUEVA - colapsable)
+             ============================================ -->
+        <div class="collapsible-section collapsed" id="sectionAprobacionContador">
+            <div class="collapsible-header" onclick="toggleSection('sectionAprobacionContador')">
+                <div>
+                    <h2>✅ Aprobación del Contador</h2>
+                    <div class="subtitle">Marca los meses revisados y firmados por tu contador</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="info-box">
+                    📌 Al marcar un mes como aprobado, se registra la fecha, el nombre del contador y una referencia al total de ventas y montos del Libro de Ventas de ese mes. Esto sirve como constancia interna de la revisión contable.
+                </div>
+
+                <div class="filters-bar">
+                    <select id="mesAprobarContador">
+                        <option value="">Selecciona un mes...</option>
+                    </select>
+                    <input type="text" id="nombreContador" placeholder="Nombre del contador" style="min-width: 220px;">
+                    <input type="text" id="observacionesContador" placeholder="Observaciones (opcional)" style="min-width: 260px;">
+                    <button class="btn btn-success" onclick="aprobarMesContador()">✅ Marcar como aprobado</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mes</th>
+                                    <th>Contador</th>
+                                    <th>Fecha de aprobación</th>
+                                    <th>Observaciones</th>
+                                    <th>Total ventas</th>
+                                    <th>Monto total USD</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="aprobacionesContadorTableBody">
+                                <tr><td colspan="7" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -407,10 +685,17 @@
     ];
 
     let allLeads = [];
+    let libroVentasData = [];
+    let aprobacionesContadorData = [];
 
     // =============================================
-    // FUNCIONES AUXILIARES DE PLAN
+    // FUNCIONES AUXILIARES
     // =============================================
+    function toggleSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('collapsed');
+    }
+
     function esPlanAcelerado(plan) {
         if (!plan || typeof plan !== 'string') return false;
         return plan.toLowerCase().includes('acelerado');
@@ -422,6 +707,89 @@
 
     function diasEntreClases(plan) {
         return esPlanAcelerado(plan) ? 14 : 30;
+    }
+
+    function generarCodigoAccesoAdmin(prefijo) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let codigo = '';
+        for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+        return `${prefijo}-${codigo}`;
+    }
+
+    function parsePrecioNumero(precioStr) {
+        if (!precioStr) return 0;
+        const match = String(precioStr).match(/[\d,]+\.?\d*/);
+        if (!match) return 0;
+        return parseFloat(match[0].replace(/,/g, '')) || 0;
+    }
+
+    // 🔧 IVA: 16% Venezuela, 0% exterior
+    function calcularIVA(totalUSD, ubicacion) {
+        if (ubicacion === 'VE') {
+            const base = +(totalUSD / 1.16).toFixed(2);
+            const iva = +(totalUSD - base).toFixed(2);
+            return { baseImponible: base, ivaPct: 16, ivaMonto: iva, total: totalUSD };
+        } else {
+            return { baseImponible: totalUSD, ivaPct: 0, ivaMonto: 0, total: totalUSD };
+        }
+    }
+
+    function mesDesdeTimestamp(ts) {
+        const d = new Date(ts);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function mostrarCodigoModal(titulo, mensaje, codigo, instrucciones) {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal-box">
+                <h2>${titulo}</h2>
+                <p>${mensaje}</p>
+                <div class="codigo-box">${codigo}</div>
+                <p class="instrucciones">${instrucciones}</p>
+                <button class="btn-modal" onclick="this.closest('.modal-overlay').remove()">Entendido</button>
+            </div>`;
+        document.body.appendChild(overlay);
+    }
+
+    // =============================================
+    // REGISTRO AUTOMÁTICO EN LIBRO DE VENTAS
+    // =============================================
+    async function registrarEnLibroVentas(entrada) {
+        try {
+            const ubicacion = entrada.clienteUbicacion || 'VE';
+            const calculo = calcularIVA(entrada.montoUSD || 0, ubicacion);
+            const registro = {
+                fecha: Date.now(),
+                fechaLegible: new Date().toLocaleString('es-ES'),
+                mes: mesDesdeTimestamp(Date.now()),
+                tipo: entrada.tipo,
+                descripcion: entrada.descripcion,
+                clienteNombre: entrada.clienteNombre || 'Cliente',
+                clienteCedula: entrada.clienteCedula || '',
+                clienteEmail: entrada.clienteEmail || '',
+                clienteUbicacion: ubicacion,
+                clientePais: entrada.clientePais || (ubicacion === 'VE' ? 'Venezuela' : 'Exterior'),
+                montoUSD: entrada.montoUSD || 0,
+                moneda: 'USD',
+                canal: 'medios electronicos',
+                baseImponible: calculo.baseImponible,
+                ivaPct: calculo.ivaPct,
+                ivaMonto: calculo.ivaMonto,
+                total: calculo.total,
+                ncf: '',
+                tipoDocumento: 'factura',
+                ncfEstado: 'pendiente',
+                refOriginal: entrada.refOriginal || ''
+            };
+            // Clave determinística para evitar duplicados
+            const key = entrada.key || ('auto_' + Date.now() + '_' + Math.random().toString(36).substring(7));
+            await database.ref('libro_ventas/' + key).set(registro);
+            console.log('✅ Registro añadido al Libro de Ventas:', key);
+        } catch (e) {
+            console.error('❌ Error al registrar en Libro de Ventas:', e);
+        }
     }
 
     // =============================================
@@ -482,38 +850,7 @@
     });
 
     // =============================================
-    // UTILIDADES
-    // =============================================
-    function generarCodigoAccesoAdmin(prefijo) {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let codigo = '';
-        for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
-        return `${prefijo}-${codigo}`;
-    }
-
-    function parsePrecioNumero(precioStr) {
-        if (!precioStr) return 0;
-        const match = String(precioStr).match(/[\d,]+\.?\d*/);
-        if (!match) return 0;
-        return parseFloat(match[0].replace(/,/g, '')) || 0;
-    }
-
-    function mostrarCodigoModal(titulo, mensaje, codigo, instrucciones) {
-        const overlay = document.createElement('div');
-        overlay.className = 'modal-overlay';
-        overlay.innerHTML = `
-            <div class="modal-box">
-                <h2>${titulo}</h2>
-                <p>${mensaje}</p>
-                <div class="codigo-box">${codigo}</div>
-                <p class="instrucciones">${instrucciones}</p>
-                <button class="btn-modal" onclick="this.closest('.modal-overlay').remove()">Entendido</button>
-            </div>`;
-        document.body.appendChild(overlay);
-    }
-
-    // =============================================
-    // APROBAR SOLICITUD
+    // APROBAR SOLICITUD (con registro automático en Libro de Ventas)
     // =============================================
     async function aprobarSolicitud(tipo, id) {
         try {
@@ -526,6 +863,7 @@
                 const email = s.email || s.correo || '';
                 const telefono = s.telefono || s.phone || s.celular || '';
                 const plan = s.plan || s.tipoPlan || 'extendido';
+                const pais = s.pais || 'Venezuela';
 
                 const codigo = generarCodigoAccesoAdmin('LYON');
 
@@ -542,6 +880,21 @@
 
                 if (s.refAfiliado) await acreditarComisionSiAplica(s);
 
+                // 🔧 Registro automático en Libro de Ventas
+                const montoUSD = parsePrecioNumero(s.precio) || 0;
+                const esVE = (pais || '').toLowerCase().includes('venezuela');
+                await registrarEnLibroVentas({
+                    key: 'membresia_' + codigo,
+                    tipo: 'membresia',
+                    descripcion: 'Membresía ' + (s.planLabel || plan),
+                    clienteNombre: nombre,
+                    clienteEmail: email,
+                    clienteUbicacion: esVE ? 'VE' : 'exterior',
+                    clientePais: pais,
+                    montoUSD: montoUSD,
+                    refOriginal: codigo
+                });
+
                 mostrarCodigoModal(
                     '🎓 Membresía aprobada',
                     `El código de acceso para <strong>${nombre}</strong> es:`,
@@ -549,7 +902,7 @@
                     'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía.'
                 );
 
-                await Promise.all([cargarSolicitudes(), cargarMiembros(), cargarAfiliados()]);
+                await Promise.all([cargarSolicitudes(), cargarMiembros(), cargarAfiliados(), cargarLibroVentas()]);
 
             } else if (tipo === 'Afiliado') {
                 const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
@@ -605,7 +958,6 @@
         });
     }
 
-    // 🔧 Acreditar comisión de conferencia
     async function acreditarComisionConferencia(lead) {
         if (!lead.refAfiliado) return;
         const afSnap = await database.ref('afiliados/' + lead.refAfiliado).once('value');
@@ -633,7 +985,9 @@
             cargarSolicitudes(),
             cargarMiembros(),
             cargarAfiliados(),
-            cargarVentasEbookPendientes()
+            cargarVentasEbookPendientes(),
+            cargarLibroVentas(),
+            cargarAprobacionesContador()
         ]);
     }
 
@@ -705,10 +1059,8 @@
                 const m = data[codigo];
                 const completadas = Object.keys(m.clasesCompletadas || {}).length;
                 const diplomas = Object.keys(m.diplomasDescargados || {}).length;
-
                 const dias = diasEntreClases(m.plan);
                 const etiquetaPlan = etiquetaPlanCorta(m.plan);
-
                 const proxNum = Math.min(completadas + 1, 12);
                 const proxFecha = new Date((m.fechaInicio || Date.now()) + dias * (proxNum - 1) * 86400000);
                 const asistio = m.asistioCierre === true;
@@ -793,7 +1145,6 @@
                 ]);
                 const clics = Object.keys(clicsSnap.val() || {}).length;
                 const ventasObj = ventasSnap.val() || {};
-                // Solo contamos como "ventas" las que tienen estadoComision pendiente o pagada (no las canceladas)
                 const ventas = Object.values(ventasObj).filter(v =>
                     v.estadoComision === 'pendiente' || v.estadoComision === 'pagada'
                 );
@@ -846,7 +1197,7 @@
     };
 
     // =============================================
-    // 🔧 VENTAS DE EBOOK PENDIENTES DE CONFIRMAR
+    // VENTAS DE EBOOK PENDIENTES
     // =============================================
     async function cargarVentasEbookPendientes() {
         const tbody = document.getElementById('ventasEbookTableBody');
@@ -859,7 +1210,6 @@
                 const ventasSnap = await database.ref('afiliados_ventas/' + codigo).once('value');
                 const ventas = ventasSnap.val() || {};
                 for (const [pushId, venta] of Object.entries(ventas)) {
-                    // 🔧 CORRECCIÓN: Acepta cualquier método de pago que esté sin confirmar
                     if (venta.estadoPago && venta.estadoPago.startsWith('clic_') && venta.estadoPago.endsWith('_sin_confirmar')) {
                         filas.push({
                             codigoAfiliado: codigo,
@@ -878,7 +1228,6 @@
                 return;
             }
 
-            // 🔧 CORRECCIÓN: Añadida columna "Método" con etiqueta dinámica
             tbody.innerHTML = filas.map(f => {
                 const metodoLabel = f.metodoPago === 'pago_movil' ? '📱 Pago Móvil' : '💳 PayPal';
                 return `
@@ -908,8 +1257,24 @@
         try {
             await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}/estadoPago`).set('confirmada');
             await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}/fechaConfirmacion`).set(Date.now());
+
+            // 🔧 Registro automático en Libro de Ventas
+            const ventaSnap = await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}`).once('value');
+            const v = ventaSnap.val() || {};
+            await registrarEnLibroVentas({
+                key: 'ebook_' + codigoAfiliado + '_' + pushId,
+                tipo: 'ebook',
+                descripcion: v.producto || 'Biblioteca Lyon Asesor',
+                clienteNombre: 'Cliente Ebook',
+                clienteEmail: '',
+                clienteUbicacion: 'VE', // Por defecto, editable después
+                clientePais: 'Venezuela',
+                montoUSD: v.monto || 9.99,
+                refOriginal: codigoAfiliado + '/' + pushId
+            });
+
             console.log(`✅ Venta de ebook confirmada para ${codigoAfiliado}`);
-            await Promise.all([cargarVentasEbookPendientes(), cargarAfiliados()]);
+            await Promise.all([cargarVentasEbookPendientes(), cargarAfiliados(), cargarLibroVentas()]);
         } catch (e) {
             console.error('❌ Error al confirmar venta:', e);
             alert('Error al confirmar: ' + e.message);
@@ -926,6 +1291,344 @@
         } catch (e) {
             console.error('❌ Error al rechazar venta:', e);
             alert('Error al rechazar: ' + e.message);
+        }
+    };
+
+    // =============================================
+    // LIBRO DE VENTAS
+    // =============================================
+    async function cargarLibroVentas() {
+        try {
+            const snap = await database.ref('libro_ventas').once('value');
+            const data = snap.val() || {};
+            libroVentasData = Object.entries(data).map(([id, entry]) => ({ id, ...entry }));
+            libroVentasData.sort((a, b) => (b.fecha || 0) - (a.fecha || 0));
+
+            // Poblar el filtro de meses
+            const mesesSet = new Set(libroVentasData.map(e => e.mes).filter(Boolean));
+            const mesesArr = Array.from(mesesSet).sort().reverse();
+            const selectMes = document.getElementById('filtroMesLibro');
+            const valorActual = selectMes.value;
+            selectMes.innerHTML = '<option value="todos">Todos los meses</option>';
+            mesesArr.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                selectMes.appendChild(opt);
+            });
+            if (valorActual && mesesArr.includes(valorActual)) selectMes.value = valorActual;
+
+            // Poblar el select de aprobación de contador
+            const selectAprobar = document.getElementById('mesAprobarContador');
+            const valorAprobar = selectAprobar.value;
+            selectAprobar.innerHTML = '<option value="">Selecciona un mes...</option>';
+            mesesArr.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                selectAprobar.appendChild(opt);
+            });
+            if (valorAprobar && mesesArr.includes(valorAprobar)) selectAprobar.value = valorAprobar;
+
+            renderLibroVentas();
+        } catch (e) {
+            console.error('Error cargando Libro de Ventas:', e);
+            document.getElementById('libroVentasTableBody').innerHTML =
+                '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    function renderLibroVentas() {
+        const tbody = document.getElementById('libroVentasTableBody');
+        const mesFiltro = document.getElementById('filtroMesLibro').value;
+        const ncfFiltro = document.getElementById('filtroNCFLibro').value;
+        const ubicacionFiltro = document.getElementById('filtroUbicacionLibro').value;
+
+        let filtered = libroVentasData;
+        if (mesFiltro !== 'todos') filtered = filtered.filter(e => e.mes === mesFiltro);
+        if (ncfFiltro === 'pendiente') filtered = filtered.filter(e => e.ncfEstado !== 'registrado');
+        else if (ncfFiltro === 'registrado') filtered = filtered.filter(e => e.ncfEstado === 'registrado');
+        if (ubicacionFiltro !== 'todos') filtered = filtered.filter(e => e.clienteUbicacion === ubicacionFiltro);
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">No hay registros en el Libro de Ventas con los filtros seleccionados.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(e => {
+            const tipoLabel = e.tipo === 'membresia' ? '🎓 Membresía' :
+                              e.tipo === 'conferencia' ? '🎤 Conferencia' :
+                              e.tipo === 'ebook' ? '📘 Ebook' : e.tipo;
+            const ncfBadge = e.ncfEstado === 'registrado'
+                ? '<span class="badge badge-ncf-si">✅ NCF</span>'
+                : '<span class="badge badge-ncf-pendiente badge-ncf-no">🟡 Sin NCF</span>';
+            const ivaLabel = e.ivaPct === 16 ? `16% ($${(e.ivaMonto || 0).toFixed(2)})` :
+                             e.ivaPct === 0 ? '0% (Exento)' : '—';
+            const ubicLabel = e.clienteUbicacion === 'VE' ? '🇻🇪 VE' : '🌍 Exterior';
+
+            return `<tr>
+                <td style="white-space:nowrap; font-size:0.82rem;">${e.fechaLegible || ''}</td>
+                <td>${tipoLabel}</td>
+                <td style="font-size:0.85rem;">${e.descripcion || ''}</td>
+                <td>${e.clienteNombre || ''}</td>
+                <td>${ubicLabel}</td>
+                <td>$${(e.baseImponible || 0).toFixed(2)}</td>
+                <td>${ivaLabel}</td>
+                <td><strong>$${(e.total || 0).toFixed(2)}</strong></td>
+                <td>
+                    <input type="text" class="ncf-input" id="ncf_${e.id}"
+                           placeholder="Ej. 00-00000001"
+                           value="${e.ncf || ''}">
+                    <button class="ncf-save-btn" onclick="guardarNCF('${e.id}')">💾</button>
+                </td>
+                <td>
+                    <select onchange="cambiarTipoDoc('${e.id}', this.value)" style="padding:4px 8px; border-radius:6px; font-size:0.78rem;">
+                        <option value="factura" ${e.tipoDocumento === 'factura' ? 'selected' : ''}>Factura</option>
+                        <option value="nota_credito" ${e.tipoDocumento === 'nota_credito' ? 'selected' : ''}>Nota de Crédito</option>
+                    </select>
+                </td>
+                <td>${ncfBadge}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    window.guardarNCF = async function(id) {
+        const input = document.getElementById('ncf_' + id);
+        const ncf = input.value.trim();
+        if (!ncf) { alert('Ingresa un NCF válido'); return; }
+        try {
+            await database.ref('libro_ventas/' + id + '/ncf').set(ncf);
+            await database.ref('libro_ventas/' + id + '/ncfEstado').set('registrado');
+            console.log(`✅ NCF guardado para registro ${id}: ${ncf}`);
+            await cargarLibroVentas();
+        } catch (e) {
+            console.error('❌ Error al guardar NCF:', e);
+            alert('Error: ' + e.message);
+        }
+    };
+
+    window.cambiarTipoDoc = async function(id, valor) {
+        try {
+            await database.ref('libro_ventas/' + id + '/tipoDocumento').set(valor);
+            await cargarLibroVentas();
+        } catch (e) {
+            console.error('❌ Error:', e);
+        }
+    };
+
+    window.cambiarUbicacionLibro = async function(id, valor) {
+        try {
+            // Recalcular IVA según nueva ubicación
+            const snap = await database.ref('libro_ventas/' + id).once('value');
+            const entry = snap.val() || {};
+            const calculo = calcularIVA(entry.montoUSD || 0, valor);
+            await database.ref('libro_ventas/' + id).update({
+                clienteUbicacion: valor,
+                baseImponible: calculo.baseImponible,
+                ivaPct: calculo.ivaPct,
+                ivaMonto: calculo.ivaMonto,
+                total: calculo.total
+            });
+            await cargarLibroVentas();
+        } catch (e) {
+            console.error('❌ Error al cambiar ubicación:', e);
+        }
+    };
+
+    // =============================================
+    // EXPORTAR LIBRO DE VENTAS: CSV
+    // =============================================
+    window.exportarLibroVentasCSV = function() {
+        if (libroVentasData.length === 0) { alert('No hay registros para exportar.'); return; }
+
+        const mesFiltro = document.getElementById('filtroMesLibro').value;
+        const ncfFiltro = document.getElementById('filtroNCFLibro').value;
+        let filtered = libroVentasData;
+        if (mesFiltro !== 'todos') filtered = filtered.filter(e => e.mes === mesFiltro);
+        if (ncfFiltro === 'pendiente') filtered = filtered.filter(e => e.ncfEstado !== 'registrado');
+        else if (ncfFiltro === 'registrado') filtered = filtered.filter(e => e.ncfEstado === 'registrado');
+
+        let csv = '\uFEFFFecha,Tipo,Descripción,Cliente,Email,Ubicación,País,Base Imponible USD,IVA %,IVA USD,Total USD,NCF,Tipo Doc.,Estado NCF\n';
+        filtered.forEach(e => {
+            const esc = (v) => `"${String(v || '').replace(/"/g, '""')}"`;
+            csv += [
+                esc(e.fechaLegible),
+                esc(e.tipo),
+                esc(e.descripcion),
+                esc(e.clienteNombre),
+                esc(e.clienteEmail),
+                esc(e.clienteUbicacion),
+                esc(e.clientePais),
+                (e.baseImponible || 0).toFixed(2),
+                (e.ivaPct || 0) + '%',
+                (e.ivaMonto || 0).toFixed(2),
+                (e.total || 0).toFixed(2),
+                esc(e.ncf || ''),
+                esc(e.tipoDocumento || 'factura'),
+                esc(e.ncfEstado || 'pendiente')
+            ].join(',') + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Libro_Ventas_LyonAsesor_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    // =============================================
+    // EXPORTAR LIBRO DE VENTAS: PDF
+    // =============================================
+    window.exportarLibroVentasPDF = function() {
+        if (libroVentasData.length === 0) { alert('No hay registros para exportar.'); return; }
+
+        const mesFiltro = document.getElementById('filtroMesLibro').value;
+        const ncfFiltro = document.getElementById('filtroNCFLibro').value;
+        let filtered = libroVentasData;
+        if (mesFiltro !== 'todos') filtered = filtered.filter(e => e.mes === mesFiltro);
+        if (ncfFiltro === 'pendiente') filtered = filtered.filter(e => e.ncfEstado !== 'registrado');
+        else if (ncfFiltro === 'registrado') filtered = filtered.filter(e => e.ncfEstado === 'registrado');
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+        // Encabezado
+        doc.setFontSize(16);
+        doc.setTextColor(232, 107, 24);
+        doc.text('LYON ASESOR, F.P.', 14, 15);
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139);
+        doc.text('RIF: V-17633035-6 | info@lyonasesor.com | lyonasesor.com', 14, 21);
+        doc.setFontSize(13);
+        doc.setTextColor(15, 23, 42);
+        doc.text('Libro de Ventas', 14, 30);
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        const periodo = mesFiltro === 'todos' ? 'Todos los meses' : mesFiltro;
+        doc.text('Periodo: ' + periodo + ' | Generado: ' + new Date().toLocaleString('es-ES'), 14, 36);
+
+        // Totales
+        const totalVentas = filtered.length;
+        const totalUSD = filtered.reduce((s, e) => s + (e.total || 0), 0);
+        const totalIVA = filtered.reduce((s, e) => s + (e.ivaMonto || 0), 0);
+        doc.setFontSize(10);
+        doc.setTextColor(15, 23, 42);
+        doc.text(`Registros: ${totalVentas}  |  Total USD: $${totalUSD.toFixed(2)}  |  IVA acumulado: $${totalIVA.toFixed(2)}`, 14, 44);
+
+        // Tabla
+        const rows = filtered.map(e => [
+            e.fechaLegible || '',
+            e.tipo || '',
+            (e.descripcion || '').substring(0, 40),
+            (e.clienteNombre || '').substring(0, 25),
+            e.clienteUbicacion === 'VE' ? 'VE' : 'Ext.',
+            (e.baseImponible || 0).toFixed(2),
+            (e.ivaPct || 0) + '%',
+            (e.ivaMonto || 0).toFixed(2),
+            (e.total || 0).toFixed(2),
+            e.ncf || '—',
+            e.tipoDocumento || 'factura'
+        ]);
+
+        doc.autoTable({
+            startY: 50,
+            head: [['Fecha','Tipo','Descripción','Cliente','Ubic.','Base USD','IVA %','IVA USD','Total USD','NCF','Doc.']],
+            body: rows,
+            styles: { fontSize: 7.5, cellPadding: 1.5 },
+            headStyles: { fillColor: [26, 35, 48], textColor: 255, fontSize: 8 },
+            alternateRowStyles: { fillColor: [250, 248, 245] },
+            columnStyles: {
+                5: { halign: 'right' },
+                7: { halign: 'right' },
+                8: { halign: 'right' }
+            }
+        });
+
+        const finalY = doc.lastAutoTable.finalY + 15;
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        doc.text('_____________________________', 14, finalY);
+        doc.text('Firma del contador', 14, finalY + 5);
+
+        doc.save('Libro_Ventas_LyonAsesor_' + new Date().toISOString().slice(0,10) + '.pdf');
+    };
+
+    // =============================================
+    // APROBACIÓN DEL CONTADOR
+    // =============================================
+    async function cargarAprobacionesContador() {
+        const tbody = document.getElementById('aprobacionesContadorTableBody');
+        try {
+            const snap = await database.ref('aprobaciones_contador').once('value');
+            const data = snap.val() || {};
+            aprobacionesContadorData = Object.entries(data).map(([id, entry]) => ({ id, ...entry }));
+            aprobacionesContadorData.sort((a, b) => (b.fechaAprobacion || 0) - (a.fechaAprobacion || 0));
+
+            if (aprobacionesContadorData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:2rem; color:#94a3b8;">Aún no hay meses aprobados por el contador.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = aprobacionesContadorData.map(a => `
+                <tr>
+                    <td><strong>${a.mes || ''}</strong></td>
+                    <td>${a.nombreContador || ''}</td>
+                    <td>${a.fechaAprobacion ? new Date(a.fechaAprobacion).toLocaleString('es-ES') : ''}</td>
+                    <td style="font-size:0.85rem; color:#64748b;">${a.observaciones || '—'}</td>
+                    <td>${a.totalVentas || 0}</td>
+                    <td>$${(a.montoTotalUSD || 0).toFixed(2)}</td>
+                    <td>
+                        <button class="btn-pagar" onclick="eliminarAprobacion('${a.id}')" style="background:#ef4444;">🗑 Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            console.error('Error cargando aprobaciones:', e);
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    window.aprobarMesContador = async function() {
+        const mes = document.getElementById('mesAprobarContador').value;
+        const nombre = document.getElementById('nombreContador').value.trim();
+        const obs = document.getElementById('observacionesContador').value.trim();
+
+        if (!mes) { alert('Selecciona un mes para aprobar.'); return; }
+        if (!nombre) { alert('Ingresa el nombre del contador.'); return; }
+
+        try {
+            const ventasMes = libroVentasData.filter(e => e.mes === mes);
+            const totalVentas = ventasMes.length;
+            const montoTotalUSD = ventasMes.reduce((s, e) => s + (e.total || 0), 0);
+
+            await database.ref('aprobaciones_contador/' + mes).set({
+                mes: mes,
+                nombreContador: nombre,
+                observaciones: obs,
+                fechaAprobacion: Date.now(),
+                totalVentas: totalVentas,
+                montoTotalUSD: montoTotalUSD
+            });
+
+            console.log(`✅ Mes ${mes} aprobado por el contador ${nombre}`);
+            document.getElementById('nombreContador').value = '';
+            document.getElementById('observacionesContador').value = '';
+            await cargarAprobacionesContador();
+        } catch (e) {
+            console.error('❌ Error al aprobar mes:', e);
+            alert('Error: ' + e.message);
+        }
+    };
+
+    window.eliminarAprobacion = async function(id) {
+        if (!confirm('¿Eliminar esta aprobación del contador?')) return;
+        try {
+            await database.ref('aprobaciones_contador/' + id).remove();
+            await cargarAprobacionesContador();
+        } catch (e) {
+            console.error('❌ Error:', e);
         }
     };
 
@@ -1081,7 +1784,7 @@
     }
 
     // =============================================
-    // TABLA PRINCIPAL (con acreditación de comisiones al marcar pagado)
+    // TABLA PRINCIPAL (Leads)
     // =============================================
     function renderTabla() {
         const tipoFiltro = document.getElementById('tipoFiltro').value;
@@ -1127,7 +1830,6 @@
             </tr>`;
         }).join('');
 
-        // Acreditar comisión al marcar una CONFERENCIA como pagada
         document.querySelectorAll('.btn-pagar').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const id = this.getAttribute('data-id');
@@ -1139,13 +1841,28 @@
                     const lead = allLeads.find(l => l.id === id && l.coleccion === coleccion);
                     await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
 
-                    // Si es una conferencia que pasa de pendiente → pagado, acreditar comisión al afiliado
-                    if (coleccion === 'conferencias' && nuevoEstado === true && lead && lead.refAfiliado) {
-                        await acreditarComisionConferencia(lead);
+                    // Acreditar comisión + registrar en Libro de Ventas si es conferencia pagada
+                    if (coleccion === 'conferencias' && nuevoEstado === true && lead) {
+                        if (lead.refAfiliado) {
+                            await acreditarComisionConferencia(lead);
+                        }
+                        // Registro en Libro de Ventas
+                        const esVE = (lead.pais || 'Venezuela').toLowerCase().includes('venezuela');
+                        await registrarEnLibroVentas({
+                            key: 'conferencia_' + id,
+                            tipo: 'conferencia',
+                            descripcion: 'Conferencia — ' + (lead.tema || 'General'),
+                            clienteNombre: lead.contacto || lead.empresa || 'Cliente',
+                            clienteEmail: lead.email || '',
+                            clienteUbicacion: esVE ? 'VE' : 'exterior',
+                            clientePais: lead.pais || 'Venezuela',
+                            montoUSD: lead.monto || 0,
+                            refOriginal: id
+                        });
                     }
 
                     console.log(`✅ Estado actualizado a "${nuevoEstado ? 'pagado' : 'pendiente'}"`);
-                    await Promise.all([cargarLeads(), cargarAfiliados()]);
+                    await Promise.all([cargarLeads(), cargarAfiliados(), cargarLibroVentas()]);
                 } catch (error) {
                     console.error('❌ Error actualizando estado:', error);
                     alert('Error al actualizar el estado.');
@@ -1158,31 +1875,14 @@
     document.getElementById('estadoFiltro').addEventListener('change', renderTabla);
 
     // =============================================
-    // EXPORTAR CSV
+    // RECARGA PERIÓDICA
     // =============================================
-    document.getElementById('exportBtn').addEventListener('click', function() {
-        if (allLeads.length === 0) { alert('No hay datos'); return; }
-        let csv = 'Tipo,Fecha,Nombre,Email,Teléfono,Monto,Pagado\n';
-        allLeads.forEach(r => {
-            const tipoInfo = TIPO_MAP[r.coleccion] || { label: r.coleccion };
-            csv += [
-                tipoInfo.label, r.fechaLegible || '', r.nombre || '',
-                r.email || '', r.telefono || '', r.monto || 0, r.pagado ? 'Sí' : 'No'
-            ].join(',') + '\n';
-        });
-        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'lyon_asesor_dashboard.csv'; a.click();
-        URL.revokeObjectURL(url);
-    });
-
     setInterval(() => {
         const user = firebase.auth().currentUser;
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con acreditación de comisiones y confirmación de ebooks');
+    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador y secciones colapsables');
 </script>
 </body>
 </html>
