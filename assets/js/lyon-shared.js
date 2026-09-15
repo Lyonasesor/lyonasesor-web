@@ -1,73 +1,24 @@
 // ============================================================
-// LYON ASESOR — JS COMPARTIDO (nav, scroll reveal, back to top)
-// Requiere elementos con id="nav", "navToggle", "navLinks",
-// clase .reveal para animaciones, y opcionalmente #backToTop.
+// LYON ASESOR — JS COMPARTIDO (v2)
+// 
+// Este archivo SOLO hace dos cosas:
+//   1. Inyecta CSS con el fix del botón hamburguesa en móvil
+//   2. Tracking de afiliados (?ref=CODIGO)
+//
+// NO maneja el clic del botón hamburguesa — cada HTML ya tiene
+// su propio listener inline. Duplicarlo causaba que el toggle
+// se ejecutara DOS VECES y el menú nunca se abría.
 // ============================================================
-document.addEventListener('DOMContentLoaded', function () {
-    const nav = document.getElementById('nav');
-    if (nav) {
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.scrollY > 50);
-        });
-    }
-
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (navToggle && navLinks) {
-        navToggle.addEventListener('click', () => {
-            navToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            // Bloquea el scroll del body cuando el menú está abierto
-            document.body.classList.toggle('menu-open', navLinks.classList.contains('active'));
-        });
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            });
-        });
-        // Cerrar menú con tecla ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                navToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.classList.remove('menu-open');
-            }
-        });
-    }
-
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    const backToTop = document.getElementById('backToTop');
-    if (backToTop) {
-        window.addEventListener('scroll', () => {
-            backToTop.classList.toggle('visible', window.scrollY > 500);
-        });
-        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    }
-});
 
 // ============================================================
-// FIX BOTÓN HAMBURGUESA EN MÓVIL
-// Inyecta CSS con prioridad !important para garantizar:
-//   - Área táctil mínima de 44×44px (Apple/Google)
-//   - z-index correcto (por encima del menú desplegado)
-//   - position: relative para que el z-index surta efecto
-//   - Bloqueo de scroll del body cuando el menú está abierto
-// Se aplica globalmente a las 8 páginas.
+// FIX BOTÓN HAMBURGUESA EN MÓVIL (solo CSS)
+// Área táctil 44×44px + z-index correcto + bloqueo de scroll
 // ============================================================
 (function fixNavToggleMobile() {
     if (document.getElementById('lyon-nav-fix-style')) return;
     const style = document.createElement('style');
     style.id = 'lyon-nav-fix-style';
     style.textContent = `
-        /* Fix botón hamburguesa — área táctil 44x44 y z-index correcto */
         .nav-toggle {
             position: relative !important;
             z-index: 2000 !important;
@@ -84,11 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
             width: 24px !important;
             pointer-events: none !important;
         }
-        /* Prevenir scroll del fondo cuando el menú móvil está abierto */
         body.menu-open {
             overflow: hidden !important;
         }
-        /* El menú desplegado debe quedar por debajo del botón */
         @media (max-width: 768px) {
             .nav-links.active {
                 z-index: 1000 !important;
@@ -96,6 +45,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     `;
     document.head.appendChild(style);
+})();
+
+// ============================================================
+// BLOQUEO DE SCROLL CUANDO EL MENÚ ESTÁ ABIERTO
+// Detecta cambios en la clase 'active' de #navLinks mediante
+// MutationObserver y aplica/quita 'menu-open' al <body>.
+// ============================================================
+(function watchMenuOpenState() {
+    function attach() {
+        const links = document.getElementById('navLinks');
+        if (!links) return false;
+        const observer = new MutationObserver(() => {
+            const isOpen = links.classList.contains('active');
+            document.body.classList.toggle('menu-open', isOpen);
+        });
+        observer.observe(links, { attributes: true, attributeFilter: ['class'] });
+        return true;
+    }
+    if (!attach()) {
+        document.addEventListener('DOMContentLoaded', attach);
+    }
 })();
 
 // ============================================================
@@ -164,8 +134,6 @@ window.obtenerAfiliadoActivo = obtenerAfiliadoActivo;
 
 /**
  * Registra una venta atribuible a un afiliado (si hay uno activo).
- * Se llama desde membresia.html / conferencia.html / ebook.html
- * al completar un formulario de compra.
  * @param {string} producto - Nombre del producto
  * @param {number} monto - Monto total de la venta en USD
  * @param {number} comisionPorcentaje - Porcentaje de comisión (ej. 30)
@@ -203,3 +171,5 @@ function limpiarAfiliadoActivo() {
     } catch (e) {}
 }
 window.limpiarAfiliadoActivo = limpiarAfiliadoActivo;
+
+console.log('✅ lyon-shared.js v2 cargado (sin listener duplicado del nav)');
