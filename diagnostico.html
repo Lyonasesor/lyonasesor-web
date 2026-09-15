@@ -1832,8 +1832,6 @@
 
     <script>
         // ===== TODOS LOS SCRIPTS DEL DIAGNOSTICO IGUALES =====
-        // (Nav, likert, progress, cálculo de resultado, etc. - TODOS IGUALES)
-        // SOLO CAMBIA LA FUNCIÓN guardarDiagnosticoEnJSONBin POR guardarDiagnosticoEnFirebase
 
         // ===== NAV =====
         const nav = document.getElementById('nav');
@@ -2066,7 +2064,7 @@
             }
 
             // ════════════════════════════════════════════════════════
-            // 🔥 GUARDAR EN FIREBASE (reemplaza JSONBin)
+            // 🔥 GUARDAR EN FIREBASE
             // ════════════════════════════════════════════════════════
             guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel);
         }
@@ -2085,7 +2083,7 @@
         }
 
         // ════════════════════════════════════════════════════════
-        // 🔥 NUEVA FUNCIÓN: GUARDAR EN FIREBASE
+        // 🔥 FUNCIÓN: GUARDAR EN FIREBASE
         // ════════════════════════════════════════════════════════
         async function guardarDiagnosticoEnFirebase(nombre, email, perfil, puntaje, nivel) {
             try {
@@ -2306,6 +2304,6 @@ Haz clic en el botón de pago para completar tu compra:`;
             }
         })();
     </script>
-    <script src="/assets/js/footer-qr.js"></script>
+    <script src="/assets/js/footer-qr.js?v=6"></script>
 </body>
 </html>
