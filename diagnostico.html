@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
     <title>Brújula Emocional | Test de Autoconocimiento Gratuito · Lyon Asesor</title>
-    <meta name="description" content="Realiza gratis la Brújula Emocional de Lyon Asesor. Test de autoconocimiento emocional para identificar tu perfil y recibir orientación personalizada. Para toda Iberoamérica." />
+    <meta name="description" content="Realiza gratis la Brújula Emocional de Lyon Asesor. Test de autoconocimiento emocional para identificar tu perfil y recibir un plan personalizado. Para toda Iberoamérica." />
     <meta name="keywords" content="test emocional, autoconocimiento, diagnóstico emocional, salud mental, bienestar, inteligencia emocional, test gratuito" />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
     <meta name="application-name" content="Lyon Asesor" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/diagnostico.html" />
     <meta property="og:title" content="Brújula Emocional | Test de Autoconocimiento Gratuito · Lyon Asesor" />
-    <meta property="og:description" content="Test gratuito de autoconocimiento emocional para hispanohablantes en todo el mundo. Identifica tu perfil y recibe orientación personalizada." />
+    <meta property="og:description" content="Test gratuito de autoconocimiento emocional. Identifica tu perfil y recibe un plan personalizado según tu resultado." />
     <meta property="og:image" content="https://lyonasesor.com/og-diagnostico.png?v=2" />
     <meta property="og:image:secure_url" content="https://lyonasesor.com/og-diagnostico.png?v=2" />
     <meta property="og:image:width" content="1200" />
@@ -30,7 +30,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@LyonAsesor" />
     <meta name="twitter:title" content="Brújula Emocional | Test de Autoconocimiento Gratuito" />
-    <meta name="twitter:description" content="Test gratuito de autoconocimiento emocional. Identifica tu perfil y recibe orientación." />
+    <meta name="twitter:description" content="Test gratuito de autoconocimiento emocional. Identifica tu perfil y recibe un plan personalizado." />
     <meta name="twitter:image" content="https://lyonasesor.com/og-diagnostico.png?v=2" />
     <meta name="twitter:image:alt" content="Brújula Emocional – Test Gratuito de Lyon Asesor" />
     
@@ -41,7 +41,7 @@
             "@type": "WebApplication",
             "name": "Brújula Emocional de Lyon Asesor",
             "url": "https://lyonasesor.com/diagnostico.html",
-            "description": "Test gratuito de autoconocimiento emocional que te ayuda a identificar tu perfil emocional y recibir orientación personalizada.",
+            "description": "Test gratuito de autoconocimiento emocional que te ayuda a identificar tu perfil emocional y recibir un plan personalizado de educación emocional.",
             "applicationCategory": "HealthApplication",
             "offers": {
                 "@type": "Offer",
@@ -60,7 +60,7 @@
         }
     </script>
     
-    <!-- Google Analytics 4 — ID REAL -->
+    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -69,7 +69,7 @@
         gtag('config', 'G-003ZC6TLH3');
     </script>
     
-    <!-- Meta Pixel — Placeholder -->
+    <!-- Meta Pixel -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -95,7 +95,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
     <style>
-        /* ===== TODOS LOS ESTILOS IGUALES ===== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -747,6 +746,172 @@
             border-radius: 99px;
         }
 
+        /* ============================================
+           PLAN PERSONALIZADO (NUEVO)
+           ============================================ */
+        .plan-container {
+            margin: 2rem 0;
+        }
+        .plan-card {
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1.5px solid;
+            background: #fff;
+        }
+        .plan-card.nivel-1 { border-color: rgba(90,122,90,0.35); }
+        .plan-card.nivel-2 { border-color: rgba(45,106,106,0.35); }
+        .plan-card.nivel-3 { border-color: var(--gold-light); }
+        .plan-card.nivel-4 { border-color: rgba(194,90,58,0.35); }
+
+        .plan-header {
+            padding: 1.5rem 1.75rem 1.25rem;
+            background: linear-gradient(180deg, var(--crema), var(--blanco-calido));
+            text-align: center;
+            border-bottom: 1px solid rgba(26,35,48,0.06);
+        }
+        .plan-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 99px;
+            background: var(--naranja);
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .plan-header h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .plan-header p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .plan-items {
+            padding: 1.5rem 1.75rem 1.75rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .plan-items { grid-template-columns: 1fr; padding: 1.25rem; }
+            .plan-header { padding: 1.25rem 1.25rem 1rem; }
+        }
+
+        .plan-item {
+            background: var(--blanco-calido);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem;
+            border: 1.5px solid rgba(26,35,48,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .plan-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(26,35,48,0.08);
+        }
+        .plan-item.primary {
+            background: linear-gradient(180deg, rgba(232,107,24,0.07), rgba(232,107,24,0.02));
+            border-color: rgba(232,107,24,0.3);
+        }
+        .plan-item-icon {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+        .plan-item-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--naranja);
+        }
+        .plan-item h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0;
+            line-height: 1.3;
+        }
+        .plan-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin: 0;
+            flex: 1;
+        }
+        .plan-item .plan-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--naranja);
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        .btn-plan {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 11px 20px;
+            border-radius: 99px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            margin-top: 6px;
+            box-shadow: 0 4px 12px rgba(232,107,24,0.25);
+        }
+        .btn-plan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(232,107,24,0.4);
+        }
+        .btn-plan-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--naranja);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 11px 20px;
+            border-radius: 99px;
+            text-decoration: none;
+            text-align: center;
+            border: 1.5px solid var(--naranja);
+            transition: all 0.2s;
+            margin-top: 6px;
+        }
+        .btn-plan-outline:hover {
+            background: var(--naranja);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .plan-note {
+            text-align: center;
+            padding: 0 1.75rem 1.5rem;
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        @media (max-width: 600px) {
+            .plan-note { padding: 0 1.25rem 1.25rem; }
+        }
+
         /* ===== CTA ===== */
         .cta-block {
             background: var(--navy);
@@ -930,7 +1095,7 @@
         }
         .print-btn:hover { border-color: var(--text-muted); color: var(--text-dark); }
 
-        /* ===== FOOTER CON YOUTUBE ===== */
+        /* ===== FOOTER ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -1281,7 +1446,7 @@
             body { background: white; }
             .header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .cta-block { break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .profile-card { break-inside: avoid; }
+            .profile-card, .plan-card { break-inside: avoid; }
         }
     </style>
 </head>
@@ -1343,12 +1508,12 @@
 
         <div class="intro-card">
             <span class="intro-card-icon">🧭</span>
-            <p>Este no es un test médico. Es una conversación contigo mismo — honesta y privada. <strong>No hay respuestas correctas ni incorrectas.</strong> Solo existe lo que realmente sientes. Al finalizar, recibirás una lectura personalizada de tu estado emocional actual y una orientación clara sobre tus próximos pasos.</p>
+            <p>Este no es un test médico. Es una conversación contigo mismo — honesta y privada. <strong>No hay respuestas correctas ni incorrectas.</strong> Solo existe lo que realmente sientes. Al finalizar, recibirás una lectura personalizada de tu estado emocional actual y un <strong>plan de acción concreto</strong> según tu resultado.</p>
         </div>
 
         <div id="error-banner" class="error-banner">Por favor, completa todos los campos antes de continuar.</div>
 
-        <!-- ═══════════════ SECCIÓN 1: DATOS ═══════════════ -->
+        <!-- SECCIÓN 1: DATOS -->
         <div class="section" id="sec-datos">
             <span class="section-label"><span class="section-label-dot"></span>Paso 01 de 06</span>
             <h2>Antes de comenzar, cuéntame un poco de ti</h2>
@@ -1401,7 +1566,7 @@
 
         <div class="section-divider"><span class="divider-ornament">✦</span></div>
 
-        <!-- ═══════════════ SECCIÓN 2: ESTADO GENERAL ═══════════════ -->
+        <!-- SECCIÓN 2: ESTADO GENERAL -->
         <div class="section">
             <span class="section-label"><span class="section-label-dot"></span>Paso 02 de 06 · Estado general</span>
             <h2>¿Cómo describes tu vida interior en este momento?</h2>
@@ -1490,7 +1655,7 @@
 
         <div class="section-divider"><span class="divider-ornament">✦</span></div>
 
-        <!-- ═══════════════ SECCIÓN 3: RELACIONES ═══════════════ -->
+        <!-- SECCIÓN 3: RELACIONES -->
         <div class="section">
             <span class="section-label"><span class="section-label-dot"></span>Paso 03 de 06 · Vínculos y relaciones</span>
             <h2>¿Cómo están tus relaciones más importantes?</h2>
@@ -1579,7 +1744,7 @@
 
         <div class="section-divider"><span class="divider-ornament">✦</span></div>
 
-        <!-- ═══════════════ SECCIÓN 4: CREENCIAS Y MENTE ═══════════════ -->
+        <!-- SECCIÓN 4: CREENCIAS Y MENTE -->
         <div class="section">
             <span class="section-label"><span class="section-label-dot"></span>Paso 04 de 06 · Mente y creencias</span>
             <h2>¿Qué historia te cuenta tu mente sobre ti y tu vida?</h2>
@@ -1668,7 +1833,7 @@
 
         <div class="section-divider"><span class="divider-ornament">✦</span></div>
 
-        <!-- ═══════════════ SECCIÓN 5: LIKERT ═══════════════ -->
+        <!-- SECCIÓN 5: LIKERT -->
         <div class="section">
             <span class="section-label"><span class="section-label-dot"></span>Paso 05 de 06 · Tu día a día</span>
             <h2>Indica qué tan presente está cada situación en tu vida</h2>
@@ -1688,7 +1853,7 @@
 
         <div class="section-divider"><span class="divider-ornament">✦</span></div>
 
-        <!-- ═══════════════ SECCIÓN 6: CIERRE ═══════════════ -->
+        <!-- SECCIÓN 6: CIERRE -->
         <div class="section">
             <span class="section-label"><span class="section-label-dot"></span>Paso 06 de 06 · Tu intención</span>
             <h2>Una última pregunta, la más importante</h2>
@@ -1721,13 +1886,13 @@
             </div>
         </div>
 
-        <!-- ===== BOTÓN ENVIAR ===== -->
+        <!-- BOTÓN ENVIAR -->
         <div class="submit-section">
             <button class="btn-submit" onclick="calcularResultado()">Revelar mi Brújula Emocional ✦</button>
-            <p class="submit-note">Tu información es privada y confidencial.<br>Solo Álvaro Lyon y su equipo tienen acceso a estas respuestas.</p>
+            <p class="submit-note">Tu información es privada y confidencial.<br>Al finalizar recibirás un plan personalizado según tu resultado.</p>
         </div>
 
-        <!-- ═══════════════ RESULTADO ═══════════════ -->
+        <!-- RESULTADO -->
         <div id="result-section">
 
             <div class="result-header">
@@ -1748,18 +1913,21 @@
 
             <div class="areas-grid" id="areas-grid"></div>
 
+            <!-- NUEVO: PLAN PERSONALIZADO -->
+            <div class="plan-container" id="plan-container"></div>
+
             <div class="cta-block">
-                <p class="cta-block-label">Tu siguiente paso</p>
-                <h3>Este mapa ya existe.<br><em>Ahora necesita un guía.</em></h3>
-                <p id="cta-paragraph">El Prof. Mtr. Álvaro Lyon ha acompañado a cientos de personas a transformar exactamente lo que tú describes.</p>
+                <p class="cta-block-label">¿Quieres profundizar más?</p>
+                <h3>Hablemos.<br><em>Sin compromiso.</em></h3>
+                <p id="cta-paragraph">Si tienes dudas sobre cuál es tu mejor siguiente paso, conversemos.</p>
                 <div class="cta-features">
-                    <span class="cta-feat"><span class="cta-feat-dot"></span>Sesión inicial de diagnóstico</span>
-                    <span class="cta-feat"><span class="cta-feat-dot"></span>Proceso personalizado</span>
-                    <span class="cta-feat"><span class="cta-feat-dot"></span>Resultados medibles</span>
+                    <span class="cta-feat"><span class="cta-feat-dot"></span>Orientación personalizada</span>
+                    <span class="cta-feat"><span class="cta-feat-dot"></span>Sin presión de venta</span>
+                    <span class="cta-feat"><span class="cta-feat-dot"></span>Respuesta en menos de 24h</span>
                 </div>
-                <a href="https://api.whatsapp.com/send?phone=584148610464&text=Hola%20Alvaro%2C%20he%20realizado%20la%20Br%C3%BAjula%20Emocional%20y%20quiero%20iniciar%20mi%20proceso%20terap%C3%A9utico." class="btn-primary">💬 Iniciar por WhatsApp</a>
+                <a href="https://api.whatsapp.com/send?phone=584148610464&text=Hola%20Alvaro%2C%20he%20realizado%20la%20Br%C3%BAjula%20Emocional%20y%20quiero%20recibir%20orientaci%C3%B3n%20sobre%20mi%20siguiente%20paso." class="btn-primary">💬 Hablar por WhatsApp</a>
                 <br>
-                <a href="consulta.html" class="btn-secondary">📅 Agendar una consulta</a>
+                <a href="mailto:info@lyonasesor.com" class="btn-secondary">📩 Escribir por correo</a>
                 <span class="cta-note">O escríbele directamente a Álvaro: info@lyonasesor.com</span>
             </div>
 
@@ -1771,7 +1939,7 @@
 
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -1925,7 +2093,95 @@
         });
 
         // =============================================
-        // CÁLCULO RESULTADO - CON FIREBASE
+        // MAPEO DE ÁREAS → CONFERENCIAS
+        // =============================================
+        const AREA_A_CONFERENCIA = {
+            'Autoestima': {
+                nombre: 'Autoestima Corporativa',
+                desc: 'El pilar del rendimiento sostenible. Aprende a sostener tu valor incluso bajo presión.',
+                url: '/conferencias/autoestima-corporativa.html'
+            },
+            'Regulación emocional': {
+                nombre: 'Estrategias de Bienestar',
+                desc: 'Neurociencia aplicada al manejo del estrés y la ansiedad en el día a día.',
+                url: '/conferencias/bienestar-estres.html'
+            },
+            'Vínculos relacionales': {
+                nombre: 'Vínculos que Sanan',
+                desc: 'Neurobiología de las relaciones saludables. Aprende a construir y sostener conexiones reales.',
+                url: '/conferencias/vinculos-que-sanan.html'
+            },
+            'Creencias limitantes': {
+                nombre: 'Reconfigura Mente',
+                desc: 'Neuroplasticidad aplicada al cambio personal. Reprograma los patrones que ya no te sirven.',
+                url: '/conferencias/reconfigura-mente.html'
+            },
+            'Estado anímico': {
+                nombre: 'Resiliencia Organizacional',
+                desc: 'Cómo recuperar el equilibrio emocional y sostener tu bienestar en entornos exigentes.',
+                url: '/conferencias/resiliencia-organizacional.html'
+            },
+            'Claridad mental': {
+                nombre: 'Neuroeducación',
+                desc: 'Cómo el cerebro aprende y transforma. Herramientas para recuperar el foco y la claridad.',
+                url: '/conferencias/neuroeducacion.html'
+            },
+            'Bienestar físico': {
+                nombre: 'Estrategias de Bienestar',
+                desc: 'Rutinas y prácticas concretas para el equilibrio cuerpo-mente.',
+                url: '/conferencias/bienestar-estres.html'
+            },
+            'Autocompasión': {
+                nombre: 'Liderazgo con Alma',
+                desc: 'Gestión desde el factor humano. Aprende a tratarte con la misma compasión que ofreces a otros.',
+                url: '/conferencias/liderazgo-alma.html'
+            }
+        };
+
+        // =============================================
+        // PLANES POR NIVEL
+        // =============================================
+        const PLAN_POR_NIVEL = {
+            1: {
+                membresia: {
+                    nombre: 'Extendido',
+                    desc: 'Un año completo de crecimiento a tu propio ritmo. Ideal para sostener la claridad que ya tienes.',
+                    precio: '$10.99 USD/mes',
+                    url: 'membresia.html'
+                },
+                pitch: 'Estás en un momento de claridad. Aprovéchalo para sistematizar y profundizar lo que ya funciona en ti.'
+            },
+            2: {
+                membresia: {
+                    nombre: 'Extendido',
+                    desc: 'Estructura sólida para pasar de la transición a la transformación. 12 meses guiados paso a paso.',
+                    precio: '$10.99 USD/mes',
+                    url: 'membresia.html'
+                },
+                pitch: 'Estás en transición. Este es el momento perfecto para darle estructura a tu crecimiento y consolidar.'
+            },
+            3: {
+                membresia: {
+                    nombre: 'Acelerado',
+                    desc: 'Seis meses de transformación profunda. Ritmo intenso para quien ya no quiere postergar.',
+                    precio: '$24.99 USD/mes',
+                    url: 'membresia.html'
+                },
+                pitch: 'Cargar esto solo tiene un límite. La metodología Lyon está diseñada para exactamente este momento.'
+            },
+            4: {
+                membresia: {
+                    nombre: 'Acelerado',
+                    desc: 'Acompañamiento intenso para reencontrar tu centro. Estructura y guía desde la primera clase.',
+                    precio: '$24.99 USD/mes',
+                    url: 'membresia.html'
+                },
+                pitch: 'No tienes que seguir cargando esto sin apoyo. Hay una metodología y un camino claro para salir.'
+            }
+        };
+
+        // =============================================
+        // CÁLCULO RESULTADO + PLAN PERSONALIZADO
         // =============================================
         function calcularResultado() {
             let valid = true;
@@ -1978,28 +2234,24 @@
 
             const pct = totalScore / maxScore;
 
-            let nivel, perfil, descripcion, ctaTailored;
+            let nivel, perfil, descripcion;
 
             if (pct <= 0.35) {
                 nivel = 1;
                 perfil = 'Brújula Orientada';
                 descripcion = `${nombre.split(' ')[0]}, tu lectura emocional muestra un estado de relativo equilibrio. Tienes recursos internos funcionando bien, una autoestima base sólida y vínculos que te sostienen. Esto no significa que no haya espacio para crecer — significa que tienes el terreno fértil para hacerlo con profundidad y velocidad. El trabajo desde aquí es de expansión, no de reparación.`;
-                ctaTailored = `Muchas personas en tu estado emocional deciden ir más lejos — no porque estén "rotas", sino porque sienten que pueden vivir con mucho más plenitud, propósito y conexión genuina. El proceso terapéutico de Lyon Asesor está diseñado también para quienes, desde la estabilidad, quieren trascender.`;
             } else if (pct <= 0.55) {
                 nivel = 2;
                 perfil = 'Brújula en Movimiento';
                 descripcion = `${nombre.split(' ')[0]}, tu lectura muestra un estado de transición: hay claridad en algunas áreas y turbulencia en otras. Estás funcionando — pero hay algo en ti que sabe que podrías estar mejor. Quizás hay patrones que se repiten, emociones que no terminan de procesarse, o relaciones que no fluyen como quisieran. Eso que sientes no es exageración. Es información.`;
-                ctaTailored = `Exactamente en este punto — ni en crisis ni en plenitud — es donde el acompañamiento terapéutico produce los cambios más duraderos. Tienes la energía y la conciencia para trabajar. Lo que necesitas es dirección y un espacio donde esto pueda moverse.`;
             } else if (pct <= 0.72) {
                 nivel = 3;
                 perfil = 'Brújula Buscando Norte';
                 descripcion = `${nombre.split(' ')[0]}, lo que estás mostrando aquí toma valentía. Tu lectura emocional revela un estado de carga importante: hay patrones que ya no sirven, una voz interna que puede ser dura contigo, relaciones que drenan más de lo que nutren, y una sensación de que algo tiene que cambiar. Llevas un rato cargando esto. Más de lo que debería.`;
-                ctaTailored = `No tienes que resolverlo solo/a. El proceso terapéutico de Lyon Asesor existe precisamente para este momento — cuando ya no alcanza con intentarlo más fuerte y se necesita una metodología real, un acompañamiento humano y un camino claro hacia algo mejor.`;
             } else {
                 nivel = 4;
                 perfil = 'Brújula en Tormenta';
                 descripcion = `${nombre.split(' ')[0]}, gracias por la honestidad que pusiste en cada respuesta. Tu lectura emocional muestra un estado de agotamiento real: hay heridas activas, patrones que se repiten con intensidad, y una sensación de que el peso que llevas es demasiado para seguir haciéndolo sin apoyo. Eso que sientes no es debilidad. Es la señal de que algo necesita atención ahora.`;
-                ctaTailored = `Lo que describes no se resuelve con voluntad ni con tiempo. Necesita acompañamiento especializado, un proceso estructurado y la presencia de alguien que sepa exactamente cómo trabajar con lo que estás viviendo. Álvaro Lyon ha acompañado a personas en exactamente tu punto — y el cambio es posible.`;
             }
 
             const areas = [
@@ -2039,7 +2291,18 @@
                 `;
             }).join('');
 
-            document.getElementById('cta-paragraph').textContent = ctaTailored;
+            // ============================================
+            // GENERAR PLAN PERSONALIZADO
+            // ============================================
+            generarPlanPersonalizado(nivel, topAreas);
+
+            // Actualizar el CTA final
+            const ctaParagraph = document.getElementById('cta-paragraph');
+            if (nivel === 1 || nivel === 2) {
+                ctaParagraph.textContent = 'Si quieres orientación antes de elegir tu plan, conversemos sin compromiso.';
+            } else {
+                ctaParagraph.textContent = 'Si prefieres hablar con Álvaro antes de decidir, escríbele directamente.';
+            }
 
             const resultSection = document.getElementById('result-section');
             resultSection.style.display = 'block';
@@ -2051,16 +2314,13 @@
             document.getElementById('progressPct').textContent = '100%';
 
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit', { 'event_category': 'diagnostico' });
+                gtag('event', 'form_submit', { 'event_category': 'diagnostico', 'nivel': nivel, 'perfil': perfil });
             }
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'Lead');
             }
 
-            // ════════════════════════════════════════════════════════
-            // 🔥 GUARDAR EN FIREBASE
-            // ════════════════════════════════════════════════════════
-            guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel);
+            guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel, topAreas);
         }
 
         function getQ(num) {
@@ -2076,10 +2336,56 @@
             return item.peso[v - 1];
         }
 
-        // ════════════════════════════════════════════════════════
-        // 🔥 FUNCIÓN: GUARDAR EN FIREBASE
-        // ════════════════════════════════════════════════════════
-        async function guardarDiagnosticoEnFirebase(nombre, email, perfil, puntaje, nivel) {
+        // ============================================
+        // GENERAR PLAN PERSONALIZADO
+        // ============================================
+        function generarPlanPersonalizado(nivel, topAreas) {
+            const plan = PLAN_POR_NIVEL[nivel];
+            if (!plan) return;
+
+            // Elegir la conferencia según la primera área de atención
+            const areaPrincipal = topAreas[0].nombre;
+            const conf = AREA_A_CONFERENCIA[areaPrincipal] || AREA_A_CONFERENCIA['Autoestima'];
+
+            const container = document.getElementById('plan-container');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="plan-card nivel-${nivel}">
+                    <div class="plan-header">
+                        <span class="plan-badge">Tu plan personalizado</span>
+                        <h3>Diseñado específicamente para ti</h3>
+                        <p>${plan.pitch}</p>
+                    </div>
+                    <div class="plan-items">
+                        <div class="plan-item primary">
+                            <div class="plan-item-icon">🎓</div>
+                            <span class="plan-item-label">Recomendación principal</span>
+                            <h4>Membresía Lyon — Plan ${plan.membresia.nombre}</h4>
+                            <p>${plan.membresia.desc}</p>
+                            <div class="plan-price">${plan.membresia.precio}</div>
+                            <a href="${plan.membresia.url}" class="btn-plan">Ver membresía →</a>
+                        </div>
+                        <div class="plan-item">
+                            <div class="plan-item-icon">🎤</div>
+                            <span class="plan-item-label">Conferencia recomendada</span>
+                            <h4>${conf.nombre}</h4>
+                            <p>${conf.desc}</p>
+                            <div class="plan-price">$10 individual · $150 empresa</div>
+                            <a href="${conf.url}" class="btn-plan-outline">Ver conferencia →</a>
+                        </div>
+                    </div>
+                    <div class="plan-note">
+                        💡 Este plan es una sugerencia basada en tu perfil <strong>${topAreas[0].nombre}</strong> y <strong>${topAreas[1].nombre}</strong>. Si quieres orientación personalizada, escríbele directamente a Álvaro.
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // GUARDAR EN FIREBASE
+        // ============================================
+        async function guardarDiagnosticoEnFirebase(nombre, email, perfil, puntaje, nivel, topAreas) {
             try {
                 const datos = {
                     nombre: nombre,
@@ -2088,10 +2394,14 @@
                     perfil: perfil,
                     puntaje: Math.round(puntaje * 100),
                     nivel: nivel,
-                    estado: 'completado'
+                    areasAtencion: topAreas.map(a => a.nombre),
+                    estado: 'completado',
+                    refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
                 };
                 
-                await guardarLead('diagnosticos', datos);
+                if (typeof guardarLead === 'function') {
+                    await guardarLead('diagnosticos', datos);
+                }
                 console.log('✅ Diagnóstico guardado en Firebase');
             } catch (error) {
                 console.error('❌ Error al guardar diagnóstico en Firebase:', error);
