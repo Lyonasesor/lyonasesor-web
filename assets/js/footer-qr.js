@@ -9,6 +9,7 @@
  * Autor: Lyon Asesor
  * 
  * Actualización SEO: Footer alineado a "Educación Emocional · Desarrollo Humano · Transformación"
+ * Versión: v5 — 2026 (RIF parcial visible · clic en QR y texto conduce a verificación directa del RIF)
  */
 
 (function() {
@@ -64,8 +65,8 @@
                     '<p>&copy; 2026 Lyon Asesor™. Todos los derechos reservados.</p>' +
                     '<p class="footer-legal">' +
                         'Prof. Mtr. Álvaro Lyon · CI V-17.***.**5 · ' +
-                        '<a href="https://declaraciones.seniat.gob.ve/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; color:inherit; text-decoration:none; vertical-align:middle; margin-left:4px;">' +
-                            '<img src="/assets/img/qr-rif.png" alt="Escanear para verificar RIF en el SENIAT" style="width:22px; height:22px; vertical-align:middle; border-radius:3px; background:#fff; padding:1px; border:1px solid rgba(255,255,255,0.2);" loading="lazy">' +
+                        '<a href="https://dgpatrimonios.seniat.gob.ve/comprobanterif?certRif=202608W0000071937772&firma=1176330356-HYF" target="_blank" rel="noopener" title="Haz clic para verificar el RIF en el SENIAT" style="display:inline-flex; align-items:center; gap:6px; color:inherit; text-decoration:none; vertical-align:middle; margin-left:4px;">' +
+                            '<img src="/assets/img/qr-rif.png" alt="Verificar RIF en el SENIAT" style="width:22px; height:22px; vertical-align:middle; border-radius:3px; background:#fff; padding:1px; border:1px solid rgba(255,255,255,0.2);" loading="lazy">' +
                             '<span>RIF V-1763***5-6</span>' +
                         '</a>' +
                     '</p>' +
@@ -75,7 +76,7 @@
         // Reemplazar el contenido del footer preservando la etiqueta <footer> exterior
         existingFooter.innerHTML = footerHTML;
 
-        console.log('[footer-qr.js] Footer actualizado con QR del RIF correctamente.');
+        console.log('[footer-qr.js] Footer actualizado con QR del RIF correctamente. v5');
     }
 
     // Ejecutar cuando el DOM esté listo
