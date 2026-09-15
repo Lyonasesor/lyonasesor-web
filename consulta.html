@@ -89,6 +89,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="assets/js/lyon-shared.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -790,7 +791,7 @@
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Psicoterapia y Desarrollo Personal" /></div>
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Educación Emocional y Desarrollo Humano" /></div>
                 <div class="nav-logo-text">
                     <div class="main">LYON<span>ASESOR</span></div>
                 </div>
@@ -903,7 +904,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3>LYON<span>ASESOR</span></h3>
-                    <p>Psicoterapia online · Desarrollo Personal · Educación Emocional para hispanohablantes en todo el mundo.</p>
+                    <p>Educación Emocional · Desarrollo Humano · Transformación para hispanohablantes en todo el mundo.</p>
                     <div class="footer-social">
                         <a href="https://www.youtube.com/@LyonAsesor" target="_blank" class="footer-youtube" aria-label="YouTube">
                             <svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -1008,16 +1009,18 @@
                 monto: monto,
                 motivo: motivo || 'Sin motivo específico',
                 estado: 'pendiente',
-                pagado: false
+                pagado: false,
+                refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
             // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
             try {
-                await guardarLead('consultas', datos);
+                if (typeof guardarLead === 'function') {
+                    await guardarLead('consultas', datos);
+                }
                 console.log('✅ Consulta guardada en Firebase');
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
-                // No interrumpimos el flujo
             }
 
             // Disparar eventos de analítica (si existen)
