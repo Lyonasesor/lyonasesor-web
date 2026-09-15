@@ -17,12 +17,23 @@ document.addEventListener('DOMContentLoaded', function () {
         navToggle.addEventListener('click', () => {
             navToggle.classList.toggle('active');
             navLinks.classList.toggle('active');
+            // Bloquea el scroll del body cuando el menú está abierto
+            document.body.classList.toggle('menu-open', navLinks.classList.contains('active'));
         });
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navToggle.classList.remove('active');
                 navLinks.classList.remove('active');
+                document.body.classList.remove('menu-open');
             });
+        });
+        // Cerrar menú con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
         });
     }
 
@@ -41,6 +52,51 @@ document.addEventListener('DOMContentLoaded', function () {
         backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 });
+
+// ============================================================
+// FIX BOTÓN HAMBURGUESA EN MÓVIL
+// Inyecta CSS con prioridad !important para garantizar:
+//   - Área táctil mínima de 44×44px (Apple/Google)
+//   - z-index correcto (por encima del menú desplegado)
+//   - position: relative para que el z-index surta efecto
+//   - Bloqueo de scroll del body cuando el menú está abierto
+// Se aplica globalmente a las 8 páginas.
+// ============================================================
+(function fixNavToggleMobile() {
+    if (document.getElementById('lyon-nav-fix-style')) return;
+    const style = document.createElement('style');
+    style.id = 'lyon-nav-fix-style';
+    style.textContent = `
+        /* Fix botón hamburguesa — área táctil 44x44 y z-index correcto */
+        .nav-toggle {
+            position: relative !important;
+            z-index: 2000 !important;
+            padding: 12px !important;
+            min-width: 44px !important;
+            min-height: 44px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none !important;
+            touch-action: manipulation;
+        }
+        .nav-toggle span {
+            width: 24px !important;
+            pointer-events: none !important;
+        }
+        /* Prevenir scroll del fondo cuando el menú móvil está abierto */
+        body.menu-open {
+            overflow: hidden !important;
+        }
+        /* El menú desplegado debe quedar por debajo del botón */
+        @media (max-width: 768px) {
+            .nav-links.active {
+                z-index: 1000 !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
 
 // ============================================================
 // TRACKING DE AFILIADOS (?ref=CODIGO)
