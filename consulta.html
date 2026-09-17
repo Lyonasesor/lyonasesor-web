@@ -4,19 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
-    <title>Agendar Consulta Terapéutica Online | Lyon Asesor – Desde $40 USD</title>
-    <meta name="description" content="Agenda tu consulta de psicoterapia online con el Prof. Mtr. Álvaro Lyon. Acompañamiento profesional para hispanohablantes en todo el mundo. Sesiones desde $40 USD." />
+    <title>Agendar Consulta Terapéutica Online | Lyon Asesor – Sesiones desde $70 USD</title>
+    <meta name="description" content="Agenda tu proceso de psicoterapia online con el Prof. Mtr. Álvaro Lyon. Sesión suelta $70, Pack 3 sesiones $180, Pack 5 sesiones $290. Acompañamiento profesional para hispanohablantes en todo el mundo." />
     <meta name="keywords" content="psicoterapia online, terapia psicológica, consulta terapéutica, salud mental, bienestar emocional, psicólogo online, terapia hispana" />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
     <meta name="application-name" content="Lyon Asesor" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://lyonasesor.com/consulta.html" />
     
-    <!-- OPEN GRAPH -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/consulta.html" />
-    <meta property="og:title" content="Agendar Consulta Terapéutica Online | Lyon Asesor – Desde $40 USD" />
-    <meta property="og:description" content="Psicoterapia online para hispanohablantes en todo el mundo. Acompañamiento profesional con el Prof. Mtr. Álvaro Lyon." />
+    <meta property="og:title" content="Agendar Consulta Terapéutica Online | Lyon Asesor – Desde $70 USD" />
+    <meta property="og:description" content="Psicoterapia online para hispanohablantes en todo el mundo. Sesión suelta $70. Pack 3 sesiones $180. Acompañamiento profesional con el Prof. Mtr. Álvaro Lyon." />
     <meta property="og:image" content="https://lyonasesor.com/og-consulta.png" />
     <meta property="og:image:secure_url" content="https://lyonasesor.com/og-consulta.png" />
     <meta property="og:image:width" content="1200" />
@@ -25,18 +24,15 @@
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content="Lyon Asesor" />
     
-    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@LyonAsesor" />
     <meta name="twitter:title" content="Agendar Consulta Terapéutica Online | Lyon Asesor" />
-    <meta name="twitter:description" content="Psicoterapia online para hispanohablantes. Sesiones desde $40 USD." />
+    <meta name="twitter:description" content="Psicoterapia online para hispanohablantes. Sesión suelta $70. Pack 3 sesiones $180." />
     <meta name="twitter:image" content="https://lyonasesor.com/og-consulta.png" />
     <meta name="twitter:image:alt" content="Consulta Terapéutica Online – Lyon Asesor" />
     
-    <!-- FAVICON -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
-    <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -51,17 +47,16 @@
                     "name": ["España", "México", "Colombia", "Argentina", "Chile", "Perú", "Ecuador", "Venezuela", "Estados Unidos"]
                 }
             },
-            "description": "Acompañamiento profesional y personalizado para tu crecimiento emocional. Sesiones individuales de psicoterapia por videollamada.",
-            "offers": {
-                "@type": "Offer",
-                "price": "40",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
-            }
+            "description": "Acompañamiento terapéutico profesional y personalizado para tu crecimiento emocional. Sesiones individuales por videollamada con opciones de pack.",
+            "offers": [
+                { "@type": "Offer", "name": "Sesión Individual", "price": "70", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+                { "@type": "Offer", "name": "Pack 2 Sesiones", "price": "130", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+                { "@type": "Offer", "name": "Pack 3 Sesiones", "price": "180", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+                { "@type": "Offer", "name": "Pack 5 Sesiones", "price": "290", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+            ]
         }
     </script>
     
-    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -70,7 +65,6 @@
         gtag('config', 'G-003ZC6TLH3');
     </script>
     
-    <!-- Meta Pixel -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -85,7 +79,6 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
@@ -146,7 +139,6 @@
             z-index: 1;
         }
 
-        /* ===== NAV ===== */
         .nav {
             position: fixed;
             top: 0;
@@ -355,6 +347,66 @@
         .benefit-item h3 { font-size: 1rem; color: var(--navy); margin-bottom: 0.3rem; }
         .benefit-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
 
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            margin: 1.5rem 0;
+        }
+        .pricing-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
+            border: 1.5px solid rgba(26,35,48,0.08);
+            text-align: center;
+            position: relative;
+            transition: var(--transition);
+        }
+        .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .pricing-card.featured {
+            border-color: var(--naranja);
+            box-shadow: var(--shadow-orange);
+        }
+        .pricing-card .tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--naranja);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .pricing-card h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        .pricing-card .price-amount {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--naranja);
+            line-height: 1;
+        }
+        .pricing-card .price-per {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+        .pricing-card .price-detail {
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            min-height: 40px;
+        }
+
         .author-section {
             background: #fff;
             border-radius: var(--radius);
@@ -442,7 +494,6 @@
             font-weight: 500;
         }
 
-        /* ===== FOOTER CON YOUTUBE ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -546,7 +597,6 @@
             opacity: 0.7;
         }
 
-        /* ===== CHAT ===== */
         .chat-float {
             position: fixed;
             bottom: 28px;
@@ -787,7 +837,6 @@
     </style>
 </head>
 <body>
-    <!-- ===== NAV ===== -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
@@ -833,6 +882,42 @@
         </div>
 
         <div class="section-block">
+            <h2>Opciones y <span>Tarifas</span></h2>
+            <p>Elige el formato que mejor se adapte a tu proceso. El Pack 3 es el más elegido porque da continuidad terapéutica real y un descuento significativo.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Sesión Individual</h3>
+                    <div class="price-amount">$70</div>
+                    <div class="price-per">por sesión</div>
+                    <div class="price-detail">Sesión suelta de 45-60 minutos. Ideal para una primera exploración.</div>
+                    <a href="https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG" target="_blank" rel="noopener" class="btn-primary" style="padding:12px 24px; font-size:0.9rem;">Reservar sesión</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Pack 2 Sesiones</h3>
+                    <div class="price-amount">$130</div>
+                    <div class="price-per">$65 por sesión</div>
+                    <div class="price-detail">Ahorras $10 vs. sesión suelta. Para procesos breves de dos encuentros.</div>
+                    <a href="https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN" target="_blank" rel="noopener" class="btn-primary" style="padding:12px 24px; font-size:0.9rem;">Reservar pack 2</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="tag">⭐ MÁS ELEGIDO</div>
+                    <h3>Pack 3 Sesiones</h3>
+                    <div class="price-amount">$180</div>
+                    <div class="price-per">$60 por sesión</div>
+                    <div class="price-detail">Ahorras $30 vs. sesión suelta. Continuidad real para consolidar procesos.</div>
+                    <a href="https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84" target="_blank" rel="noopener" class="btn-primary" style="padding:12px 24px; font-size:0.9rem;">Reservar pack 3</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Pack 5 Sesiones</h3>
+                    <div class="price-amount">$290</div>
+                    <div class="price-per">$58 por sesión</div>
+                    <div class="price-detail">Ahorras $60 vs. sesión suelta. Para procesos profundos y sostenidos.</div>
+                    <a href="https://www.paypal.com/ncp/payment/TK66E572YUYSQ" target="_blank" rel="noopener" class="btn-primary" style="padding:12px 24px; font-size:0.9rem;">Reservar pack 5</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-block">
             <h2>¿Qué <span>recibirás</span> al iniciar?</h2>
             <div class="benefits-grid">
                 <div class="benefit-item"><h3>🧭 Diagnóstico inicial</h3><p>Una sesión de exploración para entender tu punto de partida.</p></div>
@@ -856,10 +941,10 @@
         <div class="section-block">
             <h2>Preguntas <span>frecuentes</span></h2>
             <div class="faq-grid">
+                <div class="faq-item"><h4>¿Cuánto cuesta una sesión?</h4><p>La sesión individual tiene un valor de $70 USD. Los packs de 3 sesiones ($180) y 5 sesiones ($290) ofrecen un descuento progresivo por compromiso con el proceso.</p></div>
                 <div class="faq-item"><h4>¿Cuánto dura una sesión?</h4><p>Las sesiones tienen una duración aproximada de 45 a 60 minutos, dependiendo de las necesidades del consultante.</p></div>
                 <div class="faq-item"><h4>¿Las sesiones son confidenciales?</h4><p>Sí, toda la información compartida en el proceso es estrictamente confidencial, protegida por el secreto profesional.</p></div>
-                <div class="faq-item"><h4>¿Puedo pagar en moneda local?</h4><p>Sí, aceptamos pagos en bolívares (Venezuela), pesos (México/Colombia/Argentina), euros (España) y dólares a través de PayPal, Zelle o transferencia.</p></div>
-                <div class="faq-item"><h4>¿Qué pasa si no puedo pagar el monto completo?</h4><p>Conversemos. Puedes consultar opciones de pago fraccionado o ajustes según tu realidad.</p></div>
+                <div class="faq-item"><h4>¿Cómo pago mi sesión o pack?</h4><p>Aceptamos PayPal (tarjeta o cuenta) y Pago Móvil/Transferencia para Venezuela. Todos los pagos son seguros y verificados.</p></div>
             </div>
         </div>
 
@@ -878,9 +963,10 @@
 
                 <label for="paquete" style="color:#fff; text-align:left; font-weight:600;">Selecciona tu paquete</label>
                 <select id="paquete">
-                    <option value="40">Sesión Individual – $40 USD</option>
-                    <option value="100">Paquete 3 sesiones – $100 USD</option>
-                    <option value="150">Paquete 5 sesiones – $150 USD</option>
+                    <option value="70">Sesión Individual — $70 USD</option>
+                    <option value="130">Pack 2 sesiones — $130 USD ($65/sesión)</option>
+                    <option value="180" selected>⭐ Pack 3 sesiones — $180 USD ($60/sesión) · Recomendado</option>
+                    <option value="290">Pack 5 sesiones — $290 USD ($58/sesión)</option>
                 </select>
 
                 <label for="metodo" style="color:#fff; text-align:left; font-weight:600;">Método de pago</label>
@@ -898,7 +984,6 @@
 
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -940,7 +1025,6 @@
         </div>
     </footer>
 
-    <!-- ===== CHAT ===== -->
     <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
         <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
     </button>
@@ -958,7 +1042,6 @@
     </div>
 
     <script>
-        // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -978,8 +1061,7 @@
         });
 
         // =============================================
-        // FORMULARIO CONSULTA — CORREGIDO
-        // El guardado en Firebase NO bloquea el pago.
+        // FORMULARIO CONSULTA — ACTUALIZADO
         // =============================================
         document.getElementById('consultaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -996,10 +1078,12 @@
                 return;
             }
 
-            const paqueteTexto = paquete === '40' ? 'Individual' : (paquete === '100' ? '3 sesiones' : '5 sesiones');
+            const paqueteTexto = paquete === '70' ? 'Sesión Individual' :
+                                 paquete === '130' ? 'Pack 2 sesiones' :
+                                 paquete === '180' ? 'Pack 3 sesiones' :
+                                 'Pack 5 sesiones';
             const monto = parseInt(paquete);
 
-            // Preparar datos
             const datos = {
                 nombre: nombre,
                 email: email,
@@ -1013,7 +1097,6 @@
                 refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
-            // Intentar guardar en Firebase, PERO SI FALLA, CONTINUAMOS CON EL PAGO
             try {
                 if (typeof guardarLead === 'function') {
                     await guardarLead('consultas', datos);
@@ -1023,7 +1106,6 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
-            // Disparar eventos de analítica (si existen)
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'consulta' });
             }
@@ -1031,19 +1113,19 @@
                 fbq('track', 'Lead');
             }
 
-            // Redirigir según método de pago
             if (metodo === 'paypal') {
                 let paypalLink;
-                if (paquete === '40') {
+                if (paquete === '70') {
                     paypalLink = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
-                } else if (paquete === '100') {
+                } else if (paquete === '130') {
+                    paypalLink = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
+                } else if (paquete === '180') {
                     paypalLink = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
-                } else if (paquete === '150') {
+                } else if (paquete === '290') {
                     paypalLink = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 }
                 window.location.href = paypalLink;
             } else {
-                // Pago móvil
                 const mensaje = encodeURIComponent(
                     `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
                     `Nombre: ${nombre}\n` +
@@ -1081,11 +1163,14 @@
 
                 let chatOpen = false;
 
+                // 🔧 ENLACES PAYPAL ACTUALIZADOS — SEPTIEMBRE 2026
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
-                const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_1 = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
                 const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const PAYPAL_CONFERENCIA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
                 const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
 
                 function addMessage(text, sender, options = {}) {
@@ -1132,8 +1217,8 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                     const botones = `
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
-                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
-                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
+                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia desde $60</button>
+                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button>
                             <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
                         </div>
                         ${botonHumano()}
@@ -1151,20 +1236,26 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                         botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
                     } else if (producto === 'consulta') {
                         nombreProducto = '🧘 Proceso Terapéutico';
-                        precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
-                        descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos. Selecciona tu paquete.';
+                        precio = 'Pack 3 sesiones: $180 (recomendado)';
+                        descripcion = 'Acompañamiento profesional por videollamada. Reserva sesión suelta o pack con descuento progresivo.';
                         botonesPayPal = `
                             <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                                <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
-                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
-                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
+                                <a href="${PAYPAL_CONSULTA_1}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Sesión única — $70</a>
+                                <a href="${PAYPAL_CONSULTA_2}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 2 sesiones — $130</a>
+                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#e86b18;color:#fff;border-radius:30px;text-decoration:none;font-weight:700;text-align:center;">⭐ Pack 3 sesiones — $180</a>
+                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 5 sesiones — $290</a>
                             </div>
                         `;
                     } else if (producto === 'conferencia') {
                         nombreProducto = '🎤 Conferencia';
-                        precio = '$150 (tarifa plana)';
-                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
-                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
+                        precio = '$150 (empresa) / $10 (individual)';
+                        descripcion = '12 temáticas transformadoras. Incluye certificado y material descargable.';
+                        botonesPayPal = `
+                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                                <a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (Empresa)</a>
+                                <a href="${PAYPAL_CONFERENCIA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $10 (Individual)</a>
+                            </div>
+                        `;
                     }
 
                     const mensaje = `Has seleccionado: **${nombreProducto}**
