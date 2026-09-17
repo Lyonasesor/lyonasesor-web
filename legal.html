@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="description" content="Información legal de Lyon Asesor: registro de marca, certificado de autoría, Registro Mercantil y RIF del Prof. Mtr. Álvaro Lyon." />
+    <meta name="description" content="Información legal completa de Lyon Asesor: identidad, registro mercantil, autoría con blockchain, marco legal, validez de diplomas, protección de datos, anti-fraude y facturación." />
     <meta name="robots" content="noindex" />
     <meta name="application-name" content="Lyon Asesor" />
     <title>Información Legal | Lyon Asesor</title>
     <link rel="canonical" href="https://lyonasesor.com/legal.html" />
 
-    <!-- OPEN GRAPH -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/legal.html" />
     <meta property="og:title" content="Información Legal | Lyon Asesor" />
-    <meta property="og:description" content="Registro de marca, certificado de autoría, Registro Mercantil y RIF del Prof. Mtr. Álvaro Lyon." />
+    <meta property="og:description" content="Identidad, autoría, marco legal, validez de diplomas y protección de datos de Lyon Asesor." />
     <meta property="og:image" content="https://lyonasesor.com/og-legal.png" />
     <meta property="og:image:secure_url" content="https://lyonasesor.com/og-legal.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Información Legal – Lyon Asesor" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content="Lyon Asesor" />
 
-    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@LyonAsesor" />
     <meta name="twitter:title" content="Información Legal | Lyon Asesor" />
-    <meta name="twitter:description" content="Registro de marca y datos legales del Prof. Mtr. Álvaro Lyon." />
+    <meta name="twitter:description" content="Identidad, autoría, marco legal, validez de diplomas y protección de datos." />
     <meta name="twitter:image" content="https://lyonasesor.com/og-legal.png" />
-    <meta name="twitter:image:alt" content="Información Legal – Lyon Asesor" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* ========== RESET Y VARIABLES (idénticas al sitio) ========== */
         :root {
             --naranja: #e86b18;
             --naranja-luz: #f28c4e;
@@ -122,7 +117,6 @@
         .nav-toggle.active span:nth-child(2) { opacity: 0; }
         .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* ===== REVEAL ===== */
         .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -151,7 +145,7 @@
         .legal-header h1 span { color: var(--naranja); }
         .legal-header p {
             font-size: 1rem; color: rgba(255, 255, 255, 0.7);
-            max-width: 620px; margin: 0 auto; font-weight: 300;
+            max-width: 720px; margin: 0 auto; font-weight: 300;
         }
 
         /* ===== SECCIONES ===== */
@@ -167,7 +161,7 @@
             font-size: clamp(1.6rem, 3.2vw, 2.3rem);
             font-weight: 700; color: var(--navy); margin-bottom: 14px;
         }
-        .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 700px; }
+        .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 780px; }
 
         .alt-bg { background: var(--crema); }
 
@@ -196,6 +190,11 @@
         .legal-card .card-sub {
             font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;
         }
+        .legal-card p { font-size: 0.95rem; color: var(--text-dark); line-height: 1.75; margin-bottom: 14px; }
+        .legal-card p:last-child { margin-bottom: 0; }
+        .legal-card ul { margin: 0 0 14px 0; padding-left: 22px; }
+        .legal-card ul li { font-size: 0.93rem; color: var(--text-dark); line-height: 1.7; margin-bottom: 6px; }
+
         .data-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -222,6 +221,7 @@
             color: var(--text-muted);
             line-height: 1.7;
         }
+        .legal-note strong { color: var(--navy); }
         .legal-link {
             display: inline-flex; align-items: center; gap: 8px;
             color: var(--naranja); font-weight: 600; text-decoration: none;
@@ -240,8 +240,50 @@
             padding: 5px 14px;
             border-radius: 50px;
         }
+        .badge-pill.highlight {
+            background: rgba(232, 107, 24, 0.12);
+            color: var(--naranja-oscuro);
+        }
+        .badge-pill.danger {
+            background: rgba(220, 38, 38, 0.1);
+            color: #991b1b;
+        }
 
-        /* ===== TIMELINE / TABLA PARTICIPANTES ===== */
+        /* ===== AVISO DESTACADO ===== */
+        .notice-box {
+            background: linear-gradient(135deg, rgba(232,107,24,0.08) 0%, rgba(232,107,24,0.03) 100%);
+            border-left: 4px solid var(--naranja);
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+        .notice-box p { font-size: 0.93rem; color: var(--text-dark); line-height: 1.7; margin: 0; }
+        .notice-box strong { color: var(--navy); }
+
+        /* ===== AVISO DE ALERTA (anti-fraude) ===== */
+        .alert-box {
+            background: linear-gradient(135deg, rgba(220,38,38,0.06) 0%, rgba(220,38,38,0.02) 100%);
+            border-left: 4px solid #dc2626;
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+        .alert-box p { font-size: 0.93rem; color: var(--text-dark); line-height: 1.7; margin: 0 0 10px 0; }
+        .alert-box p:last-child { margin-bottom: 0; }
+        .alert-box strong { color: #991b1b; }
+
+        /* ===== LISTA DE VERIFICACIÓN ===== */
+        .check-list { list-style: none; padding: 0; margin: 16px 0; }
+        .check-list li {
+            display: flex; gap: 10px; margin-bottom: 12px;
+            font-size: 0.93rem; color: var(--text-dark); line-height: 1.65;
+        }
+        .check-list li .icon {
+            flex-shrink: 0; font-size: 1.1rem; line-height: 1.4;
+        }
+        .check-list li strong { color: var(--navy); }
+
+        /* ===== TABLA ===== */
         .part-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.88rem; }
         .part-table th {
             text-align: left; color: var(--naranja); text-transform: uppercase;
@@ -252,7 +294,7 @@
             padding: 12px 14px; border-bottom: 1px solid rgba(26, 35, 48, 0.06); color: var(--text-dark);
         }
 
-        /* ===== FOOTER (idéntico) ===== */
+        /* ===== FOOTER ===== */
         .footer { background: var(--navy-dark); padding: 60px 24px 30px; color: rgba(255, 255, 255, 0.6); }
         .footer-inner { max-width: 1200px; margin: 0 auto; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
@@ -339,23 +381,99 @@
 
     <!-- ===== HEADER ===== -->
     <header class="legal-header">
-        <div class="legal-header-badge"><span class="legal-header-dot"></span>Transparencia · Registro Legal</div>
+        <div class="legal-header-badge"><span class="legal-header-dot"></span>Transparencia · Escudo Legal</div>
         <h1>Información <span>Legal</span></h1>
-        <p>Datos oficiales de registro, autoría y constitución de Lyon Asesor, a cargo del Prof. Mtr. Álvaro Lyon Abreu, para tu total transparencia y confianza.</p>
+        <p>Blindaje jurídico, registral y probatorio de Lyon Asesor. Aquí encontrarás toda la documentación que respalda la existencia legal, la autoría, el marco normativo y los compromisos éticos de nuestra firma.</p>
     </header>
 
-    <!-- ===== CERTIFICADO DE AUTORÍA ===== -->
-    <section class="section" id="autoria">
+    <!-- ===== BLOQUE I: IDENTIDAD Y CONSTITUCIÓN ===== -->
+    <section class="section" id="identidad">
         <div class="section-inner">
             <div class="section-header reveal">
-                <span class="section-label">Propiedad Intelectual</span>
-                <h2 class="section-title">Certificado de Prueba de Autoría</h2>
-                <p class="section-desc">La marca "Lyon Asesor" cuenta con un certificado de autoría registrado y sellado en blockchain, emitido por eNotar.io, que protege sus derechos de autor a nivel internacional.</p>
+                <span class="section-label">Bloque I · Identidad</span>
+                <h2 class="section-title">Identidad y Constitución Legal</h2>
+                <p class="section-desc">Lyon Asesor es una firma personal debidamente constituida e inscrita en la República Bolivariana de Venezuela, con titularidad directa del Prof. Mtr. Álvaro Lyon Abreu.</p>
             </div>
 
             <div class="legal-card reveal">
-                <h3>📄 Registro de la obra</h3>
-                <p class="card-sub">Marca Lyon Asesor — Certificado de Prueba de Autoría</p>
+                <h3>🏛️ Datos de la Firma</h3>
+                <p class="card-sub">Registro Mercantil Primero del Estado Bolívar · SAREN</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">Titular / Firma Personal</div>
+                        <div class="value">Lyon Asesor Álvaro Abreu, F.P</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Registro Mercantil</div>
+                        <div class="value">RM No. 303 — 211° y 162°</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Tomo / Número / Año</div>
+                        <div class="value">Tomo 3-B REGMERPRIBO · N.º 56 · Año 2021</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Número de expediente</div>
+                        <div class="value">303-61***</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Registrador Mercantil Titular</div>
+                        <div class="value">Abogado Danilo José Jaimes Rivas</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Concepto del trámite</div>
+                        <div class="value">Otorgamiento de nombres y denominaciones de firmas personales</div>
+                    </div>
+                </div>
+                <div class="legal-note">
+                    Certificación oficial: <em>"Que el asiento de Registro de Comercio transcrito a continuación, cuyo original está inscrito en el Tomo 3-B REGMERPRIBO, Número 56 del año 2021, así como la Participación, Nota y Documento que se copian de seguida, son traslado fiel de sus originales."</em> — SAREN, Registro Mercantil Primero del Estado Bolívar.
+                </div>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🧾 Identificación Fiscal</h3>
+                <p class="card-sub">SENIAT · Gerencia Regional de Tributos Internos Región Guayana</p>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">RIF</div>
+                        <div class="value">V-1763***5-6</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Contribuyente</div>
+                        <div class="value">Álvaro José Lyon Abreu</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Fecha de inscripción</div>
+                        <div class="value">10/07/2009</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Última actualización</div>
+                        <div class="value">23/08/2026</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Domicilio fiscal</div>
+                        <div class="value">Urb. Villa Betania, Puerto Ordaz, Ciudad Guayana, Estado Bolívar, Zona Postal 8050, Venezuela</div>
+                    </div>
+                </div>
+                <div class="badge-row">
+                    <span class="badge-pill">Documento emitido electrónicamente</span>
+                    <span class="badge-pill">No requiere sello húmedo</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE II: MARCA Y AUTORÍA ===== -->
+    <section class="section alt-bg" id="autoria">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque II · Propiedad Intelectual</span>
+                <h2 class="section-title">Marca, Autoría y Propiedad Intelectual</h2>
+                <p class="section-desc">Todos los activos digitales de Lyon Asesor —logotipo, programa de membresía, ciclo de conferencias, guías, presentaciones y contenido audiovisual— están protegidos mediante certificación de autoría con sello de tiempo en blockchain.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>📄 Registro de Autoría (eNotar.io)</h3>
+                <p class="card-sub">Marca Lyon Asesor — Certificado de Prueba de Autoría con sello de tiempo inmutable</p>
                 <div class="data-grid">
                     <div class="data-item">
                         <div class="label">Título de la obra</div>
@@ -375,7 +493,7 @@
                     </div>
                 </div>
                 <div class="legal-note">
-                    Esta prueba de autoría cumple los requisitos del Convenio de Berna, la Convención Universal sobre Derecho de Autor, la Convención de Roma y el Tratado de la OMPI sobre Derecho de Autor. Tiene cobertura en más de 179 países y es válida de por vida, más 70 años tras el fallecimiento del autor.
+                    Esta prueba de autoría cumple los requisitos del <strong>Convenio de Berna</strong>, la <strong>Convención Universal sobre Derecho de Autor</strong>, la <strong>Convención de Roma</strong> y el <strong>Tratado de la OMPI sobre Derecho de Autor</strong>. Tiene cobertura en más de 179 países y es válida de por vida, más 70 años tras el fallecimiento del autor.
                 </div>
                 <a href="https://www.enotar.io/es/certificate?txid=0690c2e187ce83f6733a8269ba5353e1040a03f111f0ee0c441fc94bb775f365&name=enotario:7922ea7748dac8fe2316100d0c1ddfc0f1e50a6ad05507d53047f6cefb7d9202" target="_blank" rel="noopener" class="legal-link">
                     Ver certificado original en eNotar.io
@@ -414,116 +532,299 @@
                 </div>
                 <div class="legal-note">
                     <strong>Registro NVS:</strong> <span style="font-family:'Courier New',monospace;">enotario:7922ea7748dac8fe2316100d0c1ddfc0f1e50a6ad05507d53047f6cefb7d9202</span><br>
-                    Explorador público de la transacción: 
-                    <a href="https://explorer1.emercoin.com/block/691866" target="_blank" rel="noopener" style="color:var(--naranja); font-weight:600;">explorer1.emercoin.com/block/691866</a>
+                    Explorador público: <a href="https://explorer1.emercoin.com/block/691866" target="_blank" rel="noopener" style="color:var(--naranja); font-weight:600;">explorer1.emercoin.com/block/691866</a>
                 </div>
-                <table class="part-table">
-                    <thead>
-                        <tr><th>ID Nacional</th><th>Nombre completo</th><th>País</th><th>Rol</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>V-17.***.**5</td><td>Álvaro José Lyon Abreu</td><td>Venezuela (VE)</td><td>Autor</td></tr>
-                    </tbody>
-                </table>
+            </div>
+
+            <div class="notice-box reveal">
+                <p><strong>Aviso sobre el estado de la marca:</strong> Lyon Asesor se encuentra actualmente en proceso de registro marcario ante el Servicio Autónomo de la Propiedad Intelectual (SAPI) de Venezuela. Mientras dicho trámite se completa, el nombre, logotipo y materiales de la firma están protegidos por las siguientes capas: <strong>(1)</strong> la firma personal inscrita en el Registro Mercantil, que impide la existencia de firmas personales idénticas; <strong>(2)</strong> el certificado de autoría con sello de tiempo en blockchain emitido por eNotar.io; <strong>(3)</strong> el uso público, continuo y notorio del nombre en el mercado digital; y <strong>(4)</strong> el derecho constitucional al nombre y a la identidad personal (Artículo 60 de la Constitución de la República Bolivariana de Venezuela).</p>
             </div>
         </div>
     </section>
 
-    <!-- ===== REGISTRO MERCANTIL ===== -->
-    <section class="section alt-bg" id="mercantil">
+    <!-- ===== BLOQUE III: MARCO LEGAL DE OPERACIÓN ===== -->
+    <section class="section" id="marco-legal">
         <div class="section-inner">
             <div class="section-header reveal">
-                <span class="section-label">Constitución de la Firma</span>
-                <h2 class="section-title">Registro Mercantil en Venezuela</h2>
-                <p class="section-desc">Lyon Asesor está debidamente registrado ante el Servicio Autónomo de Registros y Notarías (SAREN) de la República Bolivariana de Venezuela.</p>
+                <span class="section-label">Bloque III · Marco Normativo</span>
+                <h2 class="section-title">Marco Legal de Operación</h2>
+                <p class="section-desc">Lyon Asesor opera bajo el siguiente marco normativo de la República Bolivariana de Venezuela y de los tratados internacionales suscritos por el país.</p>
             </div>
 
             <div class="legal-card reveal">
-                <h3>🏛️ Registro Mercantil Primero del Estado Bolívar</h3>
-                <p class="card-sub">Servicio Autónomo de Registros y Notarías (SAREN) · Ministerio del Poder Popular para Relaciones Interiores y Justicia</p>
+                <h3>⚖️ Normativa Nacional</h3>
+                <ul>
+                    <li><strong>Código de Comercio</strong> (Artículos 26, 124 y 147): constitución de firma personal, prueba mercantil mediante facturas aceptadas y aceptación tácita de facturas.</li>
+                    <li><strong>Constitución de la República Bolivariana de Venezuela</strong> (Artículos 60, 102, 103 y 106): derecho al nombre, derecho a la educación permanente y creación de instituciones educativas privadas.</li>
+                    <li><strong>Ley Orgánica de Educación</strong> (Artículos 25 y 46): reconocimiento de la acreditación de aprendizajes adquiridos fuera del sistema formal.</li>
+                    <li><strong>Ley del IVA y su Reglamento</strong>: obligación de emisión de facturas por cada operación comercial.</li>
+                    <li><strong>Ley de ISLR y su Reglamento</strong>: soporte documental de ingresos y deducciones.</li>
+                    <li><strong>Providencia SNAT/2024/000102</strong>: régimen de facturación digital para operaciones realizadas exclusivamente por medios electrónicos.</li>
+                    <li><strong>Providencia SNAT/2026/00084</strong>: derogatoria del régimen de homologación previa de sistemas de facturación.</li>
+                    <li><strong>Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>: validez jurídica y probatoria de los documentos electrónicos emitidos por Lyon Asesor.</li>
+                    <li><strong>Código Orgánico Tributario</strong> (Artículo 101): régimen sancionatorio por incumplimiento de obligaciones formales de facturación.</li>
+                </ul>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🌍 Tratados Internacionales</h3>
+                <ul>
+                    <li><strong>Convenio de Berna</strong> para la Protección de las Obras Literarias y Artísticas.</li>
+                    <li><strong>Convención Universal sobre Derecho de Autor</strong> (UNESCO).</li>
+                    <li><strong>Tratado de la OMPI sobre Derecho de Autor</strong> (WCT).</li>
+                    <li><strong>Convención Global de la UNESCO sobre Reconocimiento de Cualificaciones (2019)</strong>.</li>
+                    <li><strong>Directrices UNESCO para el Reconocimiento, Validación y Acreditación del Aprendizaje No Formal e Informal (2012)</strong>.</li>
+                    <li><strong>Recomendación del Consejo de la Unión Europea sobre validación del aprendizaje no formal (2012)</strong>.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE IV: VALIDEZ DE DIPLOMAS ===== -->
+    <section class="section alt-bg" id="diplomas">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque IV · Formación Académica</span>
+                <h2 class="section-title">Validez de Diplomas y Certificaciones</h2>
+                <p class="section-desc">Los diplomas emitidos por Lyon Asesor se otorgan en el marco de la educación no formal y cuentan con un sistema público de validación en línea.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🎓 Validez Nacional e Internacional</h3>
+                <p>Los diplomas de Lyon Asesor acreditan la formación recibida en el marco de la educación no formal, reconocida por la legislación venezolana como una vía legítima de formación continua. Cada diploma incluye un <strong>código único de validación</strong> y un <strong>código QR</strong> que permite su verificación pública e inmediata en nuestro portal.</p>
+                <p>Para el reconocimiento internacional, Lyon Asesor se alinea con los estándares de la <strong>Convención Global de la UNESCO sobre Reconocimiento de Cualificaciones (2019)</strong> y las <strong>Directrices UNESCO para el Reconocimiento, Validación y Acreditación del Aprendizaje No Formal e Informal (2012)</strong>. En países de la Unión Europea aplica la <strong>Recomendación del Consejo de la UE sobre validación del aprendizaje no formal (2012)</strong>.</p>
+                <div class="legal-note">
+                    <em>Los certificados de educación no formal no reemplazan un título del sistema educativo formal, pero constituyen prueba verificable de formación práctica y competencias adquiridas.</em>
+                </div>
+                <div class="badge-row">
+                    <span class="badge-pill highlight">Código QR verificable</span>
+                    <span class="badge-pill">Validación pública en línea</span>
+                    <span class="badge-pill">Cobertura internacional</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE V: PROTECCIÓN DE DATOS ===== -->
+    <section class="section" id="privacidad">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque V · Privacidad</span>
+                <h2 class="section-title">Protección de Datos y Privacidad</h2>
+                <p class="section-desc">Lyon Asesor trata los datos de sus alumnos, afiliados y clientes con estrictos protocolos técnicos y adopta voluntariamente los estándares internacionales de protección de datos.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🔒 Tratamiento de Datos Personales</h3>
+                <p>Lyon Asesor recopila y almacena datos personales de sus alumnos, afiliados y clientes exclusivamente para la prestación de sus servicios educativos y comerciales. Los datos son resguardados en servidores cifrados de <strong>Firebase (Google Cloud)</strong> bajo estrictos protocolos de seguridad y autenticación.</p>
+                <p>No compartimos, vendemos ni cedemos información personal a terceros bajo ninguna circunstancia. Cada usuario puede solicitar la corrección o eliminación de sus datos escribiendo a <a href="mailto:info@lyonasesor.com" style="color:var(--naranja); font-weight:600;">info@lyonasesor.com</a>.</p>
+                <div class="legal-note">
+                    <strong>Nota legal:</strong> Venezuela no cuenta aún con una Ley de Protección de Datos Personales vigente, por lo que Lyon Asesor adopta voluntariamente los estándares internacionales del <strong>Reglamento General de Protección de Datos (GDPR)</strong> de la Unión Europea como marco de referencia para la protección de la información de sus usuarios.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE VI: PRÁCTICAS ANTI-FRAUDE ===== -->
+    <section class="section alt-bg" id="antifraude">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque VI · Seguridad</span>
+                <h2 class="section-title">Prácticas Anti-Fraude y Verificación de Identidad</h2>
+                <p class="section-desc">Lyon Asesor opera con estrictos protocolos de verificación y comunicación para proteger a sus alumnos, afiliados y clientes de intentos de suplantación, fraude o estafa.</p>
+            </div>
+
+            <div class="alert-box reveal">
+                <p><strong>⚠️ Alerta importante:</strong> El nombre "Lyon Asesor" y la identidad del Prof. Mtr. Álvaro Lyon Abreu son activos protegidos. Cualquier persona, cuenta, perfil o sitio web que se presente como Lyon Asesor sin estar autorizado constituye una suplantación de identidad, y será objeto de las acciones legales correspondientes.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🛡️ Nuestros Canales Oficiales de Comunicación</h3>
+                <p>Lyon Asesor se comunica con sus alumnos, afiliados y clientes <strong>únicamente</strong> a través de los siguientes canales verificados:</p>
                 <div class="data-grid">
                     <div class="data-item">
-                        <div class="label">Titular / Firma Personal</div>
-                        <div class="value">Lyon Asesor Álvaro Abreu, F.P</div>
+                        <div class="label">Correo oficial</div>
+                        <div class="value">info@lyonasesor.com</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Registro Mercantil</div>
-                        <div class="value">RM No. 303 — 211° y 162°</div>
+                        <div class="label">Sitio web oficial</div>
+                        <div class="value">lyonasesor.com</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Tomo / Número / Año</div>
-                        <div class="value">Tomo 3-B REGMERPRIBO · N.º 56 · Año 2021</div>
+                        <div class="label">WhatsApp oficial</div>
+                        <div class="value">+58 414-8610464</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Número de expediente</div>
-                        <div class="value">303-61***</div>
+                        <div class="label">Instagram / TikTok</div>
+                        <div class="value">@lyonasesor</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Registrador (a) Mercantil Titular</div>
-                        <div class="value">Abogado Danilo José Jaimes Rivas</div>
+                        <div class="label">YouTube</div>
+                        <div class="value">@LyonAsesor</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Concepto del trámite</div>
-                        <div class="value">Otorgamiento de nombres y denominaciones de empresas mercantiles y firmas personales</div>
+                        <div class="label">Canal de WhatsApp</div>
+                        <div class="value">Lyon Asesor Oficial</div>
                     </div>
                 </div>
                 <div class="legal-note">
-                    Certificación oficial: <em>"Que el asiento de Registro de Comercio transcrito a continuación, cuyo original está inscrito en el Tomo 3-B REGMERPRIBO, Número 56 del año 2021, así como la Participación, Nota y Documento que se copian de seguida, son traslado fiel de sus originales."</em> — SAREN, Registro Mercantil Primero del Estado Bolívar.
+                    Cualquier comunicación proveniente de un canal distinto a los aquí listados debe ser considerada <strong>sospechosa</strong> hasta que sea verificada directamente con nosotros.
+                </div>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>✅ Lista de Verificación: Cómo Identificar una Comunicación Legítima</h3>
+                <p>Antes de responder a cualquier mensaje que afirme ser de Lyon Asesor, verifica los siguientes puntos:</p>
+                <ul class="check-list">
+                    <li><span class="icon">✅</span><div><strong>El correo proviene de <em>info@lyonasesor.com</em></strong> o de un dominio oficial <em>@lyonasesor.com</em>. Nunca de Gmail, Hotmail, Outlook u otro correo genérico.</div></li>
+                    <li><span class="icon">✅</span><div><strong>El número de WhatsApp coincide exactamente</strong> con <em>+58 414-8610464</em>. Cualquier variación (agregar o quitar un dígito) es sospechosa.</div></li>
+                    <li><span class="icon">✅</span><div><strong>Los enlaces dirigen a <em>lyonasesor.com</em></strong> o a sus subdominios oficiales. Nunca a sitios externos o acortadores de URL.</div></li>
+                    <li><span class="icon">✅</span><div><strong>Los pagos se realizan únicamente</strong> a través de los enlaces oficiales de PayPal publicados en nuestro sitio web, o mediante Pago Móvil a los datos bancarios publicados en <em>lyonasesor.com</em>.</div></li>
+                    <li><span class="icon">✅</span><div><strong>Los diplomas se emiten con código QR</strong> que redirige a <em>lyonasesor.com/validar-diploma.html</em> o <em>lyonasesor.com/validacion-programa-completo.html</em>.</div></li>
+                    <li><span class="icon">✅</span><div><strong>Nunca solicitamos contraseñas</strong>, códigos de verificación, datos bancarios completos, ni accesos a tus cuentas personales.</div></li>
+                </ul>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🚫 Lo que Lyon Asesor NUNCA hará</h3>
+                <p>Para protegerte, es importante que sepas qué prácticas <strong>no</strong> forman parte de nuestra operación:</p>
+                <ul>
+                    <li>❌ <strong>Nunca solicitaremos tu contraseña</strong> de membresía, correo, banco o redes sociales.</li>
+                    <li>❌ <strong>Nunca te pediremos pagos</strong> a cuentas personales, criptomonedas no autorizadas o transferencias fuera de los canales oficiales.</li>
+                    <li>❌ <strong>Nunca prometeremos resultados garantizados</strong>, ingresos asegurados o aprobaciones inmediatas de diplomas.</li>
+                    <li>❌ <strong>Nunca emitiremos diplomas sin haber completado el proceso formativo</strong> correspondiente.</li>
+                    <li>❌ <strong>Nunca cederemos ni venderemos</strong> tu información personal a terceros.</li>
+                    <li>❌ <strong>Nunca te contactaremos desde correos personales</strong> ni cuentas de mensajería no verificadas.</li>
+                </ul>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>📢 Cómo Reportar un Posible Fraude</h3>
+                <p>Si detectas una cuenta, sitio web, perfil o comunicación que se hace pasar por Lyon Asesor o por el Prof. Mtr. Álvaro Lyon Abreu, por favor repórtalo de inmediato a través de los siguientes canales:</p>
+                <ul class="check-list">
+                    <li><span class="icon">📧</span><div><strong>Correo de reporte:</strong> <a href="mailto:info@lyonasesor.com" style="color:var(--naranja); font-weight:600;">info@lyonasesor.com</a> (asunto: "Reporte de posible fraude")</div></li>
+                    <li><span class="icon">💬</span><div><strong>WhatsApp oficial:</strong> +58 414-8610464</div></li>
+                </ul>
+                <p>Incluye en tu reporte: capturas de pantalla, enlaces o perfiles sospechosos, y cualquier información adicional que ayude a identificar al infractor. Lyon Asesor tomará las acciones legales pertinentes y, cuando corresponda, notificará a las plataformas afectadas para la suspensión de dichas cuentas.</p>
+                <div class="legal-note">
+                    <strong>Compromiso:</strong> Lyon Asesor colabora activamente con las autoridades venezolanas e internacionales para la investigación y persecución de cualquier acto de suplantación, fraude o competencia desleal que utilice su nombre o identidad.
+                </div>
+                <div class="badge-row">
+                    <span class="badge-pill danger">Suplantación = acción legal</span>
+                    <span class="badge-pill highlight">Reporte verificado</span>
+                    <span class="badge-pill">Cooperación con autoridades</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== RIF ===== -->
-    <section class="section" id="rif">
+    <!-- ===== BLOQUE VII: FACTURACIÓN Y PAGOS ===== -->
+    <section class="section" id="facturacion">
         <div class="section-inner">
             <div class="section-header reveal">
-                <span class="section-label">Identificación Fiscal</span>
-                <h2 class="section-title">Registro Único de Información Fiscal (RIF)</h2>
-                <p class="section-desc">Emitido por el Servicio Nacional Integrado de Administración Aduanera y Tributaria (SENIAT).</p>
+                <span class="section-label">Bloque VII · Fiscalidad</span>
+                <h2 class="section-title">Facturación, Pagos y Reembolsos</h2>
+                <p class="section-desc">Todas las operaciones de Lyon Asesor se realizan por medios electrónicos y cuentan con facturación digital conforme a la normativa vigente.</p>
             </div>
 
             <div class="legal-card reveal">
-                <h3>🧾 Datos del contribuyente</h3>
-                <p class="card-sub">SENIAT · Gerencia Regional de Tributos Internos Región Guayana</p>
+                <h3>🧾 Facturación Digital</h3>
+                <p>Todas las operaciones de Lyon Asesor se realizan por medios electrónicos y cuentan con <strong>facturación digital conforme a la Providencia SNAT/2024/000102</strong>. Cada factura incluye un <strong>Número de Control Fiscal (NCF)</strong> válido, emitido por una imprenta digital autorizada por el SENIAT.</p>
                 <div class="data-grid">
                     <div class="data-item">
-                        <div class="label">RIF</div>
-                        <div class="value">V-1763***5-6</div>
+                        <div class="label">Ventas en Venezuela</div>
+                        <div class="value">IVA al 16%</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Contribuyente</div>
-                        <div class="value">Álvaro José Lyon Abreu</div>
+                        <div class="label">Ventas al exterior</div>
+                        <div class="value">IVA al 0% (exportación de servicios)</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Fecha de inscripción</div>
-                        <div class="value">10/07/2009</div>
+                        <div class="label">Régimen</div>
+                        <div class="value">Facturación digital obligatoria</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Última actualización</div>
-                        <div class="value">23/08/2026</div>
+                        <div class="label">Conservación</div>
+                        <div class="value">10 años (registros fiscales)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>💳 Política de Reembolsos</h3>
+                <p>Dada la naturaleza digital e inmediata de los productos y servicios ofrecidos por Lyon Asesor, se aplican las siguientes condiciones:</p>
+                <ul>
+                    <li><strong>Membresías:</strong> no son reembolsables una vez iniciado el programa, salvo que el usuario no haya completado la primera clase y lo solicite dentro de los 7 días calendario posteriores a la activación.</li>
+                    <li><strong>Conferencias:</strong> no son reembolsables una vez emitida la factura digital, ya que constituyen servicios de formación de entrega inmediata.</li>
+                    <li><strong>Ebooks y recursos digitales:</strong> no son reembolsables una vez entregados los enlaces de descarga.</li>
+                    <li><strong>Proceso terapéutico:</strong> las sesiones no son reembolsables, pero pueden reprogramarse con al menos 24 horas de antelación.</li>
+                </ul>
+                <div class="legal-note">
+                    En caso de disconformidad documentada, Lyon Asesor se compromete a buscar una solución razonable antes de aplicar cualquier política restrictiva.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE VIII: JURISDICCIÓN ===== -->
+    <section class="section alt-bg" id="jurisdiccion">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque VIII · Marco Judicial</span>
+                <h2 class="section-title">Jurisdicción y Resolución de Conflictos</h2>
+                <p class="section-desc">Toda controversia derivada de la prestación de servicios de Lyon Asesor se rige por el siguiente marco de resolución.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>🏛️ Ley Aplicable y Jurisdicción</h3>
+                <p>Cualquier controversia derivada de la prestación de servicios de Lyon Asesor se regirá por las leyes de la <strong>República Bolivariana de Venezuela</strong>. Las partes se comprometen a resolver cualquier diferencia mediante <strong>negociación directa y de buena fe</strong>, antes de acudir a instancias judiciales.</p>
+                <p>En caso de requerirse acciones legales, se someterán a la jurisdicción de los <strong>tribunales competentes del Estado Bolívar, Venezuela</strong>.</p>
+                <p>Para clientes internacionales, Lyon Asesor se compromete a buscar mecanismos de <strong>resolución alternativa de conflictos</strong> (mediación, arbitraje) antes de escalar a instancias judiciales.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BLOQUE IX: CONTACTO LEGAL ===== -->
+    <section class="section" id="contacto-legal">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Bloque IX · Contacto</span>
+                <h2 class="section-title">Contacto Legal</h2>
+                <p class="section-desc">Para consultas legales, verificación de documentos, ejercicio de derechos de privacidad o reporte de fraude.</p>
+            </div>
+
+            <div class="legal-card reveal">
+                <h3>📧 Canales Oficiales</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">Correo legal</div>
+                        <div class="value">info@lyonasesor.com</div>
                     </div>
                     <div class="data-item">
-                        <div class="label">Firmas personales</div>
-                        <div class="value">1 — Lyon Asesor Álvaro Abreu, F.P</div>
+                        <div class="label">Correo de privacidad</div>
+                        <div class="value">info@lyonasesor.com</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Reporte de fraude</div>
+                        <div class="value">info@lyonasesor.com</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">WhatsApp</div>
+                        <div class="value">+58 414-8610464</div>
                     </div>
                     <div class="data-item">
                         <div class="label">Domicilio fiscal</div>
-                        <div class="value">Urb. Villa Betania, Puerto Ordaz, Ciudad Guayana, Estado Bolívar, Zona Postal 8050, Venezuela</div>
+                        <div class="value">Urb. Villa Betania, Puerto Ordaz, Estado Bolívar, Venezuela</div>
                     </div>
                 </div>
-                <div class="badge-row">
-                    <span class="badge-pill">Documento emitido electrónicamente</span>
-                    <span class="badge-pill">No requiere sello húmedo</span>
-                </div>
                 <div class="legal-note">
-                    La condición de este contribuyente requiere la retención del 100% del impuesto causado, salvo que esté exento, no sujeto, o demuestre ante el Agente de Retención del IVA que es un contribuyente exonerado.
+                    <strong>Última actualización:</strong> septiembre de 2026. Lyon Asesor se reserva el derecho de modificar el presente documento legal para adecuarlo a cambios normativos o a la evolución de sus servicios, notificando los cambios relevantes a través de su sitio web.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER (idéntico al sitio) ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -570,7 +871,6 @@
     </button>
 
     <script>
-        // ===== MOBILE TOGGLE =====
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
         navToggle.addEventListener('click', () => {
@@ -584,7 +884,6 @@
             });
         });
 
-        // ===== REVEAL =====
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -592,7 +891,6 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // ===== BACK TO TOP =====
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             backToTop.classList.toggle('visible', window.scrollY > 500);
