@@ -1,264 +1,521 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-003ZC6TLH3');
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NeuroLiderazgo | Lyon Asesor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-003ZC6TLH3');
+</script>
+<style>
+  :root{
+    --navy:#0F2A4A; --navy-dark:#0A1D34; --navy-soft:#16385F;
+    --orange:#D97D3D; --orange-light:#F2A45E;
+    --cream:#FBF7F1; --cream-2:#F7F5F1;
+    --gray:#6B7280; --line:#E7E2D8;
+    --green:#25D366;
+    --gold:#CDAA7B;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    height:100vh;width:100vw;
+    overflow:hidden;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    font-family:'Inter',sans-serif;
+    background:var(--navy-dark);
+    -webkit-tap-highlight-color:transparent;
+  }
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;}
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeuroLiderazgo | Lyon Asesor</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #0f0f0f;
-      color: #ffffff;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-    .slide-container {
-      max-width: 800px;
-      width: 100%;
-      background-color: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 3rem 2rem;
-      min-height: 450px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
-    .slide-number {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      color: #cdaa7b;
-      font-size: 0.8rem;
-      letter-spacing: 0.1rem;
-    }
-    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
-    h2 { font-size: 1.4rem; font-weight: 400; color: #cdaa7b; margin-bottom: 1.5rem; }
-    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
-    ul { list-style: none; padding: 0; }
-    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
-    ul li::before { content: "▸"; position: absolute; left: 0; color: #cdaa7b; }
-    .highlight-box {
-      background-color: #222;
-      border-left: 3px solid #cdaa7b;
-      padding: 1.2rem 1.5rem;
-      margin: 1.5rem 0;
-      border-radius: 0 8px 8px 0;
-      font-style: italic;
-    }
-    .neuro-box {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    .neuro-card {
-      background-color: #222;
-      padding: 1.2rem;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .neuro-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
-    .neuro-card .name { font-weight: 600; color: #cdaa7b; margin-bottom: 0.3rem; }
-    .neuro-card .desc { font-size: 0.85rem; color: #e8e8e8; }
-    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
-    .btn {
-      background: transparent;
-      border: 1px solid #cdaa7b;
-      color: #cdaa7b;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn:hover { background: #cdaa7b; color: #0f0f0f; }
-    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
-    .interactive-question {
-      background-color: #222;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin: 1rem 0;
-      text-align: center;
-    }
-    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
-    .option-btn {
-      background: transparent;
-      border: 1px solid #666;
-      color: #ffffff;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .option-btn:hover { border-color: #cdaa7b; color: #cdaa7b; }
-    .option-btn.selected { background: #cdaa7b; color: #0f0f0f; border-color: #cdaa7b; }
-  </style>
+  /* ---------- DECK STRUCTURE ---------- */
+  #deck{
+    display:flex;
+    height:100vh;
+    width:100vw;
+    transition:transform .7s cubic-bezier(.77,0,.175,1);
+    will-change:transform;
+  }
+  .slide{
+    flex:0 0 100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:5vh 6vw;
+    color:#2A3242;
+    background:var(--cream);
+  }
+  .slide.dark{background:linear-gradient(150deg,var(--navy-dark),var(--navy) 55%,var(--navy-soft));color:#fff;}
+  .slide-inner{
+    max-width:1200px;
+    margin:0 auto;
+    width:100%;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity .8s ease .2s, transform .8s cubic-bezier(.2,.7,.2,1) .2s;
+  }
+  .slide.active .slide-inner{opacity:1;transform:translateY(0);}
+
+  .ring{position:absolute;border-radius:50%;border:1px solid rgba(242,164,94,0.28);z-index:1;}
+
+  /* ---------- TEXT STYLES ---------- */
+  .kicker{color:var(--orange);font-size:clamp(10px,.9vw,12px);font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .slide.dark .kicker{color:var(--orange-light);}
+  h1.big{font-size:clamp(24px,3.4vw,44px);line-height:1.12;font-weight:600;margin:0 0 14px;color:var(--navy);}
+  .slide.dark h1.big{color:#fff;}
+  h1.big em{font-style:italic;color:var(--orange);}
+  .slide.dark h1.big em{color:var(--orange-light);}
+  p.lead{font-size:clamp(12px,1.1vw,15px);line-height:1.6;color:#4A5364;max-width:900px;}
+  .slide.dark p.lead{color:#DCE4EF;}
+  .brandmark{font-family:'Playfair Display',serif;font-weight:600;font-size:13px;letter-spacing:2px;position:absolute;top:4vh;left:6vw;z-index:3;}
+  .slide.dark .brandmark{color:#fff;}
+  .slide:not(.dark) .brandmark{color:var(--navy);}
+  .brandmark span{color:var(--orange);}
+
+  /* ---------- COVER ---------- */
+  .cover-eyebrow{
+    display:inline-block;color:var(--orange-light);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    border-top:1px solid rgba(242,164,94,.6);border-bottom:1px solid rgba(242,164,94,.6);padding:6px 0;margin-bottom:22px;
+  }
+  .cover-footer{position:absolute;bottom:5vh;left:6vw;right:6vw;display:flex;justify-content:space-between;font-size:11.5px;color:#C9D3E0;border-top:1px solid rgba(255,255,255,.2);padding-top:16px;z-index:2;gap:24px;flex-wrap:wrap;}
+  .cover-footer b{color:#fff;display:block;font-size:12.5px;margin-bottom:2px;}
+
+  /* ---------- STAT ROW ---------- */
+  .stat-row{display:flex;gap:48px;margin-top:34px;flex-wrap:wrap;}
+  .stat b{font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,32px);display:block;color:var(--orange);}
+  .slide.dark .stat b{color:var(--orange-light);}
+  .stat span{font-size:11.5px;color:var(--gray);letter-spacing:.3px;line-height:1.4;display:block;max-width:180px;}
+  .slide.dark .stat span{color:#B9C4D6;}
+
+  /* ---------- GRIDS ---------- */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+
+  .pain{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px;}
+  .pain .ico{font-size:22px;margin-bottom:8px;}
+  .pain b{display:block;color:var(--navy);font-size:13.5px;margin-bottom:5px;}
+  .pain p{font-size:11.8px;color:var(--gray);margin:0;line-height:1.5;}
+
+  .ben{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
+  .ben .ico{font-size:20px;margin-bottom:6px;}
+  .ben b{display:block;color:var(--navy);font-size:13px;margin-bottom:5px;}
+  .ben p{font-size:11.5px;color:var(--gray);margin:0;line-height:1.5;}
+
+  /* ---------- HIGHLIGHT BOX ---------- */
+  .highlight-box{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);padding:18px 22px;margin:22px 0;border-radius:0 12px 12px 0;font-style:italic;font-size:13px;color:#4A5364;line-height:1.6;}
+  .slide.dark .highlight-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-left:4px solid var(--orange-light);color:#E4E9F1;}
+
+  /* ---------- LISTS ---------- */
+  ul.clean{list-style:none;margin:16px 0 0;padding:0;max-width:960px;}
+  ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:12.8px;color:#4A5364;line-height:1.55;}
+  ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--orange);font-weight:700;}
+  .slide.dark ul.clean li{color:#DCE4EF;}
+  .slide.dark ul.clean li::before{color:var(--orange-light);}
+  ul.clean li strong{color:var(--navy);}
+  .slide.dark ul.clean li strong{color:#fff;}
+
+  /* ---------- TWO COLUMN CARD ---------- */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+  .col-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 22px;border-left:4px solid var(--orange);}
+  .col-box h3{font-family:'Playfair Display',serif;color:var(--navy);margin:0 0 8px;font-size:15px;font-weight:600;}
+  .col-box p{font-size:12px;color:#4A5364;line-height:1.6;margin:0;}
+  .slide.dark .col-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-left:4px solid var(--orange-light);}
+  .slide.dark .col-box h3{color:#fff;}
+  .slide.dark .col-box p{color:#DCE4EF;}
+
+  /* ---------- NEURO / PILLAR GRID ---------- */
+  .pillar-box{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px;max-width:920px;}
+  .pillar-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 20px;transition:transform .3s;}
+  .pillar-card:hover{transform:translateY(-3px);}
+  .pillar-card .emoji{font-size:26px;margin-bottom:10px;}
+  .pillar-card .name{font-family:'Playfair Display',serif;font-weight:600;color:var(--navy);margin-bottom:8px;font-size:15px;line-height:1.3;}
+  .pillar-card .desc{font-size:12px;color:var(--gray);line-height:1.55;}
+  .slide.dark .pillar-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);}
+  .slide.dark .pillar-card .name{color:#fff;}
+  .slide.dark .pillar-card .desc{color:#DCE4EF;}
+
+  /* ---------- INTERACTIVE DIAGNOSTIC ---------- */
+  .interactive-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 24px;margin:24px 0 0;text-align:center;}
+  .interactive-box p{margin:0 0 14px;color:var(--navy);font-size:13.5px;font-weight:600;}
+  .options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .option-btn{
+    background:transparent;border:1px solid var(--line);color:var(--navy);
+    padding:10px 18px;border-radius:24px;font-size:12px;font-weight:600;
+    cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;line-height:1.4;text-align:left;max-width:100%;
+  }
+  .option-btn:hover{border-color:var(--orange);color:var(--orange);}
+  .option-btn.selected{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 6px 16px rgba(217,125,61,.3);}
+  .slide.dark .interactive-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);}
+  .slide.dark .interactive-box p{color:#fff;}
+  .slide.dark .option-btn{border-color:rgba(255,255,255,.25);color:#fff;}
+  .slide.dark .option-btn:hover{border-color:var(--orange-light);color:var(--orange-light);}
+  .slide.dark .option-btn.selected{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+  /* ---------- CLOSING ---------- */
+  .cta-buttons{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;transition:transform .2s;text-decoration:none;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn.orange{background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;box-shadow:0 8px 20px rgba(217,125,61,.35);}
+  .btn.ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff;}
+  .btn.wa{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.3);}
+  .contact-row{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.2);padding-top:20px;}
+  .contact-row div{font-size:11.8px;color:#C9D3E0;}
+  .contact-row b{display:block;color:var(--orange-light);font-size:12.8px;margin-bottom:2px;}
+
+  /* ---------- NAVIGATION UI ---------- */
+  .nav-ui{position:fixed;bottom:18px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:18px;z-index:50;pointer-events:none;}
+  .nav-ui > *{pointer-events:auto;}
+  .nav-btn{
+    width:40px;height:40px;border-radius:50%;background:rgba(15,42,74,0.88);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;
+    transition:background .2s, transform .2s;backdrop-filter:blur(6px);
+  }
+  .nav-btn:hover{background:var(--orange);transform:scale(1.08);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+  .nav-btn:disabled:hover{background:rgba(15,42,74,0.88);transform:none;}
+  .dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:60vw;}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:background .2s, transform .2s;}
+  .dot.active{background:var(--orange);transform:scale(1.5);}
+  .counter{position:fixed;top:22px;right:6vw;z-index:50;font-size:11.5px;color:#fff;background:rgba(15,42,74,0.6);padding:5px 12px;border-radius:20px;letter-spacing:.5px;backdrop-filter:blur(6px);}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:60;transition:width .5s ease;box-shadow:0 0 10px rgba(217,125,61,.6);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1000px){
+    .slide{padding:4vh 5vw;}
+    .grid4{grid-template-columns:repeat(2,1fr);}
+    .grid3{grid-template-columns:repeat(2,1fr);}
+    .pillar-box{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:760px){
+    .grid2,.two-col,.pillar-box{grid-template-columns:1fr;}
+    .grid4,.grid3{grid-template-columns:1fr;}
+    .slide{padding:3.5vh 4vw;}
+    h1.big{font-size:clamp(20px,5vw,30px);}
+    .nav-btn{width:34px;height:34px;font-size:14px;}
+    .counter{font-size:10.5px;padding:4px 10px;}
+    .brandmark{font-size:11px;top:2.5vh;left:4vw;}
+  }
+</style>
 </head>
 <body>
-  <div class="slide-container" id="slideContainer">
-    <span class="slide-number" id="slideNumber">1 / 10</span>
-    <div id="slideContent"></div>
-  </div>
-  <div class="nav">
-    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
-    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
-  </div>
-  <div class="progress" id="progress">Diapositiva 1 de 10 · NeuroLiderazgo · 90 minutos</div>
-  <script>
-    let currentSlide = 0;
-    const slides = [
-      `
-        <h1>NeuroLiderazgo</h1>
-        <h2>El Cerebro que Inspira Equipos</h2>
-        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
-        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
-        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
-      `,
-      `
-        <h2>La Pregunta que Incomoda</h2>
-        <p>¿Cuántos de ustedes han tenido un jefe que técnicamente era brillante, pero que drenaba la energía de todo el equipo?</p>
-        <p>Ahora, levanten la mano si alguna vez trabajaron para alguien que no era el que más sabía, pero que los hacía sentir capaces, escuchados y motivados.</p>
-        <div class="highlight-box">El neuroliderazgo no pregunta "¿cuánto sabes?". Pregunta "¿cómo impacta tu presencia en el cerebro de quienes te siguen?"</div>
-      `,
-      `
-        <h2>La Química del Liderazgo</h2>
-        <p>Cuatro neurotransmisores gobiernan la respuesta de tu equipo hacia ti como líder:</p>
-        <div class="neuro-box">
-          <div class="neuro-card">
-            <div class="emoji">🤝</div>
-            <div class="name">Oxitocina</div>
-            <div class="desc">Confianza y vínculo. Se libera con reconocimiento y conexión genuina.</div>
-          </div>
-          <div class="neuro-card">
-            <div class="emoji">🎯</div>
-            <div class="name">Dopamina</div>
-            <div class="desc">Motivación y recompensa. Se activa al alcanzar metas y recibir retroalimentación positiva.</div>
-          </div>
-          <div class="neuro-card">
-            <div class="emoji">😌</div>
-            <div class="name">Serotonina</div>
-            <div class="desc">Bienestar y estabilidad. Se eleva con el reconocimiento social y el sentido de pertenencia.</div>
-          </div>
-          <div class="neuro-card">
-            <div class="emoji">💪</div>
-            <div class="name">Endorfinas</div>
-            <div class="desc">Resiliencia ante el estrés. Se liberan al superar desafíos y celebrar logros.</div>
-          </div>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<div class="counter"><span id="cur">1</span> / <span id="tot">10</span></div>
+
+<div id="deck">
+
+  <!-- 1. PORTADA -->
+  <section class="slide dark active">
+    <div class="ring" style="width:640px;height:640px;top:-320px;right:-220px;"></div>
+    <div class="ring" style="width:380px;height:380px;bottom:-220px;left:-140px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="cover-eyebrow">Conferencia · 90 Minutos</div>
+      <h1 class="big">NeuroLiderazgo <em>— el cerebro que inspira equipos</em></h1>
+      <p class="lead">Una experiencia vivencial para líderes que quieren comprender cómo funciona el cerebro humano y usar ese conocimiento para inspirar, motivar y transformar a sus equipos. Incluye marco teórico, ejercicios prácticos, espacio de preguntas, diploma y ebook.</p>
+    </div>
+    <div class="cover-footer">
+      <div><b>Presentado por</b>Prof. Mtr. Álvaro Lyon Abreu · Lyon Asesor, f.p.</div>
+      <div><b>Contacto</b>info@lyonasesor.com · +58 414-8610464</div>
+      <div><b>Sitio web</b>lyonasesor.com</div>
+    </div>
+  </section>
+
+  <!-- 2. LA PREGUNTA QUE INCOMODA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Apertura</div>
+      <h1 class="big">La pregunta que <em>incomoda</em></h1>
+      <p class="lead">¿Cuántos de ustedes han tenido un jefe que técnicamente era brillante, pero que drenaba la energía de todo el equipo? Ahora, levanten la mano si alguna vez trabajaron para alguien que no era el que más sabía, pero que los hacía sentir capaces, escuchados y motivados.</p>
+      <div class="highlight-box">El neuroliderazgo no pregunta "¿cuánto sabes?". Pregunta "¿cómo impacta tu presencia en el cerebro de quienes te siguen?".</div>
+    </div>
+  </section>
+
+  <!-- 3. LA QUÍMICA DEL LIDERAZGO -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Neuroquímica aplicada</div>
+      <h1 class="big">La química <em>del liderazgo</em></h1>
+      <p class="lead">Cuatro neurotransmisores gobiernan la respuesta de tu equipo hacia ti como líder:</p>
+      <div class="pillar-box">
+        <div class="pillar-card">
+          <div class="emoji">🤝</div>
+          <div class="name">Oxitocina</div>
+          <div class="desc">Confianza y vínculo. Se libera con reconocimiento y conexión genuina.</div>
         </div>
-      `,
-      `
-        <h2>El Cerebro Bajo Amenaza</h2>
-        <p>Cuando un líder grita, humilla o ignora, activa en el cerebro de su equipo la <strong>amígdala</strong>, el centro del miedo.</p>
-        <p>Un cerebro en modo supervivencia no puede:</p>
-        <ul>
-          <li>Ser creativo</li>
-          <li>Resolver problemas complejos</li>
-          <li>Colaborar genuinamente</li>
-        </ul>
-        <div class="highlight-box">"Un gerente que no agrega valor es el que utiliza la crítica indiscriminada y la desvalorización permanente." — Néstor Braidot</div>
-      `,
-      `
-        <h2>Momento de Reflexión</h2>
-        <p>Piensa en la última situación de presión con tu equipo. ¿Cuál fue tu primera reacción?</p>
-        <div class="interactive-question">
-          <p style="margin-bottom: 1rem;">Selecciona la opción que más se parezca a ti:</p>
-          <div class="options" id="q1Options">
-            <button class="option-btn" onclick="selectOption(this, 'q1')">Escuché antes de decidir</button>
-            <button class="option-btn" onclick="selectOption(this, 'q1')">Di instrucciones inmediatas</button>
-            <button class="option-btn" onclick="selectOption(this, 'q1')">Me alejé para pensar solo</button>
-            <button class="option-btn" onclick="selectOption(this, 'q1')">Consulté con el equipo</button>
-          </div>
+        <div class="pillar-card">
+          <div class="emoji">🎯</div>
+          <div class="name">Dopamina</div>
+          <div class="desc">Motivación y recompensa. Se activa al alcanzar metas y recibir retroalimentación positiva.</div>
         </div>
-      `,
-      `
-        <h2>La Ventana de Tolerancia</h2>
-        <p>Cada persona tiene un umbral de estrés que puede manejar antes de que su cerebro "explote" (secuestro amigdalar).</p>
-        <p>Un líder que conoce su propia ventana de tolerancia y la de su equipo puede:</p>
-        <ul>
-          <li>Anticipar conflictos antes de que escalen</li>
-          <li>Crear pausas estratégicas en momentos de tensión</li>
-          <li>Modelar la regulación emocional para todo el equipo</li>
-        </ul>
-        <div class="highlight-box">El líder no controla las emociones del equipo. Modela cómo navegarlas.</div>
-      `,
-      `
-        <h2>El Líder Atencional</h2>
-        <p>Néstor Braidot acuñó el concepto de <strong>densidad de atención</strong>: la cantidad de atención que un líder es capaz de focalizar.</p>
-        <p>Un líder con alta densidad atencional:</p>
-        <ul>
-          <li>Percibe señales débiles que otros ignoran</li>
-          <li>Toma decisiones más conscientes y menos reactivas</li>
-          <li>Está presente de verdad cuando su equipo lo necesita</li>
-        </ul>
-        <div class="highlight-box">"Una adecuada densidad de atención modela el cerebro, en un sentido literal." — Néstor Braidot</div>
-      `,
-      `
-        <h2>El Cerebro se Transforma</h2>
-        <p>La neuroplasticidad es la capacidad del cerebro de reorganizarse y crear nuevas conexiones a lo largo de toda la vida.</p>
-        <p>Esto significa que:</p>
-        <ul>
-          <li>Ningún estilo de liderazgo está grabado en piedra</li>
-          <li>Puedes entrenar tu cerebro para responder en lugar de reaccionar</li>
-          <li>Cada nueva conducta de liderazgo que practicas crea un camino neuronal que se fortalece con la repetición</li>
-        </ul>
-        <p style="margin-top: 1rem;">El neuroliderazgo no es un talento innato. Es una capacidad que se entrena, se mide y se mejora.</p>
-      `,
-      `
-        <h2>Tres Herramientas para Empezar Hoy</h2>
-        <ul>
-          <li><strong>La pausa de 3 segundos:</strong> Antes de responder en una reunión tensa, respira profundo 3 segundos. Ese tiempo permite que tu corteza prefrontal recupere el control sobre tu amígdala.</li>
-          <li><strong>Reconocimiento específico:</strong> Una vez al día, dile a alguien de tu equipo exactamente qué hizo bien y por qué fue valioso. Activa la oxitocina y la dopamina.</li>
-          <li><strong>Check-in emocional:</strong> Inicia cada reunión preguntando: "¿Cómo llegan hoy?". No es terapia. Es neuroliderazgo aplicado.</li>
-        </ul>
-      `,
-      `
-        <h2>El Liderazgo que Inspira</h2>
-        <p>No se trata de ser el que más sabe.</p>
-        <p>Se trata de ser el que mejor entiende cómo funciona el cerebro humano.</p>
-        <p>Y de usar ese conocimiento para que cada persona que trabaja contigo sienta que su cerebro está seguro, valorado y motivado para dar lo mejor de sí.</p>
-        <div class="highlight-box">"El desafío de un líder consiste en propiciar la formación de determinados caminos neurales, volverlos dominantes y potenciarlos en pos de la excelencia." — Néstor Braidot</div>
-        <p style="text-align: center; margin-top: 2rem; color: #cdaa7b;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
-      `
-    ];
-    function renderSlide() {
-      document.getElementById('slideContent').innerHTML = slides[currentSlide];
-      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
-      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · NeuroLiderazgo · 90 minutos`;
-      document.getElementById('prevBtn').disabled = (currentSlide === 0);
-      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+        <div class="pillar-card">
+          <div class="emoji">😌</div>
+          <div class="name">Serotonina</div>
+          <div class="desc">Bienestar y estabilidad. Se eleva con el reconocimiento social y el sentido de pertenencia.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="emoji">💪</div>
+          <div class="name">Endorfinas</div>
+          <div class="desc">Resiliencia ante el estrés. Se liberan al superar desafíos y celebrar logros.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CEREBRO BAJO AMENAZA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Secuestro amigdalar</div>
+      <h1 class="big">El cerebro <em>bajo amenaza</em></h1>
+      <p class="lead">Cuando un líder grita, humilla o ignora, activa en el cerebro de su equipo la <strong style="color:var(--navy);">amígdala</strong>, el centro del miedo. Un cerebro en modo supervivencia no puede:</p>
+      <div class="grid3">
+        <div class="pain">
+          <div class="ico">🎨</div>
+          <b>Ser creativo</b>
+          <p>La creatividad requiere un cerebro seguro, no uno que está defendiéndose.</p>
+        </div>
+        <div class="pain">
+          <div class="ico">🧩</div>
+          <b>Resolver problemas complejos</b>
+          <p>La corteza prefrontal se apaga cuando la amígdala toma el control.</p>
+        </div>
+        <div class="pain">
+          <div class="ico">🤝</div>
+          <b>Colaborar genuinamente</b>
+          <p>Sin seguridad psicológica, solo hay obediencia, no equipo.</p>
+        </div>
+      </div>
+      <div class="highlight-box">"Un gerente que no agrega valor es el que utiliza la crítica indiscriminada y la desvalorización permanente." — Néstor Braidot</div>
+    </div>
+  </section>
+
+  <!-- 5. REFLEXIÓN INTERACTIVA -->
+  <section class="slide dark">
+    <div class="ring" style="width:420px;height:420px;top:-180px;left:-140px;"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Momento de reflexión</div>
+      <h1 class="big">Piensa en la última <em>situación de presión</em></h1>
+      <p class="lead">Piensa en la última situación de presión con tu equipo. ¿Cuál fue tu primera reacción?</p>
+      <div class="interactive-box">
+        <p>Selecciona la opción que más se parezca a ti:</p>
+        <div class="options" id="q1Options">
+          <button class="option-btn" onclick="selectOption(this, 'q1')">Escuché antes de decidir</button>
+          <button class="option-btn" onclick="selectOption(this, 'q1')">Di instrucciones inmediatas</button>
+          <button class="option-btn" onclick="selectOption(this, 'q1')">Me alejé para pensar solo</button>
+          <button class="option-btn" onclick="selectOption(this, 'q1')">Consulté con el equipo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. VENTANA DE TOLERANCIA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Autorregulación</div>
+      <h1 class="big">La <em>ventana de tolerancia</em></h1>
+      <p class="lead">Cada persona tiene un umbral de estrés que puede manejar antes de que su cerebro "explote" (secuestro amigdalar). Un líder que conoce su propia ventana de tolerancia y la de su equipo puede:</p>
+      <ul class="clean">
+        <li><strong>Anticipar conflictos</strong> antes de que escalen</li>
+        <li>Crear <strong>pausas estratégicas</strong> en momentos de tensión</li>
+        <li>Modelar la <strong>regulación emocional</strong> para todo el equipo</li>
+      </ul>
+      <div class="highlight-box">El líder no controla las emociones del equipo. Modela cómo navegarlas.</div>
+    </div>
+  </section>
+
+  <!-- 7. LÍDER ATENCIONAL -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Néstor Braidot</div>
+      <h1 class="big">El líder <em>atencional</em></h1>
+      <p class="lead">Néstor Braidot acuñó el concepto de <strong style="color:var(--navy);">densidad de atención</strong>: la cantidad de atención que un líder es capaz de focalizar. Un líder con alta densidad atencional:</p>
+      <div class="grid3">
+        <div class="ben">
+          <div class="ico">📡</div>
+          <b>Percibe señales débiles</b>
+          <p>Detecta lo que otros ignoran: el gesto, la pausa, el silencio incómodo que precede al conflicto.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">🧭</div>
+          <b>Decide conscientemente</b>
+          <p>Toma decisiones más conscientes y menos reactivas. No improvisa desde el estrés.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">🎯</div>
+          <b>Está presente de verdad</b>
+          <p>Cuando su equipo lo necesita, está ahí. No solo con el cuerpo: con la mente enfocada.</p>
+        </div>
+      </div>
+      <div class="highlight-box">"Una adecuada densidad de atención modela el cerebro, en un sentido literal." — Néstor Braidot</div>
+    </div>
+  </section>
+
+  <!-- 8. NEUROPLASTICIDAD -->
+  <section class="slide dark">
+    <div class="ring" style="width:380px;height:380px;bottom:-200px;right:-120px;"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Neuroplasticidad</div>
+      <h1 class="big">El cerebro <em>se transforma</em></h1>
+      <p class="lead">La neuroplasticidad es la capacidad del cerebro de reorganizarse y crear nuevas conexiones a lo largo de toda la vida. Esto significa que:</p>
+      <ul class="clean">
+        <li>Ningún estilo de liderazgo está <strong>grabado en piedra</strong></li>
+        <li>Puedes entrenar tu cerebro para <strong>responder en lugar de reaccionar</strong></li>
+        <li>Cada nueva conducta de liderazgo que practicas crea un <strong>camino neuronal</strong> que se fortalece con la repetición</li>
+      </ul>
+      <div class="highlight-box">El neuroliderazgo no es un talento innato. Es una capacidad que se entrena, se mide y se mejora.</div>
+    </div>
+  </section>
+
+  <!-- 9. TRES HERRAMIENTAS -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Aplicación práctica</div>
+      <h1 class="big">Tres herramientas <em>para empezar hoy</em></h1>
+      <div class="grid3">
+        <div class="ben">
+          <div class="ico">⏸️</div>
+          <b>La pausa de 3 segundos</b>
+          <p>Antes de responder en una reunión tensa, respira profundo 3 segundos. Ese tiempo permite que tu corteza prefrontal recupere el control sobre tu amígdala.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">🏅</div>
+          <b>Reconocimiento específico</b>
+          <p>Una vez al día, dile a alguien de tu equipo exactamente qué hizo bien y por qué fue valioso. Activa la oxitocina y la dopamina.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">💬</div>
+          <b>Check-in emocional</b>
+          <p>Inicia cada reunión preguntando: "¿Cómo llegan hoy?". No es terapia. Es neuroliderazgo aplicado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CIERRE -->
+  <section class="slide dark">
+    <div class="ring" style="width:520px;height:520px;top:-260px;right:-160px;"></div>
+    <div class="ring" style="width:300px;height:300px;bottom:-180px;left:-100px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Cierre</div>
+      <h1 class="big">El liderazgo <em>que inspira</em></h1>
+      <p class="lead">No se trata de ser el que más sabe. Se trata de ser el que mejor entiende cómo funciona el cerebro humano. Y de usar ese conocimiento para que cada persona que trabaja contigo sienta que su cerebro está seguro, valorado y motivado para dar lo mejor de sí.</p>
+      <div class="highlight-box">"El desafío de un líder consiste en propiciar la formación de determinados caminos neurales, volverlos dominantes y potenciarlos en pos de la excelencia." — Néstor Braidot</div>
+      <p class="lead" style="margin-top:18px;font-size:12.5px;color:#C9D3E0;font-style:italic;text-align:center;">"Lo que transforma equipos, empieza con una persona."</p>
+      <div class="cta-buttons" style="justify-content:center;">
+        <a href="https://wa.me/584148610464" target="_blank" rel="noopener" class="btn wa">💬 Solicitar esta conferencia</a>
+        <a href="mailto:info@lyonasesor.com" class="btn orange">📧 Escribir por correo</a>
+        <a href="https://lyonasesor.com" target="_blank" rel="noopener" class="btn ghost">Ver más en lyonasesor.com →</a>
+      </div>
+      <div class="contact-row" style="justify-content:center;text-align:center;">
+        <div><b>Presentado por</b>Prof. Mtr. Álvaro Lyon Abreu · Lyon Asesor, f.p.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button class="nav-btn" id="prevBtn" aria-label="Anterior">&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Siguiente">&#8594;</button>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+
+  document.getElementById('tot').textContent = total;
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = document.querySelectorAll('.dot');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressBar = document.getElementById('progressBar');
+
+  function render(){
+    deck.style.transform = `translateX(-${idx * 100}vw)`;
+    document.getElementById('cur').textContent = idx + 1;
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    progressBar.style.width = ((idx + 1) / total * 100) + '%';
+  }
+  function goTo(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  prevBtn.addEventListener('click', ()=> goTo(idx - 1));
+  nextBtn.addEventListener('click', ()=> goTo(idx + 1));
+
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); goTo(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(idx - 1); }
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End') goTo(total - 1);
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
     }
-    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
-    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
-    function selectOption(btn, questionId) {
-      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
-      options.forEach(opt => opt.classList.remove('selected'));
-      btn.classList.add('selected');
+  });
+
+  let touchStartX = null;
+  let touchStartY = null;
+  document.addEventListener('touchstart', (e)=>{
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', (e)=>{
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      dx < 0 ? goTo(idx + 1) : goTo(idx - 1);
     }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-    });
-    renderSlide();
-  </script>
+    touchStartX = null;
+    touchStartY = null;
+  }, {passive:true});
+
+  function selectOption(btn, questionId){
+    const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+    options.forEach(opt => opt.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  render();
+</script>
+
 </body>
 </html>
