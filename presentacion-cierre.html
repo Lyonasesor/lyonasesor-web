@@ -1,123 +1,405 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Presentación de Cierre del Programa | Lyon Asesor</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #0f0f0f; color: #ffffff;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 100vh; padding: 2rem;
-    }
-    .slide-container {
-      max-width: 800px; width: 100%; background-color: #1a1a1a; border: 1px solid #2a2a2a;
-      border-radius: 16px; padding: 3rem 2rem; min-height: 450px;
-      display: flex; flex-direction: column; justify-content: center; position: relative;
-    }
-    .slide-number { position: absolute; top: 1.5rem; right: 1.5rem; color: #e86b18; font-size: 0.8rem; letter-spacing: 0.1rem; }
-    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
-    h2 { font-size: 1.4rem; font-weight: 400; color: #e86b18; margin-bottom: 1.5rem; }
-    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
-    ul { list-style: none; padding: 0; }
-    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
-    ul li::before { content: "▸"; position: absolute; left: 0; color: #e86b18; }
-    .highlight-box { background-color: #222; border-left: 3px solid #e86b18; padding: 1.2rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; }
-    .question-box { background: #222; border: 1px solid #e86b18; border-radius: 12px; padding: 1.2rem 1.5rem; margin: 0.8rem 0; font-size: 1.15rem; color: #f28c4e; }
-    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; max-width: 800px; width: 100%; }
-    .btn { background: transparent; border: 1px solid #e86b18; color: #e86b18; padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05rem; cursor: pointer; transition: all 0.2s ease; }
-    .btn:hover { background: #e86b18; color: #0f0f0f; }
-    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Presentación de Cierre del Programa | Lyon Asesor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2A4A; --navy-dark:#0A1D34; --navy-soft:#16385F;
+    --orange:#D97D3D; --orange-light:#F2A45E;
+    --cream:#FBF7F1; --cream-2:#F7F5F1;
+    --gray:#6B7280; --line:#E7E2D8;
+    --green:#25D366;
+    --gold:#CDAA7B;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    height:100vh;width:100vw;
+    overflow:hidden;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    font-family:'Inter',sans-serif;
+    background:var(--navy-dark);
+    -webkit-tap-highlight-color:transparent;
+  }
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;}
+
+  /* ---------- DECK STRUCTURE ---------- */
+  #deck{
+    display:flex;
+    height:100vh;
+    width:100vw;
+    transition:transform .7s cubic-bezier(.77,0,.175,1);
+    will-change:transform;
+  }
+  .slide{
+    flex:0 0 100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:5vh 6vw;
+    color:#2A3242;
+    background:var(--cream);
+  }
+  .slide.dark{background:linear-gradient(150deg,var(--navy-dark),var(--navy) 55%,var(--navy-soft));color:#fff;}
+  .slide-inner{
+    max-width:1200px;
+    margin:0 auto;
+    width:100%;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity .8s ease .2s, transform .8s cubic-bezier(.2,.7,.2,1) .2s;
+  }
+  .slide.active .slide-inner{opacity:1;transform:translateY(0);}
+
+  .ring{position:absolute;border-radius:50%;border:1px solid rgba(242,164,94,0.28);z-index:1;}
+
+  /* ---------- TEXT STYLES ---------- */
+  .kicker{color:var(--orange);font-size:clamp(10px,.9vw,12px);font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .slide.dark .kicker{color:var(--orange-light);}
+  h1.big{font-size:clamp(24px,3.4vw,44px);line-height:1.12;font-weight:600;margin:0 0 14px;color:var(--navy);}
+  .slide.dark h1.big{color:#fff;}
+  h1.big em{font-style:italic;color:var(--orange);}
+  .slide.dark h1.big em{color:var(--orange-light);}
+  p.lead{font-size:clamp(12px,1.1vw,15px);line-height:1.6;color:#4A5364;max-width:900px;}
+  .slide.dark p.lead{color:#DCE4EF;}
+  .brandmark{font-family:'Playfair Display',serif;font-weight:600;font-size:13px;letter-spacing:2px;position:absolute;top:4vh;left:6vw;z-index:3;}
+  .slide.dark .brandmark{color:#fff;}
+  .slide:not(.dark) .brandmark{color:var(--navy);}
+  .brandmark span{color:var(--orange);}
+
+  /* ---------- COVER ---------- */
+  .cover-eyebrow{
+    display:inline-block;color:var(--orange-light);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    border-top:1px solid rgba(242,164,94,.6);border-bottom:1px solid rgba(242,164,94,.6);padding:6px 0;margin-bottom:22px;
+  }
+  .cover-footer{position:absolute;bottom:5vh;left:6vw;right:6vw;display:flex;justify-content:space-between;font-size:11.5px;color:#C9D3E0;border-top:1px solid rgba(255,255,255,.2);padding-top:16px;z-index:2;gap:24px;flex-wrap:wrap;}
+  .cover-footer b{color:#fff;display:block;font-size:12.5px;margin-bottom:2px;}
+
+  /* ---------- HIGHLIGHT BOX ---------- */
+  .highlight-box{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);padding:18px 22px;margin:22px 0;border-radius:0 12px 12px 0;font-style:italic;font-size:13px;color:#4A5364;line-height:1.6;}
+  .slide.dark .highlight-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-left:4px solid var(--orange-light);color:#E4E9F1;}
+
+  /* ---------- QUESTION BOX (rondas) ---------- */
+  .question-box{
+    background:#fff;
+    border:1.5px solid var(--orange);
+    border-radius:14px;
+    padding:24px 26px;
+    margin:24px 0 0;
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:clamp(16px,1.7vw,22px);
+    line-height:1.45;
+    color:var(--navy);
+    position:relative;
+    box-shadow:0 8px 24px rgba(217,125,61,.10);
+  }
+  .question-box::before{
+    content:"“";
+    position:absolute;
+    top:-10px;left:16px;
+    font-family:'Playfair Display',serif;
+    font-size:60px;
+    color:var(--orange);
+    line-height:1;
+    background:var(--cream);
+    padding:0 8px;
+  }
+  .slide.dark .question-box{background:rgba(255,255,255,.06);border:1.5px solid var(--orange-light);color:#fff;box-shadow:none;}
+  .slide.dark .question-box::before{background:var(--navy-dark);color:var(--orange-light);}
+
+  /* ---------- LISTS ---------- */
+  ul.clean{list-style:none;margin:16px 0 0;padding:0;max-width:960px;}
+  ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:13px;color:#4A5364;line-height:1.6;}
+  ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--orange);font-weight:700;}
+  .slide.dark ul.clean li{color:#DCE4EF;}
+  .slide.dark ul.clean li::before{color:var(--orange-light);}
+  ul.clean li strong{color:var(--navy);}
+  .slide.dark ul.clean li strong{color:#fff;}
+
+  /* ---------- GRIDS ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+  .ben{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
+  .ben .ico{font-size:20px;margin-bottom:6px;}
+  .ben b{display:block;color:var(--navy);font-size:13px;margin-bottom:5px;}
+  .ben p{font-size:11.5px;color:var(--gray);margin:0;line-height:1.5;}
+
+  /* ---------- CLOSING ---------- */
+  .cta-buttons{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;transition:transform .2s;text-decoration:none;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn.orange{background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;box-shadow:0 8px 20px rgba(217,125,61,.35);}
+  .btn.ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff;}
+  .btn.wa{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.3);}
+  .contact-row{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.2);padding-top:20px;}
+  .contact-row div{font-size:11.8px;color:#C9D3E0;}
+  .contact-row b{display:block;color:var(--orange-light);font-size:12.8px;margin-bottom:2px;}
+
+  /* ---------- NAVIGATION UI ---------- */
+  .nav-ui{position:fixed;bottom:18px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:18px;z-index:50;pointer-events:none;}
+  .nav-ui > *{pointer-events:auto;}
+  .nav-btn{
+    width:40px;height:40px;border-radius:50%;background:rgba(15,42,74,0.88);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;
+    transition:background .2s, transform .2s;backdrop-filter:blur(6px);
+  }
+  .nav-btn:hover{background:var(--orange);transform:scale(1.08);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+  .nav-btn:disabled:hover{background:rgba(15,42,74,0.88);transform:none;}
+  .dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:60vw;}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:background .2s, transform .2s;}
+  .dot.active{background:var(--orange);transform:scale(1.5);}
+  .counter{position:fixed;top:22px;right:6vw;z-index:50;font-size:11.5px;color:#fff;background:rgba(15,42,74,0.6);padding:5px 12px;border-radius:20px;letter-spacing:.5px;backdrop-filter:blur(6px);}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:60;transition:width .5s ease;box-shadow:0 0 10px rgba(217,125,61,.6);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1000px){
+    .slide{padding:4vh 5vw;}
+  }
+  @media (max-width:760px){
+    .grid2{grid-template-columns:1fr;}
+    .slide{padding:3.5vh 4vw;}
+    h1.big{font-size:clamp(20px,5vw,30px);}
+    .nav-btn{width:34px;height:34px;font-size:14px;}
+    .counter{font-size:10.5px;padding:4px 10px;}
+    .brandmark{font-size:11px;top:2.5vh;left:4vw;}
+  }
+</style>
 </head>
 <body>
-  <div class="slide-container" id="slideContainer">
-    <span class="slide-number" id="slideNumber">1 / 10</span>
-    <div id="slideContent"></div>
-  </div>
-  <div class="nav">
-    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
-    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
-  </div>
-  <div class="progress" id="progress">Diapositiva 1 de 10 · Evento de Cierre · Lyon Asesor</div>
-  <script>
-    let currentSlide = 0;
-    const slides = [
-      `
-        <h1>Cierre del Programa Lyon</h1>
-        <h2>Programa Lyon de NeuroLiderazgo y Transformación Humana</h2>
-        <p>Prof. Mtr. Álvaro Lyon · Lyon Asesor, f.p.</p>
-        <p style="color:#cccccc; margin-top:2rem;">Guion del evento de cierre en videoconferencia</p>
-        <p style="color:#999999;">Uso interno / solo para el autor</p>
-      `,
-      `
-        <h2>Bienvenida</h2>
-        <p>Llegar hasta aquí — 12 clases, 300 horas académicas — no es un dato administrativo, es un recorrido real. Antes de entregar el diploma, este espacio es para nombrar lo que ese recorrido significó.</p>
-        <div class="highlight-box">Abrir el encuentro agradeciendo la constancia, no solo la finalización.</div>
-      `,
-      `
-        <h2>Primera ronda: la experiencia</h2>
-        <div class="question-box">¿Qué sintieron al empezar el Programa, y qué sienten hoy al terminarlo?</div>
-        <p>Dar espacio real a cada persona que quiera compartir, sin apuro. Esta ronda es el corazón del cierre.</p>
-      `,
-      `
-        <h2>Segunda ronda: lo aplicado</h2>
-        <div class="question-box">¿Qué herramienta de las 12 clases realmente usaron, y en qué situación concreta?</div>
-        <p>Buscar ejemplos específicos, no generalidades. La especificidad es lo que da valor al testimonio.</p>
-      `,
-      `
-        <h2>Tercera ronda: los bloqueos</h2>
-        <div class="question-box">¿Qué les costó aplicar? ¿Dónde sintieron resistencia — propia o del equipo?</div>
-        <p>Normalizar la dificultad. Nombrar que la resistencia es parte esperable del cambio real, no una señal de fracaso.</p>
-      `,
-      `
-        <h2>Cuarta ronda: lo que cambió</h2>
-        <div class="question-box">Si tuvieran que nombrar un cambio concreto en cómo lideran o se relacionan hoy, ¿cuál sería?</div>
-        <p>Esta pregunta suele traer los testimonios más útiles para futuro material de la marca — pedir permiso para citarlos.</p>
-      `,
-      `
-        <h2>Reconocer el recorrido completo</h2>
-        <p>Repasar brevemente las 12 temáticas recorridas, nombrando el hilo conductor: de la autoestima individual al propósito y legado colectivo.</p>
-        <div class="highlight-box">No es una lista de contenidos, es un mapa de transformación ya recorrido por cada persona presente.</div>
-      `,
-      `
-        <h2>Entrega simbólica del diploma</h2>
-        <p>Anunciar la apertura del formulario de descarga del Diploma del Programa Completo (300 horas académicas), disponible desde el dashboard de cada estudiante.</p>
-        <p>Explicar brevemente su validez: verificable en línea por código QR, con marco legal venezolano e internacional.</p>
-      `,
-      `
-        <h2>Qué sigue después del cierre</h2>
-        <ul>
-          <li>Acceso permanente y de por vida a los 12 videos y guías ya vistos, en modo solo lectura</li>
-          <li>Invitación abierta a seguir en contacto vía WhatsApp o correo para próximos pasos</li>
-          <li>Espacio para que cada persona comparta si desea seguir profundizando (consulta individual, próxima conferencia)</li>
-        </ul>
-      `,
-      `
-        <h2>Cierre</h2>
-        <p>Agradecer nuevamente, de forma personal y humana — este es un cierre de contacto, no un trámite.</p>
-        <div class="highlight-box">"Lo que transforma equipos, empieza con una persona." — y hoy, esa persona son ustedes.</div>
-        <p style="text-align:center; margin-top:2rem; color:#e86b18;">Lyon Asesor 2026</p>
-      `
-    ];
-    function renderSlide() {
-      document.getElementById('slideContent').innerHTML = slides[currentSlide];
-      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
-      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Evento de Cierre · Lyon Asesor`;
-      document.getElementById('prevBtn').disabled = (currentSlide === 0);
-      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<div class="counter"><span id="cur">1</span> / <span id="tot">10</span></div>
+
+<div id="deck">
+
+  <!-- 1. PORTADA -->
+  <section class="slide dark active">
+    <div class="ring" style="width:640px;height:640px;top:-320px;right:-220px;"></div>
+    <div class="ring" style="width:380px;height:380px;bottom:-220px;left:-140px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="cover-eyebrow">Evento de Cierre · Guion Interno</div>
+      <h1 class="big">Cierre del Programa Lyon <em>— NeuroLiderazgo y Transformación Humana</em></h1>
+      <p class="lead">Guion para el evento de cierre en videoconferencia. Un encuentro para nombrar el recorrido, entregar el diploma y agradecer la constancia. Uso interno — solo para el autor.</p>
+    </div>
+    <div class="cover-footer">
+      <div><b>Presentado por</b>Prof. Mtr. Álvaro Lyon Abreu · Lyon Asesor, f.p.</div>
+      <div><b>Formato</b>Videoconferencia en vivo · Programa de 12 clases</div>
+      <div><b>Sitio web</b>lyonasesor.com</div>
+    </div>
+  </section>
+
+  <!-- 2. BIENVENIDA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Apertura · Bienvenida</div>
+      <h1 class="big">Bienvenida al <em>cierre</em></h1>
+      <p class="lead">Llegar hasta aquí — 12 clases, 300 horas académicas — no es un dato administrativo, es un recorrido real. Antes de entregar el diploma, este espacio es para nombrar lo que ese recorrido significó.</p>
+      <div class="highlight-box">Abrir el encuentro agradeciendo la constancia, no solo la finalización.</div>
+    </div>
+  </section>
+
+  <!-- 3. PRIMERA RONDA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Ronda 1 de 4 · La experiencia</div>
+      <h1 class="big">La experiencia <em>vivida</em></h1>
+      <div class="question-box">¿Qué sintieron al empezar el Programa, y qué sienten hoy al terminarlo?</div>
+      <p class="lead" style="margin-top:22px;">Dar espacio real a cada persona que quiera compartir, sin apuro. Esta ronda es el corazón del cierre.</p>
+    </div>
+  </section>
+
+  <!-- 4. SEGUNDA RONDA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Ronda 2 de 4 · Lo aplicado</div>
+      <h1 class="big">Lo que se <em>aplicó</em></h1>
+      <div class="question-box">¿Qué herramienta de las 12 clases realmente usaron, y en qué situación concreta?</div>
+      <p class="lead" style="margin-top:22px;">Buscar ejemplos específicos, no generalidades. La especificidad es lo que da valor al testimonio.</p>
+    </div>
+  </section>
+
+  <!-- 5. TERCERA RONDA -->
+  <section class="slide dark">
+    <div class="ring" style="width:420px;height:420px;top:-180px;left:-140px;"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Ronda 3 de 4 · Los bloqueos</div>
+      <h1 class="big">Los <em>bloqueos</em></h1>
+      <div class="question-box">¿Qué les costó aplicar? ¿Dónde sintieron resistencia — propia o del equipo?</div>
+      <p class="lead" style="margin-top:22px;">Normalizar la dificultad. Nombrar que la resistencia es parte esperable del cambio real, no una señal de fracaso.</p>
+    </div>
+  </section>
+
+  <!-- 6. CUARTA RONDA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Ronda 4 de 4 · Lo que cambió</div>
+      <h1 class="big">Lo que <em>cambió</em></h1>
+      <div class="question-box">Si tuvieran que nombrar un cambio concreto en cómo lideran o se relacionan hoy, ¿cuál sería?</div>
+      <p class="lead" style="margin-top:22px;">Esta pregunta suele traer los testimonios más útiles para futuro material de la marca — pedir permiso para citarlos.</p>
+    </div>
+  </section>
+
+  <!-- 7. RECONOCER EL RECORRIDO -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Recorrido completo</div>
+      <h1 class="big">Reconocer el <em>recorrido completo</em></h1>
+      <p class="lead">Repasar brevemente las 12 temáticas recorridas, nombrando el hilo conductor: de la autoestima individual al propósito y legado colectivo.</p>
+      <div class="highlight-box">No es una lista de contenidos, es un mapa de transformación ya recorrido por cada persona presente.</div>
+    </div>
+  </section>
+
+  <!-- 8. ENTREGA DEL DIPLOMA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Entrega simbólica</div>
+      <h1 class="big">Entrega del <em>diploma</em></h1>
+      <p class="lead">Anunciar la apertura del formulario de descarga del <strong style="color:var(--navy);">Diploma del Programa Completo</strong> (300 horas académicas), disponible desde el dashboard de cada estudiante.</p>
+      <div class="grid2">
+        <div class="ben">
+          <div class="ico">🎓</div>
+          <b>Verificable en línea</b>
+          <p>Cada diploma incluye código QR único con validación pública en nuestro sitio web.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">⚖️</div>
+          <b>Respaldo legal</b>
+          <p>Marco legal venezolano e internacional (UNESCO). Comprobante académico verificable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. QUÉ SIGUE -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Después del cierre</div>
+      <h1 class="big">Qué sigue <em>después del cierre</em></h1>
+      <ul class="clean">
+        <li><strong>Acceso permanente de por vida</strong> a los 12 videos y guías ya vistos, en modo solo lectura.</li>
+        <li><strong>Invitación abierta a seguir en contacto</strong> vía WhatsApp o correo para próximos pasos.</li>
+        <li><strong>Espacio para seguir profundizando</strong>: consulta individual, próxima conferencia o membresía extendida.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10. CIERRE -->
+  <section class="slide dark">
+    <div class="ring" style="width:520px;height:520px;top:-260px;right:-160px;"></div>
+    <div class="ring" style="width:300px;height:300px;bottom:-180px;left:-100px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Cierre</div>
+      <h1 class="big">Gracias por <em>el recorrido</em></h1>
+      <p class="lead">Agradecer nuevamente, de forma personal y humana — este es un cierre de contacto, no un trámite.</p>
+      <div class="highlight-box">"Lo que transforma equipos, empieza con una persona." — y hoy, esa persona son ustedes.</div>
+      <div class="cta-buttons" style="justify-content:center;">
+        <a href="https://wa.me/584148610464" target="_blank" rel="noopener" class="btn wa">💬 Escribir por WhatsApp</a>
+        <a href="mailto:info@lyonasesor.com" class="btn orange">📧 Enviar un correo</a>
+        <a href="https://lyonasesor.com" target="_blank" rel="noopener" class="btn ghost">Ver más en lyonasesor.com →</a>
+      </div>
+      <div class="contact-row" style="justify-content:center;text-align:center;">
+        <div><b>Lyon Asesor 2026</b>Prof. Mtr. Álvaro Lyon Abreu · Uso interno</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button class="nav-btn" id="prevBtn" aria-label="Anterior">&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Siguiente">&#8594;</button>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+
+  document.getElementById('tot').textContent = total;
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = document.querySelectorAll('.dot');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressBar = document.getElementById('progressBar');
+
+  function render(){
+    deck.style.transform = `translateX(-${idx * 100}vw)`;
+    document.getElementById('cur').textContent = idx + 1;
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    progressBar.style.width = ((idx + 1) / total * 100) + '%';
+  }
+  function goTo(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  prevBtn.addEventListener('click', ()=> goTo(idx - 1));
+  nextBtn.addEventListener('click', ()=> goTo(idx + 1));
+
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); goTo(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(idx - 1); }
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End') goTo(total - 1);
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
     }
-    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
-    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-    });
-    renderSlide();
-  </script>
+  });
+
+  let touchStartX = null;
+  let touchStartY = null;
+  document.addEventListener('touchstart', (e)=>{
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', (e)=>{
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      dx < 0 ? goTo(idx + 1) : goTo(idx - 1);
+    }
+    touchStartX = null;
+    touchStartY = null;
+  }, {passive:true});
+
+  render();
+</script>
+
 </body>
 </html>
