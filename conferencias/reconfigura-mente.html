@@ -1,254 +1,487 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-003ZC6TLH3');
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Reconfigura tu Mente | Lyon Asesor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-003ZC6TLH3');
+</script>
+<style>
+  :root{
+    --navy:#0F2A4A; --navy-dark:#0A1D34; --navy-soft:#16385F;
+    --orange:#D97D3D; --orange-light:#F2A45E;
+    --cream:#FBF7F1; --cream-2:#F7F5F1;
+    --gray:#6B7280; --line:#E7E2D8;
+    --green:#25D366;
+    --gold:#CDAA7B;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    height:100vh;width:100vw;
+    overflow:hidden;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    font-family:'Inter',sans-serif;
+    background:var(--navy-dark);
+    -webkit-tap-highlight-color:transparent;
+  }
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;}
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reconfigura tu Mente | Lyon Asesor</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #0f0f0f;
-      color: #ffffff;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-    .slide-container {
-      max-width: 800px;
-      width: 100%;
-      background-color: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 3rem 2rem;
-      min-height: 450px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
-    .slide-number {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      color: #cdaa7b;
-      font-size: 0.8rem;
-      letter-spacing: 0.1rem;
-    }
-    h1 { font-size: 2.2rem; font-weight: 600; color: #ffffff; margin-bottom: 1rem; }
-    h2 { font-size: 1.4rem; font-weight: 400; color: #cdaa7b; margin-bottom: 1.5rem; }
-    p { font-size: 1.1rem; line-height: 1.8; color: #ffffff; margin-bottom: 1rem; }
-    ul { list-style: none; padding: 0; }
-    ul li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; }
-    ul li::before { content: "▸"; position: absolute; left: 0; color: #cdaa7b; }
-    .highlight-box {
-      background-color: #222;
-      border-left: 3px solid #cdaa7b;
-      padding: 1.2rem 1.5rem;
-      margin: 1.5rem 0;
-      border-radius: 0 8px 8px 0;
-      font-style: italic;
-    }
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin: 1.5rem 0;
-    }
-    .col-box {
-      background-color: #222;
-      padding: 1.2rem;
-      border-radius: 8px;
-    }
-    .col-box h3 { color: #cdaa7b; margin-bottom: 0.5rem; font-size: 1rem; }
-    .col-box p { font-size: 0.9rem; color: #e8e8e8; }
-    .step-box {
-      display: grid;
-      gap: 0.8rem;
-      margin: 1.5rem 0;
-    }
-    .step-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background-color: #222;
-      padding: 0.8rem 1.2rem;
-      border-radius: 8px;
-    }
-    .step-num {
-      background: #cdaa7b;
-      color: #0f0f0f;
-      font-weight: 700;
-      font-size: 1.2rem;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .step-text { font-size: 0.9rem; }
-    .nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
-    .btn {
-      background: transparent;
-      border: 1px solid #cdaa7b;
-      color: #cdaa7b;
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn:hover { background: #cdaa7b; color: #0f0f0f; }
-    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .progress { text-align: center; color: #999999; font-size: 0.8rem; margin-top: 1rem; }
-    .interactive-box {
-      background-color: #222;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin: 1rem 0;
-      text-align: center;
-    }
-    .options { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
-    .option-btn {
-      background: transparent;
-      border: 1px solid #666;
-      color: #ffffff;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .option-btn:hover { border-color: #cdaa7b; color: #cdaa7b; }
-    .option-btn.selected { background: #cdaa7b; color: #0f0f0f; border-color: #cdaa7b; }
-  </style>
+  /* ---------- DECK STRUCTURE ---------- */
+  #deck{
+    display:flex;
+    height:100vh;
+    width:100vw;
+    transition:transform .7s cubic-bezier(.77,0,.175,1);
+    will-change:transform;
+  }
+  .slide{
+    flex:0 0 100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:5vh 6vw;
+    color:#2A3242;
+    background:var(--cream);
+  }
+  .slide.dark{background:linear-gradient(150deg,var(--navy-dark),var(--navy) 55%,var(--navy-soft));color:#fff;}
+  .slide-inner{
+    max-width:1200px;
+    margin:0 auto;
+    width:100%;
+    position:relative;
+    z-index:2;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity .8s ease .2s, transform .8s cubic-bezier(.2,.7,.2,1) .2s;
+  }
+  .slide.active .slide-inner{opacity:1;transform:translateY(0);}
+
+  .ring{position:absolute;border-radius:50%;border:1px solid rgba(242,164,94,0.28);z-index:1;}
+
+  /* ---------- TEXT STYLES ---------- */
+  .kicker{color:var(--orange);font-size:clamp(10px,.9vw,12px);font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+  .slide.dark .kicker{color:var(--orange-light);}
+  h1.big{font-size:clamp(24px,3.4vw,44px);line-height:1.12;font-weight:600;margin:0 0 14px;color:var(--navy);}
+  .slide.dark h1.big{color:#fff;}
+  h1.big em{font-style:italic;color:var(--orange);}
+  .slide.dark h1.big em{color:var(--orange-light);}
+  p.lead{font-size:clamp(12px,1.1vw,15px);line-height:1.6;color:#4A5364;max-width:900px;}
+  .slide.dark p.lead{color:#DCE4EF;}
+  .brandmark{font-family:'Playfair Display',serif;font-weight:600;font-size:13px;letter-spacing:2px;position:absolute;top:4vh;left:6vw;z-index:3;}
+  .slide.dark .brandmark{color:#fff;}
+  .slide:not(.dark) .brandmark{color:var(--navy);}
+  .brandmark span{color:var(--orange);}
+
+  /* ---------- COVER ---------- */
+  .cover-eyebrow{
+    display:inline-block;color:var(--orange-light);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    border-top:1px solid rgba(242,164,94,.6);border-bottom:1px solid rgba(242,164,94,.6);padding:6px 0;margin-bottom:22px;
+  }
+  .cover-footer{position:absolute;bottom:5vh;left:6vw;right:6vw;display:flex;justify-content:space-between;font-size:11.5px;color:#C9D3E0;border-top:1px solid rgba(255,255,255,.2);padding-top:16px;z-index:2;gap:24px;flex-wrap:wrap;}
+  .cover-footer b{color:#fff;display:block;font-size:12.5px;margin-bottom:2px;}
+
+  /* ---------- STAT ROW ---------- */
+  .stat-row{display:flex;gap:48px;margin-top:34px;flex-wrap:wrap;}
+  .stat b{font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,32px);display:block;color:var(--orange);}
+  .slide.dark .stat b{color:var(--orange-light);}
+  .stat span{font-size:11.5px;color:var(--gray);letter-spacing:.3px;line-height:1.4;display:block;max-width:180px;}
+  .slide.dark .stat span{color:#B9C4D6;}
+
+  /* ---------- GRIDS ---------- */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+
+  .pain{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px;}
+  .pain .ico{font-size:22px;margin-bottom:8px;}
+  .pain b{display:block;color:var(--navy);font-size:13.5px;margin-bottom:5px;}
+  .pain p{font-size:11.8px;color:var(--gray);margin:0;line-height:1.5;}
+
+  .ben{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;}
+  .ben .ico{font-size:20px;margin-bottom:6px;}
+  .ben b{display:block;color:var(--navy);font-size:13px;margin-bottom:5px;}
+  .ben p{font-size:11.5px;color:var(--gray);margin:0;line-height:1.5;}
+
+  /* ---------- HIGHLIGHT BOX ---------- */
+  .highlight-box{background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);padding:18px 22px;margin:22px 0;border-radius:0 12px 12px 0;font-style:italic;font-size:13px;color:#4A5364;line-height:1.6;}
+  .slide.dark .highlight-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-left:4px solid var(--orange-light);color:#E4E9F1;}
+
+  /* ---------- LISTS ---------- */
+  ul.clean{list-style:none;margin:16px 0 0;padding:0;max-width:960px;}
+  ul.clean li{padding:8px 0 8px 22px;position:relative;font-size:12.8px;color:#4A5364;line-height:1.55;}
+  ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--orange);font-weight:700;}
+  .slide.dark ul.clean li{color:#DCE4EF;}
+  .slide.dark ul.clean li::before{color:var(--orange-light);}
+  ul.clean li strong{color:var(--navy);}
+  .slide.dark ul.clean li strong{color:#fff;}
+
+  /* ---------- TWO COLUMN CARD ---------- */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+  .col-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 22px;border-left:4px solid var(--orange);}
+  .col-box h3{font-family:'Playfair Display',serif;color:var(--navy);margin:0 0 8px;font-size:15px;font-weight:600;}
+  .col-box p{font-size:12px;color:#4A5364;line-height:1.6;margin:0;}
+  .slide.dark .col-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-left:4px solid var(--orange-light);}
+  .slide.dark .col-box h3{color:#fff;}
+  .slide.dark .col-box p{color:#DCE4EF;}
+
+  /* ---------- STEP BOX (Ciclo del cambio) ---------- */
+  .step-box{display:flex;flex-direction:column;gap:12px;margin-top:28px;max-width:960px;}
+  .step-item{display:flex;align-items:flex-start;gap:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;transition:transform .3s;}
+  .step-item:hover{transform:translateX(4px);}
+  .step-num{
+    background:linear-gradient(135deg,var(--orange),var(--orange-light));
+    color:#fff;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;box-shadow:0 6px 16px rgba(217,125,61,.35);
+  }
+  .step-text{font-size:12.8px;color:#4A5364;line-height:1.55;padding-top:8px;}
+  .step-text strong{color:var(--navy);}
+  .slide.dark .step-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);}
+  .slide.dark .step-text{color:#DCE4EF;}
+  .slide.dark .step-text strong{color:#fff;}
+
+  /* ---------- INTERACTIVE DIAGNOSTIC ---------- */
+  .interactive-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 24px;margin:24px 0 0;text-align:center;}
+  .interactive-box p{margin:0 0 14px;color:var(--navy);font-size:13.5px;font-weight:600;}
+  .options{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .option-btn{
+    background:transparent;border:1px solid var(--line);color:var(--navy);
+    padding:10px 18px;border-radius:24px;font-size:12px;font-weight:600;
+    cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;line-height:1.4;text-align:left;max-width:100%;
+  }
+  .option-btn:hover{border-color:var(--orange);color:var(--orange);}
+  .option-btn.selected{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 6px 16px rgba(217,125,61,.3);}
+  .slide.dark .interactive-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);}
+  .slide.dark .interactive-box p{color:#fff;}
+  .slide.dark .option-btn{border-color:rgba(255,255,255,.25);color:#fff;}
+  .slide.dark .option-btn:hover{border-color:var(--orange-light);color:var(--orange-light);}
+  .slide.dark .option-btn.selected{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+  /* ---------- CLOSING ---------- */
+  .cta-buttons{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;transition:transform .2s;text-decoration:none;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn.orange{background:linear-gradient(135deg,var(--orange),var(--orange-light));color:#fff;box-shadow:0 8px 20px rgba(217,125,61,.35);}
+  .btn.ghost{border:1.5px solid rgba(255,255,255,.4);color:#fff;}
+  .btn.wa{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.3);}
+  .contact-row{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.2);padding-top:20px;}
+  .contact-row div{font-size:11.8px;color:#C9D3E0;}
+  .contact-row b{display:block;color:var(--orange-light);font-size:12.8px;margin-bottom:2px;}
+
+  /* ---------- NAVIGATION UI ---------- */
+  .nav-ui{position:fixed;bottom:18px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:18px;z-index:50;pointer-events:none;}
+  .nav-ui > *{pointer-events:auto;}
+  .nav-btn{
+    width:40px;height:40px;border-radius:50%;background:rgba(15,42,74,0.88);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;
+    transition:background .2s, transform .2s;backdrop-filter:blur(6px);
+  }
+  .nav-btn:hover{background:var(--orange);transform:scale(1.08);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+  .nav-btn:disabled:hover{background:rgba(15,42,74,0.88);transform:none;}
+  .dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;max-width:60vw;}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:background .2s, transform .2s;}
+  .dot.active{background:var(--orange);transform:scale(1.5);}
+  .counter{position:fixed;top:22px;right:6vw;z-index:50;font-size:11.5px;color:#fff;background:rgba(15,42,74,0.6);padding:5px 12px;border-radius:20px;letter-spacing:.5px;backdrop-filter:blur(6px);}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:60;transition:width .5s ease;box-shadow:0 0 10px rgba(217,125,61,.6);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1000px){
+    .slide{padding:4vh 5vw;}
+    .grid4{grid-template-columns:repeat(2,1fr);}
+    .grid3{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:760px){
+    .grid2,.two-col{grid-template-columns:1fr;}
+    .grid4,.grid3{grid-template-columns:1fr;}
+    .slide{padding:3.5vh 4vw;}
+    h1.big{font-size:clamp(20px,5vw,30px);}
+    .nav-btn{width:34px;height:34px;font-size:14px;}
+    .counter{font-size:10.5px;padding:4px 10px;}
+    .brandmark{font-size:11px;top:2.5vh;left:4vw;}
+  }
+</style>
 </head>
 <body>
-  <div class="slide-container" id="slideContainer">
-    <span class="slide-number" id="slideNumber">1 / 10</span>
-    <div id="slideContent"></div>
-  </div>
-  <div class="nav">
-    <button class="btn" id="prevBtn" onclick="prevSlide()">← Anterior</button>
-    <button class="btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
-  </div>
-  <div class="progress" id="progress">Diapositiva 1 de 10 · Reconfigura tu Mente · 90 minutos</div>
-  <script>
-    let currentSlide = 0;
-    const slides = [
-      `
-        <h1>Reconfigura tu Mente</h1>
-        <h2>Neuroplasticidad para el Cambio Personal</h2>
-        <p>Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
-        <p style="color: #cccccc; margin-top: 2rem;">Conferencia corporativa · 90 minutos de duración</p>
-        <p style="color: #999999;">Incluye: Marco teorico - Ejercicios practicos - Espacio de preguntas - Diploma + Ebook</p>
-      `,
-      `
-        <h2>El Mito del Cerebro Inmutable</h2>
-        <p>Durante siglos creímos que el cerebro adulto era una estructura fija e inmutable. Que las neuronas solo morían y no se regeneraban.</p>
-        <p>Hoy sabemos que eso es falso.</p>
-        <p>El neurocientífico Santiago Ramón y Cajal, padre de la neurociencia moderna, ya lo intuyó: "Todo hombre puede ser, si se lo propone, escultor de su propio cerebro."</p>
-        <p>Eric Kandel, Nobel de Medicina en 2000, demostró que incluso los circuitos más primitivos pueden modificarse con el aprendizaje.</p>
-      `,
-      `
-        <h2>¿Qué es la Neuroplasticidad?</h2>
-        <p>Es la capacidad del sistema nervioso de modificar su estructura y función a lo largo de toda la vida, en respuesta a la experiencia, el aprendizaje o una lesión.</p>
-        <p>Michael Merzenich, pionero en el estudio de la plasticidad cerebral, afirma que "el cerebro se reorganiza a sí mismo, momento a momento".</p>
-        <p>Existen dos tipos: la plasticidad estructural (nuevas conexiones, poda sináptica) y la plasticidad funcional (una región sana asume la función de una dañada).</p>
-      `,
-      `
-        <h2>Neuronas que se Activan Juntas, se Conectan</h2>
-        <p>El principio fundamental de la neuroplasticidad fue enunciado por Donald Hebb en 1949: "Neurons that fire together, wire together".</p>
-        <p>Cada vez que practicas una habilidad, un pensamiento o una emoción, fortaleces el circuito neuronal asociado. Cada vez que dejas de hacerlo, esa conexión se debilita y se "poda" para ahorrar energía.</p>
-        <p>El famoso estudio de los taxistas de Londres (Maguire et al., 2000) demostró que el hipocampo — la región de la memoria espacial — crecía físicamente cuantos más años de experiencia tenían.</p>
-      `,
-      `
-        <h2>La Plasticidad Autodirigida</h2>
-        <p>Jeffrey Schwartz demostró algo revolucionario con pacientes de Trastorno Obsesivo-Compulsivo: la atención consciente y sostenida puede cambiar físicamente los circuitos cerebrales.</p>
-        <p>No necesitas años de terapia. No necesitas un evento traumático. Necesitas enfocar tu atención deliberadamente en lo que quieres fortalecer.</p>
-        <div class="highlight-box">La atención es el cincel que esculpe tu cerebro.</div>
-      `,
-      `
-        <h2>El Experimento del Piano</h2>
-        <p>Alvaro Pascual-Leone realizó un experimento crucial en neuroplasticidad.</p>
-        <p>Dividió a voluntarios en dos grupos: uno practicaba piano físicamente y otro solo visualizaba practicar. Al medir sus cerebros, la misma región motora se había expandido en ambos grupos.</p>
-        <p>Visualizar una acción fortalece las mismas conexiones que ejecutarla físicamente.</p>
-        <div class="highlight-box">Tu cerebro no distingue entre una experiencia real y una vívidamente imaginada.</div>
-      `,
-      `
-        <h2>Momento de Reflexión</h2>
-        <p>Piensa en una creencia limitante que llevas años cargando. "No soy bueno con la gente", "Soy desordenado por naturaleza", "Ya estoy muy mayor para cambiar".</p>
-        <p>Esa creencia no es una verdad. Es un circuito que se fortaleció con la repetición.</p>
-        <div class="interactive-box">
-          <p style="margin-bottom: 1rem;">¿Estás listo/a para reconfigurar ese circuito?</p>
-          <div class="options" id="q6Options">
-            <button class="option-btn" onclick="selectOption(this, 'q6')">Sí, quiero empezar hoy</button>
-            <button class="option-btn" onclick="selectOption(this, 'q6')">Tengo dudas, pero quiero intentarlo</button>
-            <button class="option-btn" onclick="selectOption(this, 'q6')">Necesito más información primero</button>
-          </div>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<div class="counter"><span id="cur">1</span> / <span id="tot">10</span></div>
+
+<div id="deck">
+
+  <!-- 1. PORTADA -->
+  <section class="slide dark active">
+    <div class="ring" style="width:640px;height:640px;top:-320px;right:-220px;"></div>
+    <div class="ring" style="width:380px;height:380px;bottom:-220px;left:-140px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="cover-eyebrow">Conferencia · 90 Minutos</div>
+      <h1 class="big">Reconfigura tu Mente <em>— neuroplasticidad para el cambio personal</em></h1>
+      <p class="lead">Una experiencia vivencial para comprender que el cerebro adulto no es una estructura fija, sino un órgano que se reorganiza momento a momento. Incluye marco teórico, ejercicios prácticos, espacio de preguntas, diploma y ebook.</p>
+    </div>
+    <div class="cover-footer">
+      <div><b>Presentado por</b>Prof. Mtr. Álvaro Lyon Abreu · Lyon Asesor, f.p.</div>
+      <div><b>Contacto</b>info@lyonasesor.com · +58 414-8610464</div>
+      <div><b>Sitio web</b>lyonasesor.com</div>
+    </div>
+  </section>
+
+  <!-- 2. EL MITO DEL CEREBRO INMUTABLE -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Apertura</div>
+      <h1 class="big">El mito del <em>cerebro inmutable</em></h1>
+      <p class="lead">Durante siglos creímos que el cerebro adulto era una estructura fija e inmutable. Que las neuronas solo morían y no se regeneraban. Hoy sabemos que eso es falso.</p>
+      <p class="lead" style="margin-top:14px;">El neurocientífico Santiago Ramón y Cajal, padre de la neurociencia moderna, ya lo intuyó: "Todo hombre puede ser, si se lo propone, escultor de su propio cerebro." Eric Kandel, Nobel de Medicina en 2000, demostró que incluso los circuitos más primitivos pueden modificarse con el aprendizaje.</p>
+    </div>
+  </section>
+
+  <!-- 3. ¿QUÉ ES LA NEUROPLASTICIDAD? -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Definición</div>
+      <h1 class="big">¿Qué es la <em>neuroplasticidad</em>?</h1>
+      <p class="lead">Es la capacidad del sistema nervioso de modificar su estructura y función a lo largo de toda la vida, en respuesta a la experiencia, el aprendizaje o una lesión. Michael Merzenich, pionero en el estudio de la plasticidad cerebral, afirma que <em style="color:var(--navy);">"el cerebro se reorganiza a sí mismo, momento a momento"</em>.</p>
+      <div class="two-col">
+        <div class="col-box">
+          <h3>🧬 Plasticidad Estructural</h3>
+          <p>Nuevas conexiones sinápticas, ramificación dendrítica y poda sináptica. El cerebro esculpe físicamente su propia arquitectura.</p>
         </div>
-      `,
-      `
-        <h2>El Ciclo del Cambio Cerebral</h2>
-        <div class="step-box">
-          <div class="step-item"><span class="step-num">1</span><span class="step-text"><strong>Atención Plena (Darse Cuenta):</strong> Identificar la creencia o hábito limitante que opera en automático.</span></div>
-          <div class="step-item"><span class="step-num">2</span><span class="step-text"><strong>Intención (Elegir):</strong> Decidir conscientemente qué nuevo circuito quieres construir.</span></div>
-          <div class="step-item"><span class="step-num">3</span><span class="step-text"><strong>Acción (Hacer):</strong> Actuar, aunque sea con miedo. La acción es el combustible de la plasticidad.</span></div>
-          <div class="step-item"><span class="step-num">4</span><span class="step-text"><strong>Repetición (Consolidar):</strong> Repetir hasta que el nuevo circuito se vuelva automático.</span></div>
+        <div class="col-box">
+          <h3>⚙️ Plasticidad Funcional</h3>
+          <p>Una región sana asume la función de una dañada. Es la base de la rehabilitación tras un ACV o una lesión cerebral.</p>
         </div>
-      `,
-      `
-        <h2>Tres Herramientas para Reconfigurarte</h2>
-        <ul>
-          <li><strong>Visualización Encarnada:</strong> No solo imagines el resultado. Imagina el proceso. Siente en tu cuerpo cómo sería actuar desde tu nueva identidad.</li>
-          <li><strong>Micro-Acciones (Método Kaizen):</strong> No intentes cambiar todo hoy. Cada día, realiza una pequeña acción que desafíe la vieja creencia.</li>
-          <li><strong>Celebración del Error:</strong> Cada vez que te equivocas intentando algo nuevo, tu cerebro libera acetilcolina, que promueve la plasticidad. El error es literalmente el fertilizante del cerebro.</li>
-        </ul>
-      `,
-      `
-        <h2>El Escultor de tu Propio Cerebro</h2>
-        <p>No estás condenado a ser como siempre has sido.</p>
-        <p>Tu personalidad, tus hábitos, tus reacciones emocionales... todo eso son circuitos que se construyeron en algún momento. Y todo circuito que se construyó puede reconfigurarse.</p>
-        <p>La neuroplasticidad es la prueba científica de que el cambio es posible. No es magia. Es biología.</p>
-        <div class="highlight-box">"Todo hombre puede ser, si se lo propone, escultor de su propio cerebro." — Santiago Ramón y Cajal</div>
-        <p style="text-align: center; margin-top: 2rem; color: #cdaa7b;">Prof. Mtr. Alvaro Lyon · Lyon Asesor, f.p.</p>
-      `
-    ];
-    function renderSlide() {
-      document.getElementById('slideContent').innerHTML = slides[currentSlide];
-      document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${slides.length}`;
-      document.getElementById('progress').textContent = `Diapositiva ${currentSlide + 1} de ${slides.length} · Reconfigura tu Mente · 90 minutos`;
-      document.getElementById('prevBtn').disabled = (currentSlide === 0);
-      document.getElementById('nextBtn').textContent = (currentSlide === slides.length - 1) ? 'Finalizar' : 'Siguiente →';
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. NEURONAS QUE SE ACTIVAN JUNTAS -->
+  <section class="slide dark">
+    <div class="ring" style="width:420px;height:420px;top:-180px;left:-140px;"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Principio de Hebb · 1949</div>
+      <h1 class="big">Neuronas que se activan juntas, <em>se conectan</em></h1>
+      <p class="lead">El principio fundamental de la neuroplasticidad fue enunciado por Donald Hebb en 1949: <em style="color:var(--orange-light);">"Neurons that fire together, wire together"</em>.</p>
+      <p class="lead" style="margin-top:14px;">Cada vez que practicas una habilidad, un pensamiento o una emoción, fortaleces el circuito neuronal asociado. Cada vez que dejas de hacerlo, esa conexión se debilita y se "poda" para ahorrar energía.</p>
+      <div class="highlight-box">El famoso estudio de los taxistas de Londres (Maguire et al., 2000) demostró que el hipocampo —la región de la memoria espacial— crecía físicamente cuantos más años de experiencia tenían.</div>
+    </div>
+  </section>
+
+  <!-- 5. PLASTICIDAD AUTODIRIGIDA -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Jeffrey Schwartz · TOC</div>
+      <h1 class="big">La plasticidad <em>autodirigida</em></h1>
+      <p class="lead">Jeffrey Schwartz demostró algo revolucionario con pacientes de Trastorno Obsesivo-Compulsivo: la atención consciente y sostenida puede cambiar físicamente los circuitos cerebrales.</p>
+      <p class="lead" style="margin-top:14px;">No necesitas años de terapia. No necesitas un evento traumático. Necesitas enfocar tu atención deliberadamente en lo que quieres fortalecer.</p>
+      <div class="highlight-box">La atención es el cincel que esculpe tu cerebro.</div>
+    </div>
+  </section>
+
+  <!-- 6. EXPERIMENTO DEL PIANO -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Alvaro Pascual-Leone</div>
+      <h1 class="big">El experimento <em>del piano</em></h1>
+      <p class="lead">Alvaro Pascual-Leone realizó un experimento crucial en neuroplasticidad. Dividió a voluntarios en dos grupos: uno practicaba piano físicamente y otro solo visualizaba practicar. Al medir sus cerebros, la misma región motora se había expandido en ambos grupos.</p>
+      <div class="highlight-box">Visualizar una acción fortalece las mismas conexiones que ejecutarla físicamente. Tu cerebro no distingue entre una experiencia real y una vívidamente imaginada.</div>
+    </div>
+  </section>
+
+  <!-- 7. DIAGNÓSTICO INTERACTIVO -->
+  <section class="slide dark">
+    <div class="ring" style="width:380px;height:380px;bottom:-200px;right:-120px;"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Momento de reflexión</div>
+      <h1 class="big">Piensa en una <em>creencia limitante</em></h1>
+      <p class="lead">"No soy bueno con la gente", "Soy desordenado por naturaleza", "Ya estoy muy mayor para cambiar". Esa creencia no es una verdad. Es un circuito que se fortaleció con la repetición.</p>
+      <div class="interactive-box">
+        <p>¿Estás listo/a para reconfigurar ese circuito?</p>
+        <div class="options" id="q6Options">
+          <button class="option-btn" onclick="selectOption(this, 'q6')">Sí, quiero empezar hoy</button>
+          <button class="option-btn" onclick="selectOption(this, 'q6')">Tengo dudas, pero quiero intentarlo</button>
+          <button class="option-btn" onclick="selectOption(this, 'q6')">Necesito más información primero</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CICLO DEL CAMBIO CEREBRAL -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Modelo práctico</div>
+      <h1 class="big">El ciclo del <em>cambio cerebral</em></h1>
+      <div class="step-box">
+        <div class="step-item">
+          <span class="step-num">1</span>
+          <span class="step-text"><strong>Atención Plena (Darse Cuenta):</strong> Identificar la creencia o hábito limitante que opera en automático.</span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">2</span>
+          <span class="step-text"><strong>Intención (Elegir):</strong> Decidir conscientemente qué nuevo circuito quieres construir.</span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">3</span>
+          <span class="step-text"><strong>Acción (Hacer):</strong> Actuar, aunque sea con miedo. La acción es el combustible de la plasticidad.</span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">4</span>
+          <span class="step-text"><strong>Repetición (Consolidar):</strong> Repetir hasta que el nuevo circuito se vuelva automático.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. TRES HERRAMIENTAS -->
+  <section class="slide">
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Aplicación práctica</div>
+      <h1 class="big">Tres herramientas <em>para reconfigurarte</em></h1>
+      <div class="grid3">
+        <div class="ben">
+          <div class="ico">🎬</div>
+          <b>Visualización Encarnada</b>
+          <p>No solo imagines el resultado. Imagina el proceso. Siente en tu cuerpo cómo sería actuar desde tu nueva identidad.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">🌱</div>
+          <b>Micro-Acciones (Método Kaizen)</b>
+          <p>No intentes cambiar todo hoy. Cada día, realiza una pequeña acción que desafíe la vieja creencia. El cambio sostenible es acumulativo.</p>
+        </div>
+        <div class="ben">
+          <div class="ico">🎉</div>
+          <b>Celebración del Error</b>
+          <p>Cada vez que te equivocas intentando algo nuevo, tu cerebro libera acetilcolina, que promueve la plasticidad. El error es literalmente el fertilizante del cerebro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CIERRE -->
+  <section class="slide dark">
+    <div class="ring" style="width:520px;height:520px;top:-260px;right:-160px;"></div>
+    <div class="ring" style="width:300px;height:300px;bottom:-180px;left:-100px;border-color:rgba(255,255,255,.12);"></div>
+    <div class="brandmark">LYON<span>ASESOR</span></div>
+    <div class="slide-inner">
+      <div class="kicker">Cierre</div>
+      <h1 class="big">El escultor de <em>tu propio cerebro</em></h1>
+      <p class="lead">No estás condenado a ser como siempre has sido. Tu personalidad, tus hábitos, tus reacciones emocionales... todo eso son circuitos que se construyeron en algún momento. Y todo circuito que se construyó puede reconfigurarse.</p>
+      <p class="lead" style="margin-top:14px;">La neuroplasticidad es la prueba científica de que el cambio es posible. No es magia. Es biología.</p>
+      <div class="highlight-box">"Todo hombre puede ser, si se lo propone, escultor de su propio cerebro." — Santiago Ramón y Cajal</div>
+      <p class="lead" style="margin-top:18px;font-size:12.5px;color:#C9D3E0;font-style:italic;text-align:center;">"Lo que transforma equipos, empieza con una persona."</p>
+      <div class="cta-buttons" style="justify-content:center;">
+        <a href="https://wa.me/584148610464" target="_blank" rel="noopener" class="btn wa">💬 Solicitar esta conferencia</a>
+        <a href="mailto:info@lyonasesor.com" class="btn orange">📧 Escribir por correo</a>
+        <a href="https://lyonasesor.com" target="_blank" rel="noopener" class="btn ghost">Ver más en lyonasesor.com →</a>
+      </div>
+      <div class="contact-row" style="justify-content:center;text-align:center;">
+        <div><b>Presentado por</b>Prof. Mtr. Álvaro Lyon Abreu · Lyon Asesor, f.p.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-ui">
+  <button class="nav-btn" id="prevBtn" aria-label="Anterior">&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Siguiente">&#8594;</button>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let idx = 0;
+
+  document.getElementById('tot').textContent = total;
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = document.querySelectorAll('.dot');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressBar = document.getElementById('progressBar');
+
+  function render(){
+    deck.style.transform = `translateX(-${idx * 100}vw)`;
+    document.getElementById('cur').textContent = idx + 1;
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    progressBar.style.width = ((idx + 1) / total * 100) + '%';
+  }
+  function goTo(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  prevBtn.addEventListener('click', ()=> goTo(idx - 1));
+  nextBtn.addEventListener('click', ()=> goTo(idx + 1));
+
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); goTo(idx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(idx - 1); }
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End') goTo(total - 1);
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
     }
-    function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
-    function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
-    function selectOption(btn, questionId) {
-      const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
-      options.forEach(opt => opt.classList.remove('selected'));
-      btn.classList.add('selected');
+  });
+
+  let touchStartX = null;
+  let touchStartY = null;
+  document.addEventListener('touchstart', (e)=>{
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+  document.addEventListener('touchend', (e)=>{
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      dx < 0 ? goTo(idx + 1) : goTo(idx - 1);
     }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-    });
-    renderSlide();
-  </script>
+    touchStartX = null;
+    touchStartY = null;
+  }, {passive:true});
+
+  function selectOption(btn, questionId){
+    const options = document.querySelectorAll(`#${questionId}Options .option-btn`);
+    options.forEach(opt => opt.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  render();
+</script>
+
 </body>
 </html>
