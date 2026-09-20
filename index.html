@@ -33,6 +33,22 @@
     
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
@@ -44,20 +60,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
 
     <script type="application/ld+json">
         {
@@ -950,7 +952,7 @@
         });
 
         // =============================================
-        // CHAT DE VENTAS — ACTUALIZADO
+        // CHAT DE VENTAS
         // =============================================
         (function() {
             if (document.readyState === 'loading') {
@@ -974,12 +976,11 @@
 
                 let chatOpen = false;
 
-                // 🔧 ENLACES PAYPAL ACTUALIZADOS — SEPTIEMBRE 2026
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
-                const PAYPAL_CONSULTA_1 = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG'; // $70
-                const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN'; // $130
-                const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84'; // $180
-                const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ'; // $290
+                const PAYPAL_CONSULTA_1 = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
+                const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
+                const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
                 const PAYPAL_CONFERENCIA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
                 const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
@@ -1049,13 +1050,13 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                     } else if (producto === 'consulta') {
                         nombreProducto = '🧘 Proceso Terapéutico';
                         precio = 'Pack 3 sesiones: $180 (recomendado)';
-                        descripcion = 'Acompañamiento profesional por videollamada. Reserva sesión suelta o pack con descuento progresivo. El Pack 3 es el más elegido.';
+                        descripcion = 'Acompañamiento profesional por videollamada. Reserva sesión suelta o pack con descuento progresivo.';
                         botonesPayPal = `
                             <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
                                 <a href="${PAYPAL_CONSULTA_1}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Sesión única — $70</a>
-                                <a href="${PAYPAL_CONSULTA_2}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 2 sesiones — $130 ($65/sesión)</a>
-                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#e86b18;color:#fff;border-radius:30px;text-decoration:none;font-weight:700;text-align:center;">⭐ Pack 3 sesiones — $180 ($60/sesión)</a>
-                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 5 sesiones — $290 ($58/sesión)</a>
+                                <a href="${PAYPAL_CONSULTA_2}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 2 sesiones — $130</a>
+                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#e86b18;color:#fff;border-radius:30px;text-decoration:none;font-weight:700;text-align:center;">⭐ Pack 3 sesiones — $180</a>
+                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 Pack 5 sesiones — $290</a>
                             </div>
                         `;
                     } else if (producto === 'conferencia') {
