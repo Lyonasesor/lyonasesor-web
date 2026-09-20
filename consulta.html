@@ -953,7 +953,7 @@
             <p>Completa tus datos y serás redirigido a PayPal para realizar el pago. Una vez confirmado, recibirás las instrucciones para agendar tu sesión en la página de agradecimiento.</p>
 
             <div class="redirect-alert">
-                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, serás llevado a una página donde podrás contactar directamente con Álvaro por WhatsApp para coordinar tu primera sesión.</p>
+                <p>📌 <strong>Importante:</strong> Al completar el formulario, serás redirigido a PayPal para realizar el pago. Una vez confirmado, serás llevado a una página donde podrás ver el progreso de activación de tu consultorio.</p>
             </div>
 
             <form id="consultaForm" class="form-container">
@@ -1097,6 +1097,7 @@
                 refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
+            // Guardar lead en Firebase
             try {
                 if (typeof guardarLead === 'function') {
                     await guardarLead('consultas', datos);
@@ -1106,9 +1107,7 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
-            // =============================================
-            // NUEVA: Crear solicitud de consultorio para aprobación manual
-            // =============================================
+            // Crear solicitud de consultorio para aprobación manual
             try {
                 await database.ref('solicitudes_consultorio').push({
                     nombre: datos.nombre,
@@ -1130,8 +1129,22 @@
             } catch (e) {
                 console.error('❌ Error creando solicitud consultorio:', e);
             }
-            // =============================================
 
+            // =============================================
+            // GUARDAR EMAIL EN LOCALSTORAGE
+            // Para que gracias.html sepa qué solicitud buscar
+            // cuando el usuario regrese desde PayPal
+            // =============================================
+            try {
+                localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
+                localStorage.setItem('lyon_pending_producto', 'consulta');
+                localStorage.setItem('lyon_pending_timestamp', Date.now().toString());
+                console.log('✅ Email guardado en localStorage para auto-refresh');
+            } catch (err) {
+                console.warn('⚠️ No se pudo guardar en localStorage:', err);
+            }
+
+            // Eventos de analítica
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'consulta' });
             }
@@ -1139,6 +1152,7 @@
                 fbq('track', 'Lead');
             }
 
+            // Redirigir según método de pago
             if (metodo === 'paypal') {
                 let paypalLink;
                 if (paquete === '70') {
@@ -1152,6 +1166,7 @@
                 }
                 window.location.href = paypalLink;
             } else {
+                // Pago Móvil: abrir WhatsApp y redirigir a gracias.html
                 const mensaje = encodeURIComponent(
                     `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
                     `Nombre: ${nombre}\n` +
@@ -1162,7 +1177,11 @@
                     `Motivo: ${motivo || 'No especificado'}`
                 );
                 window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                alert('📱 Por favor, envía el comprobante por WhatsApp para confirmar tu reserva.');
+
+                // Redirigir a gracias.html después de 2 segundos
+                setTimeout(() => {
+                    window.location.href = 'gracias.html?producto=consulta';
+                }, 2000);
             }
         });
 
