@@ -37,6 +37,32 @@
     <!-- FAVICON -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página de membresía (interés en el servicio)
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Membresía Lyon Asesor',
+                content_category: 'membresia'
+            });
+        }
+    </script>
+    
     <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
@@ -70,21 +96,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <!-- Meta Pixel (reemplaza con tu ID) -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1019,6 +1030,19 @@
             pagoMovilInfo.style.display = this.value === 'p movil' ? 'block' : 'none';
         });
 
+        // =============================================
+        // HELPER: extraer valor numérico de un string de precio
+        // =============================================
+        function extraerMontoNumerico(precioStr) {
+            // "24.99/mes" → 24.99
+            // "$149.94 (pago único)" → 149.94
+            // "$499/año" → 499
+            if (!precioStr) return 0;
+            const match = String(precioStr).match(/(\d+(?:[.,]\d+)?)/);
+            if (!match) return 0;
+            return parseFloat(match[1].replace(',', '.')) || 0;
+        }
+
         // ===== FORMULARIO CON ENVÍO Y REDIRECCIÓN =====
         document.getElementById('membresiaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1039,11 +1063,15 @@
                 return;
             }
 
+            // Extraer monto numérico para Meta Pixel
+            const montoNumerico = extraerMontoNumerico(precio);
+
             // Datos para Firebase — la cuenta se activa manualmente desde /admin
             const datos = {
                 plan: plan,
                 planLabel: planLabel,
                 precio: precio,
+                monto: montoNumerico,
                 contacto: contacto,
                 email: email,
                 telefono: telefono,
@@ -1064,11 +1092,7 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
-            // =============================================
-            // GUARDAR EMAIL EN LOCALSTORAGE
-            // Para que gracias.html sepa qué solicitud buscar
-            // cuando el usuario regrese desde PayPal o Pago Móvil
-            // =============================================
+            // Guardar email en localStorage para el auto-refresh de gracias-membresia.html
             try {
                 localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
                 localStorage.setItem('lyon_pending_producto', 'membresia');
@@ -1078,19 +1102,34 @@
                 console.warn('⚠️ No se pudo guardar en localStorage:', err);
             }
 
-            // Eventos de analítica
+            // =============================================
+            // META PIXEL: eventos de conversión
+            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'membresia', 'plan': plan });
             }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
+            if (typeof fbq === 'function') {
+                // Inicio del checkout: el usuario está a punto de ir a pagar
+                fbq('track', 'InitiateCheckout', {
+                    value: montoNumerico,
+                    currency: 'USD',
+                    content_name: 'Membresía: ' + planLabel,
+                    content_category: 'membresia'
+                });
+                // Lead: usuario completó el formulario
+                fbq('track', 'Lead', {
+                    value: montoNumerico,
+                    currency: 'USD',
+                    content_name: 'Membresía: ' + planLabel,
+                    content_category: 'membresia'
+                });
             }
 
             // Redirigir según método de pago
             if (metodo === 'paypal') {
                 window.location.href = paypalLink;
             } else {
-                // Pago Móvil: abrir WhatsApp y luego redirigir a gracias.html?producto=membresia
+                // Pago Móvil: abrir WhatsApp
                 const mensaje = encodeURIComponent(
                     `Hola Álvaro, quiero inscribirme a la Membresía Lyon Asesor con Pago Móvil.\n` +
                     `Plan: ${planLabel}\n` +
@@ -1102,9 +1141,9 @@
                 );
                 window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
 
-                // Redirigir a gracias.html después de 2 segundos
+                // Redirigir a gracias-membresia.html después de 2 segundos
                 setTimeout(() => {
-                    window.location.href = 'gracias.html?producto=membresia';
+                    window.location.href = 'gracias-membresia.html';
                 }, 2000);
             }
         });
@@ -1199,6 +1238,7 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
 
                     const botones = `
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+                            <button class="product-btn" data-role="accion" data-action="membresia">🎓 Membresía</button>
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
                             <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
                             <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button>
@@ -1279,6 +1319,8 @@ Haz clic en el botón de pago para completar tu compra:`;
                             startChat();
                         } else if (accion === 'diagnostico') {
                             window.location.href = 'diagnostico.html';
+                        } else if (accion === 'membresia') {
+                            window.location.href = 'membresia.html';
                         }
                     }
                 });
