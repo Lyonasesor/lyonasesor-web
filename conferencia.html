@@ -36,6 +36,32 @@
     <!-- FAVICON -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página de conferencias (interés en el servicio)
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Conferencias Lyon Asesor',
+                content_category: 'conferencia'
+            });
+        }
+    </script>
+    
     <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
@@ -79,21 +105,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <!-- Meta Pixel (reemplaza con tu ID) -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1063,12 +1074,36 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
-            // Eventos de analítica
+            // Guardar email en localStorage para el auto-refresh de gracias.html
+            try {
+                localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
+                localStorage.setItem('lyon_pending_producto', 'conferencia');
+                localStorage.setItem('lyon_pending_timestamp', Date.now().toString());
+            } catch (err) {
+                console.warn('⚠️ No se pudo guardar en localStorage:', err);
+            }
+
+            // =============================================
+            // META PIXEL: eventos de conversión
+            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'conferencia', 'modalidad': modalidad });
             }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
+            if (typeof fbq === 'function') {
+                // Inicio del checkout: el usuario está a punto de ir a pagar
+                fbq('track', 'InitiateCheckout', {
+                    value: monto,
+                    currency: 'USD',
+                    content_name: 'Conferencia: ' + tema,
+                    content_category: 'conferencia_' + modalidad
+                });
+                // Lead: usuario completó el formulario
+                fbq('track', 'Lead', {
+                    value: monto,
+                    currency: 'USD',
+                    content_name: 'Conferencia: ' + tema,
+                    content_category: 'conferencia_' + modalidad
+                });
             }
 
             // Redirigir según método de pago y modalidad
