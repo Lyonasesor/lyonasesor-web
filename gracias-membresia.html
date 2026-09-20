@@ -4,41 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     
-    <title>¡Gracias por inscribirte! · Membresía Lyon Asesor</title>
-    <meta name="description" content="¡Gracias por tu compra en Lyon Asesor! Confirma tus datos y recibe acceso inmediato a tus recursos de desarrollo personal." />
-    <meta name="keywords" content="gracias por tu compra, confirmación de pago, desarrollo personal, bienestar emocional, Lyon Asesor" />
+    <title>Activando tu membresía | Lyon Asesor</title>
+    <meta name="description" content="Estamos activando tu Membresía Lyon Asesor. Recibirás tu código de acceso personal en cuanto se confirme el pago." />
     <meta name="author" content="Prof. Mtr. Álvaro Lyon" />
-    <meta name="robots" content="noindex, follow" />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href="https://lyonasesor.com/gracias-membresia.html" />
     
-    <!-- OPEN GRAPH OPTIMIZADO -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/gracias-membresia.html" />
-    <meta property="og:title" content="¡Gracias por inscribirte! · Membresía Lyon Asesor" />
-    <meta property="og:description" content="Tu inscripción a la Membresía Lyon Asesor fue recibida. Tu cuenta se activará manualmente." />
+    <meta property="og:title" content="Activando tu membresía | Lyon Asesor" />
+    <meta property="og:description" content="Estamos activando tu Membresía Lyon Asesor." />
     <meta property="og:image" content="https://lyonasesor.com/social-preview.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_ES" />
     
-    <!-- TWITTER CARDS -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="¡Gracias por inscribirte! · Membresía Lyon Asesor" />
-    <meta name="twitter:description" content="Tu inscripción a la Membresía Lyon Asesor fue recibida." />
-    <meta name="twitter:image" content="https://lyonasesor.com/social-preview.jpg" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
-    <!-- SCHEMA.ORG -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Order",
-            "name": "Gracias por tu compra en Lyon Asesor",
-            "url": "https://lyonasesor.com/gracias-membresia.html",
-            "description": "Página de confirmación de compra para productos de desarrollo personal."
-        }
-    </script>
-    
-    <!-- Google Analytics 4 — ID REAL -->
+    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -52,7 +35,7 @@
         });
     </script>
     
-    <!-- Meta Pixel — Placeholder -->
+    <!-- Meta Pixel -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -69,6 +52,11 @@
         });
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=Purchase&noscript=1" /></noscript>
+    
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -117,7 +105,6 @@
             z-index: 0;
         }
 
-        /* ===== NAV ===== */
         .nav {
             position: fixed;
             top: 0;
@@ -160,7 +147,6 @@
             height: 32px;
             object-fit: contain;
             border-radius: 50%;
-            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -231,7 +217,6 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== MAIN ===== */
         .page-wrapper {
             max-width: 700px;
             width: 100%;
@@ -283,42 +268,6 @@
             margin: 0;
         }
 
-        .btn-download {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: var(--shadow-orange);
-            transition: var(--transition);
-            font-size: 1rem;
-            margin-top: 1rem;
-        }
-        .btn-download:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(232,107,24,0.5);
-        }
-
-        .btn-whatsapp-success {
-            display: inline-block;
-            background: #25D366;
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: 0 4px 20px rgba(37,211,102,0.3);
-            transition: var(--transition);
-            font-size: 1rem;
-            margin-top: 1rem;
-        }
-        .btn-whatsapp-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(37,211,102,0.5);
-        }
-
         .back-link {
             display: inline-block;
             margin-top: 2rem;
@@ -332,72 +281,132 @@
             text-decoration: underline;
         }
 
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 450px;
-            margin: 1.5rem auto 0;
-        }
-        .form-container input {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid #e2e8f0;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition-fast);
-        }
-        .form-container input:focus {
-            border-color: var(--naranja);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.12);
-        }
-        .form-container .btn-primary {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: var(--shadow-orange);
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-        }
-        .form-container .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(232,107,24,0.5);
-        }
-
-        .form-section-title {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin: 1.5rem 0 0.5rem;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .success-message {
-            background: #e8f5e9;
-            border-left: 4px solid #2e7d32;
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
+        /* ==== CAJA DE ESPERA CON AUTO-REFRESH ==== */
+        .waiting-box {
+            background: #fef8f3;
+            border-left: 4px solid var(--naranja);
+            padding: 24px 26px;
+            border-radius: 12px;
             margin: 1.5rem 0;
             text-align: left;
         }
-        .success-message p {
-            color: #1b5e20;
+        .waiting-box h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--navy);
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+        }
+        .waiting-box p {
+            font-size: 0.92rem;
+            color: #4A5364;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+        .waiting-box .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+        .waiting-box .steps-list li {
+            padding: 6px 0 6px 30px;
+            position: relative;
+            font-size: 0.92rem;
+            color: #4A5364;
+            line-height: 1.6;
+        }
+        .waiting-box .steps-list li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--naranja);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .waiting-box .status-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #fff;
+            border-radius: 10px;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #7c2d12;
+            font-weight: 500;
+        }
+        .waiting-box .status-line .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(232,107,24,0.25);
+            border-top-color: var(--naranja);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .waiting-box.approved {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+        .waiting-box.approved .steps-list,
+        .waiting-box.approved .status-line {
+            display: none;
+        }
+        .waiting-box .code-display {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .waiting-box.approved .code-display {
+            display: block;
+        }
+        .waiting-box .code-display .code-label {
+            font-size: 0.82rem;
+            color: #166534;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .waiting-box .code-display .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--naranja);
+            background: #fff;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 2px dashed var(--naranja);
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .waiting-box .code-display .btn-portal {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
             font-size: 0.95rem;
-            margin: 0;
+        }
+        .waiting-box .code-display .btn-portal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(232,107,24,0.5);
         }
 
-        /* ===== FOOTER CON YOUTUBE ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -501,201 +510,6 @@
             opacity: 0.7;
         }
 
-        /* ===== CHAT ===== */
-        .chat-float {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 999;
-            width: 60px;
-            height: 60px;
-            background: var(--naranja);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-orange);
-            transition: var(--transition);
-            cursor: pointer;
-            border: none;
-            color: #fff;
-            animation: floatPulseChat 3s infinite;
-        }
-        .chat-float:hover {
-            transform: scale(1.12);
-            box-shadow: 0 6px 30px rgba(232,107,24,0.6);
-        }
-        .chat-float svg {
-            width: 30px;
-            height: 30px;
-            fill: white;
-        }
-        @keyframes floatPulseChat {
-            0%, 100% { box-shadow: 0 4px 20px rgba(232,107,24,0.4); }
-            50% { box-shadow: 0 4px 35px rgba(232,107,24,0.65); }
-        }
-        .chat-window {
-            position: fixed;
-            bottom: 100px;
-            right: 28px;
-            width: 380px;
-            max-width: calc(100vw - 56px);
-            max-height: 80vh;
-            background: #fff;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            z-index: 998;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid rgba(26,35,48,0.08);
-            animation: slideUp 0.3s ease;
-        }
-        .chat-window.open { display: flex; }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .chat-header {
-            background: var(--navy);
-            color: #fff;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        .chat-header h3 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .chat-header h3 span { color: var(--naranja); }
-        .chat-header .close-chat {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.7);
-            font-size: 1.5rem;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0 4px;
-        }
-        .chat-header .close-chat:hover { color: #fff; }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            min-height: 200px;
-            max-height: 400px;
-        }
-        .chat-message {
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 90%;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            animation: messageIn 0.3s ease;
-        }
-        .chat-message.bot {
-            background: #fff;
-            border: 1px solid rgba(26,35,48,0.06);
-            align-self: flex-start;
-            box-shadow: var(--shadow-sm);
-        }
-        .chat-message.user {
-            background: var(--naranja);
-            color: #fff;
-            align-self: flex-end;
-        }
-        .chat-message .product-btn {
-            display: inline-block;
-            margin: 6px 4px 0 0;
-            padding: 8px 16px;
-            background: transparent;
-            border: 1px solid var(--naranja);
-            border-radius: 30px;
-            color: var(--naranja);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: var(--transition-fast);
-        }
-        .chat-message .product-btn:hover {
-            background: var(--naranja);
-            color: #fff;
-        }
-        .chat-message .product-btn.humano {
-            background: #25D366;
-            color: #fff;
-            border-color: #25D366;
-        }
-        .chat-message .product-btn.humano:hover {
-            background: #128C7E;
-            border-color: #128C7E;
-        }
-        .chat-message .paypal-btn {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 10px 20px;
-            background: #0070ba;
-            color: #fff;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition-fast);
-        }
-        .chat-message .paypal-btn:hover { background: #005ea6; }
-        .chat-input-area {
-            display: flex;
-            padding: 12px 16px;
-            border-top: 1px solid rgba(26,35,48,0.06);
-            background: #fff;
-            flex-shrink: 0;
-            gap: 8px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: var(--transition-fast);
-        }
-        .chat-input-area input:focus {
-            border-color: var(--naranja);
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
-        }
-        .chat-input-area input:disabled {
-            background: #f1f5f9;
-            cursor: not-allowed;
-        }
-        .chat-input-area button {
-            padding: 10px 20px;
-            background: var(--naranja);
-            color: #fff;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition-fast);
-        }
-        .chat-input-area button:hover:not(:disabled) { background: var(--naranja-oscuro); }
-        .chat-input-area button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        @keyframes messageIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @media (max-width: 768px) {
             .page-wrapper { padding: 2rem 1.5rem; margin: 80px auto 40px; }
             .nav-links { display: none; }
@@ -717,41 +531,21 @@
             .nav-links.active a { font-size: 1.3rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-social { align-items: center; }
-            .chat-window {
-                bottom: 80px;
-                right: 12px;
-                width: calc(100vw - 24px);
-                max-height: 70vh;
-            }
         }
         @media (max-width: 480px) {
             .page-wrapper { padding: 1.5rem 1rem; margin: 70px auto 30px; }
-            .btn-download, .btn-whatsapp-success, .form-container .btn-primary {
-                width: 100%;
-                text-align: center;
-            }
-            .chat-window {
-                bottom: 70px;
-                right: 8px;
-                width: calc(100vw - 16px);
-                max-height: 65vh;
-            }
+            .waiting-box { padding: 18px 16px; }
+            .waiting-box .code-display .code-value { font-size: 1.2rem; padding: 10px 14px; letter-spacing: 2px; }
             .footer-youtube { font-size: 0.8rem; padding: 8px 16px; }
-        }
-        @media print {
-            .nav, .footer, .chat-float, .chat-window { display: none; }
-            body { background: white; }
-            .page-wrapper { box-shadow: none; border: 1px solid #ddd; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Psicoterapia y Desarrollo Personal" /></div>
+                <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor" /></div>
                 <div class="nav-logo-text">
                     <div class="main">LYON<span>ASESOR</span></div>
                 </div>
@@ -769,38 +563,49 @@
         </div>
     </nav>
 
-    <!-- ===== MAIN ===== -->
     <div class="page-wrapper" id="app">
-        <div class="icon">🎓</div>
-        <h1>¡Gracias por <span>inscribirte</span>!</h1>
-        <div class="sub" id="subMensaje">Hemos recibido tu inscripción a la Membresía Lyon Asesor</div>
+        <div class="icon">🎉</div>
+        <h1>¡Gracias por tu <span>compra</span>!</h1>
+        <div class="sub">Tu pago ha sido procesado exitosamente</div>
 
-        <div class="producto-box" id="productoInfo">
+        <div class="producto-box">
             <h3>🎓 Membresía Lyon Asesor</h3>
-            <p>Programa Lyon de NeuroLiderazgo y Transformación Humana — 12 clases, 300 horas académicas.</p>
+            <p>Programa Lyon de NeuroLiderazgo y Transformación Humana. 12 clases · 300 horas académicas.</p>
         </div>
 
-        <div id="contenidoDinamico">
-            <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0; line-height:1.7;">
-                Tu cuenta se activa <strong>manualmente</strong> una vez confirmado el pago. Recibirás tu usuario y contraseña
-                por correo electrónico en menos de 24 horas. Revisa tu bandeja de entrada (y el spam, por si acaso).
-            </p>
-            <a href="miembro-dashboard.html" class="btn-primary">🔑 Iniciar sesión en mi Dashboard</a>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.8rem;">
-                ¿No has recibido tus credenciales? Escríbenos a <a href="mailto:info@lyonasesor.com">info@lyonasesor.com</a> o por WhatsApp.
-            </p>
+        <div class="waiting-box" id="waitingBox">
+            <h3>⏳ Estamos activando tu membresía</h3>
+            <p>Tu inscripción se activa tras confirmar el pago. En cuanto nuestro equipo la apruebe, <strong>tu código de acceso aparecerá aquí automáticamente</strong> sin que tengas que hacer nada.</p>
+            <ul class="steps-list">
+                <li data-step="1">Verificamos tu pago (PayPal / Pago Móvil)</li>
+                <li data-step="2">Activamos tu membresía</li>
+                <li data-step="3">Recibes tu código personal de acceso</li>
+            </ul>
+            <div class="status-line">
+                <span class="spinner"></span>
+                <span id="statusText">Esperando activación de tu membresía...</span>
+            </div>
+            <div class="code-display" id="codeDisplay">
+                <div class="code-label">✅ Membresía activada. Tu código de acceso es:</div>
+                <div class="code-value" id="codeValue">LYON-XXXXXX</div>
+                <a href="membresia.html" class="btn-portal" id="btnPortal">🎓 Entrar a mi membresía</a>
+            </div>
         </div>
+
+        <p style="font-size:0.85rem; color:var(--text-muted); font-style:italic; text-align:center; margin-top:12px;">
+            💬 Si tienes dudas, escríbenos por
+            <a href="https://wa.me/584148610464" target="_blank" style="color:var(--naranja); font-weight:600; text-decoration:none;">WhatsApp</a>
+        </p>
 
         <a href="index.html" class="back-link">← Volver al inicio</a>
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3>LYON<span>ASESOR</span></h3>
-                    <p>Psicoterapia online · Desarrollo Personal · Educación Emocional para hispanohablantes en todo el mundo.</p>
+                    <p>Educación Emocional · Desarrollo Humano · Transformación para hispanohablantes en todo el mundo.</p>
                     <div class="footer-social">
                         <a href="https://www.youtube.com/@LyonAsesor" target="_blank" class="footer-youtube" aria-label="YouTube">
                             <svg viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -836,24 +641,13 @@
         </div>
     </footer>
 
-    <!-- ===== CHAT ===== -->
-    <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
-    </button>
-
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-header">
-            <h3>LYON <span>ASESOR</span></h3>
-            <button class="close-chat" id="chatClose">✕</button>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." disabled>
-            <button id="chatSend" disabled>Enviar</button>
-        </div>
-    </div>
-
     <script>
+        /* =========================================================
+           GRACIAS-MEMBRESIA.HTML — Auto-refresh para activación
+           Detecta cuando el admin aprueba la solicitud y muestra
+           el código de acceso automáticamente en pantalla.
+           ========================================================= */
+
         // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
@@ -874,222 +668,108 @@
         });
 
         // =============================================
-        // Ajustar mensaje si viene de Pago Móvil (?metodo=movil)
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('metodo') === 'movil') {
-            document.getElementById('subMensaje').textContent =
-                'Hemos recibido tu inscripción. Confirma tu transferencia por WhatsApp para activar tu cuenta.';
-        }
-
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'conversion', { 'event_category': 'membresia', 'event_label': 'gracias_membresia' });
-        }
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'CompleteRegistration');
-        }
-
+        // HELPER: OBTENER EMAIL DEL CLIENTE
         // =============================================
-        // CHAT DE VENTAS — VERSIÓN ESTABLE
-        // =============================================
-        (function() {
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initChat);
-            } else {
-                initChat();
+        function obtenerEmailCliente() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let email = (urlParams.get('email') || '').toLowerCase().trim();
+
+            if (!email) {
+                try {
+                    const stored = localStorage.getItem('lyon_pending_email');
+                    const productoStored = localStorage.getItem('lyon_pending_producto');
+                    if (stored && productoStored === 'membresia') {
+                        email = stored.toLowerCase().trim();
+                        console.log('📧 Email recuperado desde localStorage:', email);
+                    }
+                } catch (e) {
+                    console.warn('No se pudo leer localStorage:', e);
+                }
             }
 
-            function initChat() {
-                const chatToggle = document.getElementById('chatToggle');
-                const chatWindow = document.getElementById('chatWindow');
-                const chatClose = document.getElementById('chatClose');
-                const chatMessages = document.getElementById('chatMessages');
-                const chatInput = document.getElementById('chatInput');
-                const chatSend = document.getElementById('chatSend');
+            return email;
+        }
 
-                if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatInput || !chatSend) {
-                    console.warn('Chat: Elementos no encontrados');
-                    return;
-                }
+        // =============================================
+        // AUTO-REFRESH PARA MEMBRESÍA
+        // =============================================
+        function iniciarAutoRefreshMembresia() {
+            if (typeof firebase === 'undefined' || !firebase.database) {
+                console.warn('Firebase no disponible. Auto-refresh desactivado.');
+                const statusEl = document.getElementById('statusText');
+                if (statusEl) statusEl.textContent = '⏳ Esperando activación. Te contactaremos por WhatsApp.';
+                return;
+            }
 
-                let chatOpen = false;
+            const db = firebase.database();
+            const emailCliente = obtenerEmailCliente();
+            let intentos = 0;
+            const MAX_INTENTOS = 120; // aprox. 10 minutos
 
-                const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
-                const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
-                const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
-                const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
-                const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
-                const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
+            console.log('🔍 Auto-refresh membresía. Email de filtro:', emailCliente || '(sin filtro, tomará la última aprobada)');
 
-                function addMessage(text, sender, options = {}) {
-                    const div = document.createElement('div');
-                    div.className = `chat-message ${sender}`;
-                    if (sender === 'bot' && options.buttons) {
-                        div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
-                    } else {
-                        div.textContent = text;
-                    }
-                    chatMessages.appendChild(div);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
+            const ref = db.ref('solicitudes_membresia');
 
-                function escapeHtml(str) {
-                    const d = document.createElement('div');
-                    d.textContent = str;
-                    return d.innerHTML.replace(/\n/g, '<br>');
-                }
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                const solicitudes = Object.values(data);
 
-                function setInputEnabled(enabled) {
-                    chatInput.disabled = !enabled;
-                    chatSend.disabled = !enabled;
-                    if (enabled) chatInput.focus();
-                }
+                let aprobada = null;
+                const ahora = Date.now();
 
-                function botonHumano() {
-                    return `<div style="margin-top:6px;">
-                        <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a>
-                    </div>`;
-                }
+                solicitudes.forEach(s => {
+                    if (!s || s.estado !== 'aprobada') return;
+                    const coincideEmail = emailCliente && s.email && s.email.toLowerCase().trim() === emailCliente;
+                    const reciente = s.fechaAprobacion && (ahora - s.fechaAprobacion < 30 * 60 * 1000);
 
-                function startChat() {
-                    chatMessages.innerHTML = '';
-                    chatInput.value = '';
-                    setInputEnabled(false);
-
-                    const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
-
-Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
-
-¿Qué te gustaría explorar?`;
-
-                    const botones = `
-                        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
-                            <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
-                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
-                            <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button>
-                            <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
-                        </div>
-                        ${botonHumano()}
-                    `;
-                    addMessage(bienvenida, 'bot', { buttons: botones });
-                }
-
-                function handleProductSelection(producto) {
-                    let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
-
-                    if (producto === 'biblioteca') {
-                        nombreProducto = '📚 Biblioteca Lyon Asesor';
-                        precio = '$9.99';
-                        descripcion = '4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
-                        botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
-                    } else if (producto === 'consulta') {
-                        nombreProducto = '🧘 Proceso Terapéutico';
-                        precio = '$40 (individual) / $100 (3 sesiones) / $150 (5 sesiones)';
-                        descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos. Selecciona tu paquete.';
-                        botonesPayPal = `
-                            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                                <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
-                                <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
-                                <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
-                            </div>
-                        `;
-                    } else if (producto === 'conferencia') {
-                        nombreProducto = '🎤 Conferencia';
-                        precio = '$150 (tarifa plana)';
-                        descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
-                        botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
-                    }
-
-                    const mensaje = `Has seleccionado: **${nombreProducto}**
-
-${descripcion}
-
-**Precio:** ${precio}
-
-Haz clic en el botón de pago para completar tu compra:`;
-
-                    const botones = `
-                        <div style="margin-top:8px;">
-                            ${botonesPayPal}
-                            <div style="margin-top:8px;font-size:0.8rem;color:#888;">🔒 Pago seguro a través de PayPal</div>
-                            <div style="margin-top:8px;">
-                                <button class="product-btn" data-role="accion" data-action="volver">🔙 Volver al inicio</button>
-                                <a href="mailto:info@lyonasesor.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
-                            </div>
-                        </div>
-                        ${botonHumano()}
-                    `;
-
-                    addMessage(mensaje, 'bot', { buttons: botones });
-                }
-
-                chatMessages.addEventListener('click', function(e) {
-                    const btn = e.target.closest('.product-btn[data-role]');
-                    if (!btn) return;
-                    const rol = btn.dataset.role;
-
-                    if (rol === 'producto') {
-                        handleProductSelection(btn.dataset.producto);
-                        return;
-                    }
-
-                    if (rol === 'accion') {
-                        const accion = btn.dataset.action;
-                        if (accion === 'volver') {
-                            startChat();
-                        } else if (accion === 'diagnostico') {
-                            window.location.href = 'diagnostico.html';
+                    if (coincideEmail || (!emailCliente && reciente)) {
+                        if (!aprobada || (s.fechaAprobacion > (aprobada.fechaAprobacion || 0))) {
+                            aprobada = s;
                         }
                     }
                 });
 
-                chatSend.addEventListener('click', function() {
-                    const input = chatInput.value.trim();
-                    if (!input) return;
-
-                    addMessage(input, 'user');
-                    chatInput.value = '';
-
-                    setInputEnabled(false);
-                    const msg = encodeURIComponent(`Mensaje desde el chat de lyonasesor.com: ${input}`);
-                    window.open(`https://wa.me/584148610464?text=${msg}`, '_blank');
-                    
-                    addMessage('Gracias por tu mensaje. He abierto un chat con Álvaro para que pueda responderte personalmente. 💬', 'bot');
-                    setInputEnabled(true);
-                });
-
-                chatInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') chatSend.click();
-                });
-
-                chatToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (chatWindow.classList.contains('open')) {
-                        chatWindow.classList.remove('open');
-                        chatOpen = false;
-                    } else {
-                        chatWindow.classList.add('open');
-                        chatOpen = true;
-                        if (chatMessages.children.length === 0) startChat();
-                        if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300);
+                if (aprobada && aprobada.codigoGenerado) {
+                    mostrarCodigoAprobado(aprobada.codigoGenerado);
+                    try { localStorage.removeItem('lyon_pending_email'); } catch(e) {}
+                    try { localStorage.removeItem('lyon_pending_producto'); } catch(e) {}
+                } else {
+                    intentos++;
+                    if (intentos > MAX_INTENTOS) {
+                        const statusEl = document.getElementById('statusText');
+                        if (statusEl) {
+                            statusEl.innerHTML =
+                                '⏳ La activación está tardando más de lo esperado.<br>' +
+                                'Te contactaremos por WhatsApp cuando esté lista.';
+                        }
                     }
-                });
+                }
+            });
+        }
 
-                chatClose.addEventListener('click', function() {
-                    chatWindow.classList.remove('open');
-                    chatOpen = false;
-                });
+        // =============================================
+        // MOSTRAR CÓDIGO CUANDO LA SOLICITUD SEA APROBADA
+        // =============================================
+        function mostrarCodigoAprobado(codigo) {
+            const box = document.getElementById('waitingBox');
+            const codeValue = document.getElementById('codeValue');
+            if (!box || !codeValue) return;
 
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && chatOpen) {
-                        chatWindow.classList.remove('open');
-                        chatOpen = false;
-                    }
-                });
-            }
-        })();
+            if (box.classList.contains('approved')) return;
+
+            box.classList.add('approved');
+            codeValue.textContent = codigo;
+
+            const h3 = box.querySelector('h3');
+            if (h3) h3.textContent = '✅ ¡Todo listo!';
+        }
+
+        // =============================================
+        // INICIAR
+        // =============================================
+        window.addEventListener('load', () => {
+            iniciarAutoRefreshMembresia();
+        });
     </script>
-    <script src="/assets/js/footer-qr.js"></script>
 </body>
 </html>
