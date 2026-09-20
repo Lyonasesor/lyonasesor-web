@@ -36,6 +36,34 @@
     <!-- FAVICON -->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página del ebook (interés en el producto)
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Biblioteca Lyon Asesor',
+                content_category: 'biblioteca',
+                value: 9.99,
+                currency: 'USD'
+            });
+        }
+    </script>
+    
     <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
@@ -75,21 +103,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <!-- Meta Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1118,7 +1131,11 @@
                     gtag('event', 'form_submit', { 'event_category': 'lead' });
                 }
                 if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead');
+                    fbq('track', 'Lead', {
+                        value: 9.99,
+                        currency: 'USD',
+                        content_name: 'Biblioteca Lyon Asesor'
+                    });
                 }
             } catch (error) {
                 console.error('Error al guardar:', error);
@@ -1130,6 +1147,7 @@
         // Tracking unificado para CUALQUIER método de compra del ebook
         // Cubre: PayPal (hero + sección inferior) y Pago Móvil/WhatsApp
         // Usa 'mousedown' para garantizar el registro ANTES de la navegación.
+        // Incluye: tracking de afiliados en Firebase + eventos Meta Pixel.
         // =============================================
         (function trackEbookPurchaseClicks() {
             function init() {
@@ -1140,16 +1158,32 @@
                     return;
                 }
 
-                console.log(`📚 ${botonesCompra.length} botón(es) de compra detectado(s) para tracking de afiliados.`);
+                console.log(`📚 ${botonesCompra.length} botón(es) de compra detectado(s) para tracking.`);
 
                 botonesCompra.forEach(btn => {
-                    // Usamos 'mousedown' (se dispara antes que 'click') para asegurar
-                    // que el registro se complete antes de que la nueva pestaña se abra.
                     btn.addEventListener('mousedown', function(e) {
                         const codigo = (typeof obtenerAfiliadoActivo === 'function') ? obtenerAfiliadoActivo() : null;
+                        const producto = this.dataset.producto || 'Biblioteca Lyon Asesor';
+                        const monto = parseFloat(this.dataset.monto || '9.99');
+                        const metodoPago = this.dataset.metodo || 'paypal';
 
+                        // =============================================
+                        // META PIXEL: InitiateCheckout
+                        // =============================================
+                        if (typeof fbq === 'function') {
+                            fbq('track', 'InitiateCheckout', {
+                                value: monto,
+                                currency: 'USD',
+                                content_name: producto,
+                                content_category: 'biblioteca_' + metodoPago
+                            });
+                        }
+
+                        // =============================================
+                        // TRACKING DE AFILIADO en Firebase (si hay código)
+                        // =============================================
                         if (!codigo) {
-                            console.log('📚 Clic en botón de compra sin afiliado activo. Sin tracking.');
+                            console.log('📚 Clic sin afiliado activo. Solo tracking de Pixel.');
                             return;
                         }
 
@@ -1158,12 +1192,8 @@
                             return;
                         }
 
-                        const producto = this.dataset.producto || 'Biblioteca Lyon Asesor';
-                        const monto = parseFloat(this.dataset.monto || '9.99');
-                        const comision = +(monto * 0.30).toFixed(2); // 30% de comisión
-                        const metodoPago = this.dataset.metodo || 'paypal';
+                        const comision = +(monto * 0.30).toFixed(2);
 
-                        // Registrar la venta potencial en Firebase
                         window.database.ref('afiliados_ventas/' + codigo).push({
                             producto: producto,
                             monto: monto,
