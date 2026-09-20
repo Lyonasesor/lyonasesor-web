@@ -11,7 +11,6 @@
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href="https://lyonasesor.com/gracias.html" />
     
-    <!-- OPEN GRAPH OPTIMIZADO -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://lyonasesor.com/gracias.html" />
     <meta property="og:title" content="¡Gracias por tu compra! · Lyon Asesor" />
@@ -21,13 +20,11 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_ES" />
     
-    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="¡Gracias por tu compra! · Lyon Asesor" />
     <meta name="twitter:description" content="¡Gracias por tu compra! Confirma tus datos y recibe acceso inmediato." />
     <meta name="twitter:image" content="https://lyonasesor.com/social-preview.jpg" />
     
-    <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -38,7 +35,6 @@
         }
     </script>
     
-    <!-- Google Analytics 4 — ID REAL -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -52,7 +48,6 @@
         });
     </script>
     
-    <!-- Meta Pixel — Placeholder -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -117,7 +112,6 @@
             z-index: 0;
         }
 
-        /* ===== NAV ===== */
         .nav {
             position: fixed;
             top: 0;
@@ -160,7 +154,6 @@
             height: 32px;
             object-fit: contain;
             border-radius: 50%;
-            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -231,7 +224,6 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== MAIN ===== */
         .page-wrapper {
             max-width: 700px;
             width: 100%;
@@ -397,7 +389,6 @@
             margin: 0;
         }
 
-        /* ===== FOOTER CON YOUTUBE ===== */
         .footer {
             background: var(--navy-dark);
             padding: 60px 24px 30px;
@@ -501,7 +492,6 @@
             opacity: 0.7;
         }
 
-        /* ===== CHAT ===== */
         .chat-float {
             position: fixed;
             bottom: 28px;
@@ -747,7 +737,6 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
@@ -769,24 +758,20 @@
         </div>
     </nav>
 
-    <!-- ===== MAIN ===== -->
     <div class="page-wrapper" id="app">
         <div class="icon">🎉</div>
         <h1>¡Gracias por tu <span>compra</span>!</h1>
         <div class="sub">Tu pago ha sido procesado exitosamente</div>
 
-        <!-- PRODUCTO -->
         <div class="producto-box" id="productoInfo">
             <h3 id="productoNombre">📚 Biblioteca Lyon Asesor</h3>
             <p id="productoDetalle">4 herramientas digitales para tu bienestar emocional.</p>
         </div>
 
-        <!-- CONTENIDO DINÁMICO SEGÚN PRODUCTO -->
         <div id="contenidoDinamico">
             <!-- Será llenado por JavaScript -->
         </div>
 
-        <!-- FORMULARIO PARA CAPTURAR DATOS -->
         <div id="formSection">
             <p class="form-section-title">
                 <strong>Ingresa tus datos</strong> para que podamos darte seguimiento y enviarte contenido exclusivo.
@@ -799,7 +784,6 @@
             </form>
         </div>
 
-        <!-- MENSAJE DE ÉXITO (oculto inicialmente) -->
         <div id="successMessage" class="hidden success-message">
             <p id="successText">✅ ¡Datos guardados! Te mantendremos informado de novedades.</p>
         </div>
@@ -807,7 +791,6 @@
         <a href="index.html" class="back-link">← Volver al inicio</a>
     </div>
 
-    <!-- ===== FOOTER CON YOUTUBE ===== -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-grid">
@@ -849,7 +832,6 @@
         </div>
     </footer>
 
-    <!-- ===== CHAT ===== -->
     <button class="chat-float" id="chatToggle" aria-label="Abrir chat de ventas">
         <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.62 1.41 5.12L2 22l5.12-1.41C8.38 21.48 10.12 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.55 0-3.03-.47-4.25-1.27l-3.15.82.82-3.15C5.47 13.03 5 11.55 5 10c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7z"/></svg>
     </button>
@@ -867,7 +849,6 @@
     </div>
 
     <script>
-        // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -911,13 +892,13 @@
             },
             consulta: {
                 nombre: '🧘 Proceso Terapéutico',
-                detalle: 'Acompañamiento profesional personalizado. Sesiones de 45-60 minutos.',
+                detalle: 'Hemos recibido tu pago. Está siendo verificado por nuestro equipo.',
                 tipo: 'compra-consulta',
-                monto: 40,
-                mensaje: 'Coordina tu primera sesión directamente con Álvaro por WhatsApp:',
-                btnTexto: '📲 Contactar por WhatsApp',
-                btnLink: 'https://wa.me/584148610464?text=Hola%20Alvaro%2C%20acabo%20de%20pagar%20mi%20consulta%20y%20quiero%20coordinar%20la%20primera%20sesi%C3%B3n.',
-                btnClase: 'btn-whatsapp-success'
+                monto: 70,
+                mensaje: '',
+                btnTexto: '',
+                btnLink: '',
+                btnClase: ''
             },
             conferencia: {
                 nombre: '🎤 Conferencia Lyon Asesor',
@@ -933,7 +914,6 @@
 
         const info = productoInfo[producto] || productoInfo['biblioteca'];
 
-        // Mostrar información del producto
         document.getElementById('productoNombre').textContent = info.nombre;
         document.getElementById('productoDetalle').textContent = info.detalle;
 
@@ -942,19 +922,38 @@
         // =============================================
         const contenedor = document.getElementById('contenidoDinamico');
 
-        contenedor.innerHTML = `
-            <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
-                ${info.mensaje}
-            </p>
-            <a href="${info.btnLink}" target="_blank" class="${info.btnClase}">
-                ${info.btnTexto}
-            </a>
-            ${producto === 'biblioteca' ? `
-                <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.8rem;">
-                    Los archivos también están disponibles en la página de descarga.
+        if (producto === 'consulta') {
+            contenedor.innerHTML = `
+                <div style="background:#fef8f3; border-left:4px solid var(--naranja); padding:22px; border-radius:12px; margin:1.5rem 0; text-align:left;">
+                    <p style="font-weight:700; color:var(--navy); margin-bottom:12px; font-size:1.05rem;">⏳ ¿Qué sigue ahora?</p>
+                    <p style="font-size:0.92rem; color:#4A5364; line-height:1.75; margin-bottom:14px;">
+                        <strong>1.</strong> Nuestro equipo verificará tu pago (24-48h hábiles).<br>
+                        <strong>2.</strong> Recibirás por correo y WhatsApp tu <strong>código personal de acceso</strong> al consultorio.<br>
+                        <strong>3.</strong> Con ese código entrarás a <strong>lyonasesor.com/consultorio.html</strong> y comenzarás tus protocolos de acompañamiento.
+                    </p>
+                    <p style="font-size:0.85rem; color:var(--text-muted); font-style:italic; border-top:1px solid rgba(232,107,24,0.2); padding-top:12px;">
+                        💬 Si tienes dudas mientras tanto, escríbenos por
+                        <a href="https://wa.me/584148610464" target="_blank" style="color:var(--naranja); font-weight:600; text-decoration:none;">WhatsApp</a>
+                        o a
+                        <a href="mailto:info@lyonasesor.com" style="color:var(--naranja); font-weight:600; text-decoration:none;">info@lyonasesor.com</a>
+                    </p>
+                </div>
+            `;
+        } else {
+            contenedor.innerHTML = `
+                <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
+                    ${info.mensaje}
                 </p>
-            ` : ''}
-        `;
+                <a href="${info.btnLink}" target="_blank" class="${info.btnClase}">
+                    ${info.btnTexto}
+                </a>
+                ${producto === 'biblioteca' ? `
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.8rem;">
+                        Los archivos también están disponibles en la página de descarga.
+                    </p>
+                ` : ''}
+            `;
+        }
 
         // =============================================
         // MANEJO DEL FORMULARIO (GUARDAR EN JSONBin)
@@ -1001,7 +1000,6 @@
                     body: JSON.stringify(data.record)
                 });
 
-                // Ocultar formulario, mostrar mensaje de éxito
                 document.getElementById('formSection').style.display = 'none';
                 const successMsg = document.getElementById('successMessage');
                 successMsg.classList.remove('hidden');
@@ -1011,7 +1009,7 @@
                 if (producto === 'biblioteca') {
                     successText.textContent = '✅ ¡Datos guardados! Revisa tu correo para los enlaces de descarga.';
                 } else if (producto === 'consulta') {
-                    successText.textContent = '✅ ¡Datos guardados! En breve Álvaro te contactará para coordinar tu sesión.';
+                    successText.textContent = '✅ ¡Datos guardados! En breve el equipo de Lyon Asesor verificará tu pago y te enviará tu código de acceso.';
                 } else if (producto === 'conferencia') {
                     successText.textContent = '✅ ¡Datos guardados! En breve Álvaro te contactará para coordinar tu conferencia.';
                 }
@@ -1030,7 +1028,7 @@
         });
 
         // =============================================
-        // CHAT DE VENTAS — VERSIÓN ESTABLE
+        // CHAT DE VENTAS
         // =============================================
         (function() {
             if (document.readyState === 'loading') {
