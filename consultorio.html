@@ -197,12 +197,38 @@
   .report-section h2 span{color:var(--naranja);}
   .report-section p{font-size:0.95rem;color:#4A5364;line-height:1.75;margin-bottom:12px;word-wrap:break-word;}
   .report-section .highlight{background:#fef8f3;padding:16px 20px;border-left:4px solid var(--naranja);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:#5A6C7D;word-wrap:break-word;}
+  .report-section .quote-personal{background:#f0fdf4;border-left:4px solid #22c55e;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0;font-style:italic;color:#166534;font-size:0.9rem;line-height:1.6;}
+  .report-section .quote-personal::before{content:"Tú escribiste: ";font-weight:700;font-style:normal;color:#15803d;}
+
+  .report-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0;}
+  .report-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;text-align:center;}
+  .report-metric .rm-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.5px;color:#94a3b8;font-weight:700;margin-bottom:6px;}
+  .report-metric .rm-value{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--naranja);font-weight:700;line-height:1;}
+  .report-metric .rm-value.neutral{color:#1e293b;}
+  .report-metric .rm-sub{font-size:0.72rem;color:#64748b;margin-top:4px;}
+
   .report-actions{display:flex;gap:12px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;flex-wrap:wrap;}
   .report-actions button,.report-actions a{padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.92rem;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:0.2s;text-decoration:none;display:inline-block;}
   .btn-print{background:var(--navy);color:#fff;}
   .btn-print:hover{background:var(--navy-light);transform:translateY(-2px);}
   .btn-close-report{background:#e2e8f0;color:var(--navy);}
   .btn-close-report:hover{background:#cbd5e1;}
+
+  .report-raw-toggle{background:#fff;border:1.5px dashed #cbd5e1;border-radius:12px;padding:16px 20px;margin-top:24px;cursor:pointer;text-align:center;font-weight:600;color:var(--navy);font-size:0.92rem;transition:0.2s;user-select:none;}
+  .report-raw-toggle:hover{background:#f8fafc;border-color:var(--naranja);color:var(--naranja);}
+  .report-raw-toggle .arrow{display:inline-block;transition:transform 0.3s;margin-left:6px;}
+  .report-raw-toggle.open .arrow{transform:rotate(180deg);}
+  .report-raw-content{display:none;margin-top:20px;padding-top:20px;border-top:1px solid #e2e8f0;}
+  .report-raw-content.open{display:block;}
+
+  .raw-prot{border:1px solid #e2e8f0;border-radius:12px;margin-bottom:16px;overflow:hidden;}
+  .raw-prot-header{background:#f8fafc;padding:12px 16px;border-bottom:1px solid #e2e8f0;font-weight:700;font-size:0.85rem;color:var(--navy);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .raw-prot-header .raw-code{background:var(--naranja);color:#fff;padding:2px 10px;border-radius:20px;font-size:0.7rem;letter-spacing:1px;}
+  .raw-prot-body{padding:14px 16px;}
+  .raw-item{padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.85rem;}
+  .raw-item:last-child{border-bottom:none;}
+  .raw-q{font-weight:600;color:#0f172a;margin-bottom:4px;font-size:0.83rem;line-height:1.45;}
+  .raw-a{color:#475569;line-height:1.55;font-size:0.85rem;background:#f8fafc;padding:8px 12px;border-radius:6px;}
 
   @media (max-width:700px){
     .login-box{padding:2rem 1.5rem;}
@@ -278,8 +304,8 @@
 
     <div class="final-report-card" id="finalReportCard">
       <h3>🎉 Has completado <span>tu recorrido</span></h3>
-      <p>Has llegado al final de este viaje. Ahora puedes generar tu <strong>Bitácora de Vuelo Personal</strong>, un documento con todos tus hallazgos y aprendizajes.</p>
-      <button class="btn-report" id="generateReportBtn">📄 Generar mi Informe Terapéutico</button>
+      <p>Has llegado al final de este viaje. Ahora puedes generar tu <strong>Bitácora de Vuelo Personal</strong>, un documento con el análisis de todo lo que has trabajado.</p>
+      <button class="btn-report" id="generateReportBtn">📄 Ver mi Informe Terapéutico</button>
     </div>
   </div>
 </div>
@@ -316,11 +342,9 @@
 <script>
 /* =========================================================
    CONSULTORIO PRIVADO — LYON ASESOR
+   Con MOTOR EXPERTO integrado para informes personalizados
    ========================================================= */
 
-// ============================================
-// VERIFICACIÓN DE DEPENDENCIAS
-// ============================================
 (function checkDependencies() {
   const errores = [];
   if (typeof firebase === 'undefined') errores.push('Firebase SDK no cargó');
@@ -356,9 +380,9 @@ let pacienteActual = null;
 let protocoloEnEdicion = null;
 let respuestasTemp = {};
 
-// ============================================
-// HELPER: ESCAPAR HTML (previene XSS en informe)
-// ============================================
+/* =========================================================
+   HELPER: ESCAPAR HTML
+   ========================================================= */
 function escapeHtml(str) {
   return String(str == null ? '' : str)
     .replace(/&/g, '&amp;')
@@ -369,9 +393,621 @@ function escapeHtml(str) {
     .replace(/\n/g, '<br>');
 }
 
-// ============================================
-// LOGIN
-// ============================================
+/* =========================================================
+   MOTOR EXPERTO — Análisis y redacción personalizada
+   =========================================================
+   Este módulo lee las respuestas del paciente, detecta patrones
+   temáticos y redacta un informe narrativo de 7 secciones
+   combinando párrafos condicionales pre-redactados.
+   NO usa IA externa. Es un sistema experto de reglas.
+   ========================================================= */
+const MotorExperto = {
+
+  // -----------------------------------------
+  // 1) ANÁLISIS DE SEÑALES
+  // -----------------------------------------
+  analizar(paciente) {
+    const resp = paciente.formulariosCompletados || {};
+    const s = {
+      // Metadatos
+      nombre: paciente.nombre || 'Consultante',
+      nombreCorto: (paciente.nombre || 'consultante').split(' ')[0],
+      paquete: paciente.paquete || 'individual',
+      totalCompletados: Object.keys(resp).length,
+
+      // Rueda de la vida (LA-00)
+      rueda: {
+        autoestima: null, pareja: null, familia: null, amistades: null,
+        emociones: null, proposito: null, historia: null
+      },
+      promedioRueda: 0,
+      areasBajas: [],
+      areasMedias: [],
+      areasAltas: [],
+
+      // Filtro (LA-00)
+      filtroActivos: 0,
+      filtroPensamientos: false,
+      filtroCreencias: false,
+      filtroRecuerdo: false,
+      filtroRelaciones: false,
+      filtroPatrones: false,
+      filtroEmocional: false,
+      filtroCalma: false,
+      filtroDependencia: false,
+
+      // Creencia nuclear (LA-02, LA-03)
+      tieneCreencia: false,
+      creenciaTexto: '',
+      intensidadInicial: null,
+      intensidadFinal: null,
+      reduccionCreencia: 0,
+      reduccionAlta: false,
+
+      // Memoria (LA-04, LA-05)
+      tieneRecuerdo: false,
+      intRecuerdo: null,
+      intRecuerdoPost: null,
+      reduccionMemoria: 0,
+
+      // Vínculos (LA-06, LA-07, LA-08, LA-09)
+      dependenciaPromedio: 0,
+      dependenciaAlta: false,
+      pazAlcanzada: null,
+      pazAlta: false,
+      pazBaja: false,
+      tieneVinculoTrabajado: false,
+
+      // Emocional (LA-10, LA-11)
+      tieneTermometro: false,
+      herramientas: [],
+      valor1: '', valor2: '', valor3: '',
+      proposito: '',
+
+      // Cierre (LA-12)
+      tieneCierre: false,
+      mejoriaGeneral: '',
+      areaMejorada: '',
+      mayorAprendizaje: '',
+
+      // Banderas temáticas
+      temaAutoestimaFuerte: false,
+      temaRelacionesFuerte: false,
+      temaFamiliaFuerte: false,
+      temaEmocionesFuerte: false,
+      temaPropositoFuerte: false,
+      temaHistoriaFuerte: false,
+
+      // Arco narrativo
+      arco: '', // 'profundo', 'moderado', 'inicial'
+      tono: ''   // 'reconstruccion', 'apertura', 'consolidacion'
+    };
+
+    // ----------- Rueda de la vida -----------
+    if (resp[0] && resp[0].respuestas) {
+      const r0 = resp[0].respuestas;
+      const parse = v => {
+        const n = parseInt(v, 10);
+        return isNaN(n) ? null : n;
+      };
+      s.rueda.autoestima = parse(r0['rueda_de_la_vida_r0']);
+      s.rueda.pareja    = parse(r0['rueda_de_la_vida_r1']);
+      s.rueda.familia   = parse(r0['rueda_de_la_vida_r2']);
+      s.rueda.amistades = parse(r0['rueda_de_la_vida_r3']);
+      s.rueda.emociones = parse(r0['rueda_de_la_vida_r4']);
+      s.rueda.proposito = parse(r0['rueda_de_la_vida_r5']);
+      s.rueda.historia  = parse(r0['rueda_de_la_vida_r6']);
+
+      const items = [
+        ['autoestima', 'Autoestima', s.rueda.autoestima],
+        ['pareja', 'Relaciones de pareja', s.rueda.pareja],
+        ['familia', 'Familia', s.rueda.familia],
+        ['amistades', 'Vida social', s.rueda.amistades],
+        ['emociones', 'Manejo emocional', s.rueda.emociones],
+        ['proposito', 'Propósito', s.rueda.proposito],
+        ['historia', 'Historia personal', s.rueda.historia]
+      ];
+      const validos = items.filter(x => x[2] != null);
+      if (validos.length > 0) {
+        s.promedioRueda = +(validos.reduce((a, x) => a + x[2], 0) / validos.length).toFixed(2);
+      }
+      validos.forEach(([key, label, val]) => {
+        if (val <= 2) s.areasBajas.push(label);
+        else if (val === 3) s.areasMedias.push(label);
+        else if (val >= 4) s.areasAltas.push(label);
+      });
+
+      // Banderas temáticas
+      s.temaAutoestimaFuerte = (s.rueda.autoestima != null && s.rueda.autoestima <= 2);
+      s.temaRelacionesFuerte = (s.rueda.pareja != null && s.rueda.pareja <= 2);
+      s.temaFamiliaFuerte = (s.rueda.familia != null && s.rueda.familia <= 2);
+      s.temaEmocionesFuerte = (s.rueda.emociones != null && s.rueda.emociones <= 2);
+      s.temaPropositoFuerte = (s.rueda.proposito != null && s.rueda.proposito <= 2);
+      s.temaHistoriaFuerte = (s.rueda.historia != null && s.rueda.historia <= 2);
+
+      // Filtro de profundidad
+      const f = r0;
+      s.filtroPensamientos = f['filtro_de_profundidad_r0'] === 'SÍ';
+      s.filtroCreencias = f['filtro_de_profundidad_r1'] === 'SÍ';
+      s.filtroRecuerdo = f['filtro_de_profundidad_r2'] === 'SÍ';
+      s.filtroRelaciones = f['filtro_de_profundidad_r3'] === 'SÍ';
+      s.filtroPatrones = f['filtro_de_profundidad_r4'] === 'SÍ';
+      s.filtroEmocional = f['filtro_de_profundidad_r5'] === 'SÍ';
+      s.filtroCalma = f['filtro_de_profundidad_r6'] === 'SÍ';
+      s.filtroDependencia = f['filtro_de_profundidad_r7'] === 'SÍ';
+      s.filtroActivos = [s.filtroPensamientos, s.filtroCreencias, s.filtroRecuerdo,
+                         s.filtroRelaciones, s.filtroPatrones, s.filtroEmocional,
+                         s.filtroCalma, s.filtroDependencia].filter(Boolean).length;
+    }
+
+    // ----------- Creencia nuclear (LA-02 / LA-03) -----------
+    if (resp[2] && resp[2].respuestas) {
+      const c = resp[2].respuestas['creencia_nuclear'];
+      if (c && String(c).trim()) {
+        s.tieneCreencia = true;
+        s.creenciaTexto = String(c).trim();
+      }
+    }
+    if (resp[3] && resp[3].respuestas) {
+      const ii = parseInt(resp[3].respuestas['intensidad_inicial'], 10);
+      const iff = parseInt(resp[3].respuestas['intensidad_final'], 10);
+      if (!isNaN(ii)) s.intensidadInicial = ii;
+      if (!isNaN(iff)) s.intensidadFinal = iff;
+      if (!isNaN(ii) && !isNaN(iff)) {
+        s.reduccionCreencia = ii - iff;
+        s.reduccionAlta = s.reduccionCreencia >= 4;
+      }
+    }
+
+    // ----------- Memoria (LA-04 / LA-05) -----------
+    if (resp[4] && resp[4].respuestas) {
+      const intR = parseInt(resp[4].respuestas['intensidad_emocional'], 10);
+      if (!isNaN(intR)) {
+        s.tieneRecuerdo = true;
+        s.intRecuerdo = intR;
+      }
+    }
+    if (resp[5] && resp[5].respuestas) {
+      const intP = parseInt(resp[5].respuestas['intensidad_post_modificacion'], 10);
+      if (!isNaN(intP)) {
+        s.intRecuerdoPost = intP;
+        if (s.intRecuerdo != null) s.reduccionMemoria = s.intRecuerdo - intP;
+      }
+    }
+
+    // ----------- Vínculos (LA-06) -----------
+    if (resp[6] && resp[6].respuestas) {
+      const depVals = [0,1,2,3,4].map(i => {
+        const v = parseInt(resp[6].respuestas['escala_dependencia_r' + i], 10);
+        return isNaN(v) ? 0 : v;
+      });
+      const depProm = depVals.reduce((a, b) => a + b, 0) / depVals.length;
+      s.dependenciaPromedio = +depProm.toFixed(2);
+      s.dependenciaAlta = depProm >= 3.5;
+    }
+
+    // ----------- Paz alcanzada (LA-09) -----------
+    if (resp[9] && resp[9].respuestas) {
+      const p = parseInt(resp[9].respuestas['escala_paz'], 10);
+      if (!isNaN(p)) {
+        s.pazAlcanzada = p;
+        s.pazAlta = p >= 7;
+        s.pazBaja = p <= 4;
+      }
+      if (resp[9].respuestas['nueva_narrativa']) s.tieneVinculoTrabajado = true;
+    }
+
+    // ----------- Emocional (LA-10 / LA-11) -----------
+    if (resp[10]) s.tieneTermometro = true;
+    if (resp[11] && resp[11].respuestas) {
+      const r11 = resp[11].respuestas;
+      if (r11['herramienta_mas_util']) {
+        s.herramientas.push(String(r11['herramienta_mas_util']).trim());
+      }
+      if (r11['compromiso_practica_diaria']) {
+        s.herramientas.push('Práctica comprometida: ' + String(r11['compromiso_practica_diaria']).trim());
+      }
+      if (r11['herramienta_5_valores']) {
+        const v = String(r11['herramienta_5_valores']).trim();
+        s.valor1 = v;
+      }
+      if (r11['herramienta_6_proposito']) {
+        s.proposito = String(r11['herramienta_6_proposito']).trim();
+      }
+    }
+
+    // ----------- Cierre (LA-12) -----------
+    if (resp[12] && resp[12].respuestas) {
+      const r12 = resp[12].respuestas;
+      s.tieneCierre = true;
+      s.mejoriaGeneral = String(r12['comparacion_general'] || '').trim();
+      s.areaMejorada = String(r12['area_mas_mejorada'] || '').trim();
+      s.mayorAprendizaje = String(r12['mayor_aprendizaje'] || '').trim();
+    }
+
+    // ----------- Arco narrativo -----------
+    if (s.totalCompletados >= 12) s.arco = 'profundo';
+    else if (s.totalCompletados >= 8) s.arco = 'moderado';
+    else s.arco = 'inicial';
+
+    // ----------- Tono predominante -----------
+    if (s.mejoriaGeneral === 'Mucho mejor' || s.reduccionCreencia >= 4) s.tono = 'reconstruccion';
+    else if (s.pazAlta || s.reduccionCreencia >= 2) s.tono = 'consolidacion';
+    else s.tono = 'apertura';
+
+    return s;
+  },
+
+  // -----------------------------------------
+  // 2) GENERADORES DE SECCIÓN
+  // -----------------------------------------
+
+  // Sección 1: Apertura personalizada
+  gen_apertura(p, s) {
+    const nombre = escapeHtml(s.nombreCorto);
+    const paq = PACIENTE_PAQUETES[s.paquete] || PACIENTE_PAQUETES.individual;
+    const total = paq.total;
+
+    let html = `
+      <div class="report-header">
+        <div class="logo">LYON<span>ASESOR</span></div>
+        <div style="font-size:0.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Bitácora de Vuelo Personal</div>
+        <h1>Informe Terapéutico Final</h1>
+        <div class="report-meta">
+          <strong>${escapeHtml(p.nombre || 'Consultante')}</strong> · ${escapeHtml(p.email || '')}<br>
+          Generado el ${new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' })}<br>
+          Paquete: ${escapeHtml(paq.nombre)} · ${total} protocolos recorridos
+        </div>
+      </div>
+    `;
+
+    html += `<div class="report-section">
+      <h2>🌱 <span>Introducción</span></h2>
+      <p>${nombre}, has recorrido <strong>${total} protocolos</strong> del Programa Lyon de NeuroLiderazgo y Transformación Humana. Este documento no es un diagnóstico clínico; es una <strong>bitácora viva</strong>, construida a partir de tus propias respuestas y organizada para que puedas releerla cada vez que necesites recordar quién eres y qué descubriste en este camino.</p>
+      <p>Lo que sigue no es una evaluación. Es un <em>espejo</em>. Léelo con calma. Hay párrafos que resonarán fuerte y otros que pasarán de largo. Quédate con lo que te sirva.</p>
+      <div class="highlight">"Lo que transforma equipos, empieza con una persona. Y hoy, esa persona eres tú."</div>
+    </div>`;
+
+    return html;
+  },
+
+  // Sección 2: Retrato de partida
+  gen_retrato(p, s) {
+    let html = `<div class="report-section">
+      <h2>🧭 <span>Tu punto de partida</span></h2>`;
+
+    // Párrafo: estado general
+    if (s.promedioRueda > 0) {
+      if (s.promedioRueda <= 2.4) {
+        html += `<p>Cuando iniciaste este proceso, tu Rueda de la Vida mostró un promedio general de <strong>${s.promedioRueda}/5</strong>. Llegaste con varias áreas en zona baja. Eso no es debilidad: es señal de que algo estaba pidiendo ser mirado. Que hayas decidido mirarlo ya es un acto de valentía.</p>`;
+      } else if (s.promedioRueda <= 3.5) {
+        html += `<p>Cuando iniciaste este proceso, tu Rueda de la Vida mostró un promedio general de <strong>${s.promedioRueda}/5</strong>. No todo estaba mal, pero había zonas que reclamaban atención. Tu decisión de trabajarlas marca el inicio real del cambio.</p>`;
+      } else {
+        html += `<p>Cuando iniciaste este proceso, tu Rueda de la Vida ya mostraba un promedio de <strong>${s.promedioRueda}/5</strong>. Llegaste con una base sólida, y aun así decidiste profundizar. Eso indica madurez: reconocer que estar bien no es lo mismo que estar completo.</p>`;
+      }
+    }
+
+    // Métricas visuales
+    html += `<div class="report-metrics">
+      <div class="report-metric">
+        <div class="rm-label">Promedio general</div>
+        <div class="rm-value">${s.promedioRueda || '—'}${s.promedioRueda ? '/5' : ''}</div>
+        <div class="rm-sub">Rueda de la Vida</div>
+      </div>
+      <div class="report-metric">
+        <div class="rm-label">Áreas en zona baja</div>
+        <div class="rm-value neutral">${s.areasBajas.length}</div>
+        <div class="rm-sub">de 7 áreas</div>
+      </div>
+      <div class="report-metric">
+        <div class="rm-label">Señales activas</div>
+        <div class="rm-value neutral">${s.filtroActivos}/8</div>
+        <div class="rm-sub">Filtro de profundidad</div>
+      </div>
+    </div>`;
+
+    // Párrafo: áreas específicas
+    if (s.areasBajas.length > 0) {
+      html += `<p><strong>Las áreas que más pedían tu atención eran:</strong> ${escapeHtml(s.areasBajas.join(', '))}. No es casualidad que hayas llegado hasta aquí. El proceso terapéutico suele empezar por donde más duele, y tú lo has hecho.</p>`;
+    } else if (s.areasMedias.length > 0) {
+      html += `<p><strong>Las áreas que señalaste como intermedias fueron:</strong> ${escapeHtml(s.areasMedias.join(', '))}. Ahí está tu margen de crecimiento más natural: no son urgentes, pero sí importantes.</p>`;
+    }
+
+    if (s.areasAltas.length >= 3) {
+      html += `<p>Al mismo tiempo, marcaste <strong>${s.areasAltas.length} áreas en zona alta</strong>: ${escapeHtml(s.areasAltas.join(', '))}. Esto significa que no llegaste al proceso desde el vacío, sino desde una base que ya te sostiene. Reconocerlo también es parte del trabajo.</p>`;
+    }
+
+    // Párrafo: filtro de profundidad
+    if (s.filtroActivos >= 6) {
+      html += `<div class="highlight">En el filtro inicial marcaste <strong>${s.filtroActivos} de 8 señales de profundidad</strong>. Eso indica que tu proceso no fue superficial: llegaste con material real, con capas que pedían ser abiertas.</div>`;
+    } else if (s.filtroActivos >= 3) {
+      html += `<p>En el filtro inicial identificaste <strong>${s.filtroActivos} señales activas</strong>. Eso nos dio un mapa claro de por dónde empezar a trabajar.</p>`;
+    } else {
+      html += `<p>En el filtro inicial aparecieron <strong>${s.filtroActivos} señales</strong>. Este primer recorrido fue más de reconocimiento que de excavación profunda, y eso también es válido.</p>`;
+    }
+
+    html += `</div>`;
+    return html;
+  },
+
+  // Sección 3: Núcleo interno (creencias + memorias)
+  gen_nucleo(p, s) {
+    // Solo se muestra si hay datos
+    if (!s.tieneCreencia && !s.tieneRecuerdo) return '';
+
+    let html = `<div class="report-section">
+      <h2>🌳 <span>El trabajo con tu mundo interno</span></h2>`;
+
+    // Creencia nuclear
+    if (s.tieneCreencia) {
+      html += `<p>Identificaste una <strong>creencia nuclear</strong> que operaba en tu vida sin que la hubieras nombrado. La pusiste en palabras:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(s.creenciaTexto)}</div>`;
+
+      if (s.intensidadInicial != null && s.intensidadFinal != null) {
+        html += `<p>Cuando empezamos a interrogarla, le diste una intensidad de <strong>${s.intensidadInicial}/10</strong>. Después del trabajo de cuestionamiento, bajó a <strong>${s.intensidadFinal}/10</strong>.</p>`;
+        if (s.reduccionAlta) {
+          html += `<div class="highlight">Una reducción de ${s.reduccionCreencia} puntos en una sola sesión de trabajo no es poca cosa. Significa que tu cerebro empezó a reescribir el circuito.</div>`;
+        } else if (s.reduccionCreencia > 0) {
+          html += `<p>La reducción de ${s.reduccionCreencia} puntos marca el inicio del cambio. No siempre es un salto grande; a veces el movimiento más honesto es el pequeño.</p>`;
+        } else if (s.reduccionCreencia === 0) {
+          html += `<p>La intensidad se mantuvo. Eso también es información: hay creencias que necesitan más tiempo, más repetición y más experiencia para moverse. No es fracaso, es ritmo.</p>`;
+        } else if (s.reduccionCreencia < 0) {
+          html += `<p>La intensidad subió. En algunos procesos, sacar a la luz una creencia la hace sentir más fuerte antes de empezar a ceder. Es parte del proceso.</p>`;
+        }
+      }
+    }
+
+    // Memoria
+    if (s.tieneRecuerdo) {
+      html += `<p>También trabajaste con un <strong>recuerdo que aún dolía</strong>. Cuando lo medimos por primera vez, marcaste una intensidad emocional de <strong>${s.intRecuerdo}/10</strong>.</p>`;
+      if (s.intRecuerdoPost != null) {
+        html += `<p>Después del ejercicio de actualización, esa intensidad quedó en <strong>${s.intRecuerdoPost}/10</strong>.</p>`;
+        if (s.reduccionMemoria >= 3) {
+          html += `<div class="highlight">Bajó ${s.reduccionMemoria} puntos. Eso es neuroplasticidad en acción: cada vez que recuerdas con un nuevo significado, tu cerebro reconstruye la huella emocional.</div>`;
+        } else if (s.reduccionMemoria > 0) {
+          html += `<p>La reducción de ${s.reduccionMemoria} puntos indica que el recuerdo ya no tiene el mismo peso. La historia no cambia; tu lugar frente a ella, sí.</p>`;
+        } else {
+          html += `<p>La intensidad no bajó notablemente. Eso es información, no fracaso. Algunos recuerdos necesitan varias capas de trabajo antes de ceder.</p>`;
+        }
+      }
+    }
+
+    html += `</div>`;
+    return html;
+  },
+
+  // Sección 4: Vínculos y autonomía
+  gen_vinculos(p, s) {
+    if (!s.dependenciaPromedio && s.pazAlcanzada == null && !s.tieneVinculoTrabajado) return '';
+
+    let html = `<div class="report-section">
+      <h2>🪢 <span>Tus vínculos y tu voz propia</span></h2>`;
+
+    // Dependencia
+    if (s.dependenciaPromedio > 0) {
+      if (s.dependenciaAlta) {
+        html += `<p>En el trabajo sobre tus vínculos, tu escala de dependencia emocional mostró un promedio de <strong>${s.dependenciaPromedio}/5</strong>. Eso indica que buena parte de tu bienestar estaba condicionada por la presencia, la mirada o la aprobación de otros.</p>
+        <p>Reconocerlo no es debilidad. La dependencia afectiva es humana y muy común. Lo importante es que hoy puedes nombrarla, y eso ya es el primer paso para dejar de vivir en función del otro.</p>`;
+      } else if (s.dependenciaPromedio >= 2.5) {
+        html += `<p>En el trabajo sobre tus vínculos, tu escala de dependencia emocional mostró un promedio de <strong>${s.dependenciaPromedio}/5</strong>. Hay algunos puntos donde tu bienestar todavía se apoya mucho en los demás, pero también hay zonas donde tu autonomía ya se sostiene.</p>`;
+      } else {
+        html += `<p>Tu escala de dependencia emocional mostró un promedio de <strong>${s.dependenciaPromedio}/5</strong>. Eso sugiere que, en general, sostienes tu bienestar desde ti mismo/a más que desde la validación externa. Un terreno fértil para construir vínculos sin perderte.</p>`;
+      }
+    }
+
+    // Límites (LA-07)
+    const r7 = (p.formulariosCompletados && p.formulariosCompletados[7] && p.formulariosCompletados[7].respuestas) || {};
+    if (r7['decalogo']) {
+      html += `<p>Trabajaste también el tema de los <strong>límites y la re-parentalización</strong>. En tu decálogo personal escribiste tus principios para ser tratado/a:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(r7['decalogo'])}</div>`;
+    }
+
+    // Paz alcanzada (LA-09)
+    if (s.pazAlcanzada != null) {
+      if (s.pazAlta) {
+        html += `<p>En el ejercicio de diálogo y liberación, mediste una paz de <strong>${s.pazAlcanzada}/10</strong>. Eso indica que algo real se movió. No es casual: cuando nombramos el dolor y soltamos la carga, el cuerpo y la mente responden.</p>`;
+      } else if (s.pazBaja) {
+        html += `<p>En el ejercicio de diálogo y liberación, mediste una paz de <strong>${s.pazAlcanzada}/10</strong>. Eso sugiere que hay todavía capas por trabajar. No es un retroceso: es honestidad. La paz no siempre llega en un solo acto; a veces llega por acumulación.</p>`;
+      } else {
+        html += `<p>En el ejercicio de diálogo y liberación, mediste una paz de <strong>${s.pazAlcanzada}/10</strong>. Un punto intermedio: reconoces avances, y también reconoces que hay más camino. Ese equilibrio es sano.</p>`;
+      }
+    }
+
+    html += `</div>`;
+    return html;
+  },
+
+  // Sección 5: Inteligencia emocional
+  gen_emocional(p, s) {
+    if (!s.tieneTermometro && s.herramientas.length === 0) return '';
+
+    let html = `<div class="report-section">
+      <h2>🌡️ <span>Tu inteligencia emocional</span></h2>`;
+
+    const r10 = (p.formulariosCompletados && p.formulariosCompletados[10] && p.formulariosCompletados[10].respuestas) || {};
+
+    if (r10['emociones_frecuentes']) {
+      html += `<p>En el termómetro emocional, identificaste las emociones que más te visitan:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(r10['emociones_frecuentes'])}</div>`;
+    }
+    if (r10['emociones_dificiles']) {
+      html += `<p>Y también señalaste las que más te cuesta aceptar:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(r10['emociones_dificiles'])}</div>`;
+      html += `<p>Nombrarlas es ya un acto de gestión emocional. Lo que se nombra, se puede habitar. Lo que se ignora, se queda operando en automático.</p>`;
+    }
+
+    if (s.herramientas.length > 0) {
+      html += `<p>En tu caja de herramientas emocionales identificaste recursos concretos para cuando la tormenta aparezca. Algunos de ellos:</p><ul style="margin:8px 0 12px 22px;line-height:1.8;">`;
+      s.herramientas.forEach(h => {
+        html += `<li>${escapeHtml(h)}</li>`;
+      });
+      html += `</ul>`;
+    }
+
+    html += `</div>`;
+    return html;
+  },
+
+  // Sección 6: Recursos y propósito
+  gen_proposito(p, s) {
+    if (!s.proposito && !s.valor1) return '';
+
+    let html = `<div class="report-section">
+      <h2>🧰 <span>Tus recursos y tu propósito</span></h2>`;
+
+    if (s.valor1) {
+      html += `<p>Cuando te preguntamos por tus valores más importantes, respondiste:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(s.valor1)}</div>`;
+      html += `<p>Vivir alineado con estos valores no siempre es fácil en el día a día, pero tenerlos claros es el primer paso para tomar decisiones coherentes con quien eres.</p>`;
+    }
+
+    if (s.proposito) {
+      html += `<p>En el trabajo sobre el sentido, definiste tu propósito con estas palabras:</p>`;
+      html += `<div class="quote-personal">${escapeHtml(s.proposito)}</div>`;
+      html += `<div class="highlight">Una vida con propósito no es una vida sin problemas. Es una vida que, incluso en el dolor, encuentra razones para seguir. Y hoy tienes tu frase — tu propia razón — escrita con tus palabras.</div>`;
+    }
+
+    html += `</div>`;
+    return html;
+  },
+
+  // Sección 7: Cierre y legado
+  gen_cierre(p, s) {
+    let html = `<div class="report-section">
+      <h2>✨ <span>Cierre y palabras finales</span></h2>`;
+
+    if (s.tieneCierre) {
+      if (s.mejoriaGeneral) {
+        const map = {
+          'Mucho mejor': 'Has señalado que hoy estás <strong>mucho mejor</strong> que cuando empezaste. Eso no es un dato menor: es la evidencia de un cambio real, construido por ti.',
+          'Algo mejor': 'Has señalado que hoy estás <strong>algo mejor</strong>. Los cambios profundos no siempre son espectaculares; muchas veces son pequeños giros que, sumados, transforman la dirección de una vida.',
+          'Igual': 'Has señalado que hoy te sientes <strong>igual</strong>. Eso también es información: hay procesos que tardan más en mostrar resultados externos, aunque internamente ya hayan movido cosas.',
+          'Algo peor': 'Has señalado que hoy te sientes <strong>algo peor</strong>. A veces abrir capas profundas genera malestar temporal. Habla con tu terapeuta sobre esto: es parte del proceso, no una señal de fracaso.'
+        };
+        if (map[s.mejoriaGeneral]) html += `<p>${map[s.mejoriaGeneral]}</p>`;
+        else html += `<p>Has señalado que hoy te sientes <strong>${escapeHtml(s.mejoriaGeneral)}</strong>.</p>`;
+      }
+
+      if (s.areaMejorada) {
+        html += `<p>Sobre el área donde más has notado mejoría, escribiste:</p>`;
+        html += `<div class="quote-personal">${escapeHtml(s.areaMejorada)}</div>`;
+      }
+
+      if (s.mayorAprendizaje) {
+        html += `<p>Y sobre tu mayor aprendizaje en este proceso:</p>`;
+        html += `<div class="quote-personal">${escapeHtml(s.mayorAprendizaje)}</div>`;
+      }
+    } else {
+      html += `<p>Has completado el recorrido de tu paquete. Cada protocolo fue una capa abierta. No siempre se cierra todo en un solo proceso; a veces lo que se logra es poner luz donde antes había sombra.</p>`;
+    }
+
+    // Carta al yo futuro (si existe)
+    const r12 = (p.formulariosCompletados && p.formulariosCompletados[12] && p.formulariosCompletados[12].respuestas) || {};
+    if (r12['carta_yo_futuro']) {
+      html += `<p>Le escribiste una carta a tu yo futuro. Guárdala. Léela dentro de seis meses. Te sorprenderá lo que verás.</p>`;
+      html += `<div class="highlight">"${escapeHtml(r12['carta_yo_futuro'])}"</div>`;
+    }
+
+    html += `<p style="font-style:italic;text-align:center;margin-top:32px;color:var(--navy);font-size:1rem;">Este recorrido no termina aquí. Todo lo que has descubierto vive en ti. Vuelve a esta bitácora cuando necesites recordar quién eres más allá del ruido.</p>
+      <p style="font-weight:600;color:var(--naranja);margin-top:20px;text-align:center;">Prof. Mtr. Álvaro Lyon Abreu</p>
+      <p style="font-size:0.85rem;color:var(--text-muted);text-align:center;">Director · Lyon Asesor, f.p.</p>
+      <p style="font-size:0.78rem;color:var(--text-light);margin-top:12px;text-align:center;">lyonasesor.com · info@lyonasesor.com · +58 414-8610464</p>
+    </div>`;
+
+    return html;
+  },
+
+  // Anexo: respuestas literales (colapsable)
+  gen_anexo(p, s) {
+    const paq = PACIENTE_PAQUETES[s.paquete] || PACIENTE_PAQUETES.individual;
+    const resp = p.formulariosCompletados || {};
+
+    let inner = '';
+    paq.formularios.forEach(idx => {
+      const prot = PROTOCOLOS_DATA.protocolos[idx];
+      if (!prot || !resp[idx]) return;
+      const r = resp[idx].respuestas || {};
+      inner += `<div class="raw-prot">
+        <div class="raw-prot-header">
+          <span><span class="raw-code">${escapeHtml(prot.code)}</span> ${escapeHtml(prot.title)}</span>
+          <span style="color:#64748b;font-weight:400;">${escapeHtml(resp[idx].fechaLegible || '')}</span>
+        </div>
+        <div class="raw-prot-body">`;
+
+      prot.questions.forEach(q => {
+        if (q.type === 'section_header') return;
+
+        let valor = '';
+        if (q.type === 'grid_multiple_choice' && q.matrix) {
+          valor = q.matrix.rows.map((row, ri) =>
+            `<div style="margin-bottom:4px;"><strong style="color:#64748b;font-size:0.78rem;">${escapeHtml(row)}:</strong> ${escapeHtml(r[q.id + '_r' + ri] || '—')}</div>`
+          ).join('');
+        } else if (q.repeatsFor) {
+          const days = [];
+          for (let d = 1; d <= q.repeatsFor; d++) {
+            const v = r[q.id + '_day' + d];
+            if (v) days.push(`<div style="margin-bottom:4px;"><strong style="color:#64748b;font-size:0.78rem;">Día ${d}:</strong> ${escapeHtml(v)}</div>`);
+          }
+          valor = days.join('') || '<em style="color:#94a3b8;">—</em>';
+        } else {
+          const v = r[q.id];
+          if (Array.isArray(v)) valor = v.map(escapeHtml).join(', ') || '—';
+          else if (v != null && String(v).trim()) valor = escapeHtml(v);
+          else valor = '<em style="color:#94a3b8;">—</em>';
+        }
+
+        inner += `<div class="raw-item">
+          <div class="raw-q">${escapeHtml(q.text)}</div>
+          <div class="raw-a">${valor}</div>
+        </div>`;
+      });
+
+      inner += `</div></div>`;
+    });
+
+    return `
+      <div class="report-raw-toggle" onclick="toggleRawAnexo(this)">
+        📎 Ver el anexo completo con tus respuestas literales
+        <span class="arrow">▼</span>
+      </div>
+      <div class="report-raw-content" id="reportRawContent">
+        ${inner}
+      </div>
+    `;
+  },
+
+  // -----------------------------------------
+  // 3) GENERADOR MAESTRO
+  // -----------------------------------------
+  generarInforme(paciente) {
+    const s = this.analizar(paciente);
+
+    let html = '';
+    html += this.gen_apertura(paciente, s);
+    html += this.gen_retrato(paciente, s);
+    html += this.gen_nucleo(paciente, s);
+    html += this.gen_vinculos(paciente, s);
+    html += this.gen_emocional(paciente, s);
+    html += this.gen_proposito(paciente, s);
+    html += this.gen_cierre(paciente, s);
+    html += this.gen_anexo(paciente, s);
+
+    // Botones finales
+    html += `
+      <div class="report-actions">
+        <button class="btn-print" onclick="descargarInformePDF(event)">📥 Descargar como PDF</button>
+        <button class="btn-print" style="background:#64748b;" onclick="window.print()">🖨️ Imprimir</button>
+        <button class="btn-close-report" onclick="document.getElementById('reportModal').classList.remove('open');document.body.style.overflow='';">Cerrar</button>
+      </div>
+    `;
+
+    return { html, señales: s };
+  }
+};
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
 const loginScreen = document.getElementById('loginScreen');
 const dashboard = document.getElementById('dashboard');
 const codigoInput = document.getElementById('codigoInput');
@@ -475,7 +1111,7 @@ function renderProtocolos(paquete) {
       card.addEventListener('click', () => abrirProtocolo(idx));
     } else if (estado === 'completed') {
       card.addEventListener('click', () => {
-        alert('Ya completaste este protocolo.\n\nPuedes revisar tus respuestas desde tu Informe Final (al completar todo el recorrido).');
+        alert('Ya completaste este protocolo.\n\nPuedes revisar tus respuestas desde tu Informe Final.');
       });
     } else if (estado === 'locked' && permitido) {
       card.addEventListener('click', () => {
@@ -519,7 +1155,6 @@ function abrirProtocolo(idx) {
   const body = document.getElementById('modalBody');
   body.innerHTML = '';
 
-  // Introducción
   if (prot.introduction && prot.introduction.length) {
     const intro = document.createElement('div');
     intro.className = 'intro-text';
@@ -528,7 +1163,6 @@ function abrirProtocolo(idx) {
     body.appendChild(intro);
   }
 
-  // Preguntas
   prot.questions.forEach((q, i) => {
     if (q.type === 'section_header') {
       const sh = document.createElement('div');
@@ -557,7 +1191,6 @@ function abrirProtocolo(idx) {
     body.appendChild(renderPregunta(q, i));
   });
 
-  // Consentimiento
   if (prot.consent) {
     const c = document.createElement('div');
     c.className = 'consent-block';
@@ -603,7 +1236,6 @@ function renderPregunta(q, index) {
 function crearInput(q) {
   const wrapper = document.createElement('div');
 
-  // ----- TEXTO / EMAIL / FECHA / TEXTO LARGO -----
   if (q.type === 'short_text' || q.type === 'email' || q.type === 'date' || q.type === 'long_text') {
     let el;
     if (q.type === 'long_text') {
@@ -615,7 +1247,6 @@ function crearInput(q) {
     el.placeholder = q.type === 'email' ? 'tu@correo.com' : 'Escribe aquí...';
     el.dataset.qid = q.id;
 
-    // Pre-llenar email del paciente en LA-00 (si aplica)
     if (q.type === 'email' && pacienteActual && pacienteActual.email && !el.value) {
       el.value = pacienteActual.email;
       respuestasTemp[q.id] = pacienteActual.email;
@@ -626,7 +1257,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- ESCALA LINEAL -----
   if (q.type === 'linear_scale') {
     const min = q.scale?.min ?? 1;
     const max = q.scale?.max ?? 10;
@@ -654,7 +1284,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- OPCIÓN MÚLTIPLE -----
   if (q.type === 'multiple_choice') {
     const g = document.createElement('div');
     g.className = 'radio-group';
@@ -673,7 +1302,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- CHECKBOX -----
   if (q.type === 'checkbox') {
     const g = document.createElement('div');
     g.className = 'checkbox-group';
@@ -696,7 +1324,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- MATRIZ DE OPCIÓN ÚNICA -----
   if (q.type === 'grid_multiple_choice' && q.matrix) {
     const wrap = document.createElement('div');
     wrap.className = 'matrix-wrapper';
@@ -723,7 +1350,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- MATRIZ DE CHECKBOX -----
   if (q.type === 'grid_checkbox' && q.matrix) {
     const wrap = document.createElement('div');
     wrap.className = 'matrix-wrapper';
@@ -756,7 +1382,6 @@ function crearInput(q) {
     return wrapper;
   }
 
-  // ----- FALLBACK: TEXTAREA -----
   const fb = document.createElement('textarea');
   fb.dataset.qid = q.id;
   fb.addEventListener('input', e => { respuestasTemp[q.id] = e.target.value; });
@@ -779,12 +1404,10 @@ function cerrarModal(forzar) {
 
 document.getElementById('closeModal').addEventListener('click', () => cerrarModal(false));
 
-// Cerrar con clic fuera del contenido
 document.getElementById('modalOverlay').addEventListener('click', (e) => {
   if (e.target.id === 'modalOverlay') cerrarModal(false);
 });
 
-// Cerrar con ESC
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (document.getElementById('reportModal').classList.contains('open')) {
@@ -802,59 +1425,35 @@ document.addEventListener('keydown', (e) => {
 document.getElementById('submitProtocol').addEventListener('click', async () => {
   const prot = PROTOCOLOS_DATA.protocolos[protocoloEnEdicion];
 
-  // Validar consentimiento
   const consentCheck = document.getElementById('consentCheck');
   if (prot.consent && prot.consent.required && (!consentCheck || !consentCheck.checked)) {
     alert('Debes aceptar el consentimiento para continuar.');
     return;
   }
 
-  // ============================================
-  // VALIDACIÓN DE PREGUNTAS REQUERIDAS
-  // Soporta: texto, email, fecha, escala, opción múltiple,
-  //          checkboxes, matrices (grid) y bloques repetidos
-  // ============================================
   const faltantes = [];
   prot.questions.forEach((q, qi) => {
     if (!q.required || q.type === 'section_header') return;
-
     const etiqueta = q.order ? `P${q.order}` : (q.code || `P${qi + 1}`);
     let vacia = false;
 
-    // A) MATRIZ de opción única → TODAS las filas deben tener respuesta
     if (q.type === 'grid_multiple_choice' && q.matrix) {
       for (let ri = 0; ri < q.matrix.rows.length; ri++) {
-        if (!respuestasTemp[`${q.id}_r${ri}`]) {
-          vacia = true;
-          break;
-        }
+        if (!respuestasTemp[`${q.id}_r${ri}`]) { vacia = true; break; }
       }
-    }
-    // B) MATRIZ de checkboxes → al menos una marca en cualquier fila
-    else if (q.type === 'grid_checkbox' && q.matrix) {
+    } else if (q.type === 'grid_checkbox' && q.matrix) {
       const tieneAlgo = Object.keys(respuestasTemp).some(k =>
-        k.startsWith(q.id + '_r') &&
-        Array.isArray(respuestasTemp[k]) &&
-        respuestasTemp[k].length > 0
+        k.startsWith(q.id + '_r') && Array.isArray(respuestasTemp[k]) && respuestasTemp[k].length > 0
       );
       if (!tieneAlgo) vacia = true;
-    }
-    // C) BLOQUES REPETIDOS → cada día debe tener contenido
-    else if (q.repeatsFor) {
+    } else if (q.repeatsFor) {
       for (let d = 1; d <= q.repeatsFor; d++) {
         const v = respuestasTemp[`${q.id}_day${d}`];
-        if (!v || !String(v).trim()) {
-          vacia = true;
-          break;
-        }
+        if (!v || !String(v).trim()) { vacia = true; break; }
       }
-    }
-    // D) PREGUNTAS SIMPLES
-    else {
+    } else {
       const val = respuestasTemp[q.id];
-      vacia = !val
-        || (Array.isArray(val) && val.length === 0)
-        || (typeof val === 'string' && !val.trim());
+      vacia = !val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && !val.trim());
     }
 
     if (vacia) faltantes.push(etiqueta);
@@ -884,13 +1483,35 @@ document.getElementById('submitProtocol').addEventListener('click', async () => 
     if (!pacienteActual.formulariosCompletados) pacienteActual.formulariosCompletados = {};
     pacienteActual.formulariosCompletados[idx] = { fecha: ahora, respuestas: respuestasTemp };
 
-    const feedback = generarFeedback(prot, respuestasTemp);
+    // ============================================
+    // VERIFICAR SI YA COMPLETÓ TODOS LOS PROTOCOLOS DE SU PAQUETE
+    // Si sí → generar el informe con el Motor Experto y guardarlo
+    // ============================================
+    const paquete = PACIENTE_PAQUETES[pacienteActual.paquete] || PACIENTE_PAQUETES.individual;
+    const completadosAhora = paquete.formularios.filter(i => !!pacienteActual.formulariosCompletados[i]).length;
+    const completosTotales = completadosAhora === paquete.total;
 
+    if (completosTotales && !pacienteActual.informeFinalGenerado) {
+      try {
+        console.log('🎓 Paciente completó su recorrido. Generando informe con Motor Experto...');
+        const resultado = MotorExperto.generarInforme(pacienteActual);
+
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalGenerado').set(true);
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalFecha').set(Date.now());
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalTexto').set(resultado.html);
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalSenales').set(resultado.señales);
+        pacienteActual.informeFinalGenerado = true;
+        console.log('✅ Informe generado y guardado en Firebase');
+      } catch (errInforme) {
+        console.error('⚠️ No se pudo pre-generar el informe:', errInforme);
+      }
+    }
+
+    const feedback = generarFeedback(prot, respuestasTemp);
     document.getElementById('modalOverlay').classList.remove('open');
     document.body.style.overflow = '';
     mostrarFeedback(prot, feedback);
 
-    const paquete = PACIENTE_PAQUETES[pacienteActual.paquete] || PACIENTE_PAQUETES.individual;
     renderProtocolos(paquete);
     actualizarProgreso(paquete);
   } catch (err) {
@@ -923,7 +1544,7 @@ function generarFeedback(prot) {
     'LA-09': base + 'Has dialogado y liberado. La carta que escribiste y el ejercicio de la silla vacía abren espacio para que la paz entre donde antes había peso.',
     'LA-10': base + 'Has afinado tu termómetro emocional. Nombrar lo que sientes es la base de toda inteligencia emocional. Sigue practicando este idioma cada día.',
     'LA-11': base + 'Has construido tu caja de herramientas. Ahora tienes recursos concretos para cuando la tormenta aparezca. Úsalos. Están ahí para ti.',
-    'LA-12': base + 'Has llegado al final. Tu Bitácora de Vuelo está lista para generar. Este es un momento para celebrar, para agradecerte y para reconocer todo lo recorrido.'
+    'LA-12': base + 'Has llegado al final. Tu Bitácora de Vuelo ya está lista. Este es un momento para celebrar, para agradecerte y para reconocer todo lo recorrido.'
   };
 
   return feedbacks[prot.id] || base + 'Has dado un paso importante en tu proceso. Sigue así.';
@@ -944,13 +1565,38 @@ document.getElementById('fbContinue').addEventListener('click', () => {
 });
 
 /* =========================================================
-   INFORME FINAL
+   INFORME FINAL — Usa el Motor Experto
    ========================================================= */
-document.getElementById('generateReportBtn').addEventListener('click', () => {
-  const html = generarInformeFinal(pacienteActual);
-  document.getElementById('reportContent').innerHTML = html;
-  document.getElementById('reportModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+document.getElementById('generateReportBtn').addEventListener('click', async () => {
+  try {
+    // Si ya existe un informe guardado en Firebase, lo mostramos tal cual.
+    // Si no, lo generamos al momento con el Motor Experto.
+    let html = pacienteActual.informeFinalTexto;
+
+    if (!html) {
+      const resultado = MotorExperto.generarInforme(pacienteActual);
+      html = resultado.html;
+
+      // Guardar en Firebase para futuras visitas
+      try {
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalGenerado').set(true);
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalFecha').set(Date.now());
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalTexto').set(html);
+        await database.ref('pacientes_consultorio/' + pacienteActual.codigo + '/informeFinalSenales').set(resultado.señales);
+        pacienteActual.informeFinalGenerado = true;
+        pacienteActual.informeFinalTexto = html;
+      } catch (e) {
+        console.warn('No se pudo guardar el informe en Firebase:', e);
+      }
+    }
+
+    document.getElementById('reportContent').innerHTML = html;
+    document.getElementById('reportModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  } catch (e) {
+    console.error('Error generando informe:', e);
+    alert('Hubo un error al generar tu informe. Intenta de nuevo.');
+  }
 });
 
 document.getElementById('reportModal').addEventListener('click', (e) => {
@@ -960,174 +1606,15 @@ document.getElementById('reportModal').addEventListener('click', (e) => {
   }
 });
 
-function generarInformeFinal(p) {
-  const hoy = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
-  const resp = p.formulariosCompletados || {};
-
-  // Helper interno: lee respuesta y la devuelve escapada
-  const g = (idx, key) => {
-    const val = resp[idx]?.respuestas?.[key];
-    return (val == null || val === '') ? '—' : escapeHtml(val);
-  };
-
-  let html = `
-    <div class="report-header">
-      <div class="logo">LYON<span>ASESOR</span></div>
-      <div style="font-size:0.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Bitácora de Vuelo Personal</div>
-      <h1>Informe Terapéutico Final</h1>
-      <div class="report-meta">
-        <strong>${escapeHtml(p.nombre || 'Consultante')}</strong> · ${escapeHtml(p.email || '')}<br>
-        Generado el ${hoy}
-      </div>
-    </div>
-  `;
-
-  html += `<div class="report-section">
-    <h2>🌱 <span>Introducción</span></h2>
-    <p>Este documento es el resultado de tu recorrido por los protocolos LA del Programa Lyon de NeuroLiderazgo y Transformación Humana. No es un diagnóstico clínico; es una <strong>bitácora viva</strong> de tu proceso, construida con tus propias palabras y organizada para que puedas releerla cada vez que necesites recordar quién eres y todo lo que has aprendido.</p>
-    <div class="highlight">"Lo que transforma equipos, empieza con una persona. Y hoy, esa persona eres tú."</div>
-  </div>`;
-
-  if (resp[0]) {
-    html += `<div class="report-section">
-      <h2>🧭 <span>Tu punto de partida (LA-00)</span></h2>
-      <p><strong>¿Qué te trajo a este proceso?</strong></p>
-      <p>${g(0, 'que_te_trae')}</p>
-      <p><strong>Si solo pudieras trabajar UNA COSA, ¿cuál sería?</strong></p>
-      <p>${g(0, 'una_cosa')}</p>
-    </div>`;
-  }
-
-  if (resp[1]) {
-    html += `<div class="report-section">
-      <h2>🎯 <span>Cazadores de pensamientos (LA-01)</span></h2>
-      <p><strong>Pensamientos que se repiten:</strong> ${g(1, 'pensamientos_repetidos')}</p>
-      <p><strong>Emociones frecuentes:</strong> ${g(1, 'emociones_frecuentes')}</p>
-      <p><strong>Relación situaciones-pensamientos:</strong> ${g(1, 'relacion_situaciones')}</p>
-    </div>`;
-  }
-
-  if (resp[2]) {
-    html += `<div class="report-section">
-      <h2>🌳 <span>Tu creencia nuclear (LA-02)</span></h2>
-      <p><strong>Creencia identificada:</strong> ${g(2, 'creencia_nuclear')}</p>
-      <p><strong>¿De quién la aprendiste?</strong> ${g(2, 'origen_creencia')}</p>
-      <p><strong>¿Dónde la sientes en el cuerpo?</strong> ${g(2, 'ubicacion_corporal')}</p>
-      <div class="highlight">Lo que has identificado aquí es la raíz. Todo lo demás que trabajemos tiene sentido desde este punto.</div>
-    </div>`;
-  }
-
-  if (resp[3]) {
-    html += `<div class="report-section">
-      <h2>⚖️ <span>Juicio a la creencia (LA-03)</span></h2>
-      <p><strong>Intensidad inicial:</strong> ${g(3, 'intensidad_inicial')}/10 → <strong>Intensidad final:</strong> ${g(3, 'intensidad_final')}/10</p>
-      <p><strong>Nueva creencia construida:</strong></p>
-      <div class="highlight">"${g(3, 'nueva_creencia')}"</div>
-      <p><strong>Tu ancla:</strong> ${g(3, 'anclaje_gesto')}</p>
-    </div>`;
-  }
-
-  if (resp[4] || resp[5]) {
-    html += `<div class="report-section">
-      <h2>🎬 <span>Trabajo con la memoria (LA-04 y LA-05)</span></h2>`;
-    if (resp[4]) {
-      html += `
-        <p><strong>Recuerdo trabajado:</strong> ${g(4, 'descripcion_recuerdo')}</p>
-        <p><strong>Intensidad inicial:</strong> ${g(4, 'intensidad_emocional')}/10</p>
-        <p><strong>Emoción principal:</strong> ${g(4, 'emocion_principal')}</p>`;
-    }
-    if (resp[5]) {
-      html += `
-        <p><strong>Intensidad después de actualizar:</strong> ${g(5, 'intensidad_post_modificacion')}/10</p>
-        <p><strong>Nueva frase construida:</strong></p>
-        <div class="highlight">"${g(5, 'nueva_frase_significado')}"</div>`;
-    }
-    html += `</div>`;
-  }
-
-  if (resp[6]) {
-    html += `<div class="report-section">
-      <h2>🪞 <span>¿Quién soy sin el otro? (LA-06)</span></h2>
-      <p><strong>Miedos identificados:</strong> ${g(6, 'miedo_perder')}</p>
-      <p><strong>Creencia tras el miedo:</strong> ${g(6, 'creencia_tras_miedo')}</p>
-    </div>`;
-  }
-
-  if (resp[7]) {
-    html += `<div class="report-section">
-      <h2>🛡️ <span>Re-parentalización y límites (LA-07)</span></h2>
-      <p><strong>Decálogo personal:</strong> ${g(7, 'decalogo')}</p>
-      <p><strong>Límite a practicar:</strong> ${g(7, 'situacion_limite')}</p>
-    </div>`;
-  }
-
-  if (resp[8]) {
-    html += `<div class="report-section">
-      <h2>🕸️ <span>Mapa vincular (LA-08)</span></h2>
-      <p><strong>Relación prioritaria trabajada:</strong> ${g(8, 'relacion_prioritaria')}</p>
-    </div>`;
-  }
-
-  if (resp[9]) {
-    html += `<div class="report-section">
-      <h2>🕊️ <span>Diálogo y liberación (LA-09)</span></h2>
-      <p><strong>Nueva narrativa de la relación:</strong></p>
-      <div class="highlight">"${g(9, 'nueva_narrativa')}"</div>
-      <p><strong>Nivel de paz alcanzado:</strong> ${g(9, 'escala_paz')}/10</p>
-    </div>`;
-  }
-
-  if (resp[10]) {
-    html += `<div class="report-section">
-      <h2>🌡️ <span>Termómetro emocional (LA-10)</span></h2>
-      <p><strong>Emociones frecuentes:</strong> ${g(10, 'emociones_frecuentes')}</p>
-      <p><strong>Emociones difíciles de aceptar:</strong> ${g(10, 'emociones_dificiles')}</p>
-    </div>`;
-  }
-
-  if (resp[11]) {
-    html += `<div class="report-section">
-      <h2>🧰 <span>Tu caja de herramientas (LA-11)</span></h2>
-      <p><strong>Valores más importantes:</strong> ${g(11, 'herramienta_5_valores')}</p>
-      <p><strong>Tu propósito:</strong></p>
-      <div class="highlight">"${g(11, 'herramienta_6_proposito')}"</div>
-      <p><strong>Herramienta elegida para practicar:</strong> ${g(11, 'compromiso_practica_diaria')}</p>
-    </div>`;
-  }
-
-  if (resp[12]) {
-    html += `<div class="report-section">
-      <h2>📖 <span>Bitácora de Vuelo (LA-12)</span></h2>
-      <p><strong>Mayor aprendizaje:</strong> ${g(12, 'mayor_aprendizaje')}</p>
-      <p><strong>Momento más difícil:</strong> ${g(12, 'momento_mas_dificil')}</p>
-      <p><strong>Algo que hoy ves de ti que antes no veías:</strong> ${g(12, 'algo_nuevo_ves')}</p>
-      <p><strong>Lo que más agradeces:</strong> ${g(12, 'que_agradeces')}</p>
-      <p><strong>Plan de emergencia:</strong> ${g(12, 'plan_emergencia')}</p>
-      <p><strong>Carta a tu yo futuro:</strong></p>
-      <div class="highlight">${g(12, 'carta_yo_futuro')}</div>
-    </div>`;
-  }
-
-  html += `
-    <div class="report-section" style="text-align:center;margin-top:40px;">
-      <h2 style="border:none;justify-content:center;text-align:center;">✨ <span>Palabras finales</span></h2>
-      <p style="font-style:italic;font-size:1rem;color:var(--navy);max-width:600px;margin:16px auto;">
-        Este recorrido no termina aquí. Todo lo que has descubierto vive en ti. Vuelve a esta bitácora cuando necesites recordar quién eres más allá del ruido.
-      </p>
-      <p style="font-weight:600;color:var(--naranja);margin-top:24px;">Prof. Mtr. Álvaro Lyon Abreu</p>
-      <p style="font-size:0.85rem;color:var(--text-muted);">Director · Lyon Asesor, f.p.</p>
-      <p style="font-size:0.78rem;color:var(--text-light);margin-top:12px;">lyonasesor.com · info@lyonasesor.com · +58 414-8610464</p>
-    </div>
-
-    <div class="report-actions">
-      <button class="btn-print" onclick="descargarInformePDF()">📥 Descargar como PDF</button>
-      <button class="btn-print" style="background:#64748b;" onclick="window.print()">🖨️ Imprimir</button>
-      <button class="btn-close-report" onclick="document.getElementById('reportModal').classList.remove('open');document.body.style.overflow='';">Cerrar</button>
-    </div>
-  `;
-
-  return html;
-}
+/* =========================================================
+   TOGGLE DEL ANEXO EN EL INFORME
+   ========================================================= */
+window.toggleRawAnexo = function(el) {
+  const content = document.getElementById('reportRawContent');
+  if (!content) return;
+  content.classList.toggle('open');
+  el.classList.toggle('open');
+};
 
 /* =========================================================
    DESCARGA DEL INFORME EN PDF
@@ -1142,13 +1629,11 @@ window.descargarInformePDF = async function(evt) {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('reportContent');
 
-    // Guardar estilos originales
     const origWidth = element.style.width;
     const origMaxWidth = element.style.maxWidth;
     const origPadding = element.style.padding;
     const origBackground = element.style.background;
 
-    // Forzar ancho fijo para captura consistente
     element.style.width = '900px';
     element.style.maxWidth = '900px';
     element.style.padding = '40px';
@@ -1162,7 +1647,6 @@ window.descargarInformePDF = async function(evt) {
       windowWidth: 900
     });
 
-    // Restaurar estilos
     element.style.width = origWidth;
     element.style.maxWidth = origMaxWidth;
     element.style.padding = origPadding;
@@ -1208,7 +1692,7 @@ window.descargarInformePDF = async function(evt) {
 };
 
 /* =========================================================
-   AUTO-LOGIN AL CARGAR
+   AUTO-LOGIN
    ========================================================= */
 window.addEventListener('load', async () => {
   const codigoGuardado = localStorage.getItem('lyon_consultorio_codigo');
