@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Página no encontrada · Lyon Asesor</title>
+    <meta name="description" content="La página que buscas no existe o ha sido movida. Descubre nuestros servicios de Educación Emocional, Desarrollo Humano y consultas terapéuticas." />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="https://lyonasesor.com/" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --naranja: #e86b18;
+            --naranja-luz: #f28c4e;
+            --navy: #1A2330;
+            --navy-dark: #0f1720;
+            --crema: #faf8f5;
+            --blanco-calido: #fefdfb;
+            --text-dark: #2C3E50;
+            --text-muted: #5A6C7D;
+            --radius: 16px;
+            --shadow-orange: 0 4px 20px rgba(232,107,24,0.3);
+            --shadow-lg: 0 8px 40px rgba(26,35,48,0.16);
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--crema);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            background: radial-gradient(ellipse at 20% 50%, rgba(232,107,24,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(26,35,48,0.03) 0%, transparent 50%),
+                        var(--crema);
+        }
+        .error-card {
+            max-width: 640px;
+            width: 100%;
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 3.5rem 2.5rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            border: 1px solid rgba(26,35,48,0.06);
+        }
+        .error-code {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(5rem, 12vw, 8rem);
+            font-weight: 700;
+            color: var(--naranja);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -4px;
+        }
+        .error-card h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+        .error-card h1 span { color: var(--naranja); }
+        .error-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .error-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            box-shadow: var(--shadow-orange);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(232,107,24,0.5);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--navy);
+            border: 1.5px solid rgba(26,35,48,0.15);
+        }
+        .btn-ghost:hover {
+            border-color: var(--naranja);
+            color: var(--naranja);
+        }
+        .error-links {
+            padding-top: 2rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        .error-links p {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .error-links ul {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .error-links ul a {
+            color: var(--naranja);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .error-links ul a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            .error-card { padding: 2.5rem 1.5rem; }
+            .error-code { letter-spacing: -2px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <h1>Esta página <span>no existe</span></h1>
+        <p>
+            Puede que el enlace esté roto, que la página haya sido movida, o que hayas escrito mal la dirección.
+            Tranquilo, no es tu culpa.
+        </p>
+        <div class="error-actions">
+            <a href="index.html" class="btn btn-primary">← Volver al inicio</a>
+            <a href="consulta.html" class="btn btn-ghost">Agendar consulta</a>
+        </div>
+        <div class="error-links">
+            <p>Explora Lyon Asesor</p>
+            <ul>
+                <li><a href="consulta.html">Consulta</a></li>
+                <li><a href="membresia.html">Membresía</a></li>
+                <li><a href="conferencia.html">Conferencias</a></li>
+                <li><a href="ebook.html">Biblioteca</a></li>
+                <li><a href="diagnostico.html">Brújula Emocional</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
