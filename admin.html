@@ -1148,7 +1148,7 @@
                 const s = snap.val();
                 if (!s) throw new Error('Solicitud no encontrada');
 
-                const nombre = s.nombre || s.nombreCompleto || s.full_name || s.name || 'Estudiante';
+                const nombre = s.nombre || s.contacto || s.nombreCompleto || s.full_name || s.name || 'Estudiante';
                 const email = s.email || s.correo || '';
                 const telefono = s.telefono || s.phone || s.celular || '';
                 const plan = s.plan || s.tipoPlan || 'extendido';
@@ -1165,7 +1165,13 @@
                     asistioCierre: false
                 });
 
-                await database.ref('solicitudes_membresia/' + id + '/estado').set('aprobada');
+                // 🔧 IMPORTANTE: Guardar estado + codigoGenerado + fechaAprobacion
+                // para que gracias.html (auto-refresh) lo detecte
+                await database.ref('solicitudes_membresia/' + id).update({
+                    estado: 'aprobada',
+                    codigoGenerado: codigo,
+                    fechaAprobacion: Date.now()
+                });
 
                 if (s.refAfiliado) await acreditarComisionSiAplica(s);
 
@@ -1212,7 +1218,11 @@
                     estado: 'activo'
                 });
 
-                await database.ref('solicitudes_afiliado/' + id + '/estado').set('aprobada');
+                await database.ref('solicitudes_afiliado/' + id).update({
+                    estado: 'aprobada',
+                    codigoGenerado: codigo,
+                    fechaAprobacion: Date.now()
+                });
 
                 mostrarCodigoModal(
                     '🤝 Afiliado aprobado',
@@ -1315,10 +1325,10 @@
                 <tr>
                     <td>${f.tipo === 'Membresía' ? '🎓 Membresía' : '🤝 Afiliado'}</td>
                     <td>${f.fechaLegible || ''}</td>
-                    <td>${f.nombre || f.nombreCompleto || ''}</td>
+                    <td>${f.nombre || f.contacto || f.nombreCompleto || ''}</td>
                     <td>${f.email || f.correo || ''}</td>
                     <td>${f.telefono || f.phone || ''}</td>
-                    <td>${f.plan || f.tipoPlan || f.experiencia || '—'}</td>
+                    <td>${f.planLabel || f.plan || f.tipoPlan || f.experiencia || '—'}</td>
                     <td>${f.metodoPago || '—'}</td>
                     <td><button class="btn-pagar" data-tipo="${f.tipo}" data-id="${f.id}">✅ Aprobar</button></td>
                 </tr>
@@ -2681,7 +2691,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y Panel del Terapeuta (sin EmailJS)');
+    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y Panel del Terapeuta');
 </script>
 </body>
 </html>
