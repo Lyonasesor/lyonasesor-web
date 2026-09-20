@@ -2,13 +2,36 @@
 # _redirects — Lyon Asesor
 # Cloudflare Pages
 # ============================================
-# Reglas específicas (301 = permanente, 302 = temporal)
-# Las URLs viejas se redirigen a las nuevas.
+# Las reglas se evalúan de arriba hacia abajo. La primera coincidencia gana.
+# Formato: /ruta-origen /ruta-destino [código]
+# Códigos: 301 (permanente), 302 (temporal), 200 (reescritura sin cambiar URL)
 
-# --- Ejemplos de redirecciones SEO (descomenta y adapta si algún día mueves URLs) ---
-# /antiguo-consulta /consulta.html 301
+# ============================================
+# REDIRECCIONES TÉCNICAS
+# ============================================
+
+# Unificar firebase-config.js en una sola ruta canónica
+# La copia vieja en la raíz se redirige a /js/firebase-config.js
+/firebase-config.js /js/firebase-config.js 301
+
+
+# ============================================
+# REDIRECCIONES SEO (descomentar cuando aplique)
+# ============================================
+# Si algún día mueves o renombras una URL, añade aquí la regla 301.
+# Ejemplos:
+
+# /consulta /consulta.html 301
 # /membresia-vieja /membresia.html 301
+# /conferencias/index /conferencia.html 301
 
-# --- Página 404 personalizada ---
-# Cloudflare Pages sirve automáticamente /404.html para rutas no encontradas.
-# NO añadir la regla "/* /index.html 200" — eso convierte cualquier URL rota en la home.
+
+# ============================================
+# PÁGINA 404 PERSONALIZADA
+# ============================================
+# Cloudflare Pages sirve automáticamente /404.html cuando una ruta no existe.
+# NO añadir la regla "/* /index.html 200" — convierte cualquier URL rota
+# en la home (con código 200) y enmascara errores reales.
+#
+# Para que la 404 funcione, simplemente debe existir el archivo /404.html
+# en la raíz del proyecto. Cloudflare lo detecta y lo usa solo.
