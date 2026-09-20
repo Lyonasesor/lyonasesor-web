@@ -81,9 +81,6 @@
         .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #0f172a; margin-top: 4px; }
         .stat-card .stat-sub { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
 
-        /* ============================================
-           SECCIONES COLAPSABLES
-           ============================================ */
         .collapsible-section {
             background: white;
             border-radius: 20px;
@@ -356,10 +353,15 @@
             <div class="stat-card"><div class="stat-label">💰 Ingresos totales</div><div class="stat-value" id="statIngresos">$0</div><div class="stat-sub">Transacciones pagadas</div></div>
             <div class="stat-card"><div class="stat-label">📘 Ebooks</div><div class="stat-value" id="statEbooks">0</div><div class="stat-sub">Leads capturados</div></div>
             <div class="stat-card"><div class="stat-label">🧠 Diagnósticos</div><div class="stat-value" id="statDiagnosticos">0</div><div class="stat-sub">Brújulas realizadas</div></div>
+            <div class="stat-card">
+                <div class="stat-label">🧘 Pacientes Consultorio</div>
+                <div class="stat-value" id="statPacientesConsultorio">0</div>
+                <div class="stat-sub" id="statConsultorioSub">Activos: 0</div>
+            </div>
         </div>
 
         <!-- ============================================
-             SECCIÓN: Gestión de Conferencias (colapsable)
+             SECCIÓN: Gestión de Conferencias
              ============================================ -->
         <div class="collapsible-section" id="sectionConferencias">
             <div class="collapsible-header" onclick="toggleSection('sectionConferencias')">
@@ -376,7 +378,7 @@
             </div>
         </div>
 
-        <!-- CHART SECTION (siempre visible, es compacta) -->
+        <!-- CHART SECTION -->
         <div class="chart-section" style="margin-top: 32px;">
             <div class="chart-card">
                 <h3>📈 Distribución de ventas</h3>
@@ -406,7 +408,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: Registros de Leads (colapsable)
+             SECCIÓN: Registros de Leads
              ============================================ -->
         <div class="collapsible-section collapsed" id="sectionLeads">
             <div class="collapsible-header" onclick="toggleSection('sectionLeads')">
@@ -437,7 +439,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: Solicitudes Pendientes (colapsable)
+             SECCIÓN: Solicitudes Pendientes
              ============================================ -->
         <div class="collapsible-section" id="sectionSolicitudes">
             <div class="collapsible-header" onclick="toggleSection('sectionSolicitudes')">
@@ -460,7 +462,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: Gestión de Miembros (colapsable)
+             SECCIÓN: Gestión de Miembros
              ============================================ -->
         <div class="collapsible-section" id="sectionMiembros">
             <div class="collapsible-header" onclick="toggleSection('sectionMiembros')">
@@ -489,7 +491,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: Gestión de Afiliados (colapsable)
+             SECCIÓN: Gestión de Afiliados
              ============================================ -->
         <div class="collapsible-section" id="sectionAfiliados">
             <div class="collapsible-header" onclick="toggleSection('sectionAfiliados')">
@@ -512,7 +514,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: Ventas de Ebooks Pendientes (colapsable)
+             SECCIÓN: Ventas de Ebooks Pendientes
              ============================================ -->
         <div class="collapsible-section" id="sectionVentasEbook">
             <div class="collapsible-header" onclick="toggleSection('sectionVentasEbook')">
@@ -548,7 +550,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: LIBRO DE VENTAS (NUEVA - colapsable)
+             SECCIÓN: LIBRO DE VENTAS
              ============================================ -->
         <div class="collapsible-section collapsed" id="sectionLibroVentas">
             <div class="collapsible-header" onclick="toggleSection('sectionLibroVentas')">
@@ -609,7 +611,7 @@
         </div>
 
         <!-- ============================================
-             SECCIÓN: APROBACIÓN DEL CONTADOR (NUEVA - colapsable)
+             SECCIÓN: APROBACIÓN DEL CONTADOR
              ============================================ -->
         <div class="collapsible-section collapsed" id="sectionAprobacionContador">
             <div class="collapsible-header" onclick="toggleSection('sectionAprobacionContador')">
@@ -649,6 +651,82 @@
                             </thead>
                             <tbody id="aprobacionesContadorTableBody">
                                 <tr><td colspan="7" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECCIÓN: Consultorio — Solicitudes Pendientes
+             ============================================ -->
+        <div class="collapsible-section" id="sectionSolicitudesConsultorio">
+            <div class="collapsible-header" onclick="toggleSection('sectionSolicitudesConsultorio')">
+                <div>
+                    <h2>🧘 Solicitudes de Consultorio</h2>
+                    <div class="subtitle">Verifica el pago y aprueba nuevos pacientes</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="info-box">
+                    📌 <strong>Flujo:</strong> Cuando un cliente paga una consulta (PayPal o Pago Móvil), aparece aquí. <strong>Primero verifica el pago</strong>, luego aprueba para generar el código de acceso.
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Paquete</th>
+                                    <th>Monto</th>
+                                    <th>Método</th>
+                                    <th>Estado Pago</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="solicitudesConsultorioBody">
+                                <tr><td colspan="9" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             SECCIÓN: Pacientes Activos del Consultorio
+             ============================================ -->
+        <div class="collapsible-section" id="sectionPacientesConsultorio">
+            <div class="collapsible-header" onclick="toggleSection('sectionPacientesConsultorio')">
+                <div>
+                    <h2>🧑‍⚕️ Pacientes Activos del Consultorio</h2>
+                    <div class="subtitle">Progreso individual de cada paciente en sus protocolos LA</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="table-wrapper">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Paquete</th>
+                                    <th>Progreso</th>
+                                    <th>Último acceso</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pacientesConsultorioBody">
+                                <tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -723,7 +801,6 @@
         return parseFloat(match[0].replace(/,/g, '')) || 0;
     }
 
-    // 🔧 IVA: 16% Venezuela, 0% exterior
     function calcularIVA(totalUSD, ubicacion) {
         if (ubicacion === 'VE') {
             const base = +(totalUSD / 1.16).toFixed(2);
@@ -783,7 +860,6 @@
                 ncfEstado: 'pendiente',
                 refOriginal: entrada.refOriginal || ''
             };
-            // Clave determinística para evitar duplicados
             const key = entrada.key || ('auto_' + Date.now() + '_' + Math.random().toString(36).substring(7));
             await database.ref('libro_ventas/' + key).set(registro);
             console.log('✅ Registro añadido al Libro de Ventas:', key);
@@ -850,7 +926,7 @@
     });
 
     // =============================================
-    // APROBAR SOLICITUD (con registro automático en Libro de Ventas)
+    // APROBAR SOLICITUD (Membresía / Afiliado)
     // =============================================
     async function aprobarSolicitud(tipo, id) {
         try {
@@ -880,7 +956,6 @@
 
                 if (s.refAfiliado) await acreditarComisionSiAplica(s);
 
-                // 🔧 Registro automático en Libro de Ventas
                 const montoUSD = parsePrecioNumero(s.precio) || 0;
                 const esVE = (pais || '').toLowerCase().includes('venezuela');
                 await registrarEnLibroVentas({
@@ -987,12 +1062,15 @@
             cargarAfiliados(),
             cargarVentasEbookPendientes(),
             cargarLibroVentas(),
-            cargarAprobacionesContador()
+            cargarAprobacionesContador(),
+            cargarSolicitudesConsultorio(),
+            cargarPacientesConsultorio()
         ]);
+        actualizarStatsConsultorio();
     }
 
     // =============================================
-    // SOLICITUDES
+    // SOLICITUDES (Membresía / Afiliado)
     // =============================================
     async function cargarSolicitudes() {
         const tbody = document.getElementById('solicitudesTableBody');
@@ -1258,7 +1336,6 @@
             await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}/estadoPago`).set('confirmada');
             await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}/fechaConfirmacion`).set(Date.now());
 
-            // 🔧 Registro automático en Libro de Ventas
             const ventaSnap = await database.ref(`afiliados_ventas/${codigoAfiliado}/${pushId}`).once('value');
             const v = ventaSnap.val() || {};
             await registrarEnLibroVentas({
@@ -1267,7 +1344,7 @@
                 descripcion: v.producto || 'Biblioteca Lyon Asesor',
                 clienteNombre: 'Cliente Ebook',
                 clienteEmail: '',
-                clienteUbicacion: 'VE', // Por defecto, editable después
+                clienteUbicacion: 'VE',
                 clientePais: 'Venezuela',
                 montoUSD: v.monto || 9.99,
                 refOriginal: codigoAfiliado + '/' + pushId
@@ -1304,7 +1381,6 @@
             libroVentasData = Object.entries(data).map(([id, entry]) => ({ id, ...entry }));
             libroVentasData.sort((a, b) => (b.fecha || 0) - (a.fecha || 0));
 
-            // Poblar el filtro de meses
             const mesesSet = new Set(libroVentasData.map(e => e.mes).filter(Boolean));
             const mesesArr = Array.from(mesesSet).sort().reverse();
             const selectMes = document.getElementById('filtroMesLibro');
@@ -1318,7 +1394,6 @@
             });
             if (valorActual && mesesArr.includes(valorActual)) selectMes.value = valorActual;
 
-            // Poblar el select de aprobación de contador
             const selectAprobar = document.getElementById('mesAprobarContador');
             const valorAprobar = selectAprobar.value;
             selectAprobar.innerHTML = '<option value="">Selecciona un mes...</option>';
@@ -1418,7 +1493,6 @@
 
     window.cambiarUbicacionLibro = async function(id, valor) {
         try {
-            // Recalcular IVA según nueva ubicación
             const snap = await database.ref('libro_ventas/' + id).once('value');
             const entry = snap.val() || {};
             const calculo = calcularIVA(entry.montoUSD || 0, valor);
@@ -1494,7 +1568,6 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
-        // Encabezado
         doc.setFontSize(16);
         doc.setTextColor(232, 107, 24);
         doc.text('LYON ASESOR, F.P.', 14, 15);
@@ -1509,7 +1582,6 @@
         const periodo = mesFiltro === 'todos' ? 'Todos los meses' : mesFiltro;
         doc.text('Periodo: ' + periodo + ' | Generado: ' + new Date().toLocaleString('es-ES'), 14, 36);
 
-        // Totales
         const totalVentas = filtered.length;
         const totalUSD = filtered.reduce((s, e) => s + (e.total || 0), 0);
         const totalIVA = filtered.reduce((s, e) => s + (e.ivaMonto || 0), 0);
@@ -1517,7 +1589,6 @@
         doc.setTextColor(15, 23, 42);
         doc.text(`Registros: ${totalVentas}  |  Total USD: $${totalUSD.toFixed(2)}  |  IVA acumulado: $${totalIVA.toFixed(2)}`, 14, 44);
 
-        // Tabla
         const rows = filtered.map(e => [
             e.fechaLegible || '',
             e.tipo || '',
@@ -1841,12 +1912,10 @@
                     const lead = allLeads.find(l => l.id === id && l.coleccion === coleccion);
                     await database.ref(`leads/${coleccion}/${id}/pagado`).set(nuevoEstado);
 
-                    // Acreditar comisión + registrar en Libro de Ventas si es conferencia pagada
                     if (coleccion === 'conferencias' && nuevoEstado === true && lead) {
                         if (lead.refAfiliado) {
                             await acreditarComisionConferencia(lead);
                         }
-                        // Registro en Libro de Ventas
                         const esVE = (lead.pais || 'Venezuela').toLowerCase().includes('venezuela');
                         await registrarEnLibroVentas({
                             key: 'conferencia_' + id,
@@ -1875,6 +1944,245 @@
     document.getElementById('estadoFiltro').addEventListener('change', renderTabla);
 
     // =============================================
+    // CONSULTORIO — PACIENTES Y SOLICITUDES
+    // =============================================
+    const CONSULTORIO_PAQUETES = {
+      individual: { nombre: 'Sesión Individual ($70)', formularios: [0,1,2], total: 3 },
+      pack2:      { nombre: 'Pack 2 ($130)',          formularios: [0,1,2,3], total: 4 },
+      pack3:      { nombre: 'Pack 3 ($180)',          formularios: [0,1,2,3,4,5,6,7,8], total: 9 },
+      pack5:      { nombre: 'Pack 5 ($290)',          formularios: [0,1,2,3,4,5,6,7,8,9,10,11,12], total: 13 }
+    };
+
+    function generarCodigoConsultorio() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let c = '';
+      for (let i = 0; i < 6; i++) c += chars.charAt(Math.floor(Math.random() * chars.length));
+      return 'LYON-' + c;
+    }
+
+    async function cargarSolicitudesConsultorio() {
+      const tbody = document.getElementById('solicitudesConsultorioBody');
+      if (!tbody) return;
+      try {
+        const snap = await database.ref('solicitudes_consultorio').once('value');
+        const data = snap.val() || {};
+        const filas = Object.entries(data)
+          .filter(([id, s]) => s.estado !== 'aprobada' && s.estado !== 'rechazada')
+          .map(([id, s]) => ({ id, ...s }))
+          .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        if (filas.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:2rem; color:#94a3b8;">No hay solicitudes pendientes.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = filas.map(f => {
+          const paq = CONSULTORIO_PAQUETES[f.paquete] || CONSULTORIO_PAQUETES.individual;
+          let estadoPago, accion;
+
+          if (f.pagado === true) {
+            estadoPago = '<span class="badge badge-pagado">✅ Pago verificado</span>';
+            accion = `<button class="btn-pagar" onclick="aprobarConsultorio('${f.id}')">✅ Aprobar</button>
+                      <button class="btn-pagar" style="background:#ef4444; margin-left:4px;" onclick="rechazarConsultorio('${f.id}')">✕</button>`;
+          } else {
+            estadoPago = '<span class="badge badge-pendiente">⏳ Verificar pago</span>';
+            accion = `<button class="btn-pagar" style="background:#2563eb;" onclick="verificarPagoConsultorio('${f.id}')">💳 Verificar Pago</button>
+                      <button class="btn-pagar" style="background:#ef4444; margin-left:4px;" onclick="rechazarConsultorio('${f.id}')">✕</button>`;
+          }
+
+          return `<tr>
+            <td>${f.fechaLegible || ''}</td>
+            <td><strong>${f.nombre || ''}</strong></td>
+            <td>${f.email || ''}</td>
+            <td>${f.telefono || ''}</td>
+            <td>${paq.nombre}</td>
+            <td>$${f.monto || 0}</td>
+            <td>${f.metodoPago || '—'}</td>
+            <td>${estadoPago}</td>
+            <td>${accion}</td>
+          </tr>`;
+        }).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+      }
+    }
+
+    window.verificarPagoConsultorio = async function(id) {
+      if (!confirm('¿Confirmas que verificaste este pago en PayPal / WhatsApp / banco?\n\nUna vez verificado, podrás aprobar y generar el código de acceso.')) return;
+      try {
+        await database.ref('solicitudes_consultorio/' + id).update({
+          pagado: true,
+          fechaVerificacionPago: Date.now()
+        });
+        await cargarSolicitudesConsultorio();
+      } catch (e) {
+        console.error(e);
+        alert('Error al verificar pago: ' + e.message);
+      }
+    };
+
+    window.aprobarConsultorio = async function(id) {
+      if (!confirm('¿Aprobar esta solicitud? Se generará un código de acceso para el paciente.')) return;
+      try {
+        const snap = await database.ref('solicitudes_consultorio/' + id).once('value');
+        const s = snap.val();
+        if (!s) throw new Error('Solicitud no encontrada');
+
+        if (!s.pagado) {
+          alert('⚠️ Debes verificar el pago antes de aprobar esta solicitud.');
+          return;
+        }
+
+        const paq = CONSULTORIO_PAQUETES[s.paquete] || CONSULTORIO_PAQUETES.individual;
+
+        let codigo, existe = true;
+        let intentos = 0;
+        while (existe && intentos < 5) {
+          codigo = generarCodigoConsultorio();
+          const check = await database.ref('pacientes_consultorio/' + codigo).once('value');
+          existe = check.exists();
+          intentos++;
+        }
+
+        await database.ref('pacientes_consultorio/' + codigo).set({
+          nombre: s.nombre || 'Consultante',
+          email: s.email || '',
+          telefono: s.telefono || '',
+          paquete: s.paquete || 'individual',
+          formulariosPermitidos: paq.formularios,
+          formulariosCompletados: {},
+          informeFinalGenerado: false,
+          estado: 'activo',
+          metodoPago: s.metodoPago || 'paypal',
+          fechaRegistro: Date.now(),
+          fechaUltimoAcceso: null,
+          refSolicitud: id
+        });
+
+        await database.ref('solicitudes_consultorio/' + id).update({
+          estado: 'aprobada',
+          codigoGenerado: codigo,
+          fechaAprobacion: Date.now()
+        });
+
+        mostrarCodigoModal(
+          '🧘 Consultorio aprobado',
+          `El código de acceso para <strong>${s.nombre}</strong> es:`,
+          codigo,
+          `Paquete: <strong>${paq.nombre}</strong><br>
+           Envía este código al paciente por WhatsApp o correo.<br><br>
+           🔗 <strong>lyonasesor.com/consultorio.html</strong>`
+        );
+
+        const msgWA = encodeURIComponent(
+          `Hola ${s.nombre}, tu proceso terapéutico con Lyon Asesor ya está activo. 🌱\n\n` +
+          `📋 Paquete: ${paq.nombre}\n` +
+          `🔐 Tu código de acceso: ${codigo}\n\n` +
+          `Ingresa en: https://lyonasesor.com/consultorio.html\n\n` +
+          `Cualquier duda, escríbeme por aquí. Un abrazo, Álvaro Lyon.`
+        );
+        const tel = (s.telefono || '').replace(/[^0-9]/g, '');
+        if (tel) {
+          setTimeout(() => window.open(`https://wa.me/${tel}?text=${msgWA}`, '_blank'), 800);
+        }
+
+        await Promise.all([cargarSolicitudesConsultorio(), cargarPacientesConsultorio()]);
+      } catch (e) {
+        console.error(e);
+        alert('Error: ' + e.message);
+      }
+    };
+
+    window.rechazarConsultorio = async function(id) {
+      if (!confirm('¿Rechazar esta solicitud?')) return;
+      try {
+        await database.ref('solicitudes_consultorio/' + id).update({ estado: 'rechazada' });
+        await cargarSolicitudesConsultorio();
+      } catch (e) { console.error(e); }
+    };
+
+    async function cargarPacientesConsultorio() {
+      const tbody = document.getElementById('pacientesConsultorioBody');
+      if (!tbody) return;
+      try {
+        const snap = await database.ref('pacientes_consultorio').once('value');
+        const data = snap.val() || {};
+        const filas = Object.entries(data).map(([codigo, p]) => ({ codigo, ...p }));
+
+        if (filas.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:2rem; color:#94a3b8;">Sin pacientes activos aún.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = filas.map(p => {
+          const paq = CONSULTORIO_PAQUETES[p.paquete] || CONSULTORIO_PAQUETES.individual;
+          const completados = Object.keys(p.formulariosCompletados || {}).length;
+          const progreso = `${completados}/${paq.total} (${Math.round(completados/paq.total*100)}%)`;
+          const ultAcceso = p.fechaUltimoAcceso
+            ? new Date(p.fechaUltimoAcceso).toLocaleDateString('es-ES')
+            : '—';
+          return `<tr>
+            <td><strong>${p.codigo}</strong></td>
+            <td>${p.nombre || ''}</td>
+            <td>${p.email || ''}</td>
+            <td>${paq.nombre}</td>
+            <td>${progreso}</td>
+            <td>${ultAcceso}</td>
+            <td><span class="badge badge-pagado">${p.estado || 'activo'}</span></td>
+            <td>
+              <button class="btn-pagar" onclick="verDetallePaciente('${p.codigo}')">📋 Ver</button>
+              <button class="btn-pagar desmarcar" style="margin-left:4px;" onclick="resetearPaciente('${p.codigo}')">🔄</button>
+            </td>
+          </tr>`;
+        }).join('');
+      } catch (e) {
+        console.error(e);
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+      }
+    }
+
+    window.verDetallePaciente = async function(codigo) {
+      const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
+      const p = snap.val();
+      if (!p) return;
+      const paq = CONSULTORIO_PAQUETES[p.paquete] || CONSULTORIO_PAQUETES.individual;
+      const completados = p.formulariosCompletados || {};
+      let msg = `Paciente: ${p.nombre}\nEmail: ${p.email}\nPaquete: ${paq.nombre}\n\nProgreso:\n`;
+      const protList = (typeof PROTOCOLOS_DATA !== 'undefined' && PROTOCOLOS_DATA.protocolos)
+        ? PROTOCOLOS_DATA.protocolos
+        : null;
+      paq.formularios.forEach(i => {
+        const code = 'LA-' + String(i).padStart(2, '0');
+        const title = protList && protList[i] ? protList[i].title : '';
+        const c = completados[i] ? '✅' : '⏳';
+        msg += `${c} ${code} — ${title}\n`;
+      });
+      alert(msg);
+    };
+
+    window.resetearPaciente = async function(codigo) {
+      if (!confirm('¿Resetear el progreso de este paciente? Se borrarán todas sus respuestas.')) return;
+      try {
+        await database.ref('pacientes_consultorio/' + codigo + '/formulariosCompletados').set({});
+        await cargarPacientesConsultorio();
+      } catch (e) { console.error(e); }
+    };
+
+    async function actualizarStatsConsultorio() {
+      try {
+        const snap = await database.ref('pacientes_consultorio').once('value');
+        const data = snap.val() || {};
+        const total = Object.keys(data).length;
+        const activos = Object.values(data).filter(p => p.estado === 'activo').length;
+        const el = document.getElementById('statPacientesConsultorio');
+        const sub = document.getElementById('statConsultorioSub');
+        if (el) el.textContent = total;
+        if (sub) sub.textContent = `Activos: ${activos}`;
+      } catch (e) { console.error(e); }
+    }
+
+    // =============================================
     // RECARGA PERIÓDICA
     // =============================================
     setInterval(() => {
@@ -1882,7 +2190,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador y secciones colapsables');
+    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y secciones colapsables');
 </script>
 </body>
 </html>
