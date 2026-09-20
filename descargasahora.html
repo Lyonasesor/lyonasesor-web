@@ -44,16 +44,7 @@
         }
     </script>
     
-    <!-- Google Analytics 4 — ID REAL -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-003ZC6TLH3');
-    </script>
-    
-    <!-- Meta Pixel — Placeholder -->
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -63,10 +54,34 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
+        fbq('init', '847498078082153');
         fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página de descargas (post-compra del ebook)
+        // Nota: el evento Purchase ya se disparó en gracias.html al confirmar el pago.
+        // Aquí solo marcamos ViewContent para medir el acceso a los archivos descargables.
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Biblioteca Lyon Asesor - Descargas',
+                content_category: 'biblioteca_descargas',
+                value: 9.99,
+                currency: 'USD'
+            });
+        }
+    </script>
+    
+    <!-- Google Analytics 4 — ID REAL -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-003ZC6TLH3');
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -158,7 +173,6 @@
             height: 32px;
             object-fit: contain;
             border-radius: 50%;
-            alt: "Lyon Asesor - Psicoterapia y Desarrollo Personal";
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
@@ -914,8 +928,12 @@
                     });
                 }
                 if (typeof fbq !== 'undefined') {
+                    // Meta Pixel: el usuario descargó uno de los archivos de la biblioteca
                     fbq('track', 'Download', {
-                        'content_name': nombre
+                        content_name: nombre,
+                        content_category: 'biblioteca',
+                        value: 9.99,
+                        currency: 'USD'
                     });
                 }
                 window.open(url, '_blank');
