@@ -48,16 +48,7 @@
         }
     </script>
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-003ZC6TLH3');
-    </script>
-    
-    <!-- Meta Pixel (reemplaza con tu ID) -->
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -67,10 +58,32 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
+        fbq('init', '847498078082153');
         fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página del Programa de Afiliados
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Programa de Afiliados Lyon Asesor',
+                content_category: 'afiliados',
+                value: 0,
+                currency: 'USD'
+            });
+        }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-003ZC6TLH3');
+    </script>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -996,11 +1009,26 @@
                 console.error('❌ Error al guardar en Firebase:', error);
             }
 
+            // =============================================
+            // META PIXEL: evento Lead con datos del registro
+            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'afiliado' });
             }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    value: 0,
+                    currency: 'USD',
+                    content_name: 'Registro Programa de Afiliados',
+                    content_category: 'afiliados'
+                });
+                // Evento adicional: CompleteRegistration (más semántico para registro de cuenta)
+                fbq('track', 'CompleteRegistration', {
+                    value: 0,
+                    currency: 'USD',
+                    content_name: 'Programa de Afiliados Lyon Asesor',
+                    status: true
+                });
             }
 
             document.getElementById('formAfiliado').innerHTML = `
