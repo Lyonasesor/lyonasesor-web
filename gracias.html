@@ -985,7 +985,7 @@
         /* =========================================================
            GRACIAS.HTML — Lyon Asesor
            Maneja: biblioteca, consulta, conferencia, membresía
-           Incluye auto-refresh para consulta y membresía
+           Incluye auto-refresh con soporte URL + localStorage
            ========================================================= */
 
         // ===== NAV =====
@@ -1068,12 +1068,35 @@
         document.getElementById('productoDetalle').textContent = info.detalle;
 
         // =============================================
+        // HELPER: OBTENER EMAIL DEL CLIENTE (URL + localStorage)
+        // =============================================
+        function obtenerEmailCliente() {
+            // Prioridad 1: URL
+            let email = (urlParams.get('email') || '').toLowerCase().trim();
+
+            // Prioridad 2: localStorage (guardado por consulta.html/membresia.html antes de redirigir a PayPal)
+            if (!email) {
+                try {
+                    const stored = localStorage.getItem('lyon_pending_email');
+                    const productoStored = localStorage.getItem('lyon_pending_producto');
+                    if (stored && productoStored === producto) {
+                        email = stored.toLowerCase().trim();
+                        console.log('📧 Email recuperado desde localStorage:', email);
+                    }
+                } catch (e) {
+                    console.warn('No se pudo leer localStorage:', e);
+                }
+            }
+
+            return email;
+        }
+
+        // =============================================
         // GENERAR CONTENIDO DINÁMICO SEGÚN PRODUCTO
         // =============================================
         const contenedor = document.getElementById('contenidoDinamico');
 
         if (producto === 'consulta') {
-            // ==== CONSULTA: caja de espera con auto-refresh ====
             contenedor.innerHTML = `
                 <div class="waiting-box" id="waitingBox">
                     <h3>⏳ Estamos verificando tu pago</h3>
@@ -1100,7 +1123,6 @@
             `;
             iniciarAutoRefreshConsulta();
         } else if (producto === 'membresia') {
-            // ==== MEMBRESÍA: caja de espera con auto-refresh ====
             contenedor.innerHTML = `
                 <div class="waiting-box" id="waitingBox">
                     <h3>⏳ Estamos activando tu membresía</h3>
@@ -1127,7 +1149,6 @@
             `;
             iniciarAutoRefreshMembresia();
         } else {
-            // ==== BIBLIOTECA / CONFERENCIA: comportamiento original ====
             contenedor.innerHTML = `
                 <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
                     ${info.mensaje}
@@ -1149,32 +1170,29 @@
         function iniciarAutoRefreshConsulta() {
             if (typeof firebase === 'undefined' || !firebase.database) {
                 console.warn('Firebase no disponible. Auto-refresh desactivado.');
-                document.getElementById('statusText').textContent = '⏳ Esperando verificación manual. Te contactaremos por WhatsApp.';
+                const statusEl = document.getElementById('statusText');
+                if (statusEl) statusEl.textContent = '⏳ Esperando verificación manual. Te contactaremos por WhatsApp.';
                 return;
             }
 
             const db = firebase.database();
-            const emailCliente = (urlParams.get('email') || '').toLowerCase().trim();
-            let escuchando = false;
+            const emailCliente = obtenerEmailCliente();
             let intentos = 0;
-            const MAX_INTENTOS = 120; // 10 minutos (cada 5s)
+            const MAX_INTENTOS = 120; // 10 minutos (cada 5s aprox.)
 
-            // Estrategia: escuchar toda la colección solicitudes_consultorio
-            // y filtrar por el email más reciente que coincida.
+            console.log('🔍 Auto-refresh consulta. Email de filtro:', emailCliente || '(sin filtro, tomará la última aprobada)');
+
             const ref = db.ref('solicitudes_consultorio');
 
             ref.on('value', (snapshot) => {
                 const data = snapshot.val() || {};
                 const solicitudes = Object.values(data);
 
-                // Buscar la solicitud más reciente que esté aprobada
-                // Filtramos por email si está disponible en la URL
                 let aprobada = null;
                 const ahora = Date.now();
 
                 solicitudes.forEach(s => {
                     if (!s || s.estado !== 'aprobada') return;
-                    // Si tenemos email, filtramos; si no, tomamos la última aprobada en los últimos 30 min
                     const coincideEmail = emailCliente && s.email && s.email.toLowerCase().trim() === emailCliente;
                     const reciente = s.fechaAprobacion && (ahora - s.fechaAprobacion < 30 * 60 * 1000);
 
@@ -1187,12 +1205,18 @@
 
                 if (aprobada && aprobada.codigoGenerado) {
                     mostrarCodigoAprobado(aprobada.codigoGenerado);
+                    // Limpiar localStorage una vez aprobado
+                    try { localStorage.removeItem('lyon_pending_email'); } catch(e) {}
+                    try { localStorage.removeItem('lyon_pending_producto'); } catch(e) {}
                 } else {
                     intentos++;
                     if (intentos > MAX_INTENTOS) {
-                        document.getElementById('statusText').innerHTML =
-                            '⏳ La verificación está tardando más de lo esperado.<br>' +
-                            'Te contactaremos por WhatsApp cuando esté lista.';
+                        const statusEl = document.getElementById('statusText');
+                        if (statusEl) {
+                            statusEl.innerHTML =
+                                '⏳ La verificación está tardando más de lo esperado.<br>' +
+                                'Te contactaremos por WhatsApp cuando esté lista.';
+                        }
                     }
                 }
             });
@@ -1204,14 +1228,17 @@
         function iniciarAutoRefreshMembresia() {
             if (typeof firebase === 'undefined' || !firebase.database) {
                 console.warn('Firebase no disponible. Auto-refresh desactivado.');
-                document.getElementById('statusText').textContent = '⏳ Esperando activación. Te contactaremos por WhatsApp.';
+                const statusEl = document.getElementById('statusText');
+                if (statusEl) statusEl.textContent = '⏳ Esperando activación. Te contactaremos por WhatsApp.';
                 return;
             }
 
             const db = firebase.database();
-            const emailCliente = (urlParams.get('email') || '').toLowerCase().trim();
+            const emailCliente = obtenerEmailCliente();
             let intentos = 0;
             const MAX_INTENTOS = 120;
+
+            console.log('🔍 Auto-refresh membresía. Email de filtro:', emailCliente || '(sin filtro, tomará la última aprobada)');
 
             const ref = db.ref('solicitudes_membresia');
 
@@ -1236,12 +1263,17 @@
 
                 if (aprobada && aprobada.codigoGenerado) {
                     mostrarCodigoAprobado(aprobada.codigoGenerado);
+                    try { localStorage.removeItem('lyon_pending_email'); } catch(e) {}
+                    try { localStorage.removeItem('lyon_pending_producto'); } catch(e) {}
                 } else {
                     intentos++;
                     if (intentos > MAX_INTENTOS) {
-                        document.getElementById('statusText').innerHTML =
-                            '⏳ La activación está tardando más de lo esperado.<br>' +
-                            'Te contactaremos por WhatsApp cuando esté lista.';
+                        const statusEl = document.getElementById('statusText');
+                        if (statusEl) {
+                            statusEl.innerHTML =
+                                '⏳ La activación está tardando más de lo esperado.<br>' +
+                                'Te contactaremos por WhatsApp cuando esté lista.';
+                        }
                     }
                 }
             });
@@ -1255,12 +1287,11 @@
             const codeValue = document.getElementById('codeValue');
             if (!box || !codeValue) return;
 
-            if (box.classList.contains('approved')) return; // ya estaba mostrado
+            if (box.classList.contains('approved')) return;
 
             box.classList.add('approved');
             codeValue.textContent = codigo;
 
-            // Reemplazar el título con mensaje de éxito
             const h3 = box.querySelector('h3');
             if (h3) h3.textContent = '✅ ¡Todo listo!';
         }
