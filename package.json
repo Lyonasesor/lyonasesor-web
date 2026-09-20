@@ -1,8 +1,0 @@
-{
-  "name": "lyon-asesor",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build:sitemap": "npx static-sitemap-cli -b https://lyonasesor.com -r . --no-clean"
-  }
-}
