@@ -21,6 +21,45 @@
     
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // ============================================
+        // META PIXEL: evento Purchase
+        // Se dispara al llegar aquí (el usuario completó el pago de la membresía).
+        // Como PayPal no pasa el monto real en la URL, usamos $24.99 como valor
+        // representativo del plan Acelerado mensual (el más alto de los planes).
+        // ============================================
+        (function() {
+            try {
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: 24.99,
+                        currency: 'USD',
+                        content_name: 'Membresía Lyon Asesor',
+                        content_category: 'membresia'
+                    });
+                }
+            } catch (e) {
+                console.warn('Meta Pixel Purchase: no se pudo disparar el evento', e);
+            }
+        })();
+    </script>
+    
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
@@ -34,24 +73,6 @@
             'currency': 'USD'
         });
     </script>
-    
-    <!-- Meta Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'Purchase', {
-            value: 1.0,
-            currency: 'USD'
-        });
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=Purchase&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
