@@ -34,6 +34,37 @@
     <meta name="twitter:image" content="https://lyonasesor.com/og-diagnostico.png?v=2" />
     <meta name="twitter:image:alt" content="Brújula Emocional – Test Gratuito de Lyon Asesor" />
     
+    <!-- FAVICON -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la Brújula Emocional (interés en el diagnóstico)
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Brújula Emocional',
+                content_category: 'diagnostico',
+                value: 0,
+                currency: 'USD'
+            });
+        }
+    </script>
+    
     <!-- SCHEMA.ORG -->
     <script type="application/ld+json">
         {
@@ -68,21 +99,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <!-- Meta Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -747,7 +763,7 @@
         }
 
         /* ============================================
-           PLAN PERSONALIZADO (NUEVO)
+           PLAN PERSONALIZADO
            ============================================ */
         .plan-container {
             margin: 2rem 0;
@@ -1913,7 +1929,6 @@
 
             <div class="areas-grid" id="areas-grid"></div>
 
-            <!-- NUEVO: PLAN PERSONALIZADO -->
             <div class="plan-container" id="plan-container"></div>
 
             <div class="cta-block">
@@ -2291,12 +2306,8 @@
                 `;
             }).join('');
 
-            // ============================================
-            // GENERAR PLAN PERSONALIZADO
-            // ============================================
             generarPlanPersonalizado(nivel, topAreas);
 
-            // Actualizar el CTA final
             const ctaParagraph = document.getElementById('cta-paragraph');
             if (nivel === 1 || nivel === 2) {
                 ctaParagraph.textContent = 'Si quieres orientación antes de elegir tu plan, conversemos sin compromiso.';
@@ -2313,11 +2324,20 @@
             document.getElementById('progressFill').style.width = '100%';
             document.getElementById('progressPct').textContent = '100%';
 
+            // =============================================
+            // META PIXEL: evento Lead del diagnóstico completo
+            // (usuario completó el formulario largo)
+            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'diagnostico', 'nivel': nivel, 'perfil': perfil });
             }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    value: 0,
+                    currency: 'USD',
+                    content_name: 'Brújula Emocional completada',
+                    content_category: 'diagnostico_nivel_' + nivel
+                });
             }
 
             guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel, topAreas);
@@ -2343,7 +2363,6 @@
             const plan = PLAN_POR_NIVEL[nivel];
             if (!plan) return;
 
-            // Elegir la conferencia según la primera área de atención
             const areaPrincipal = topAreas[0].nombre;
             const conf = AREA_A_CONFERENCIA[areaPrincipal] || AREA_A_CONFERENCIA['Autoestima'];
 
