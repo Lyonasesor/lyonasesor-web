@@ -33,6 +33,32 @@
     
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // Meta Pixel: el usuario entró a la página de consulta (interés en el servicio)
+        if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+                content_name: 'Consulta Terapéutica',
+                content_category: 'consulta'
+            });
+        }
+    </script>
+    
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -64,20 +90,6 @@
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
     </script>
-    
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" /></noscript>
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -1094,6 +1106,7 @@
                 motivo: motivo || 'Sin motivo específico',
                 estado: 'pendiente',
                 pagado: false,
+                fechaLegible: new Date().toLocaleString('es-ES'),
                 refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
@@ -1130,11 +1143,7 @@
                 console.error('❌ Error creando solicitud consultorio:', e);
             }
 
-            // =============================================
-            // GUARDAR EMAIL EN LOCALSTORAGE
-            // Para que gracias.html sepa qué solicitud buscar
-            // cuando el usuario regrese desde PayPal
-            // =============================================
+            // Guardar email en localStorage para el auto-refresh de gracias.html
             try {
                 localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
                 localStorage.setItem('lyon_pending_producto', 'consulta');
@@ -1144,12 +1153,27 @@
                 console.warn('⚠️ No se pudo guardar en localStorage:', err);
             }
 
-            // Eventos de analítica
+            // =============================================
+            // META PIXEL: eventos de conversión
+            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'consulta' });
             }
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
+            if (typeof fbq === 'function') {
+                // Inicio del checkout: el usuario está a punto de ir a pagar
+                fbq('track', 'InitiateCheckout', {
+                    value: monto,
+                    currency: 'USD',
+                    content_name: paqueteTexto,
+                    content_category: 'consulta'
+                });
+                // Lead: usuario completó el formulario
+                fbq('track', 'Lead', {
+                    value: monto,
+                    currency: 'USD',
+                    content_name: paqueteTexto,
+                    content_category: 'consulta'
+                });
             }
 
             // Redirigir según método de pago
@@ -1166,7 +1190,6 @@
                 }
                 window.location.href = paypalLink;
             } else {
-                // Pago Móvil: abrir WhatsApp y redirigir a gracias.html
                 const mensaje = encodeURIComponent(
                     `Hola Alvaro, he seleccionado Pago Móvil para mi consulta.\n` +
                     `Nombre: ${nombre}\n` +
@@ -1178,7 +1201,6 @@
                 );
                 window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
 
-                // Redirigir a gracias.html después de 2 segundos
                 setTimeout(() => {
                     window.location.href = 'gracias.html?producto=consulta';
                 }, 2000);
