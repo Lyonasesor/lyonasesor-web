@@ -9,8 +9,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="/js/firebase-config.js"></script>
+    <script src="/protocolos-data.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         const database = firebase.database();
@@ -310,6 +312,153 @@
         }
         .info-box strong { color: #0d47a1; }
 
+        /* ============================================
+           EXPEDIENTE DEL PACIENTE (Panel del Terapeuta)
+           ============================================ */
+        .expediente-modal{
+            display:none;position:fixed;inset:0;background:rgba(15,23,42,0.85);
+            z-index:10000;padding:1.5rem;overflow-y:auto;backdrop-filter:blur(6px);
+        }
+        .expediente-modal.open{display:block;}
+        .expediente-content{
+            max-width:1000px;margin:1rem auto;background:#fff;border-radius:24px;
+            box-shadow:0 25px 70px rgba(0,0,0,0.4);overflow:hidden;
+            display:flex;flex-direction:column;min-height:600px;
+        }
+        .expediente-header{
+            background:linear-gradient(135deg,#0f1720,#1A2330);
+            color:#fff;padding:28px 36px;position:relative;flex-shrink:0;
+        }
+        .expediente-header h2{
+            font-size:1.6rem;margin-bottom:12px;font-family:'Segoe UI',sans-serif;
+            font-weight:700;letter-spacing:0.3px;
+        }
+        .expediente-meta{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+            gap:10px 24px;font-size:0.85rem;color:rgba(255,255,255,0.85);
+        }
+        .expediente-meta strong{color:#f28c4e;font-weight:600;}
+        .expediente-header .close-expediente{
+            position:absolute;top:20px;right:24px;background:rgba(255,255,255,0.12);
+            border:none;color:#fff;width:38px;height:38px;border-radius:50%;
+            font-size:1.3rem;cursor:pointer;transition:0.2s;line-height:1;
+        }
+        .expediente-header .close-expediente:hover{background:rgba(255,255,255,0.25);}
+        .expediente-toolbar{
+            padding:14px 36px;background:#f8fafc;border-bottom:1px solid #e2e8f0;
+            display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;
+        }
+        .expediente-toolbar button{
+            padding:9px 18px;border-radius:40px;border:none;font-size:0.85rem;
+            font-weight:600;cursor:pointer;transition:0.2s;font-family:inherit;
+            background:#1e293b;color:#fff;
+        }
+        .expediente-toolbar button:hover{background:#0f172a;transform:translateY(-1px);}
+        .expediente-body{padding:28px 36px 40px;overflow-y:auto;}
+
+        .exp-protocol{
+            border:1px solid #e2e8f0;border-radius:16px;margin-bottom:24px;
+            overflow:hidden;background:#fff;
+        }
+        .exp-protocol-header{
+            background:linear-gradient(135deg,#f8fafc,#f1f5f9);
+            padding:18px 22px;display:flex;justify-content:space-between;
+            align-items:flex-start;gap:16px;border-bottom:1px solid #e2e8f0;
+        }
+        .exp-protocol-code{
+            display:inline-block;background:#e86b18;color:#fff;
+            font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:40px;
+            letter-spacing:1px;margin-bottom:6px;
+        }
+        .exp-protocol-header h3{
+            font-size:1.05rem;color:#0f172a;margin:0;font-weight:600;
+        }
+        .exp-protocol-date{
+            font-size:0.78rem;color:#64748b;white-space:nowrap;
+            padding-top:4px;
+        }
+        .exp-protocol-body{padding:22px 24px;}
+
+        .exp-section-header{
+            background:#fef8f3;border-left:3px solid #e86b18;
+            padding:10px 16px;border-radius:0 8px 8px 0;
+            font-size:0.85rem;font-weight:700;color:#c95a10;
+            text-transform:uppercase;letter-spacing:0.5px;
+            margin:20px 0 14px;
+        }
+        .exp-section-header:first-child{margin-top:0;}
+
+        .exp-item{
+            padding:12px 0;border-bottom:1px dashed #e2e8f0;
+        }
+        .exp-item:last-child{border-bottom:none;}
+        .exp-q{
+            font-size:0.88rem;color:#0f172a;font-weight:600;
+            margin-bottom:8px;line-height:1.5;
+        }
+        .exp-a{
+            font-size:0.92rem;color:#334155;line-height:1.65;
+            background:#f8fafc;padding:10px 14px;border-radius:8px;
+            border-left:3px solid #cbd5e1;
+        }
+
+        .exp-matrix{
+            display:flex;flex-direction:column;gap:6px;
+        }
+        .exp-matrix-row{
+            display:grid;grid-template-columns:1fr auto;gap:12px;
+            padding:6px 10px;background:#f8fafc;border-radius:6px;
+            font-size:0.85rem;
+        }
+        .exp-matrix-label{color:#475569;font-weight:500;}
+        .exp-matrix-val{
+            color:#0f172a;font-weight:700;text-align:right;
+            min-width:44px;
+        }
+
+        .exp-repeats{display:flex;flex-direction:column;gap:10px;}
+        .exp-day{
+            background:#f8fafc;padding:10px 14px;border-radius:8px;
+            border-left:3px solid #cbd5e1;
+        }
+        .exp-day-label{
+            font-size:0.72rem;font-weight:700;color:#e86b18;
+            text-transform:uppercase;letter-spacing:1px;
+            display:block;margin-bottom:4px;
+        }
+        .exp-day-val{font-size:0.88rem;color:#334155;line-height:1.55;}
+
+        .exp-notas{
+            background:#fff7ed;border:2px solid #fed7aa;border-radius:16px;
+            padding:22px 24px;margin-top:32px;
+        }
+        .exp-notas h3{
+            font-size:1rem;color:#7c2d12;margin-bottom:8px;
+            font-family:'Segoe UI',sans-serif;
+        }
+        .exp-notas textarea{
+            width:100%;min-height:140px;padding:14px 16px;border-radius:10px;
+            border:1.5px solid #fdba74;font-family:'Segoe UI',sans-serif;
+            font-size:0.92rem;line-height:1.6;resize:vertical;
+            background:#fff;color:#1e293b;
+        }
+        .exp-notas textarea:focus{
+            outline:none;border-color:#e86b18;
+            box-shadow:0 0 0 3px rgba(232,107,24,0.15);
+        }
+        .btn-save-notas{
+            margin-top:12px;padding:11px 26px;background:#e86b18;color:#fff;
+            border:none;border-radius:40px;font-weight:700;cursor:pointer;
+            font-size:0.9rem;transition:0.2s;font-family:inherit;
+        }
+        .btn-save-notas:hover{background:#c95a10;transform:translateY(-1px);}
+        .btn-save-notas.saved{background:#22c55e;}
+
+        .exp-empty{
+            text-align:center;padding:40px 20px;color:#94a3b8;
+            font-style:italic;font-size:0.95rem;
+        }
+
         @media (max-width: 600px) {
             body { padding: 12px; }
             .dashboard-header h1 { font-size: 1.3rem; }
@@ -322,6 +471,17 @@
             .collapsible-body { padding: 0 16px 16px; }
         }
         @media (max-width: 400px) { .stats-grid { grid-template-columns: 1fr; } }
+
+        @media (max-width:700px){
+            .expediente-header{padding:22px 20px;}
+            .expediente-header h2{font-size:1.25rem;}
+            .expediente-toolbar{padding:12px 20px;}
+            .expediente-body{padding:20px 18px 32px;}
+            .exp-protocol-header{padding:14px 16px;flex-direction:column;}
+            .exp-protocol-body{padding:16px 18px;}
+            .exp-matrix-row{grid-template-columns:1fr;}
+            .exp-matrix-val{text-align:left;}
+        }
     </style>
 </head>
 <body>
@@ -737,6 +897,22 @@
     </div>
 </div>
 
+<!-- ===== EXPEDIENTE DEL PACIENTE (Panel del Terapeuta) ===== -->
+<div class="expediente-modal" id="expedienteModal">
+    <div class="expediente-content">
+        <div class="expediente-header">
+            <button class="close-expediente" onclick="cerrarExpediente()">✕</button>
+            <h2 id="expNombre">—</h2>
+            <div class="expediente-meta" id="expMeta"></div>
+        </div>
+        <div class="expediente-toolbar">
+            <button onclick="descargarExpedientePDF()">📄 Descargar expediente PDF</button>
+            <button onclick="window.print()">🖨️ Imprimir</button>
+        </div>
+        <div class="expediente-body" id="expedienteBody"></div>
+    </div>
+</div>
+
 <script>
     const ADMIN_EMAIL = 'info@lyonasesor.com';
 
@@ -828,6 +1004,16 @@
                 <button class="btn-modal" onclick="this.closest('.modal-overlay').remove()">Entendido</button>
             </div>`;
         document.body.appendChild(overlay);
+    }
+
+    function escapeHtmlAdmin(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/\n/g, '<br>');
     }
 
     // =============================================
@@ -2142,25 +2328,6 @@
       }
     }
 
-    window.verDetallePaciente = async function(codigo) {
-      const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
-      const p = snap.val();
-      if (!p) return;
-      const paq = CONSULTORIO_PAQUETES[p.paquete] || CONSULTORIO_PAQUETES.individual;
-      const completados = p.formulariosCompletados || {};
-      let msg = `Paciente: ${p.nombre}\nEmail: ${p.email}\nPaquete: ${paq.nombre}\n\nProgreso:\n`;
-      const protList = (typeof PROTOCOLOS_DATA !== 'undefined' && PROTOCOLOS_DATA.protocolos)
-        ? PROTOCOLOS_DATA.protocolos
-        : null;
-      paq.formularios.forEach(i => {
-        const code = 'LA-' + String(i).padStart(2, '0');
-        const title = protList && protList[i] ? protList[i].title : '';
-        const c = completados[i] ? '✅' : '⏳';
-        msg += `${c} ${code} — ${title}\n`;
-      });
-      alert(msg);
-    };
-
     window.resetearPaciente = async function(codigo) {
       if (!confirm('¿Resetear el progreso de este paciente? Se borrarán todas sus respuestas.')) return;
       try {
@@ -2182,6 +2349,277 @@
       } catch (e) { console.error(e); }
     }
 
+    /* =============================================
+       EXPEDIENTE DEL PACIENTE (Panel del Terapeuta)
+       ============================================= */
+
+    window.verDetallePaciente = async function(codigo) {
+      try {
+        const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
+        const p = snap.val();
+        if (!p) {
+          alert('❌ No se encontró el expediente de este paciente.');
+          return;
+        }
+
+        const paq = CONSULTORIO_PAQUETES[p.paquete] || CONSULTORIO_PAQUETES.individual;
+        const completados = p.formulariosCompletados || {};
+        const totalCompletados = Object.keys(completados).length;
+
+        document.getElementById('expNombre').textContent = p.nombre || 'Consultante';
+        document.getElementById('expMeta').innerHTML = `
+          <div><strong>Código:</strong> ${escapeHtmlAdmin(codigo)}</div>
+          <div><strong>Email:</strong> ${escapeHtmlAdmin(p.email || '—')}</div>
+          <div><strong>Teléfono:</strong> ${escapeHtmlAdmin(p.telefono || '—')}</div>
+          <div><strong>Paquete:</strong> ${paq.nombre}</div>
+          <div><strong>Progreso:</strong> ${totalCompletados} de ${paq.total} (${Math.round(totalCompletados/paq.total*100)}%)</div>
+          <div><strong>Registrado:</strong> ${p.fechaRegistro ? new Date(p.fechaRegistro).toLocaleDateString('es-ES') : '—'}</div>
+        `;
+
+        let bodyHtml = '';
+
+        if (totalCompletados === 0) {
+          bodyHtml = '<div class="exp-empty">Este paciente aún no ha completado ningún protocolo.</div>';
+        } else {
+          paq.formularios.forEach(idx => {
+            if (!completados[idx]) return;
+            const prot = PROTOCOLOS_DATA.protocolos[idx];
+            if (!prot) return;
+            const fecha = completados[idx].fechaLegible || '';
+            bodyHtml += `
+              <div class="exp-protocol">
+                <div class="exp-protocol-header">
+                  <div>
+                    <span class="exp-protocol-code">${escapeHtmlAdmin(prot.code)}</span>
+                    <h3>${escapeHtmlAdmin(prot.title)}</h3>
+                  </div>
+                  <div class="exp-protocol-date">${escapeHtmlAdmin(fecha)}</div>
+                </div>
+                <div class="exp-protocol-body">
+                  ${renderizarRespuestasProtocolo(prot, completados[idx].respuestas || {})}
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        bodyHtml += `
+          <div class="exp-notas">
+            <h3>📝 Notas privadas del terapeuta</h3>
+            <p style="font-size:0.82rem;color:#7c2d12;margin-bottom:10px;">Estas notas son solo para ti. El paciente no las verá.</p>
+            <textarea id="notasTerapeuta" placeholder="Anotaciones, hipótesis, puntos a trabajar en la próxima sesión...">${escapeHtmlAdmin(p.notasTerapeuta || '')}</textarea>
+            <button class="btn-save-notas" id="btnGuardarNotas" onclick="guardarNotasTerapeuta('${codigo}')">💾 Guardar notas</button>
+          </div>
+        `;
+
+        document.getElementById('expedienteBody').innerHTML = bodyHtml;
+        document.getElementById('expedienteModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        window._expedienteActual = { codigo, ...p };
+      } catch (e) {
+        console.error('Error abriendo expediente:', e);
+        alert('Error al cargar expediente: ' + e.message);
+      }
+    };
+
+    function renderizarRespuestasProtocolo(prot, respuestas) {
+      let html = '';
+
+      prot.questions.forEach((q) => {
+        if (q.type === 'section_header') {
+          html += `<div class="exp-section-header">${escapeHtmlAdmin(q.text)}</div>`;
+          return;
+        }
+
+        let valorHtml = '';
+
+        if (q.type === 'grid_multiple_choice' && q.matrix) {
+          valorHtml = '<div class="exp-matrix">';
+          q.matrix.rows.forEach((row, ri) => {
+            const v = respuestas[q.id + '_r' + ri];
+            const display = (v != null && v !== '')
+              ? escapeHtmlAdmin(v)
+              : '<em style="color:#94a3b8;">—</em>';
+            valorHtml += `
+              <div class="exp-matrix-row">
+                <span class="exp-matrix-label">${escapeHtmlAdmin(row)}</span>
+                <span class="exp-matrix-val">${display}</span>
+              </div>`;
+          });
+          valorHtml += '</div>';
+        }
+        else if (q.type === 'grid_checkbox' && q.matrix) {
+          valorHtml = '<div class="exp-matrix">';
+          q.matrix.rows.forEach((row, ri) => {
+            const v = respuestas[q.id + '_r' + ri];
+            const display = (Array.isArray(v) && v.length > 0)
+              ? v.map(escapeHtmlAdmin).join(', ')
+              : '<em style="color:#94a3b8;">—</em>';
+            valorHtml += `
+              <div class="exp-matrix-row">
+                <span class="exp-matrix-label">${escapeHtmlAdmin(row)}</span>
+                <span class="exp-matrix-val">${display}</span>
+              </div>`;
+          });
+          valorHtml += '</div>';
+        }
+        else if (q.repeatsFor) {
+          valorHtml = '<div class="exp-repeats">';
+          for (let d = 1; d <= q.repeatsFor; d++) {
+            const v = respuestas[q.id + '_day' + d];
+            valorHtml += `
+              <div class="exp-day">
+                <span class="exp-day-label">Día ${d}</span>
+                <div class="exp-day-val">${v ? escapeHtmlAdmin(v) : '<em style="color:#94a3b8;">vacío</em>'}</div>
+              </div>`;
+          }
+          valorHtml += '</div>';
+        }
+        else {
+          const v = respuestas[q.id];
+          if (Array.isArray(v)) {
+            valorHtml = v.length > 0
+              ? v.map(escapeHtmlAdmin).join(', ')
+              : '<em style="color:#94a3b8;">—</em>';
+          } else if (v != null && String(v).trim() !== '') {
+            valorHtml = escapeHtmlAdmin(v);
+          } else {
+            valorHtml = '<em style="color:#94a3b8;">—</em>';
+          }
+        }
+
+        html += `
+          <div class="exp-item">
+            <div class="exp-q">${escapeHtmlAdmin(q.text)}</div>
+            <div class="exp-a">${valorHtml}</div>
+          </div>`;
+      });
+
+      return html;
+    }
+
+    window.cerrarExpediente = function() {
+      document.getElementById('expedienteModal').classList.remove('open');
+      document.body.style.overflow = '';
+      window._expedienteActual = null;
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('expedienteModal').classList.contains('open')) {
+        cerrarExpediente();
+      }
+    });
+
+    document.getElementById('expedienteModal').addEventListener('click', (e) => {
+      if (e.target.id === 'expedienteModal') cerrarExpediente();
+    });
+
+    window.guardarNotasTerapeuta = async function(codigo) {
+      const textarea = document.getElementById('notasTerapeuta');
+      const btn = document.getElementById('btnGuardarNotas');
+      const texto = textarea.value;
+
+      btn.disabled = true;
+      const original = btn.innerHTML;
+      btn.innerHTML = '⏳ Guardando...';
+
+      try {
+        await database.ref('pacientes_consultorio/' + codigo + '/notasTerapeuta').set(texto);
+        await database.ref('pacientes_consultorio/' + codigo + '/notasTerapeutaFecha').set(Date.now());
+
+        btn.classList.add('saved');
+        btn.innerHTML = '✅ Notas guardadas';
+        setTimeout(() => {
+          btn.classList.remove('saved');
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 2200);
+      } catch (e) {
+        console.error('Error guardando notas:', e);
+        alert('❌ Error al guardar las notas: ' + e.message);
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }
+    };
+
+    window.descargarExpedientePDF = async function() {
+      const btn = event.target;
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Generando PDF...';
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const element = document.getElementById('expedienteBody');
+        const p = window._expedienteActual || {};
+
+        const origW = element.style.width;
+        const origMaxW = element.style.maxWidth;
+        element.style.width = '900px';
+        element.style.maxWidth = '900px';
+
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          windowWidth: 900
+        });
+
+        element.style.width = origW;
+        element.style.maxWidth = origMaxW;
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const pw = pdf.internal.pageSize.getWidth();
+        const ph = pdf.internal.pageSize.getHeight();
+        const margin = 10;
+        const imgW = pw - margin * 2;
+        const imgH = (canvas.height * imgW) / canvas.width;
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(232, 107, 24);
+        pdf.text('LYON ASESOR, F.P.', margin, 15);
+        pdf.setFontSize(9);
+        pdf.setTextColor(100, 116, 139);
+        pdf.text('Expediente del Consultorio · Documento interno', margin, 20);
+        pdf.setFontSize(12);
+        pdf.setTextColor(15, 23, 42);
+        pdf.text('Paciente: ' + (p.nombre || '—'), margin, 28);
+        pdf.setFontSize(9);
+        pdf.text('Código: ' + (p.codigo || '—') + '  ·  Generado: ' + new Date().toLocaleString('es-ES'), margin, 33);
+
+        let heightLeft = imgH;
+        let position = 38;
+
+        pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+        heightLeft -= (ph - position);
+
+        while (heightLeft > 0) {
+          position = heightLeft - imgH + margin;
+          pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+          heightLeft -= (ph - margin);
+        }
+
+        const nombreLimpio = (p.nombre || 'Paciente').replace(/\s+/g, '_');
+        const fecha = new Date().toISOString().slice(0, 10);
+        pdf.save(`Expediente_LyonAsesor_${nombreLimpio}_${fecha}.pdf`);
+
+        btn.innerHTML = '✅ PDF descargado';
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 2500);
+      } catch (e) {
+        console.error('Error generando PDF del expediente:', e);
+        alert('Error al generar el PDF: ' + e.message);
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }
+    };
+
     // =============================================
     // RECARGA PERIÓDICA
     // =============================================
@@ -2190,7 +2628,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y secciones colapsables');
+    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y Panel del Terapeuta');
 </script>
 </body>
 </html>
