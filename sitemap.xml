@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-   <url>
-      <loc>https://lyonasesor.com/</loc>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/ebook.html</loc>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/diagnostico.html</loc>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/consulta.html</loc>
-      <priority>0.7</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/conferencia.html</loc>
-      <priority>0.7</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/membresia.html</loc>
-      <priority>0.9</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/afiliados.html</loc>
-      <priority>0.6</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/terminos.html</loc>
-      <priority>0.3</priority>
-   </url>
-   <url>
-      <loc>https://lyonasesor.com/legal.html</loc>
-      <priority>0.5</priority>
-   </url>
+  <url>
+    <loc>https://lyonasesor.com/</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/consulta.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/diagnostico.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/afiliados.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/membresia.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/conferencia.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/ebook.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/presentacion-ventas.html</loc>
+  </url>
+  <url>
+    <loc>https://lyonasesor.com/validacion-programa-completo.html</loc>
+  </url>
+  <!-- FALTAN LAS CONFERENCIAS INDIVIDUALES: Pega aquí las URLs de tus 11 conferencias -->
+  <!-- Ejemplo: <url><loc>https://lyonasesor.com/conferencias/neuroliderazgo.html</loc></url> -->
+  <!-- Ejemplo: <url><loc>https://lyonasesor.com/conferencias/liderazgo-alma.html</loc></url> -->
 </urlset>
+   
