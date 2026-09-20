@@ -872,7 +872,7 @@
             <div class="faq-grid">
                 <div class="faq-item"><h4>¿Puedo adelantar clases?</h4><p>No. Cada clase se desbloquea según el tiempo estipulado en tu plan (2 semanas o 1 mes), para respetar el proceso de aprendizaje.</p></div>
                 <div class="faq-item"><h4>¿Pierdo el acceso si termino el programa?</h4><p>No. Al completar las 12 clases conservas acceso permanente de solo lectura a todo el contenido ya visto.</p></div>
-                <div class="faq-item"><h4>¿Cómo recibo mi cuenta?</h4><p>Tras tu pago, tu inscripción se activa manualmente y recibirás tu usuario y contraseña por correo en menos de 24 horas.</p></div>
+                <div class="faq-item"><h4>¿Cómo recibo mi acceso?</h4><p>Tras confirmar tu pago, tu inscripción se activa manualmente y recibirás tu <strong>código de acceso personal</strong> por correo y WhatsApp.</p></div>
                 <div class="faq-item"><h4>¿Qué pasa al terminar las 12 clases?</h4><p>Recibirás por correo la invitación a un evento de cierre en videoconferencia, y tu diploma del Programa Completo quedará disponible.</p></div>
             </div>
         </div>
@@ -880,10 +880,10 @@
         <!-- ===== FORMULARIO ===== -->
         <div id="formSection">
             <h2>Inscríbete a la <span>Membresía</span> Lyon Asesor.</h2>
-            <p>Elige tu plan y completa los datos. Tu inscripción será activada manualmente tras confirmar el pago.</p>
+            <p>Elige tu plan y completa los datos. Serás redirigido a la plataforma de pago según tu método elegido.</p>
 
             <div class="redirect-alert">
-                <p>📌 <strong>Importante:</strong> Tu cuenta (usuario y contraseña) se activa manualmente una vez confirmado el pago, y se envía a tu correo. No es instantáneo.</p>
+                <p>📌 <strong>Importante:</strong> Tu <strong>código de acceso personal</strong> se activa manualmente una vez confirmado el pago, y se envía a tu correo y WhatsApp. No es instantáneo.</p>
             </div>
 
             <form id="membresiaForm" class="form-container">
@@ -1053,6 +1053,7 @@
                 estado: 'pendiente_activacion',
                 pagado: false,
                 claseActual: 0,
+                fechaLegible: new Date().toLocaleString('es-ES'),
                 refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
@@ -1063,6 +1064,21 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
+            // =============================================
+            // GUARDAR EMAIL EN LOCALSTORAGE
+            // Para que gracias.html sepa qué solicitud buscar
+            // cuando el usuario regrese desde PayPal o Pago Móvil
+            // =============================================
+            try {
+                localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
+                localStorage.setItem('lyon_pending_producto', 'membresia');
+                localStorage.setItem('lyon_pending_timestamp', Date.now().toString());
+                console.log('✅ Email guardado en localStorage para auto-refresh');
+            } catch (err) {
+                console.warn('⚠️ No se pudo guardar en localStorage:', err);
+            }
+
+            // Eventos de analítica
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'membresia', 'plan': plan });
             }
@@ -1070,9 +1086,11 @@
                 fbq('track', 'Lead');
             }
 
+            // Redirigir según método de pago
             if (metodo === 'paypal') {
                 window.location.href = paypalLink;
             } else {
+                // Pago Móvil: abrir WhatsApp y luego redirigir a gracias.html?producto=membresia
                 const mensaje = encodeURIComponent(
                     `Hola Álvaro, quiero inscribirme a la Membresía Lyon Asesor con Pago Móvil.\n` +
                     `Plan: ${planLabel}\n` +
@@ -1083,7 +1101,11 @@
                     `Monto: ${precio}`
                 );
                 window.open(`https://wa.me/584148610464?text=${mensaje}`, '_blank');
-                window.location.href = 'gracias-membresia.html?metodo=movil';
+
+                // Redirigir a gracias.html después de 2 segundos
+                setTimeout(() => {
+                    window.location.href = 'gracias.html?producto=membresia';
+                }, 2000);
             }
         });
 
