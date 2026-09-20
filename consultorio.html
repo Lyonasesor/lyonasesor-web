@@ -49,7 +49,8 @@
   .login-box button{width:100%;padding:16px;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;border:none;border-radius:50px;font-weight:600;font-size:1rem;cursor:pointer;transition:0.2s;box-shadow:0 4px 20px rgba(232,107,24,0.3);}
   .login-box button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,107,24,0.5);}
   .login-box button:disabled{opacity:0.6;cursor:not-allowed;}
-  .login-error{color:#dc2626;margin-top:14px;font-size:0.9rem;min-height:1.2em;background:#fef2f2;padding:10px;border-radius:8px;}
+  .login-error{color:#dc2626;margin-top:14px;font-size:0.9rem;min-height:1.2em;background:#fef2f2;padding:10px;border-radius:8px;display:none;}
+  .login-error:not(:empty){display:block;}
   .login-help{margin-top:1.5rem;font-size:0.82rem;color:var(--text-muted);padding-top:1.5rem;border-top:1px solid #f1f5f9;}
   .login-help a{color:var(--naranja);text-decoration:none;font-weight:600;}
 
@@ -84,6 +85,7 @@
   .prot-card.available{border-color:var(--naranja);box-shadow:0 4px 16px rgba(232,107,24,0.12);}
   .prot-card.available:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(232,107,24,0.2);}
   .prot-card.completed{border-color:#22c55e;background:#f0fdf4;}
+  .prot-card.completed:hover{transform:translateY(-2px);}
   .prot-card.locked{opacity:0.55;cursor:not-allowed;background:#f8fafc;}
   .prot-card .code{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--naranja);margin-bottom:4px;line-height:1;}
   .prot-card.completed .code{color:#16a34a;}
@@ -144,8 +146,9 @@
   .scale-btn.selected{background:var(--naranja);color:#fff;border-color:var(--naranja);box-shadow:0 4px 12px rgba(232,107,24,0.3);}
   .scale-labels{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-top:8px;padding:0 6px;}
 
-  .matrix-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.88rem;}
-  .matrix-table th{background:#f8fafc;padding:10px 8px;font-weight:600;color:var(--navy);font-size:0.78rem;text-align:center;border:1px solid #e2e8f0;}
+  .matrix-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px;}
+  .matrix-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  .matrix-table th{background:#f8fafc;padding:10px 8px;font-weight:600;color:var(--navy);font-size:0.78rem;text-align:center;border:1px solid #e2e8f0;white-space:nowrap;}
   .matrix-table th:first-child{text-align:left;}
   .matrix-table td{padding:10px 8px;border:1px solid #e2e8f0;text-align:center;background:#fff;}
   .matrix-table td:first-child{text-align:left;font-size:0.85rem;color:#4A5364;font-weight:500;}
@@ -162,7 +165,8 @@
 
   .repeat-day{background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:14px;}
   .repeat-day .day-title{font-size:0.85rem;font-weight:700;color:var(--naranja);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
-  .repeat-day textarea{min-height:80px;}
+  .repeat-day textarea{min-height:80px;width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;transition:0.2s;background:#fff;resize:vertical;line-height:1.6;}
+  .repeat-day textarea:focus{border-color:var(--naranja);outline:none;box-shadow:0 0 0 3px rgba(232,107,24,0.12);}
 
   .modal-footer{padding:20px 32px 28px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .btn-submit{flex:1;min-width:200px;padding:16px;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;border:none;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;font-family:'Inter',sans-serif;transition:0.2s;box-shadow:0 4px 16px rgba(232,107,24,0.3);}
@@ -191,8 +195,8 @@
   .report-section{margin-bottom:36px;}
   .report-section h2{font-size:1.35rem;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;}
   .report-section h2 span{color:var(--naranja);}
-  .report-section p{font-size:0.95rem;color:#4A5364;line-height:1.75;margin-bottom:12px;}
-  .report-section .highlight{background:#fef8f3;padding:16px 20px;border-left:4px solid var(--naranja);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:#5A6C7D;}
+  .report-section p{font-size:0.95rem;color:#4A5364;line-height:1.75;margin-bottom:12px;word-wrap:break-word;}
+  .report-section .highlight{background:#fef8f3;padding:16px 20px;border-left:4px solid var(--naranja);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:#5A6C7D;word-wrap:break-word;}
   .report-actions{display:flex;gap:12px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;flex-wrap:wrap;}
   .report-actions button,.report-actions a{padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.92rem;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:0.2s;text-decoration:none;display:inline-block;}
   .btn-print{background:var(--navy);color:#fff;}
@@ -313,6 +317,34 @@
 /* =========================================================
    CONSULTORIO PRIVADO — LYON ASESOR
    ========================================================= */
+
+// ============================================
+// VERIFICACIÓN DE DEPENDENCIAS
+// ============================================
+(function checkDependencies() {
+  const errores = [];
+  if (typeof firebase === 'undefined') errores.push('Firebase SDK no cargó');
+  if (typeof database === 'undefined' && typeof firebase !== 'undefined') errores.push('Database no inicializada (revisa js/firebase-config.js)');
+  if (typeof PROTOCOLOS_DATA === 'undefined') errores.push('protocolos-data.js no cargó');
+  if (errores.length > 0) {
+    document.body.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;font-family:sans-serif;text-align:center;">
+        <div style="max-width:500px;background:#fff;padding:2.5rem;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.1);">
+          <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
+          <h2 style="color:#c95a10;margin-bottom:1rem;">Error cargando el consultorio</h2>
+          <p style="color:#5A6C7D;line-height:1.7;">No se pudieron cargar los recursos necesarios:</p>
+          <ul style="text-align:left;color:#c95a10;margin:1rem 0;padding-left:1.5rem;">
+            ${errores.map(e => `<li>${e}</li>`).join('')}
+          </ul>
+          <button onclick="location.reload()" style="margin-top:1rem;padding:12px 28px;background:#e86b18;color:#fff;border:none;border-radius:50px;font-weight:600;cursor:pointer;">
+            Recargar página
+          </button>
+        </div>
+      </div>`;
+    throw new Error('Dependencias faltantes: ' + errores.join(', '));
+  }
+})();
+
 const PACIENTE_PAQUETES = {
   individual: { nombre: 'Sesión Individual', formularios: [0,1,2], total: 3 },
   pack2:      { nombre: 'Pack 2 Sesiones',   formularios: [0,1,2,3], total: 4 },
@@ -324,9 +356,22 @@ let pacienteActual = null;
 let protocoloEnEdicion = null;
 let respuestasTemp = {};
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
+// ============================================
+// HELPER: ESCAPAR HTML (previene XSS en informe)
+// ============================================
+function escapeHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\n/g, '<br>');
+}
+
+// ============================================
+// LOGIN
+// ============================================
 const loginScreen = document.getElementById('loginScreen');
 const dashboard = document.getElementById('dashboard');
 const codigoInput = document.getElementById('codigoInput');
@@ -338,18 +383,26 @@ codigoInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.c
 loginBtn.addEventListener('click', async () => {
   const codigo = codigoInput.value.trim().toUpperCase();
   loginError.textContent = '';
-  if (!codigo) { loginError.textContent = '⚠️ Ingresa tu código'; return; }
 
-  loginBtn.disabled = true; loginBtn.textContent = 'Verificando...';
+  if (!codigo) {
+    loginError.textContent = '⚠️ Ingresa tu código';
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Verificando...';
+
   try {
     const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
     if (!snap.exists()) {
       loginError.textContent = '❌ Código no válido. Verifica con tu terapeuta.';
+      localStorage.removeItem('lyon_consultorio_codigo');
       return;
     }
     const data = snap.val();
     if (data.estado !== 'activo') {
-      loginError.textContent = '⏳ Tu acceso está en proceso de activación.';
+      loginError.textContent = '⏳ Tu acceso está en proceso de activación. Contacta a tu terapeuta.';
+      localStorage.removeItem('lyon_consultorio_codigo');
       return;
     }
     pacienteActual = { codigo, ...data };
@@ -357,10 +410,11 @@ loginBtn.addEventListener('click', async () => {
     await database.ref('pacientes_consultorio/' + codigo + '/fechaUltimoAcceso').set(Date.now());
     mostrarDashboard();
   } catch (err) {
-    console.error(err);
-    loginError.textContent = '❌ Error de conexión. Intenta de nuevo.';
+    console.error('Error login:', err);
+    loginError.textContent = '❌ Error de conexión (' + (err.code || 'desconocido') + '). Intenta de nuevo.';
   } finally {
-    loginBtn.disabled = false; loginBtn.textContent = 'Acceder a mi consultorio';
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Acceder a mi consultorio';
   }
 });
 
@@ -370,6 +424,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   dashboard.style.display = 'none';
   loginScreen.style.display = 'flex';
   codigoInput.value = '';
+  loginError.textContent = '';
 });
 
 /* =========================================================
@@ -378,6 +433,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 function mostrarDashboard() {
   loginScreen.style.display = 'none';
   dashboard.style.display = 'block';
+  window.scrollTo(0, 0);
 
   const paquete = PACIENTE_PAQUETES[pacienteActual.paquete] || PACIENTE_PAQUETES.individual;
 
@@ -409,9 +465,9 @@ function renderProtocolos(paquete) {
     const card = document.createElement('div');
     card.className = 'prot-card ' + estado;
     card.innerHTML = `
-      <div class="code">${prot.code}</div>
-      <h4>${prot.title}</h4>
-      <div class="prot-sub">${prot.subtitle}</div>
+      <div class="code">${escapeHtml(prot.code)}</div>
+      <h4>${escapeHtml(prot.title)}</h4>
+      <div class="prot-sub">${escapeHtml(prot.subtitle)}</div>
       <span class="status-badge">${badge}</span>
     `;
 
@@ -419,7 +475,11 @@ function renderProtocolos(paquete) {
       card.addEventListener('click', () => abrirProtocolo(idx));
     } else if (estado === 'completed') {
       card.addEventListener('click', () => {
-        alert('Ya completaste este protocolo. Puedes revisar tus respuestas desde tu informe final.');
+        alert('Ya completaste este protocolo.\n\nPuedes revisar tus respuestas desde tu Informe Final (al completar todo el recorrido).');
+      });
+    } else if (estado === 'locked' && permitido) {
+      card.addEventListener('click', () => {
+        alert('🔒 Este protocolo se desbloqueará cuando completes el anterior.');
       });
     }
 
@@ -459,19 +519,21 @@ function abrirProtocolo(idx) {
   const body = document.getElementById('modalBody');
   body.innerHTML = '';
 
+  // Introducción
   if (prot.introduction && prot.introduction.length) {
     const intro = document.createElement('div');
     intro.className = 'intro-text';
-    intro.innerHTML = prot.introduction.map(p => `<p>${p}</p>`).join('') +
-      (prot.signature ? `<p class="signature">${prot.signature}</p>` : '');
+    intro.innerHTML = prot.introduction.map(p => `<p>${escapeHtml(p)}</p>`).join('') +
+      (prot.signature ? `<p class="signature">${escapeHtml(prot.signature)}</p>` : '');
     body.appendChild(intro);
   }
 
+  // Preguntas
   prot.questions.forEach((q, i) => {
     if (q.type === 'section_header') {
       const sh = document.createElement('div');
       sh.className = 'section-header-block';
-      sh.innerHTML = `<h3>${q.text}</h3>${q.helperText ? `<p>${q.helperText}</p>` : ''}`;
+      sh.innerHTML = `<h3>${escapeHtml(q.text)}</h3>${q.helperText ? `<p>${escapeHtml(q.helperText)}</p>` : ''}`;
       body.appendChild(sh);
       return;
     }
@@ -481,7 +543,7 @@ function abrirProtocolo(idx) {
         const rep = document.createElement('div');
         rep.className = 'repeat-day';
         const label = (q.repeatLabelPattern || 'DÍA {n}').replace('{n}', d);
-        rep.innerHTML = `<div class="day-title">${label}</div>`;
+        rep.innerHTML = `<div class="day-title">${escapeHtml(label)}</div>`;
         const ta = document.createElement('textarea');
         ta.placeholder = 'Escribe aquí tu registro del día...';
         ta.dataset.qid = q.id + '_day' + d;
@@ -495,19 +557,21 @@ function abrirProtocolo(idx) {
     body.appendChild(renderPregunta(q, i));
   });
 
+  // Consentimiento
   if (prot.consent) {
     const c = document.createElement('div');
     c.className = 'consent-block';
     c.innerHTML = `
       <label>
         <input type="checkbox" id="consentCheck" ${prot.consent.required ? 'required' : ''}>
-        <span>${prot.consent.text}</span>
+        <span>${escapeHtml(prot.consent.text)}</span>
       </label>`;
     body.appendChild(c);
   }
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  document.querySelector('.modal-body').scrollTop = 0;
 }
 
 function renderPregunta(q, index) {
@@ -515,17 +579,19 @@ function renderPregunta(q, index) {
   block.className = 'question-block';
 
   const num = document.createElement('span');
-  num.className = 'q-num'; num.textContent = q.code || ('P' + (index + 1));
+  num.className = 'q-num';
+  num.textContent = q.order ? `P${q.order}` : ('P' + (index + 1));
   block.appendChild(num);
 
   const text = document.createElement('div');
   text.className = 'q-text';
-  text.innerHTML = q.text + (q.required ? ' <span class="q-req">*</span>' : '');
+  text.innerHTML = escapeHtml(q.text) + (q.required ? ' <span class="q-req">*</span>' : '');
   block.appendChild(text);
 
   if (q.helperText) {
     const h = document.createElement('div');
-    h.className = 'q-helper'; h.textContent = q.helperText;
+    h.className = 'q-helper';
+    h.textContent = q.helperText;
     block.appendChild(h);
   }
 
@@ -537,6 +603,7 @@ function renderPregunta(q, index) {
 function crearInput(q) {
   const wrapper = document.createElement('div');
 
+  // ----- TEXTO / EMAIL / FECHA / TEXTO LARGO -----
   if (q.type === 'short_text' || q.type === 'email' || q.type === 'date' || q.type === 'long_text') {
     let el;
     if (q.type === 'long_text') {
@@ -547,11 +614,19 @@ function crearInput(q) {
     }
     el.placeholder = q.type === 'email' ? 'tu@correo.com' : 'Escribe aquí...';
     el.dataset.qid = q.id;
+
+    // Pre-llenar email del paciente en LA-00 (si aplica)
+    if (q.type === 'email' && pacienteActual && pacienteActual.email && !el.value) {
+      el.value = pacienteActual.email;
+      respuestasTemp[q.id] = pacienteActual.email;
+    }
+
     el.addEventListener('input', e => { respuestasTemp[q.id] = e.target.value; });
     wrapper.appendChild(el);
     return wrapper;
   }
 
+  // ----- ESCALA LINEAL -----
   if (q.type === 'linear_scale') {
     const min = q.scale?.min ?? 1;
     const max = q.scale?.max ?? 10;
@@ -559,7 +634,9 @@ function crearInput(q) {
     cont.className = 'scale-container';
     for (let n = min; n <= max; n++) {
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'scale-btn'; b.textContent = n;
+      b.type = 'button';
+      b.className = 'scale-btn';
+      b.textContent = n;
       b.addEventListener('click', () => {
         cont.querySelectorAll('.scale-btn').forEach(x => x.classList.remove('selected'));
         b.classList.add('selected');
@@ -571,19 +648,20 @@ function crearInput(q) {
     if (q.scale?.minLabel || q.scale?.maxLabel) {
       const lbl = document.createElement('div');
       lbl.className = 'scale-labels';
-      lbl.innerHTML = `<span>${q.scale.minLabel || ''}</span><span>${q.scale.maxLabel || ''}</span>`;
+      lbl.innerHTML = `<span>${escapeHtml(q.scale.minLabel || '')}</span><span>${escapeHtml(q.scale.maxLabel || '')}</span>`;
       wrapper.appendChild(lbl);
     }
     return wrapper;
   }
 
+  // ----- OPCIÓN MÚLTIPLE -----
   if (q.type === 'multiple_choice') {
     const g = document.createElement('div');
     g.className = 'radio-group';
     (q.options || []).forEach(opt => {
       const lbl = document.createElement('label');
       lbl.className = 'radio-option';
-      lbl.innerHTML = `<input type="radio" name="${q.id}" value="${opt}"><span>${opt}</span>`;
+      lbl.innerHTML = `<input type="radio" name="${q.id}" value="${escapeHtml(opt)}"><span>${escapeHtml(opt)}</span>`;
       lbl.querySelector('input').addEventListener('change', e => {
         g.querySelectorAll('.radio-option').forEach(x => x.classList.remove('checked'));
         lbl.classList.add('checked');
@@ -595,6 +673,7 @@ function crearInput(q) {
     return wrapper;
   }
 
+  // ----- CHECKBOX -----
   if (q.type === 'checkbox') {
     const g = document.createElement('div');
     g.className = 'checkbox-group';
@@ -602,7 +681,7 @@ function crearInput(q) {
     (q.options || []).forEach(opt => {
       const lbl = document.createElement('label');
       lbl.className = 'check-option';
-      lbl.innerHTML = `<input type="checkbox" value="${opt}"><span>${opt}</span>`;
+      lbl.innerHTML = `<input type="checkbox" value="${escapeHtml(opt)}"><span>${escapeHtml(opt)}</span>`;
       lbl.querySelector('input').addEventListener('change', e => {
         lbl.classList.toggle('checked', e.target.checked);
         if (e.target.checked) {
@@ -617,17 +696,20 @@ function crearInput(q) {
     return wrapper;
   }
 
+  // ----- MATRIZ DE OPCIÓN ÚNICA -----
   if (q.type === 'grid_multiple_choice' && q.matrix) {
+    const wrap = document.createElement('div');
+    wrap.className = 'matrix-wrapper';
     const tbl = document.createElement('table');
     tbl.className = 'matrix-table';
     const thead = document.createElement('thead');
-    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>`;
     tbl.appendChild(thead);
     const tbody = document.createElement('tbody');
     q.matrix.rows.forEach((row, ri) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${row}</td>` +
-        q.matrix.columns.map((col, ci) => `<td><label><input type="radio" name="${q.id}_r${ri}" value="${col}"></label></td>`).join('');
+      tr.innerHTML = `<td>${escapeHtml(row)}</td>` +
+        q.matrix.columns.map((col) => `<td><label><input type="radio" name="${q.id}_r${ri}" value="${escapeHtml(col)}"></label></td>`).join('');
       tr.querySelectorAll('input').forEach(inp => {
         inp.addEventListener('change', e => {
           respuestasTemp[`${q.id}_r${ri}`] = e.target.value;
@@ -636,21 +718,25 @@ function crearInput(q) {
       tbody.appendChild(tr);
     });
     tbl.appendChild(tbody);
-    wrapper.appendChild(tbl);
+    wrap.appendChild(tbl);
+    wrapper.appendChild(wrap);
     return wrapper;
   }
 
+  // ----- MATRIZ DE CHECKBOX -----
   if (q.type === 'grid_checkbox' && q.matrix) {
+    const wrap = document.createElement('div');
+    wrap.className = 'matrix-wrapper';
     const tbl = document.createElement('table');
     tbl.className = 'matrix-table';
     const thead = document.createElement('thead');
-    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>`;
     tbl.appendChild(thead);
     const tbody = document.createElement('tbody');
     q.matrix.rows.forEach((row, ri) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${row}</td>` +
-        q.matrix.columns.map((col, ci) => `<td><label><input type="checkbox" name="${q.id}_r${ri}_c${ci}" value="${col}"></label></td>`).join('');
+      tr.innerHTML = `<td>${escapeHtml(row)}</td>` +
+        q.matrix.columns.map((col, ci) => `<td><label><input type="checkbox" name="${q.id}_r${ri}_c${ci}" value="${escapeHtml(col)}"></label></td>`).join('');
       tr.querySelectorAll('input').forEach(inp => {
         inp.addEventListener('change', e => {
           const key = `${q.id}_r${ri}`;
@@ -665,10 +751,12 @@ function crearInput(q) {
       tbody.appendChild(tr);
     });
     tbl.appendChild(tbody);
-    wrapper.appendChild(tbl);
+    wrap.appendChild(tbl);
+    wrapper.appendChild(wrap);
     return wrapper;
   }
 
+  // ----- FALLBACK: TEXTAREA -----
   const fb = document.createElement('textarea');
   fb.dataset.qid = q.id;
   fb.addEventListener('input', e => { respuestasTemp[q.id] = e.target.value; });
@@ -679,13 +767,33 @@ function crearInput(q) {
 /* =========================================================
    CERRAR MODAL
    ========================================================= */
-document.getElementById('closeModal').addEventListener('click', () => {
-  if (Object.keys(respuestasTemp).length > 0) {
+function cerrarModal(forzar) {
+  if (!forzar && Object.keys(respuestasTemp).length > 0) {
     if (!confirm('¿Seguro que quieres salir? Perderás lo escrito.')) return;
   }
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
-  respuestasTemp = {}; protocoloEnEdicion = null;
+  respuestasTemp = {};
+  protocoloEnEdicion = null;
+}
+
+document.getElementById('closeModal').addEventListener('click', () => cerrarModal(false));
+
+// Cerrar con clic fuera del contenido
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') cerrarModal(false);
+});
+
+// Cerrar con ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('reportModal').classList.contains('open')) {
+      document.getElementById('reportModal').classList.remove('open');
+      document.body.style.overflow = '';
+    } else if (document.getElementById('modalOverlay').classList.contains('open')) {
+      cerrarModal(false);
+    }
+  }
 });
 
 /* =========================================================
@@ -694,28 +802,73 @@ document.getElementById('closeModal').addEventListener('click', () => {
 document.getElementById('submitProtocol').addEventListener('click', async () => {
   const prot = PROTOCOLOS_DATA.protocolos[protocoloEnEdicion];
 
+  // Validar consentimiento
   const consentCheck = document.getElementById('consentCheck');
   if (prot.consent && prot.consent.required && (!consentCheck || !consentCheck.checked)) {
     alert('Debes aceptar el consentimiento para continuar.');
     return;
   }
 
+  // ============================================
+  // VALIDACIÓN DE PREGUNTAS REQUERIDAS
+  // Soporta: texto, email, fecha, escala, opción múltiple,
+  //          checkboxes, matrices (grid) y bloques repetidos
+  // ============================================
   const faltantes = [];
-  prot.questions.forEach(q => {
-    if (q.required && q.type !== 'section_header') {
-      const val = respuestasTemp[q.id];
-      const empty = !val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && !val.trim());
-      if (empty) faltantes.push(q.code || q.id);
+  prot.questions.forEach((q, qi) => {
+    if (!q.required || q.type === 'section_header') return;
+
+    const etiqueta = q.order ? `P${q.order}` : (q.code || `P${qi + 1}`);
+    let vacia = false;
+
+    // A) MATRIZ de opción única → TODAS las filas deben tener respuesta
+    if (q.type === 'grid_multiple_choice' && q.matrix) {
+      for (let ri = 0; ri < q.matrix.rows.length; ri++) {
+        if (!respuestasTemp[`${q.id}_r${ri}`]) {
+          vacia = true;
+          break;
+        }
+      }
     }
+    // B) MATRIZ de checkboxes → al menos una marca en cualquier fila
+    else if (q.type === 'grid_checkbox' && q.matrix) {
+      const tieneAlgo = Object.keys(respuestasTemp).some(k =>
+        k.startsWith(q.id + '_r') &&
+        Array.isArray(respuestasTemp[k]) &&
+        respuestasTemp[k].length > 0
+      );
+      if (!tieneAlgo) vacia = true;
+    }
+    // C) BLOQUES REPETIDOS → cada día debe tener contenido
+    else if (q.repeatsFor) {
+      for (let d = 1; d <= q.repeatsFor; d++) {
+        const v = respuestasTemp[`${q.id}_day${d}`];
+        if (!v || !String(v).trim()) {
+          vacia = true;
+          break;
+        }
+      }
+    }
+    // D) PREGUNTAS SIMPLES
+    else {
+      const val = respuestasTemp[q.id];
+      vacia = !val
+        || (Array.isArray(val) && val.length === 0)
+        || (typeof val === 'string' && !val.trim());
+    }
+
+    if (vacia) faltantes.push(etiqueta);
   });
 
   if (faltantes.length > 0) {
-    alert('Faltan preguntas por responder: ' + faltantes.join(', '));
+    alert('⚠️ Aún faltan preguntas por responder:\n\n' + faltantes.join(', ') +
+          '\n\nPor favor, revisa que TODAS las filas de las matrices estén marcadas.');
     return;
   }
 
   const btn = document.getElementById('submitProtocol');
-  btn.disabled = true; btn.textContent = 'Guardando...';
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
 
   try {
     const idx = protocoloEnEdicion;
@@ -741,10 +894,11 @@ document.getElementById('submitProtocol').addEventListener('click', async () => 
     renderProtocolos(paquete);
     actualizarProgreso(paquete);
   } catch (err) {
-    console.error(err);
-    alert('Error al guardar. Intenta de nuevo.');
+    console.error('Error guardando protocolo:', err);
+    alert('❌ Error al guardar: ' + (err.message || 'Intenta de nuevo.'));
   } finally {
-    btn.disabled = false; btn.textContent = 'Enviar Protocolo';
+    btn.disabled = false;
+    btn.textContent = 'Enviar Protocolo';
     respuestasTemp = {};
   }
 });
@@ -752,9 +906,9 @@ document.getElementById('submitProtocol').addEventListener('click', async () => 
 /* =========================================================
    FEEDBACK PERSONALIZADO POR PROTOCOLO
    ========================================================= */
-function generarFeedback(prot, resp) {
+function generarFeedback(prot) {
   const nombre = (pacienteActual.nombre || '').split(' ')[0];
-  const base = `<strong>${nombre}</strong>, has completado el protocolo <strong>${prot.code}</strong>. `;
+  const base = `<strong>${escapeHtml(nombre)}</strong>, has completado el protocolo <strong>${escapeHtml(prot.code)}</strong>. `;
 
   const feedbacks = {
     'LA-00': base + 'Has trazado tu mapa inicial. A partir de aquí, todo lo que construyamos tendrá una dirección clara. Gracias por la confianza de abrir este espacio.',
@@ -780,11 +934,13 @@ function mostrarFeedback(prot, mensaje) {
   document.getElementById('fbMessage').innerHTML = mensaje;
   document.getElementById('feedbackScreen').style.display = 'block';
   dashboard.style.display = 'none';
+  window.scrollTo(0, 0);
 }
 
 document.getElementById('fbContinue').addEventListener('click', () => {
   document.getElementById('feedbackScreen').style.display = 'none';
   dashboard.style.display = 'block';
+  window.scrollTo(0, 0);
 });
 
 /* =========================================================
@@ -808,7 +964,11 @@ function generarInformeFinal(p) {
   const hoy = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
   const resp = p.formulariosCompletados || {};
 
-  const g = (idx, key) => resp[idx]?.respuestas?.[key] || '—';
+  // Helper interno: lee respuesta y la devuelve escapada
+  const g = (idx, key) => {
+    const val = resp[idx]?.respuestas?.[key];
+    return (val == null || val === '') ? '—' : escapeHtml(val);
+  };
 
   let html = `
     <div class="report-header">
@@ -816,7 +976,7 @@ function generarInformeFinal(p) {
       <div style="font-size:0.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Bitácora de Vuelo Personal</div>
       <h1>Informe Terapéutico Final</h1>
       <div class="report-meta">
-        <strong>${p.nombre || 'Consultante'}</strong> · ${p.email || ''}<br>
+        <strong>${escapeHtml(p.nombre || 'Consultante')}</strong> · ${escapeHtml(p.email || '')}<br>
         Generado el ${hoy}
       </div>
     </div>
@@ -972,8 +1132,8 @@ function generarInformeFinal(p) {
 /* =========================================================
    DESCARGA DEL INFORME EN PDF
    ========================================================= */
-window.descargarInformePDF = async function() {
-  const btn = event.target;
+window.descargarInformePDF = async function(evt) {
+  const btn = (evt && evt.target) ? evt.target : document.querySelector('.report-actions .btn-print');
   const original = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '⏳ Generando PDF...';
@@ -982,8 +1142,13 @@ window.descargarInformePDF = async function() {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('reportContent');
 
-    const originalWidth = element.style.width;
-    const originalMaxWidth = element.style.maxWidth;
+    // Guardar estilos originales
+    const origWidth = element.style.width;
+    const origMaxWidth = element.style.maxWidth;
+    const origPadding = element.style.padding;
+    const origBackground = element.style.background;
+
+    // Forzar ancho fijo para captura consistente
     element.style.width = '900px';
     element.style.maxWidth = '900px';
     element.style.padding = '40px';
@@ -997,17 +1162,14 @@ window.descargarInformePDF = async function() {
       windowWidth: 900
     });
 
-    element.style.width = originalWidth;
-    element.style.maxWidth = originalMaxWidth;
-    element.style.padding = '';
-    element.style.background = '';
+    // Restaurar estilos
+    element.style.width = origWidth;
+    element.style.maxWidth = origMaxWidth;
+    element.style.padding = origPadding;
+    element.style.background = origBackground;
 
     const imgData = canvas.toDataURL('image/jpeg', 0.92);
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -1033,17 +1195,20 @@ window.descargarInformePDF = async function() {
     pdf.save(`Bitacora_LyonAsesor_${nombre}_${fecha}.pdf`);
 
     btn.innerHTML = '✅ PDF descargado';
-    setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 2500);
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }, 2500);
   } catch (err) {
     console.error('Error generando PDF:', err);
-    alert('Error al generar el PDF. Intenta con "Imprimir" y elige "Guardar como PDF".');
+    alert('❌ Error al generar el PDF.\n\nSugerencia: usa el botón "Imprimir" y elige "Guardar como PDF" como alternativa.');
     btn.innerHTML = original;
     btn.disabled = false;
   }
 };
 
 /* =========================================================
-   AUTO-LOGIN
+   AUTO-LOGIN AL CARGAR
    ========================================================= */
 window.addEventListener('load', async () => {
   const codigoGuardado = localStorage.getItem('lyon_consultorio_codigo');
