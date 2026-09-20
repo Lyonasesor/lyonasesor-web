@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="robots" content="noindex, nofollow">
+<title>Consultorio Privado | Lyon Asesor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="protocolos-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --naranja:#e86b18;--naranja-luz:#f28c4e;--naranja-oscuro:#c95a10;
+    --navy:#1A2330;--navy-light:#243042;--navy-dark:#0f1720;
+    --crema:#faf8f5;--blanco-calido:#fefdfb;
+    --text-dark:#2C3E50;--text-muted:#5A6C7D;--text-light:#8899A6;
+    --shadow-sm:0 2px 8px rgba(26,35,48,0.08);
+    --shadow-md:0 4px 20px rgba(26,35,48,0.12);
+    --shadow-lg:0 8px 40px rgba(26,35,48,0.16);
+    --radius:16px;--radius-sm:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;color:var(--text-dark);
+    background:radial-gradient(ellipse at 20% 20%,rgba(232,107,24,0.05) 0%,transparent 60%),
+               radial-gradient(ellipse at 80% 80%,rgba(26,35,48,0.04) 0%,transparent 50%),
+               var(--crema);
+    line-height:1.7;min-height:100vh;
+  }
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;}
+
+  /* ===== LOGIN ===== */
+  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;position:relative;}
+  .login-box{background:#fff;border-radius:var(--radius);padding:3rem 2.5rem;max-width:480px;width:100%;box-shadow:var(--shadow-lg);text-align:center;border:1px solid rgba(26,35,48,0.06);}
+  .login-box .brand{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;letter-spacing:2px;color:var(--navy);margin-bottom:0.3rem;}
+  .login-box .brand span{color:var(--naranja);}
+  .login-box .sub{font-size:0.85rem;color:var(--text-muted);margin-bottom:2rem;}
+  .login-box h2{font-size:1.7rem;color:var(--navy);margin-bottom:0.5rem;}
+  .login-box p.intro{font-size:0.92rem;color:var(--text-muted);margin-bottom:1.8rem;line-height:1.6;}
+  .login-box input{width:100%;padding:16px 20px;border:2px solid #e2e8f0;border-radius:12px;font-size:1.1rem;font-family:'Inter',sans-serif;text-align:center;letter-spacing:2px;font-weight:600;color:var(--navy);transition:0.2s;margin-bottom:16px;}
+  .login-box input:focus{border-color:var(--naranja);outline:none;box-shadow:0 0 0 4px rgba(232,107,24,0.12);}
+  .login-box input::placeholder{color:#94a3b8;letter-spacing:1px;font-weight:400;}
+  .login-box button{width:100%;padding:16px;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;border:none;border-radius:50px;font-weight:600;font-size:1rem;cursor:pointer;transition:0.2s;box-shadow:0 4px 20px rgba(232,107,24,0.3);}
+  .login-box button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,107,24,0.5);}
+  .login-box button:disabled{opacity:0.6;cursor:not-allowed;}
+  .login-error{color:#dc2626;margin-top:14px;font-size:0.9rem;min-height:1.2em;background:#fef2f2;padding:10px;border-radius:8px;}
+  .login-help{margin-top:1.5rem;font-size:0.82rem;color:var(--text-muted);padding-top:1.5rem;border-top:1px solid #f1f5f9;}
+  .login-help a{color:var(--naranja);text-decoration:none;font-weight:600;}
+
+  /* ===== DASHBOARD ===== */
+  .dashboard{display:none;min-height:100vh;padding-bottom:60px;}
+  .dash-header{background:linear-gradient(135deg,var(--navy-dark),var(--navy));color:#fff;padding:28px 24px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+  .dash-header-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .dash-brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;}
+  .dash-brand span{color:var(--naranja-luz);}
+  .dash-user{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .dash-user .user-info{text-align:right;font-size:0.85rem;}
+  .dash-user .user-info .name{font-weight:700;font-size:1rem;}
+  .dash-user .user-info .pkg{color:var(--naranja-luz);font-size:0.78rem;}
+  .logout-btn{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:8px 18px;border-radius:30px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:0.2s;font-family:'Inter',sans-serif;}
+  .logout-btn:hover{background:rgba(255,255,255,0.2);}
+
+  .dash-container{max-width:1100px;margin:0 auto;padding:32px 24px;}
+
+  .welcome-block{background:#fff;border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-sm);margin-bottom:32px;border-left:4px solid var(--naranja);}
+  .welcome-block h1{font-size:1.9rem;color:var(--navy);margin-bottom:8px;}
+  .welcome-block h1 span{color:var(--naranja);}
+  .welcome-block p{color:var(--text-muted);font-size:0.95rem;}
+
+  .progress-card{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:32px;}
+  .progress-card h3{font-size:1.05rem;color:var(--navy);margin-bottom:14px;font-family:'Inter',sans-serif;font-weight:700;}
+  .progress-bar{height:10px;background:#f1f5f9;border-radius:50px;overflow:hidden;margin-bottom:10px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--naranja),var(--naranja-luz));transition:width 0.5s ease;border-radius:50px;}
+  .progress-label{font-size:0.85rem;color:var(--text-muted);font-weight:500;}
+
+  .protocolos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px;}
+  .prot-card{background:#fff;border-radius:var(--radius);padding:22px 20px;border:1.5px solid #f1f5f9;transition:0.3s;position:relative;cursor:pointer;overflow:hidden;}
+  .prot-card.available{border-color:var(--naranja);box-shadow:0 4px 16px rgba(232,107,24,0.12);}
+  .prot-card.available:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(232,107,24,0.2);}
+  .prot-card.completed{border-color:#22c55e;background:#f0fdf4;}
+  .prot-card.locked{opacity:0.55;cursor:not-allowed;background:#f8fafc;}
+  .prot-card .code{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--naranja);margin-bottom:4px;line-height:1;}
+  .prot-card.completed .code{color:#16a34a;}
+  .prot-card.locked .code{color:#94a3b8;}
+  .prot-card h4{font-size:1rem;color:var(--navy);margin-bottom:4px;line-height:1.3;font-weight:600;}
+  .prot-card .prot-sub{font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;line-height:1.4;min-height:32px;}
+  .prot-card .status-badge{display:inline-block;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:50px;letter-spacing:0.5px;text-transform:uppercase;}
+  .prot-card.available .status-badge{background:#fff3e0;color:var(--naranja-oscuro);}
+  .prot-card.completed .status-badge{background:#dcfce7;color:#166534;}
+  .prot-card.locked .status-badge{background:#e2e8f0;color:#64748b;}
+
+  .final-report-card{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;border-radius:var(--radius);padding:32px;margin-top:32px;text-align:center;display:none;}
+  .final-report-card h3{font-size:1.6rem;margin-bottom:12px;}
+  .final-report-card h3 span{color:var(--naranja-luz);}
+  .final-report-card p{color:rgba(255,255,255,0.8);margin-bottom:20px;font-size:0.95rem;}
+  .btn-report{display:inline-block;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;padding:16px 36px;border-radius:50px;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-size:1rem;box-shadow:0 4px 20px rgba(232,107,24,0.4);transition:0.2s;font-family:'Inter',sans-serif;}
+  .btn-report:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(232,107,24,0.6);}
+
+  /* ===== MODAL DE FORMULARIO ===== */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,35,48,0.75);z-index:1000;padding:1rem;overflow-y:auto;backdrop-filter:blur(4px);}
+  .modal-overlay.open{display:block;}
+  .modal-content{background:#fff;max-width:780px;margin:2rem auto;border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;}
+  .modal-header{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;padding:28px 32px;position:relative;}
+  .modal-header .close-modal{position:absolute;top:16px;right:20px;background:rgba(255,255,255,0.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1.3rem;cursor:pointer;transition:0.2s;line-height:1;}
+  .modal-header .close-modal:hover{background:rgba(255,255,255,0.25);}
+  .modal-header .prot-code{font-family:'Playfair Display',serif;color:var(--naranja-luz);font-size:0.9rem;font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+  .modal-header h2{font-size:1.5rem;margin-bottom:4px;line-height:1.25;}
+  .modal-header .prot-subtitle{font-size:0.9rem;color:rgba(255,255,255,0.7);font-style:italic;}
+  .modal-body{padding:32px;max-height:calc(100vh - 300px);overflow-y:auto;}
+  .intro-text{background:#fef8f3;border-left:4px solid var(--naranja);padding:18px 22px;border-radius:0 10px 10px 0;margin-bottom:28px;}
+  .intro-text p{font-size:0.93rem;color:#5A6C7D;line-height:1.75;margin-bottom:12px;}
+  .intro-text p:last-child{margin-bottom:0;}
+  .intro-text .signature{font-style:italic;font-weight:600;color:var(--navy);margin-top:12px;padding-top:12px;border-top:1px solid rgba(232,107,24,0.2);}
+
+  .question-block{margin-bottom:26px;padding-bottom:26px;border-bottom:1px dashed #e2e8f0;}
+  .question-block:last-of-type{border-bottom:none;}
+  .question-block .q-num{display:inline-block;background:var(--naranja);color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:50px;margin-bottom:8px;letter-spacing:1px;}
+  .question-block .q-text{font-size:0.98rem;color:var(--navy);font-weight:600;margin-bottom:8px;line-height:1.5;}
+  .question-block .q-helper{font-size:0.82rem;color:var(--text-muted);font-style:italic;margin-bottom:12px;line-height:1.5;white-space:pre-line;}
+  .question-block .q-req{color:var(--naranja);font-size:0.85rem;font-weight:700;}
+  .question-block input[type="text"],
+  .question-block input[type="email"],
+  .question-block input[type="date"],
+  .question-block textarea{width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;transition:0.2s;background:#fff;}
+  .question-block input:focus,
+  .question-block textarea:focus{border-color:var(--naranja);outline:none;box-shadow:0 0 0 3px rgba(232,107,24,0.12);}
+  .question-block textarea{min-height:100px;resize:vertical;line-height:1.6;}
+
+  .radio-group,.checkbox-group{display:flex;flex-direction:column;gap:8px;}
+  .radio-option,.check-option{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;cursor:pointer;transition:0.2s;font-size:0.92rem;}
+  .radio-option:hover,.check-option:hover{border-color:var(--naranja-luz);background:#fef8f3;}
+  .radio-option input,.check-option input{accent-color:var(--naranja);width:18px;height:18px;cursor:pointer;}
+  .radio-option.checked,.check-option.checked{border-color:var(--naranja);background:#fef8f3;}
+
+  .scale-container{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+  .scale-btn{min-width:44px;height:44px;padding:0 12px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);transition:0.2s;font-family:'Inter',sans-serif;}
+  .scale-btn:hover{border-color:var(--naranja);color:var(--naranja);}
+  .scale-btn.selected{background:var(--naranja);color:#fff;border-color:var(--naranja);box-shadow:0 4px 12px rgba(232,107,24,0.3);}
+  .scale-labels{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-top:8px;padding:0 6px;}
+
+  .matrix-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:0.88rem;}
+  .matrix-table th{background:#f8fafc;padding:10px 8px;font-weight:600;color:var(--navy);font-size:0.78rem;text-align:center;border:1px solid #e2e8f0;}
+  .matrix-table th:first-child{text-align:left;}
+  .matrix-table td{padding:10px 8px;border:1px solid #e2e8f0;text-align:center;background:#fff;}
+  .matrix-table td:first-child{text-align:left;font-size:0.85rem;color:#4A5364;font-weight:500;}
+  .matrix-table td label{display:flex;justify-content:center;align-items:center;cursor:pointer;}
+  .matrix-table input{accent-color:var(--naranja);width:18px;height:18px;cursor:pointer;}
+
+  .section-header-block{background:linear-gradient(135deg,#fef8f3,#fff5ec);padding:16px 20px;border-radius:10px;border-left:4px solid var(--naranja);margin:28px 0 18px;}
+  .section-header-block h3{font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:700;color:var(--naranja-oscuro);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+  .section-header-block p{font-size:0.82rem;color:var(--text-muted);font-style:italic;}
+
+  .consent-block{background:#fff7ed;border:2px solid #fed7aa;border-radius:12px;padding:18px 22px;margin:28px 0 20px;}
+  .consent-block label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;font-size:0.88rem;color:#7c2d12;line-height:1.6;}
+  .consent-block input{accent-color:var(--naranja);width:20px;height:20px;margin-top:2px;flex-shrink:0;cursor:pointer;}
+
+  .repeat-day{background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:10px;padding:16px;margin-bottom:14px;}
+  .repeat-day .day-title{font-size:0.85rem;font-weight:700;color:var(--naranja);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+  .repeat-day textarea{min-height:80px;}
+
+  .modal-footer{padding:20px 32px 28px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .btn-submit{flex:1;min-width:200px;padding:16px;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;border:none;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;font-family:'Inter',sans-serif;transition:0.2s;box-shadow:0 4px 16px rgba(232,107,24,0.3);}
+  .btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,107,24,0.5);}
+  .btn-submit:disabled{opacity:0.5;cursor:not-allowed;}
+
+  /* ===== FEEDBACK POST-ENVÍO ===== */
+  .feedback-screen{display:none;max-width:780px;margin:2rem auto;background:#fff;border-radius:var(--radius);padding:3rem 2.5rem;box-shadow:var(--shadow-lg);text-align:center;}
+  .feedback-screen .f-icon{font-size:4rem;margin-bottom:16px;}
+  .feedback-screen h2{font-size:1.8rem;color:var(--navy);margin-bottom:12px;}
+  .feedback-screen h2 span{color:var(--naranja);}
+  .feedback-screen .f-msg{font-size:1rem;color:var(--text-muted);line-height:1.7;margin-bottom:24px;text-align:left;background:#fef8f3;padding:20px 24px;border-radius:12px;border-left:4px solid var(--naranja);}
+  .feedback-screen .f-msg strong{color:var(--navy);}
+  .feedback-screen .btn-continue{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--naranja),var(--naranja-luz));color:#fff;border-radius:50px;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-size:1rem;font-family:'Inter',sans-serif;box-shadow:0 4px 16px rgba(232,107,24,0.3);transition:0.2s;}
+  .feedback-screen .btn-continue:hover{transform:translateY(-2px);}
+
+  /* ===== INFORME FINAL ===== */
+  .report-modal{display:none;position:fixed;inset:0;background:rgba(26,35,48,0.85);z-index:1100;padding:1rem;overflow-y:auto;}
+  .report-modal.open{display:block;}
+  .report-content{max-width:900px;margin:2rem auto;background:#fff;border-radius:var(--radius);padding:3.5rem 3rem;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+  .report-content .report-header{text-align:center;border-bottom:2px solid var(--naranja);padding-bottom:24px;margin-bottom:32px;}
+  .report-content .report-header .logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:3px;color:var(--navy);margin-bottom:6px;}
+  .report-content .report-header .logo span{color:var(--naranja);}
+  .report-content .report-header h1{font-size:2rem;color:var(--navy);margin:14px 0 6px;}
+  .report-content .report-header .report-meta{font-size:0.85rem;color:var(--text-muted);}
+  .report-section{margin-bottom:36px;}
+  .report-section h2{font-size:1.35rem;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;}
+  .report-section h2 span{color:var(--naranja);}
+  .report-section p{font-size:0.95rem;color:#4A5364;line-height:1.75;margin-bottom:12px;}
+  .report-section .highlight{background:#fef8f3;padding:16px 20px;border-left:4px solid var(--naranja);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:#5A6C7D;}
+  .report-actions{display:flex;gap:12px;justify-content:center;margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0;flex-wrap:wrap;}
+  .report-actions button,.report-actions a{padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.92rem;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:0.2s;text-decoration:none;display:inline-block;}
+  .btn-print{background:var(--navy);color:#fff;}
+  .btn-print:hover{background:var(--navy-light);transform:translateY(-2px);}
+  .btn-close-report{background:#e2e8f0;color:var(--navy);}
+  .btn-close-report:hover{background:#cbd5e1;}
+
+  @media (max-width:700px){
+    .login-box{padding:2rem 1.5rem;}
+    .dash-header{padding:20px 16px;}
+    .dash-container{padding:20px 16px;}
+    .welcome-block{padding:24px 20px;}
+    .welcome-block h1{font-size:1.5rem;}
+    .prot-card{padding:18px 16px;}
+    .modal-content{margin:1rem auto;}
+    .modal-header{padding:22px 20px;}
+    .modal-header h2{font-size:1.2rem;}
+    .modal-body{padding:22px 20px;}
+    .modal-footer{padding:16px 20px 20px;}
+    .report-content{padding:2rem 1.5rem;}
+    .report-content .report-header h1{font-size:1.4rem;}
+    .matrix-table{font-size:0.78rem;}
+    .matrix-table th,.matrix-table td{padding:6px 4px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="brand">LYON<span>ASESOR</span></div>
+    <div class="sub">Consultorio en Desarrollo Personal</div>
+    <h2>Acceso al Consultorio</h2>
+    <p class="intro">Ingresa tu código personal para acceder a tus protocolos terapéuticos.</p>
+    <input type="text" id="codigoInput" placeholder="LYON-XXXXXX" autocomplete="off" spellcheck="false" maxlength="15">
+    <button id="loginBtn">Acceder a mi consultorio</button>
+    <div id="loginError" class="login-error"></div>
+    <div class="login-help">
+      ¿No tienes tu código?<br>
+      <a href="consulta.html">Inicia tu proceso aquí</a> o escríbenos a <a href="mailto:info@lyonasesor.com">info@lyonasesor.com</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-header-inner">
+      <div class="dash-brand">LYON<span>ASESOR</span></div>
+      <div class="dash-user">
+        <div class="user-info">
+          <div class="name" id="userName">—</div>
+          <div class="pkg" id="userPackage">—</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Salir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-container">
+    <div class="welcome-block">
+      <h1>Hola, <span id="welcomeName">consultante</span> 👋</h1>
+      <p>Este es tu espacio privado. Cada protocolo es una puerta que se abre hacia tu mundo interior. Tómate tu tiempo. Respira. Estás en buenas manos.</p>
+    </div>
+
+    <div class="progress-card">
+      <h3>Tu progreso</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0 de 0 protocolos completados</div>
+    </div>
+
+    <h3 style="font-family:'Inter',sans-serif;color:var(--navy);font-size:1.15rem;margin-bottom:6px;">Tus Protocolos LA</h3>
+    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0;">Completa cada protocolo en orden. Al enviar uno, se desbloqueará el siguiente.</p>
+
+    <div class="protocolos-grid" id="protocolosGrid"></div>
+
+    <div class="final-report-card" id="finalReportCard">
+      <h3>🎉 Has completado <span>tu recorrido</span></h3>
+      <p>Has llegado al final de este viaje. Ahora puedes generar tu <strong>Bitácora de Vuelo Personal</strong>, un documento con todos tus hallazgos y aprendizajes.</p>
+      <button class="btn-report" id="generateReportBtn">📄 Generar mi Informe Terapéutico</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DE FORMULARIO ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close-modal" id="closeModal">✕</button>
+      <div class="prot-code" id="modalProtCode">LA-00</div>
+      <h2 id="modalProtTitle">Protocolo</h2>
+      <div class="prot-subtitle" id="modalProtSubtitle">—</div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-submit" id="submitProtocol">Enviar Protocolo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FEEDBACK SCREEN ===== -->
+<div class="feedback-screen" id="feedbackScreen">
+  <div class="f-icon">🌱</div>
+  <h2>¡Protocolo <span id="fbCode">completado</span>!</h2>
+  <div class="f-msg" id="fbMessage"></div>
+  <button class="btn-continue" id="fbContinue">Volver a mi consultorio</button>
+</div>
+
+<!-- ===== INFORME FINAL ===== -->
+<div class="report-modal" id="reportModal">
+  <div class="report-content" id="reportContent"></div>
+</div>
+
+<script>
+/* =========================================================
+   CONSULTORIO PRIVADO — LYON ASESOR
+   ========================================================= */
+const PACIENTE_PAQUETES = {
+  individual: { nombre: 'Sesión Individual', formularios: [0,1,2], total: 3 },
+  pack2:      { nombre: 'Pack 2 Sesiones',   formularios: [0,1,2,3], total: 4 },
+  pack3:      { nombre: 'Pack 3 Sesiones',   formularios: [0,1,2,3,4,5,6,7,8], total: 9 },
+  pack5:      { nombre: 'Pack 5 Sesiones',   formularios: [0,1,2,3,4,5,6,7,8,9,10,11,12], total: 13 }
+};
+
+let pacienteActual = null;
+let protocoloEnEdicion = null;
+let respuestasTemp = {};
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+const loginScreen = document.getElementById('loginScreen');
+const dashboard = document.getElementById('dashboard');
+const codigoInput = document.getElementById('codigoInput');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+
+codigoInput.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); });
+
+loginBtn.addEventListener('click', async () => {
+  const codigo = codigoInput.value.trim().toUpperCase();
+  loginError.textContent = '';
+  if (!codigo) { loginError.textContent = '⚠️ Ingresa tu código'; return; }
+
+  loginBtn.disabled = true; loginBtn.textContent = 'Verificando...';
+  try {
+    const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
+    if (!snap.exists()) {
+      loginError.textContent = '❌ Código no válido. Verifica con tu terapeuta.';
+      return;
+    }
+    const data = snap.val();
+    if (data.estado !== 'activo') {
+      loginError.textContent = '⏳ Tu acceso está en proceso de activación.';
+      return;
+    }
+    pacienteActual = { codigo, ...data };
+    localStorage.setItem('lyon_consultorio_codigo', codigo);
+    await database.ref('pacientes_consultorio/' + codigo + '/fechaUltimoAcceso').set(Date.now());
+    mostrarDashboard();
+  } catch (err) {
+    console.error(err);
+    loginError.textContent = '❌ Error de conexión. Intenta de nuevo.';
+  } finally {
+    loginBtn.disabled = false; loginBtn.textContent = 'Acceder a mi consultorio';
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  localStorage.removeItem('lyon_consultorio_codigo');
+  pacienteActual = null;
+  dashboard.style.display = 'none';
+  loginScreen.style.display = 'flex';
+  codigoInput.value = '';
+});
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+function mostrarDashboard() {
+  loginScreen.style.display = 'none';
+  dashboard.style.display = 'block';
+
+  const paquete = PACIENTE_PAQUETES[pacienteActual.paquete] || PACIENTE_PAQUETES.individual;
+
+  document.getElementById('userName').textContent = pacienteActual.nombre || 'Consultante';
+  document.getElementById('userPackage').textContent = paquete.nombre;
+  document.getElementById('welcomeName').textContent = (pacienteActual.nombre || 'consultante').split(' ')[0];
+
+  renderProtocolos(paquete);
+  actualizarProgreso(paquete);
+}
+
+function renderProtocolos(paquete) {
+  const grid = document.getElementById('protocolosGrid');
+  const completados = pacienteActual.formulariosCompletados || {};
+  grid.innerHTML = '';
+
+  PROTOCOLOS_DATA.protocolos.forEach((prot, idx) => {
+    const permitido = paquete.formularios.includes(idx);
+    const completado = !!completados[idx];
+    const anteriorCompletado = idx === 0 || !!completados[idx - 1];
+    const disponible = permitido && anteriorCompletado && !completado;
+
+    let estado, badge;
+    if (completado) { estado = 'completed'; badge = '✓ Completado'; }
+    else if (disponible) { estado = 'available'; badge = '🔓 Disponible'; }
+    else if (!permitido) { estado = 'locked'; badge = '🔒 No incluido'; }
+    else { estado = 'locked'; badge = '🔒 Bloqueado'; }
+
+    const card = document.createElement('div');
+    card.className = 'prot-card ' + estado;
+    card.innerHTML = `
+      <div class="code">${prot.code}</div>
+      <h4>${prot.title}</h4>
+      <div class="prot-sub">${prot.subtitle}</div>
+      <span class="status-badge">${badge}</span>
+    `;
+
+    if (estado === 'available') {
+      card.addEventListener('click', () => abrirProtocolo(idx));
+    } else if (estado === 'completed') {
+      card.addEventListener('click', () => {
+        alert('Ya completaste este protocolo. Puedes revisar tus respuestas desde tu informe final.');
+      });
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+function actualizarProgreso(paquete) {
+  const completados = pacienteActual.formulariosCompletados || {};
+  const totalCompletados = paquete.formularios.filter(i => !!completados[i]).length;
+  const totalFormularios = paquete.total;
+
+  const pct = totalFormularios ? Math.round((totalCompletados / totalFormularios) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${totalCompletados} de ${totalFormularios} protocolos completados (${pct}%)`;
+
+  if (totalCompletados === totalFormularios && totalFormularios > 0) {
+    document.getElementById('finalReportCard').style.display = 'block';
+  } else {
+    document.getElementById('finalReportCard').style.display = 'none';
+  }
+}
+
+/* =========================================================
+   ABRIR PROTOCOLO Y RENDERIZAR FORMULARIO
+   ========================================================= */
+function abrirProtocolo(idx) {
+  protocoloEnEdicion = idx;
+  respuestasTemp = {};
+  const prot = PROTOCOLOS_DATA.protocolos[idx];
+
+  document.getElementById('modalProtCode').textContent = prot.code;
+  document.getElementById('modalProtTitle').textContent = prot.title;
+  document.getElementById('modalProtSubtitle').textContent = prot.subtitle;
+  document.getElementById('modalProtCode').style.color = prot.themeColor || 'var(--naranja-luz)';
+
+  const body = document.getElementById('modalBody');
+  body.innerHTML = '';
+
+  if (prot.introduction && prot.introduction.length) {
+    const intro = document.createElement('div');
+    intro.className = 'intro-text';
+    intro.innerHTML = prot.introduction.map(p => `<p>${p}</p>`).join('') +
+      (prot.signature ? `<p class="signature">${prot.signature}</p>` : '');
+    body.appendChild(intro);
+  }
+
+  prot.questions.forEach((q, i) => {
+    if (q.type === 'section_header') {
+      const sh = document.createElement('div');
+      sh.className = 'section-header-block';
+      sh.innerHTML = `<h3>${q.text}</h3>${q.helperText ? `<p>${q.helperText}</p>` : ''}`;
+      body.appendChild(sh);
+      return;
+    }
+
+    if (q.repeatsFor) {
+      for (let d = 1; d <= q.repeatsFor; d++) {
+        const rep = document.createElement('div');
+        rep.className = 'repeat-day';
+        const label = (q.repeatLabelPattern || 'DÍA {n}').replace('{n}', d);
+        rep.innerHTML = `<div class="day-title">${label}</div>`;
+        const ta = document.createElement('textarea');
+        ta.placeholder = 'Escribe aquí tu registro del día...';
+        ta.dataset.qid = q.id + '_day' + d;
+        ta.addEventListener('input', e => { respuestasTemp[ta.dataset.qid] = e.target.value; });
+        rep.appendChild(ta);
+        body.appendChild(rep);
+      }
+      return;
+    }
+
+    body.appendChild(renderPregunta(q, i));
+  });
+
+  if (prot.consent) {
+    const c = document.createElement('div');
+    c.className = 'consent-block';
+    c.innerHTML = `
+      <label>
+        <input type="checkbox" id="consentCheck" ${prot.consent.required ? 'required' : ''}>
+        <span>${prot.consent.text}</span>
+      </label>`;
+    body.appendChild(c);
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderPregunta(q, index) {
+  const block = document.createElement('div');
+  block.className = 'question-block';
+
+  const num = document.createElement('span');
+  num.className = 'q-num'; num.textContent = q.code || ('P' + (index + 1));
+  block.appendChild(num);
+
+  const text = document.createElement('div');
+  text.className = 'q-text';
+  text.innerHTML = q.text + (q.required ? ' <span class="q-req">*</span>' : '');
+  block.appendChild(text);
+
+  if (q.helperText) {
+    const h = document.createElement('div');
+    h.className = 'q-helper'; h.textContent = q.helperText;
+    block.appendChild(h);
+  }
+
+  const input = crearInput(q);
+  block.appendChild(input);
+  return block;
+}
+
+function crearInput(q) {
+  const wrapper = document.createElement('div');
+
+  if (q.type === 'short_text' || q.type === 'email' || q.type === 'date' || q.type === 'long_text') {
+    let el;
+    if (q.type === 'long_text') {
+      el = document.createElement('textarea');
+    } else {
+      el = document.createElement('input');
+      el.type = q.type === 'email' ? 'email' : (q.type === 'date' ? 'date' : 'text');
+    }
+    el.placeholder = q.type === 'email' ? 'tu@correo.com' : 'Escribe aquí...';
+    el.dataset.qid = q.id;
+    el.addEventListener('input', e => { respuestasTemp[q.id] = e.target.value; });
+    wrapper.appendChild(el);
+    return wrapper;
+  }
+
+  if (q.type === 'linear_scale') {
+    const min = q.scale?.min ?? 1;
+    const max = q.scale?.max ?? 10;
+    const cont = document.createElement('div');
+    cont.className = 'scale-container';
+    for (let n = min; n <= max; n++) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'scale-btn'; b.textContent = n;
+      b.addEventListener('click', () => {
+        cont.querySelectorAll('.scale-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        respuestasTemp[q.id] = n;
+      });
+      cont.appendChild(b);
+    }
+    wrapper.appendChild(cont);
+    if (q.scale?.minLabel || q.scale?.maxLabel) {
+      const lbl = document.createElement('div');
+      lbl.className = 'scale-labels';
+      lbl.innerHTML = `<span>${q.scale.minLabel || ''}</span><span>${q.scale.maxLabel || ''}</span>`;
+      wrapper.appendChild(lbl);
+    }
+    return wrapper;
+  }
+
+  if (q.type === 'multiple_choice') {
+    const g = document.createElement('div');
+    g.className = 'radio-group';
+    (q.options || []).forEach(opt => {
+      const lbl = document.createElement('label');
+      lbl.className = 'radio-option';
+      lbl.innerHTML = `<input type="radio" name="${q.id}" value="${opt}"><span>${opt}</span>`;
+      lbl.querySelector('input').addEventListener('change', e => {
+        g.querySelectorAll('.radio-option').forEach(x => x.classList.remove('checked'));
+        lbl.classList.add('checked');
+        respuestasTemp[q.id] = e.target.value;
+      });
+      g.appendChild(lbl);
+    });
+    wrapper.appendChild(g);
+    return wrapper;
+  }
+
+  if (q.type === 'checkbox') {
+    const g = document.createElement('div');
+    g.className = 'checkbox-group';
+    respuestasTemp[q.id] = [];
+    (q.options || []).forEach(opt => {
+      const lbl = document.createElement('label');
+      lbl.className = 'check-option';
+      lbl.innerHTML = `<input type="checkbox" value="${opt}"><span>${opt}</span>`;
+      lbl.querySelector('input').addEventListener('change', e => {
+        lbl.classList.toggle('checked', e.target.checked);
+        if (e.target.checked) {
+          if (!respuestasTemp[q.id].includes(opt)) respuestasTemp[q.id].push(opt);
+        } else {
+          respuestasTemp[q.id] = respuestasTemp[q.id].filter(x => x !== opt);
+        }
+      });
+      g.appendChild(lbl);
+    });
+    wrapper.appendChild(g);
+    return wrapper;
+  }
+
+  if (q.type === 'grid_multiple_choice' && q.matrix) {
+    const tbl = document.createElement('table');
+    tbl.className = 'matrix-table';
+    const thead = document.createElement('thead');
+    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+    tbl.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    q.matrix.rows.forEach((row, ri) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${row}</td>` +
+        q.matrix.columns.map((col, ci) => `<td><label><input type="radio" name="${q.id}_r${ri}" value="${col}"></label></td>`).join('');
+      tr.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('change', e => {
+          respuestasTemp[`${q.id}_r${ri}`] = e.target.value;
+        });
+      });
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    wrapper.appendChild(tbl);
+    return wrapper;
+  }
+
+  if (q.type === 'grid_checkbox' && q.matrix) {
+    const tbl = document.createElement('table');
+    tbl.className = 'matrix-table';
+    const thead = document.createElement('thead');
+    thead.innerHTML = `<tr><th></th>${q.matrix.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+    tbl.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    q.matrix.rows.forEach((row, ri) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${row}</td>` +
+        q.matrix.columns.map((col, ci) => `<td><label><input type="checkbox" name="${q.id}_r${ri}_c${ci}" value="${col}"></label></td>`).join('');
+      tr.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('change', e => {
+          const key = `${q.id}_r${ri}`;
+          if (!respuestasTemp[key]) respuestasTemp[key] = [];
+          if (e.target.checked) {
+            if (!respuestasTemp[key].includes(e.target.value)) respuestasTemp[key].push(e.target.value);
+          } else {
+            respuestasTemp[key] = respuestasTemp[key].filter(v => v !== e.target.value);
+          }
+        });
+      });
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    wrapper.appendChild(tbl);
+    return wrapper;
+  }
+
+  const fb = document.createElement('textarea');
+  fb.dataset.qid = q.id;
+  fb.addEventListener('input', e => { respuestasTemp[q.id] = e.target.value; });
+  wrapper.appendChild(fb);
+  return wrapper;
+}
+
+/* =========================================================
+   CERRAR MODAL
+   ========================================================= */
+document.getElementById('closeModal').addEventListener('click', () => {
+  if (Object.keys(respuestasTemp).length > 0) {
+    if (!confirm('¿Seguro que quieres salir? Perderás lo escrito.')) return;
+  }
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  respuestasTemp = {}; protocoloEnEdicion = null;
+});
+
+/* =========================================================
+   ENVIAR PROTOCOLO
+   ========================================================= */
+document.getElementById('submitProtocol').addEventListener('click', async () => {
+  const prot = PROTOCOLOS_DATA.protocolos[protocoloEnEdicion];
+
+  const consentCheck = document.getElementById('consentCheck');
+  if (prot.consent && prot.consent.required && (!consentCheck || !consentCheck.checked)) {
+    alert('Debes aceptar el consentimiento para continuar.');
+    return;
+  }
+
+  const faltantes = [];
+  prot.questions.forEach(q => {
+    if (q.required && q.type !== 'section_header') {
+      const val = respuestasTemp[q.id];
+      const empty = !val || (Array.isArray(val) && val.length === 0) || (typeof val === 'string' && !val.trim());
+      if (empty) faltantes.push(q.code || q.id);
+    }
+  });
+
+  if (faltantes.length > 0) {
+    alert('Faltan preguntas por responder: ' + faltantes.join(', '));
+    return;
+  }
+
+  const btn = document.getElementById('submitProtocol');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+
+  try {
+    const idx = protocoloEnEdicion;
+    const ahora = Date.now();
+
+    await database.ref(`pacientes_consultorio/${pacienteActual.codigo}/formulariosCompletados/${idx}`).set({
+      protocoloId: prot.id,
+      fecha: ahora,
+      fechaLegible: new Date(ahora).toLocaleString('es-ES'),
+      respuestas: respuestasTemp
+    });
+
+    if (!pacienteActual.formulariosCompletados) pacienteActual.formulariosCompletados = {};
+    pacienteActual.formulariosCompletados[idx] = { fecha: ahora, respuestas: respuestasTemp };
+
+    const feedback = generarFeedback(prot, respuestasTemp);
+
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    mostrarFeedback(prot, feedback);
+
+    const paquete = PACIENTE_PAQUETES[pacienteActual.paquete] || PACIENTE_PAQUETES.individual;
+    renderProtocolos(paquete);
+    actualizarProgreso(paquete);
+  } catch (err) {
+    console.error(err);
+    alert('Error al guardar. Intenta de nuevo.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar Protocolo';
+    respuestasTemp = {};
+  }
+});
+
+/* =========================================================
+   FEEDBACK PERSONALIZADO POR PROTOCOLO
+   ========================================================= */
+function generarFeedback(prot, resp) {
+  const nombre = (pacienteActual.nombre || '').split(' ')[0];
+  const base = `<strong>${nombre}</strong>, has completado el protocolo <strong>${prot.code}</strong>. `;
+
+  const feedbacks = {
+    'LA-00': base + 'Has trazado tu mapa inicial. A partir de aquí, todo lo que construyamos tendrá una dirección clara. Gracias por la confianza de abrir este espacio.',
+    'LA-01': base + 'Durante siete días has sido un observador amable de tus pensamientos. Ese simple acto —observar sin juzgar— ya está comenzando a transformar tu relación con tu mente.',
+    'LA-02': base + 'Has excavado hasta la raíz. Encontrar tu creencia nuclear es uno de los actos más valientes del proceso. Ahora esa raíz puede ser mirada, entendida y, poco a poco, transformada.',
+    'LA-03': base + 'Has interrogado a tu creencia y has construido una nueva. Recuerda: las nuevas creencias no se creen de inmediato, se practican. Sigue activando tu ancla cada vez que la antigua aparezca.',
+    'LA-04': base + 'Nombrar el recuerdo que duele es el primer paso para que deje de doler. Has puesto luz sobre una zona en sombra. Continúa con cuidado, con respeto por ti mismo.',
+    'LA-05': base + 'Has reescrito la película de tu pasado. Lo que hiciste hoy tiene base neurocientífica: cada vez que recuerdas con un nuevo significado, tu cerebro reconstruye la huella emocional.',
+    'LA-06': base + 'Has empezado a distinguir quién eres sin el otro. Descubrirte a ti mismo más allá de los vínculos es el camino más profundo hacia la libertad emocional.',
+    'LA-07': base + 'Te has convertido en tu propio refugio. La re-parentalización y los límites son dos prácticas que transforman la relación contigo mismo y con los demás. Felicidades por este paso.',
+    'LA-08': base + 'Has dibujado tu mapa vincular. Ahora puedes ver patrones que quizás antes eran invisibles. Lo que se ve, se puede transformar.',
+    'LA-09': base + 'Has dialogado y liberado. La carta que escribiste y el ejercicio de la silla vacía abren espacio para que la paz entre donde antes había peso.',
+    'LA-10': base + 'Has afinado tu termómetro emocional. Nombrar lo que sientes es la base de toda inteligencia emocional. Sigue practicando este idioma cada día.',
+    'LA-11': base + 'Has construido tu caja de herramientas. Ahora tienes recursos concretos para cuando la tormenta aparezca. Úsalos. Están ahí para ti.',
+    'LA-12': base + 'Has llegado al final. Tu Bitácora de Vuelo está lista para generar. Este es un momento para celebrar, para agradecerte y para reconocer todo lo recorrido.'
+  };
+
+  return feedbacks[prot.id] || base + 'Has dado un paso importante en tu proceso. Sigue así.';
+}
+
+function mostrarFeedback(prot, mensaje) {
+  document.getElementById('fbCode').textContent = prot.code;
+  document.getElementById('fbMessage').innerHTML = mensaje;
+  document.getElementById('feedbackScreen').style.display = 'block';
+  dashboard.style.display = 'none';
+}
+
+document.getElementById('fbContinue').addEventListener('click', () => {
+  document.getElementById('feedbackScreen').style.display = 'none';
+  dashboard.style.display = 'block';
+});
+
+/* =========================================================
+   INFORME FINAL
+   ========================================================= */
+document.getElementById('generateReportBtn').addEventListener('click', () => {
+  const html = generarInformeFinal(pacienteActual);
+  document.getElementById('reportContent').innerHTML = html;
+  document.getElementById('reportModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+
+document.getElementById('reportModal').addEventListener('click', (e) => {
+  if (e.target.id === 'reportModal') {
+    document.getElementById('reportModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+function generarInformeFinal(p) {
+  const hoy = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+  const resp = p.formulariosCompletados || {};
+
+  const g = (idx, key) => resp[idx]?.respuestas?.[key] || '—';
+
+  let html = `
+    <div class="report-header">
+      <div class="logo">LYON<span>ASESOR</span></div>
+      <div style="font-size:0.85rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;">Bitácora de Vuelo Personal</div>
+      <h1>Informe Terapéutico Final</h1>
+      <div class="report-meta">
+        <strong>${p.nombre || 'Consultante'}</strong> · ${p.email || ''}<br>
+        Generado el ${hoy}
+      </div>
+    </div>
+  `;
+
+  html += `<div class="report-section">
+    <h2>🌱 <span>Introducción</span></h2>
+    <p>Este documento es el resultado de tu recorrido por los protocolos LA del Programa Lyon de NeuroLiderazgo y Transformación Humana. No es un diagnóstico clínico; es una <strong>bitácora viva</strong> de tu proceso, construida con tus propias palabras y organizada para que puedas releerla cada vez que necesites recordar quién eres y todo lo que has aprendido.</p>
+    <div class="highlight">"Lo que transforma equipos, empieza con una persona. Y hoy, esa persona eres tú."</div>
+  </div>`;
+
+  if (resp[0]) {
+    html += `<div class="report-section">
+      <h2>🧭 <span>Tu punto de partida (LA-00)</span></h2>
+      <p><strong>¿Qué te trajo a este proceso?</strong></p>
+      <p>${g(0, 'que_te_trae')}</p>
+      <p><strong>Si solo pudieras trabajar UNA COSA, ¿cuál sería?</strong></p>
+      <p>${g(0, 'una_cosa')}</p>
+    </div>`;
+  }
+
+  if (resp[1]) {
+    html += `<div class="report-section">
+      <h2>🎯 <span>Cazadores de pensamientos (LA-01)</span></h2>
+      <p><strong>Pensamientos que se repiten:</strong> ${g(1, 'pensamientos_repetidos')}</p>
+      <p><strong>Emociones frecuentes:</strong> ${g(1, 'emociones_frecuentes')}</p>
+      <p><strong>Relación situaciones-pensamientos:</strong> ${g(1, 'relacion_situaciones')}</p>
+    </div>`;
+  }
+
+  if (resp[2]) {
+    html += `<div class="report-section">
+      <h2>🌳 <span>Tu creencia nuclear (LA-02)</span></h2>
+      <p><strong>Creencia identificada:</strong> ${g(2, 'creencia_nuclear')}</p>
+      <p><strong>¿De quién la aprendiste?</strong> ${g(2, 'origen_creencia')}</p>
+      <p><strong>¿Dónde la sientes en el cuerpo?</strong> ${g(2, 'ubicacion_corporal')}</p>
+      <div class="highlight">Lo que has identificado aquí es la raíz. Todo lo demás que trabajemos tiene sentido desde este punto.</div>
+    </div>`;
+  }
+
+  if (resp[3]) {
+    html += `<div class="report-section">
+      <h2>⚖️ <span>Juicio a la creencia (LA-03)</span></h2>
+      <p><strong>Intensidad inicial:</strong> ${g(3, 'intensidad_inicial')}/10 → <strong>Intensidad final:</strong> ${g(3, 'intensidad_final')}/10</p>
+      <p><strong>Nueva creencia construida:</strong></p>
+      <div class="highlight">"${g(3, 'nueva_creencia')}"</div>
+      <p><strong>Tu ancla:</strong> ${g(3, 'anclaje_gesto')}</p>
+    </div>`;
+  }
+
+  if (resp[4] || resp[5]) {
+    html += `<div class="report-section">
+      <h2>🎬 <span>Trabajo con la memoria (LA-04 y LA-05)</span></h2>`;
+    if (resp[4]) {
+      html += `
+        <p><strong>Recuerdo trabajado:</strong> ${g(4, 'descripcion_recuerdo')}</p>
+        <p><strong>Intensidad inicial:</strong> ${g(4, 'intensidad_emocional')}/10</p>
+        <p><strong>Emoción principal:</strong> ${g(4, 'emocion_principal')}</p>`;
+    }
+    if (resp[5]) {
+      html += `
+        <p><strong>Intensidad después de actualizar:</strong> ${g(5, 'intensidad_post_modificacion')}/10</p>
+        <p><strong>Nueva frase construida:</strong></p>
+        <div class="highlight">"${g(5, 'nueva_frase_significado')}"</div>`;
+    }
+    html += `</div>`;
+  }
+
+  if (resp[6]) {
+    html += `<div class="report-section">
+      <h2>🪞 <span>¿Quién soy sin el otro? (LA-06)</span></h2>
+      <p><strong>Miedos identificados:</strong> ${g(6, 'miedo_perder')}</p>
+      <p><strong>Creencia tras el miedo:</strong> ${g(6, 'creencia_tras_miedo')}</p>
+    </div>`;
+  }
+
+  if (resp[7]) {
+    html += `<div class="report-section">
+      <h2>🛡️ <span>Re-parentalización y límites (LA-07)</span></h2>
+      <p><strong>Decálogo personal:</strong> ${g(7, 'decalogo')}</p>
+      <p><strong>Límite a practicar:</strong> ${g(7, 'situacion_limite')}</p>
+    </div>`;
+  }
+
+  if (resp[8]) {
+    html += `<div class="report-section">
+      <h2>🕸️ <span>Mapa vincular (LA-08)</span></h2>
+      <p><strong>Relación prioritaria trabajada:</strong> ${g(8, 'relacion_prioritaria')}</p>
+    </div>`;
+  }
+
+  if (resp[9]) {
+    html += `<div class="report-section">
+      <h2>🕊️ <span>Diálogo y liberación (LA-09)</span></h2>
+      <p><strong>Nueva narrativa de la relación:</strong></p>
+      <div class="highlight">"${g(9, 'nueva_narrativa')}"</div>
+      <p><strong>Nivel de paz alcanzado:</strong> ${g(9, 'escala_paz')}/10</p>
+    </div>`;
+  }
+
+  if (resp[10]) {
+    html += `<div class="report-section">
+      <h2>🌡️ <span>Termómetro emocional (LA-10)</span></h2>
+      <p><strong>Emociones frecuentes:</strong> ${g(10, 'emociones_frecuentes')}</p>
+      <p><strong>Emociones difíciles de aceptar:</strong> ${g(10, 'emociones_dificiles')}</p>
+    </div>`;
+  }
+
+  if (resp[11]) {
+    html += `<div class="report-section">
+      <h2>🧰 <span>Tu caja de herramientas (LA-11)</span></h2>
+      <p><strong>Valores más importantes:</strong> ${g(11, 'herramienta_5_valores')}</p>
+      <p><strong>Tu propósito:</strong></p>
+      <div class="highlight">"${g(11, 'herramienta_6_proposito')}"</div>
+      <p><strong>Herramienta elegida para practicar:</strong> ${g(11, 'compromiso_practica_diaria')}</p>
+    </div>`;
+  }
+
+  if (resp[12]) {
+    html += `<div class="report-section">
+      <h2>📖 <span>Bitácora de Vuelo (LA-12)</span></h2>
+      <p><strong>Mayor aprendizaje:</strong> ${g(12, 'mayor_aprendizaje')}</p>
+      <p><strong>Momento más difícil:</strong> ${g(12, 'momento_mas_dificil')}</p>
+      <p><strong>Algo que hoy ves de ti que antes no veías:</strong> ${g(12, 'algo_nuevo_ves')}</p>
+      <p><strong>Lo que más agradeces:</strong> ${g(12, 'que_agradeces')}</p>
+      <p><strong>Plan de emergencia:</strong> ${g(12, 'plan_emergencia')}</p>
+      <p><strong>Carta a tu yo futuro:</strong></p>
+      <div class="highlight">${g(12, 'carta_yo_futuro')}</div>
+    </div>`;
+  }
+
+  html += `
+    <div class="report-section" style="text-align:center;margin-top:40px;">
+      <h2 style="border:none;justify-content:center;text-align:center;">✨ <span>Palabras finales</span></h2>
+      <p style="font-style:italic;font-size:1rem;color:var(--navy);max-width:600px;margin:16px auto;">
+        Este recorrido no termina aquí. Todo lo que has descubierto vive en ti. Vuelve a esta bitácora cuando necesites recordar quién eres más allá del ruido.
+      </p>
+      <p style="font-weight:600;color:var(--naranja);margin-top:24px;">Prof. Mtr. Álvaro Lyon Abreu</p>
+      <p style="font-size:0.85rem;color:var(--text-muted);">Director · Lyon Asesor, f.p.</p>
+      <p style="font-size:0.78rem;color:var(--text-light);margin-top:12px;">lyonasesor.com · info@lyonasesor.com · +58 414-8610464</p>
+    </div>
+
+    <div class="report-actions">
+      <button class="btn-print" onclick="descargarInformePDF()">📥 Descargar como PDF</button>
+      <button class="btn-print" style="background:#64748b;" onclick="window.print()">🖨️ Imprimir</button>
+      <button class="btn-close-report" onclick="document.getElementById('reportModal').classList.remove('open');document.body.style.overflow='';">Cerrar</button>
+    </div>
+  `;
+
+  return html;
+}
+
+/* =========================================================
+   DESCARGA DEL INFORME EN PDF
+   ========================================================= */
+window.descargarInformePDF = async function() {
+  const btn = event.target;
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Generando PDF...';
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const element = document.getElementById('reportContent');
+
+    const originalWidth = element.style.width;
+    const originalMaxWidth = element.style.maxWidth;
+    element.style.width = '900px';
+    element.style.maxWidth = '900px';
+    element.style.padding = '40px';
+    element.style.background = '#fff';
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: 900
+    });
+
+    element.style.width = originalWidth;
+    element.style.maxWidth = originalMaxWidth;
+    element.style.padding = '';
+    element.style.background = '';
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const imgWidth = pageWidth - (margin * 2);
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = margin;
+
+    pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
+    heightLeft -= (pageHeight - margin);
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight + margin;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', margin, position, imgWidth, imgHeight);
+      heightLeft -= (pageHeight - margin);
+    }
+
+    const nombre = (pacienteActual.nombre || 'Consultante').replace(/\s+/g, '_');
+    const fecha = new Date().toISOString().slice(0, 10);
+    pdf.save(`Bitacora_LyonAsesor_${nombre}_${fecha}.pdf`);
+
+    btn.innerHTML = '✅ PDF descargado';
+    setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 2500);
+  } catch (err) {
+    console.error('Error generando PDF:', err);
+    alert('Error al generar el PDF. Intenta con "Imprimir" y elige "Guardar como PDF".');
+    btn.innerHTML = original;
+    btn.disabled = false;
+  }
+};
+
+/* =========================================================
+   AUTO-LOGIN
+   ========================================================= */
+window.addEventListener('load', async () => {
+  const codigoGuardado = localStorage.getItem('lyon_consultorio_codigo');
+  if (codigoGuardado) {
+    codigoInput.value = codigoGuardado;
+    setTimeout(() => loginBtn.click(), 300);
+  }
+});
+</script>
+</body>
+</html>
