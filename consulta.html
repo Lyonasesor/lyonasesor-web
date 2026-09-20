@@ -1061,7 +1061,7 @@
         });
 
         // =============================================
-        // FORMULARIO CONSULTA — ACTUALIZADO
+        // FORMULARIO CONSULTA
         // =============================================
         document.getElementById('consultaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1105,6 +1105,32 @@
             } catch (error) {
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
+
+            // =============================================
+            // NUEVA: Crear solicitud de consultorio para aprobación manual
+            // =============================================
+            try {
+                await database.ref('solicitudes_consultorio').push({
+                    nombre: datos.nombre,
+                    email: datos.email,
+                    telefono: datos.telefono,
+                    paquete: paquete === '70' ? 'individual' :
+                             paquete === '130' ? 'pack2' :
+                             paquete === '180' ? 'pack3' : 'pack5',
+                    monto: monto,
+                    metodoPago: metodo,
+                    motivo: datos.motivo,
+                    estado: 'pendiente',
+                    pagado: false,
+                    timestamp: Date.now(),
+                    fechaLegible: new Date().toLocaleString('es-ES'),
+                    refAfiliado: datos.refAfiliado || null
+                });
+                console.log('✅ Solicitud de consultorio creada');
+            } catch (e) {
+                console.error('❌ Error creando solicitud consultorio:', e);
+            }
+            // =============================================
 
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'consulta' });
@@ -1163,7 +1189,6 @@
 
                 let chatOpen = false;
 
-                // 🔧 ENLACES PAYPAL ACTUALIZADOS — SEPTIEMBRE 2026
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
                 const PAYPAL_CONSULTA_1 = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
                 const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
