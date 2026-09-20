@@ -65,6 +65,11 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=Purchase&noscript=1" /></noscript>
     
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -387,6 +392,132 @@
             color: #1b5e20;
             font-size: 0.95rem;
             margin: 0;
+        }
+
+        /* ==== CAJA DE ESPERA CON AUTO-REFRESH ==== */
+        .waiting-box {
+            background: #fef8f3;
+            border-left: 4px solid var(--naranja);
+            padding: 24px 26px;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        .waiting-box h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--navy);
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+        }
+        .waiting-box p {
+            font-size: 0.92rem;
+            color: #4A5364;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+        .waiting-box .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+        .waiting-box .steps-list li {
+            padding: 6px 0 6px 30px;
+            position: relative;
+            font-size: 0.92rem;
+            color: #4A5364;
+            line-height: 1.6;
+        }
+        .waiting-box .steps-list li::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--naranja);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .waiting-box .status-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #fff;
+            border-radius: 10px;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #7c2d12;
+            font-weight: 500;
+        }
+        .waiting-box .status-line .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2.5px solid rgba(232,107,24,0.25);
+            border-top-color: var(--naranja);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .waiting-box.approved {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+        .waiting-box.approved .steps-list,
+        .waiting-box.approved .status-line {
+            display: none;
+        }
+        .waiting-box .code-display {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .waiting-box.approved .code-display {
+            display: block;
+        }
+        .waiting-box .code-display .code-label {
+            font-size: 0.82rem;
+            color: #166534;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .waiting-box .code-display .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--naranja);
+            background: #fff;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 2px dashed var(--naranja);
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .waiting-box .code-display .btn-portal {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        .waiting-box .code-display .btn-portal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(232,107,24,0.5);
         }
 
         .footer {
@@ -720,6 +851,8 @@
                 width: 100%;
                 text-align: center;
             }
+            .waiting-box { padding: 18px 16px; }
+            .waiting-box .code-display .code-value { font-size: 1.2rem; padding: 10px 14px; letter-spacing: 2px; }
             .chat-window {
                 bottom: 70px;
                 right: 8px;
@@ -849,6 +982,13 @@
     </div>
 
     <script>
+        /* =========================================================
+           GRACIAS.HTML — Lyon Asesor
+           Maneja: biblioteca, consulta, conferencia, membresía
+           Incluye auto-refresh para consulta y membresía
+           ========================================================= */
+
+        // ===== NAV =====
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -868,7 +1008,7 @@
         });
 
         // =============================================
-        // CONFIGURACIÓN JSONBin
+        // CONFIGURACIÓN JSONBin (formulario de datos post-compra)
         // =============================================
         const BIN_ID = '69ff5dc1adc21f119a775498';
         const API_KEY = '$2a$10$MIMwZ85QZJnw/gAiD5POyuwGxag1w93OLYm9xi9Th.a0p35BUhcYi';
@@ -909,6 +1049,16 @@
                 btnTexto: '📲 Contactar por WhatsApp',
                 btnLink: 'https://wa.me/584148610464?text=Hola%20Alvaro%2C%20acabo%20de%20pagar%20mi%20conferencia%20y%20quiero%20coordinar%20los%20detalles.',
                 btnClase: 'btn-whatsapp-success'
+            },
+            membresia: {
+                nombre: '🎓 Membresía Lyon Asesor',
+                detalle: 'Programa Lyon de NeuroLiderazgo y Transformación Humana. 12 clases · 300 horas académicas.',
+                tipo: 'compra-membresia',
+                monto: 0,
+                mensaje: '',
+                btnTexto: '',
+                btnLink: '',
+                btnClase: ''
             }
         };
 
@@ -923,23 +1073,61 @@
         const contenedor = document.getElementById('contenidoDinamico');
 
         if (producto === 'consulta') {
+            // ==== CONSULTA: caja de espera con auto-refresh ====
             contenedor.innerHTML = `
-                <div style="background:#fef8f3; border-left:4px solid var(--naranja); padding:22px; border-radius:12px; margin:1.5rem 0; text-align:left;">
-                    <p style="font-weight:700; color:var(--navy); margin-bottom:12px; font-size:1.05rem;">⏳ ¿Qué sigue ahora?</p>
-                    <p style="font-size:0.92rem; color:#4A5364; line-height:1.75; margin-bottom:14px;">
-                        <strong>1.</strong> Nuestro equipo verificará tu pago (24-48h hábiles).<br>
-                        <strong>2.</strong> Recibirás por correo y WhatsApp tu <strong>código personal de acceso</strong> al consultorio.<br>
-                        <strong>3.</strong> Con ese código entrarás a <strong>lyonasesor.com/consultorio.html</strong> y comenzarás tus protocolos de acompañamiento.
-                    </p>
-                    <p style="font-size:0.85rem; color:var(--text-muted); font-style:italic; border-top:1px solid rgba(232,107,24,0.2); padding-top:12px;">
-                        💬 Si tienes dudas mientras tanto, escríbenos por
-                        <a href="https://wa.me/584148610464" target="_blank" style="color:var(--naranja); font-weight:600; text-decoration:none;">WhatsApp</a>
-                        o a
-                        <a href="mailto:info@lyonasesor.com" style="color:var(--naranja); font-weight:600; text-decoration:none;">info@lyonasesor.com</a>
-                    </p>
+                <div class="waiting-box" id="waitingBox">
+                    <h3>⏳ Estamos verificando tu pago</h3>
+                    <p>Esto toma muy poco. En cuanto nuestro equipo confirme tu pago, <strong>tu código de acceso aparecerá aquí automáticamente</strong> sin que tengas que hacer nada.</p>
+                    <ul class="steps-list">
+                        <li data-step="1">Verificamos tu pago (PayPal / Pago Móvil)</li>
+                        <li data-step="2">Generamos tu código personal de acceso</li>
+                        <li data-step="3">Entras a tu consultorio privado con ese código</li>
+                    </ul>
+                    <div class="status-line">
+                        <span class="spinner"></span>
+                        <span id="statusText">Verificando pago... por favor espera unos minutos.</span>
+                    </div>
+                    <div class="code-display" id="codeDisplay">
+                        <div class="code-label">✅ Pago verificado. Tu código de acceso al consultorio es:</div>
+                        <div class="code-value" id="codeValue">LYON-XXXXXX</div>
+                        <a href="consultorio.html" class="btn-portal" id="btnPortal">🧘 Entrar a mi consultorio</a>
+                    </div>
                 </div>
+                <p style="font-size:0.85rem; color:var(--text-muted); font-style:italic; text-align:center; margin-top:12px;">
+                    💬 Si necesitas asistencia mientras esperas, escríbenos por
+                    <a href="https://wa.me/584148610464" target="_blank" style="color:var(--naranja); font-weight:600; text-decoration:none;">WhatsApp</a>
+                </p>
             `;
+            iniciarAutoRefreshConsulta();
+        } else if (producto === 'membresia') {
+            // ==== MEMBRESÍA: caja de espera con auto-refresh ====
+            contenedor.innerHTML = `
+                <div class="waiting-box" id="waitingBox">
+                    <h3>⏳ Estamos activando tu membresía</h3>
+                    <p>Tu inscripción se activa manualmente tras confirmar el pago. En cuanto nuestro equipo la apruebe, <strong>tu código de acceso aparecerá aquí automáticamente</strong>.</p>
+                    <ul class="steps-list">
+                        <li data-step="1">Verificamos tu pago (PayPal / Pago Móvil)</li>
+                        <li data-step="2">Activamos tu membresía</li>
+                        <li data-step="3">Recibes tu código personal de acceso</li>
+                    </ul>
+                    <div class="status-line">
+                        <span class="spinner"></span>
+                        <span id="statusText">Esperando activación de tu membresía...</span>
+                    </div>
+                    <div class="code-display" id="codeDisplay">
+                        <div class="code-label">✅ Membresía activada. Tu código de acceso es:</div>
+                        <div class="code-value" id="codeValue">LYON-XXXXXX</div>
+                        <a href="membresia.html" class="btn-portal" id="btnPortal">🎓 Entrar a mi membresía</a>
+                    </div>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-muted); font-style:italic; text-align:center; margin-top:12px;">
+                    💬 Si tienes dudas, escríbenos por
+                    <a href="https://wa.me/584148610464" target="_blank" style="color:var(--naranja); font-weight:600; text-decoration:none;">WhatsApp</a>
+                </p>
+            `;
+            iniciarAutoRefreshMembresia();
         } else {
+            // ==== BIBLIOTECA / CONFERENCIA: comportamiento original ====
             contenedor.innerHTML = `
                 <p style="font-size:1rem; color:var(--text-muted); margin:1rem 0;">
                     ${info.mensaje}
@@ -953,6 +1141,128 @@
                     </p>
                 ` : ''}
             `;
+        }
+
+        // =============================================
+        // AUTO-REFRESH PARA CONSULTA
+        // =============================================
+        function iniciarAutoRefreshConsulta() {
+            if (typeof firebase === 'undefined' || !firebase.database) {
+                console.warn('Firebase no disponible. Auto-refresh desactivado.');
+                document.getElementById('statusText').textContent = '⏳ Esperando verificación manual. Te contactaremos por WhatsApp.';
+                return;
+            }
+
+            const db = firebase.database();
+            const emailCliente = (urlParams.get('email') || '').toLowerCase().trim();
+            let escuchando = false;
+            let intentos = 0;
+            const MAX_INTENTOS = 120; // 10 minutos (cada 5s)
+
+            // Estrategia: escuchar toda la colección solicitudes_consultorio
+            // y filtrar por el email más reciente que coincida.
+            const ref = db.ref('solicitudes_consultorio');
+
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                const solicitudes = Object.values(data);
+
+                // Buscar la solicitud más reciente que esté aprobada
+                // Filtramos por email si está disponible en la URL
+                let aprobada = null;
+                const ahora = Date.now();
+
+                solicitudes.forEach(s => {
+                    if (!s || s.estado !== 'aprobada') return;
+                    // Si tenemos email, filtramos; si no, tomamos la última aprobada en los últimos 30 min
+                    const coincideEmail = emailCliente && s.email && s.email.toLowerCase().trim() === emailCliente;
+                    const reciente = s.fechaAprobacion && (ahora - s.fechaAprobacion < 30 * 60 * 1000);
+
+                    if (coincideEmail || (!emailCliente && reciente)) {
+                        if (!aprobada || (s.fechaAprobacion > (aprobada.fechaAprobacion || 0))) {
+                            aprobada = s;
+                        }
+                    }
+                });
+
+                if (aprobada && aprobada.codigoGenerado) {
+                    mostrarCodigoAprobado(aprobada.codigoGenerado);
+                } else {
+                    intentos++;
+                    if (intentos > MAX_INTENTOS) {
+                        document.getElementById('statusText').innerHTML =
+                            '⏳ La verificación está tardando más de lo esperado.<br>' +
+                            'Te contactaremos por WhatsApp cuando esté lista.';
+                    }
+                }
+            });
+        }
+
+        // =============================================
+        // AUTO-REFRESH PARA MEMBRESÍA
+        // =============================================
+        function iniciarAutoRefreshMembresia() {
+            if (typeof firebase === 'undefined' || !firebase.database) {
+                console.warn('Firebase no disponible. Auto-refresh desactivado.');
+                document.getElementById('statusText').textContent = '⏳ Esperando activación. Te contactaremos por WhatsApp.';
+                return;
+            }
+
+            const db = firebase.database();
+            const emailCliente = (urlParams.get('email') || '').toLowerCase().trim();
+            let intentos = 0;
+            const MAX_INTENTOS = 120;
+
+            const ref = db.ref('solicitudes_membresia');
+
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                const solicitudes = Object.values(data);
+
+                let aprobada = null;
+                const ahora = Date.now();
+
+                solicitudes.forEach(s => {
+                    if (!s || s.estado !== 'aprobada') return;
+                    const coincideEmail = emailCliente && s.email && s.email.toLowerCase().trim() === emailCliente;
+                    const reciente = s.fechaAprobacion && (ahora - s.fechaAprobacion < 30 * 60 * 1000);
+
+                    if (coincideEmail || (!emailCliente && reciente)) {
+                        if (!aprobada || (s.fechaAprobacion > (aprobada.fechaAprobacion || 0))) {
+                            aprobada = s;
+                        }
+                    }
+                });
+
+                if (aprobada && aprobada.codigoGenerado) {
+                    mostrarCodigoAprobado(aprobada.codigoGenerado);
+                } else {
+                    intentos++;
+                    if (intentos > MAX_INTENTOS) {
+                        document.getElementById('statusText').innerHTML =
+                            '⏳ La activación está tardando más de lo esperado.<br>' +
+                            'Te contactaremos por WhatsApp cuando esté lista.';
+                    }
+                }
+            });
+        }
+
+        // =============================================
+        // MOSTRAR EL CÓDIGO CUANDO LA SOLICITUD ES APROBADA
+        // =============================================
+        function mostrarCodigoAprobado(codigo) {
+            const box = document.getElementById('waitingBox');
+            const codeValue = document.getElementById('codeValue');
+            if (!box || !codeValue) return;
+
+            if (box.classList.contains('approved')) return; // ya estaba mostrado
+
+            box.classList.add('approved');
+            codeValue.textContent = codigo;
+
+            // Reemplazar el título con mensaje de éxito
+            const h3 = box.querySelector('h3');
+            if (h3) h3.textContent = '✅ ¡Todo listo!';
         }
 
         // =============================================
@@ -1009,7 +1319,9 @@
                 if (producto === 'biblioteca') {
                     successText.textContent = '✅ ¡Datos guardados! Revisa tu correo para los enlaces de descarga.';
                 } else if (producto === 'consulta') {
-                    successText.textContent = '✅ ¡Datos guardados! En breve el equipo de Lyon Asesor verificará tu pago y te enviará tu código de acceso.';
+                    successText.textContent = '✅ ¡Datos guardados! Recibirás tu código de acceso al consultorio.';
+                } else if (producto === 'membresia') {
+                    successText.textContent = '✅ ¡Datos guardados! Recibirás tu código de acceso a la membresía.';
                 } else if (producto === 'conferencia') {
                     successText.textContent = '✅ ¡Datos guardados! En breve Álvaro te contactará para coordinar tu conferencia.';
                 }
