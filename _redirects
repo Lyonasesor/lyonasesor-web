@@ -1,5 +1,14 @@
-# Permitir que descargasahora.html se sirva como una página independiente
-/descargasahora.html /descargasahora.html 200
+# ============================================
+# _redirects — Lyon Asesor
+# Cloudflare Pages
+# ============================================
+# Reglas específicas (301 = permanente, 302 = temporal)
+# Las URLs viejas se redirigen a las nuevas.
 
-# Regla SPA para el resto de rutas (mantiene tu configuración actual)
-/* /index.html 200
+# --- Ejemplos de redirecciones SEO (descomenta y adapta si algún día mueves URLs) ---
+# /antiguo-consulta /consulta.html 301
+# /membresia-vieja /membresia.html 301
+
+# --- Página 404 personalizada ---
+# Cloudflare Pages sirve automáticamente /404.html para rutas no encontradas.
+# NO añadir la regla "/* /index.html 200" — eso convierte cualquier URL rota en la home.
