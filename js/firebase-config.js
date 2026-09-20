@@ -1,5 +1,7 @@
 // ============================================================
-// FIREBASE CONFIG - Lyon Asesor (VERSIÓN CORREGIDA)
+// FIREBASE CONFIG - Lyon Asesor
+// RUTA CANÓNICA: /js/firebase-config.js
+// NO crear copias duplicadas en otras rutas.
 // ============================================================
 // Configuración de Firebase (proyecto: lyon-asesor-panel-259ef)
 const firebaseConfig = {
@@ -12,14 +14,19 @@ const firebaseConfig = {
   appId: "1:231529684761:web:e74ced418b3f89c9036f88"
 };
 
-// Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
+// === GUARD CONTRA DOBLE INICIALIZACIÓN ===
+// Si el script se carga dos veces en la misma página (error de duplicación
+// de <script>), Firebase lanzaría un error. Este guard lo evita.
+if (!firebase.apps || firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 const database = firebase.database();
 
 // === EXPONER database GLOBALMENTE para todas las páginas ===
 window.database = database;
 
-// === EXPONER auth GLOBALMENTE (solo se usa en admin.html, pero no estorba en otras páginas) ===
+// === EXPONER auth GLOBALMENTE (solo se usa en admin.html, no estorba en otras) ===
 if (firebase.auth) {
   window.auth = firebase.auth();
 }
