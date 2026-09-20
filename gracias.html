@@ -25,6 +25,54 @@
     <meta name="twitter:description" content="¡Gracias por tu compra! Confirma tus datos y recibe acceso inmediato." />
     <meta name="twitter:image" content="https://lyonasesor.com/social-preview.jpg" />
     
+    <!-- ===== Meta Pixel — Lyon Asesor ===== -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '847498078082153');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
+    <!-- ===== Fin Meta Pixel ===== -->
+    
+    <script>
+        // ============================================
+        // META PIXEL: evento Purchase
+        // Se dispara al llegar aquí (el usuario completó el pago).
+        // El valor se determina según el producto detectado en la URL.
+        // ============================================
+        (function() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const producto = urlParams.get('producto') || 'biblioteca';
+                const valores = {
+                    biblioteca: 9.99,
+                    consulta: 180,      // valor por defecto (Pack 3). PayPal no pasa el real.
+                    conferencia: 150,   // tarifa plana empresa (por defecto)
+                    membresia: 24.99    // valor mensual por defecto
+                };
+                const valor = valores[producto] || 0;
+
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Purchase', {
+                        value: valor,
+                        currency: 'USD',
+                        content_name: 'Compra: ' + producto,
+                        content_category: producto
+                    });
+                }
+            } catch (e) {
+                console.warn('Meta Pixel Purchase: no se pudo determinar el valor', e);
+            }
+        })();
+    </script>
+    
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -47,23 +95,6 @@
             'currency': 'USD'
         });
     </script>
-    
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'XXXXXXXXXXXXXXX');
-        fbq('track', 'Purchase', {
-            value: 1.0,
-            currency: 'USD'
-        });
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=Purchase&noscript=1" /></noscript>
     
     <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1071,10 +1102,8 @@
         // HELPER: OBTENER EMAIL DEL CLIENTE (URL + localStorage)
         // =============================================
         function obtenerEmailCliente() {
-            // Prioridad 1: URL
             let email = (urlParams.get('email') || '').toLowerCase().trim();
 
-            // Prioridad 2: localStorage (guardado por consulta.html/membresia.html antes de redirigir a PayPal)
             if (!email) {
                 try {
                     const stored = localStorage.getItem('lyon_pending_email');
@@ -1178,7 +1207,7 @@
             const db = firebase.database();
             const emailCliente = obtenerEmailCliente();
             let intentos = 0;
-            const MAX_INTENTOS = 120; // 10 minutos (cada 5s aprox.)
+            const MAX_INTENTOS = 120;
 
             console.log('🔍 Auto-refresh consulta. Email de filtro:', emailCliente || '(sin filtro, tomará la última aprobada)');
 
@@ -1205,7 +1234,6 @@
 
                 if (aprobada && aprobada.codigoGenerado) {
                     mostrarCodigoAprobado(aprobada.codigoGenerado);
-                    // Limpiar localStorage una vez aprobado
                     try { localStorage.removeItem('lyon_pending_email'); } catch(e) {}
                     try { localStorage.removeItem('lyon_pending_producto'); } catch(e) {}
                 } else {
