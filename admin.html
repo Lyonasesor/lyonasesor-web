@@ -2465,4 +2465,251 @@
             <h3>📝 Notas privadas del terapeuta</h3>
             <p style="font-size:0.82rem;color:#7c2d12;margin-bottom:10px;">Estas notas son solo para ti. El paciente no las verá.</p>
             <textarea id="notasTerapeuta" placeholder="Anotaciones, hipótesis, puntos a trabajar en la próxima sesión...">${escapeHtmlAdmin(p.notasTerapeuta || '')}</textarea>
-            <button class="btn-save-notas" id="btnGuardarNotas"
+            <button class="btn-save-notas" id="btnGuardarNotas" onclick="guardarNotasTerapeuta('${codigo}')">💾 Guardar notas</button>
+          </div>
+        `;
+
+        document.getElementById('expTabRespuestas').innerHTML = respuestasHtml;
+
+        // === TAB 2: INFORME TERAPÉUTICO ===
+        const informeHtml = p.informeFinalTexto
+          ? `<div class="informe-view">${p.informeFinalTexto}</div>`
+          : `<div class="exp-empty">
+               El informe terapéutico aún no ha sido generado.
+               <br><br>
+               Se genera automáticamente cuando el paciente completa todos los protocolos de su paquete.
+               <br><br>
+               Progreso actual: <strong>${totalCompletados} de ${paq.total}</strong>
+             </div>`;
+
+        document.getElementById('expTabInforme').innerHTML = informeHtml;
+
+        cambiarTabExpediente('respuestas');
+
+        document.getElementById('expedienteModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        window._expedienteActual = { codigo, ...p };
+      } catch (e) {
+        console.error('Error abriendo expediente:', e);
+        alert('Error al cargar expediente: ' + e.message);
+      }
+    };
+
+    window.cambiarTabExpediente = function(tab) {
+      document.getElementById('tabRespuestas').classList.toggle('active', tab === 'respuestas');
+      document.getElementById('tabInforme').classList.toggle('active', tab === 'informe');
+      document.getElementById('expTabRespuestas').classList.toggle('active', tab === 'respuestas');
+      document.getElementById('expTabInforme').classList.toggle('active', tab === 'informe');
+    };
+
+    function renderizarRespuestasProtocolo(prot, respuestas) {
+      let html = '';
+
+      prot.questions.forEach((q) => {
+        if (q.type === 'section_header') {
+          html += `<div class="exp-section-header">${escapeHtmlAdmin(q.text)}</div>`;
+          return;
+        }
+
+        let valorHtml = '';
+
+        if (q.type === 'grid_multiple_choice' && q.matrix) {
+          valorHtml = '<div class="exp-matrix">';
+          q.matrix.rows.forEach((row, ri) => {
+            const v = respuestas[q.id + '_r' + ri];
+            const display = (v != null && v !== '')
+              ? escapeHtmlAdmin(v)
+              : '<em style="color:#94a3b8;">—</em>';
+            valorHtml += `
+              <div class="exp-matrix-row">
+                <span class="exp-matrix-label">${escapeHtmlAdmin(row)}</span>
+                <span class="exp-matrix-val">${display}</span>
+              </div>`;
+          });
+          valorHtml += '</div>';
+        }
+        else if (q.type === 'grid_checkbox' && q.matrix) {
+          valorHtml = '<div class="exp-matrix">';
+          q.matrix.rows.forEach((row, ri) => {
+            const v = respuestas[q.id + '_r' + ri];
+            const display = (Array.isArray(v) && v.length > 0)
+              ? v.map(escapeHtmlAdmin).join(', ')
+              : '<em style="color:#94a3b8;">—</em>';
+            valorHtml += `
+              <div class="exp-matrix-row">
+                <span class="exp-matrix-label">${escapeHtmlAdmin(row)}</span>
+                <span class="exp-matrix-val">${display}</span>
+              </div>`;
+          });
+          valorHtml += '</div>';
+        }
+        else if (q.repeatsFor) {
+          valorHtml = '<div class="exp-repeats">';
+          for (let d = 1; d <= q.repeatsFor; d++) {
+            const v = respuestas[q.id + '_day' + d];
+            valorHtml += `
+              <div class="exp-day">
+                <span class="exp-day-label">Día ${d}</span>
+                <div class="exp-day-val">${v ? escapeHtmlAdmin(v) : '<em style="color:#94a3b8;">vacío</em>'}</div>
+              </div>`;
+          }
+          valorHtml += '</div>';
+        }
+        else {
+          const v = respuestas[q.id];
+          if (Array.isArray(v)) {
+            valorHtml = v.length > 0
+              ? v.map(escapeHtmlAdmin).join(', ')
+              : '<em style="color:#94a3b8;">—</em>';
+          } else if (v != null && String(v).trim() !== '') {
+            valorHtml = escapeHtmlAdmin(v);
+          } else {
+            valorHtml = '<em style="color:#94a3b8;">—</em>';
+          }
+        }
+
+        html += `
+          <div class="exp-item">
+            <div class="exp-q">${escapeHtmlAdmin(q.text)}</div>
+            <div class="exp-a">${valorHtml}</div>
+          </div>`;
+      });
+
+      return html;
+    }
+
+    window.cerrarExpediente = function() {
+      document.getElementById('expedienteModal').classList.remove('open');
+      document.body.style.overflow = '';
+      window._expedienteActual = null;
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('expedienteModal').classList.contains('open')) {
+        cerrarExpediente();
+      }
+    });
+
+    document.getElementById('expedienteModal').addEventListener('click', (e) => {
+      if (e.target.id === 'expedienteModal') cerrarExpediente();
+    });
+
+    window.guardarNotasTerapeuta = async function(codigo) {
+      const textarea = document.getElementById('notasTerapeuta');
+      const btn = document.getElementById('btnGuardarNotas');
+      const texto = textarea.value;
+
+      btn.disabled = true;
+      const original = btn.innerHTML;
+      btn.innerHTML = '⏳ Guardando...';
+
+      try {
+        await database.ref('pacientes_consultorio/' + codigo + '/notasTerapeuta').set(texto);
+        await database.ref('pacientes_consultorio/' + codigo + '/notasTerapeutaFecha').set(Date.now());
+
+        btn.classList.add('saved');
+        btn.innerHTML = '✅ Notas guardadas';
+        setTimeout(() => {
+          btn.classList.remove('saved');
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 2200);
+      } catch (e) {
+        console.error('Error guardando notas:', e);
+        alert('❌ Error al guardar las notas: ' + e.message);
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }
+    };
+
+    window.descargarExpedientePDF = async function() {
+      const btn = event.target;
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Generando PDF...';
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const element = document.getElementById('expedienteBody');
+        const p = window._expedienteActual || {};
+
+        const origW = element.style.width;
+        const origMaxW = element.style.maxWidth;
+        element.style.width = '900px';
+        element.style.maxWidth = '900px';
+
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          windowWidth: 900
+        });
+
+        element.style.width = origW;
+        element.style.maxWidth = origMaxW;
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const pw = pdf.internal.pageSize.getWidth();
+        const ph = pdf.internal.pageSize.getHeight();
+        const margin = 10;
+        const imgW = pw - margin * 2;
+        const imgH = (canvas.height * imgW) / canvas.width;
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(232, 107, 24);
+        pdf.text('LYON ASESOR, F.P.', margin, 15);
+        pdf.setFontSize(9);
+        pdf.setTextColor(100, 116, 139);
+        pdf.text('Expediente del Consultorio · Documento interno', margin, 20);
+        pdf.setFontSize(12);
+        pdf.setTextColor(15, 23, 42);
+        pdf.text('Paciente: ' + (p.nombre || '—'), margin, 28);
+        pdf.setFontSize(9);
+        pdf.text('Código: ' + (p.codigo || '—') + '  ·  Generado: ' + new Date().toLocaleString('es-ES'), margin, 33);
+
+        let heightLeft = imgH;
+        let position = 38;
+
+        pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+        heightLeft -= (ph - position);
+
+        while (heightLeft > 0) {
+          position = heightLeft - imgH + margin;
+          pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', margin, position, imgW, imgH);
+          heightLeft -= (ph - margin);
+        }
+
+        const nombreLimpio = (p.nombre || 'Paciente').replace(/\s+/g, '_');
+        const fecha = new Date().toISOString().slice(0, 10);
+        pdf.save(`Expediente_LyonAsesor_${nombreLimpio}_${fecha}.pdf`);
+
+        btn.innerHTML = '✅ PDF descargado';
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 2500);
+      } catch (e) {
+        console.error('Error generando PDF del expediente:', e);
+        alert('Error al generar el PDF: ' + e.message);
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }
+    };
+
+    // =============================================
+    // RECARGA PERIÓDICA
+    // =============================================
+    setInterval(() => {
+        const user = firebase.auth().currentUser;
+        if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
+    }, 30000);
+
+    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y Panel del Terapeuta');
+    console.log('✅ FIX v2 aplicado: badges diferenciados Gratis / Pagado / Pendiente para leads de conferencia');
+</script>
+</body>
+</html>
