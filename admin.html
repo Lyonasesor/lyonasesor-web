@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>Admin · Lyon Asesor</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1165,8 +1166,6 @@
                     asistioCierre: false
                 });
 
-                // 🔧 IMPORTANTE: Guardar estado + codigoGenerado + fechaAprobacion
-                // para que gracias.html (auto-refresh) lo detecte
                 await database.ref('solicitudes_membresia/' + id).update({
                     estado: 'aprobada',
                     codigoGenerado: codigo,
