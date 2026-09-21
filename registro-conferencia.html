@@ -8,18 +8,9 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
+    <script src="/js/firebase-config.js"></script>
 
     <!-- Librerías para PDF y QR -->
-    <!--
-        CAMBIO ARQUITECTÓNICO CLAVE:
-        Se elimina html2pdf.bundle (wrapper de alto nivel que decide por su cuenta
-        cómo encajar el contenido en una página A4, causando el desencuadre) y se
-        usan html2canvas + jsPDF por separado, de forma directa, para tener control
-        total sobre: (1) qué elemento exacto se captura, (2) a qué resolución,
-        y (3) qué tamaño de página recibe el PDF (que coincidirá EXACTAMENTE con
-        las proporciones del diploma, en vez de forzar A4).
-    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -36,9 +27,6 @@
             --text-muted: #5a6c7d;
             --border-soft: #e2e8f0;
 
-            /* Lienzo del diploma: tamaño FIJO en píxeles, proporción A4 horizontal
-               (297mm x 210mm ≈ 1.414). Este tamaño nunca cambia con el viewport;
-               solo se ESCALA visualmente en pantalla con transform: scale(). */
             --diploma-w: 1200px;
             --diploma-h: 848px;
         }
@@ -65,10 +53,6 @@
         }
         @media (max-width: 600px) { .container { padding: 24px 20px; } }
 
-        /* Cuando el diploma está visible, el contenedor pasa a ocupar prácticamente
-           toda la altura de la ventana y se convierte en columna flexible, de modo
-           que la sección del diploma pueda calcular cuánto espacio real tiene
-           disponible y encajar sin scroll. */
         .container.diploma-mode {
             display: flex;
             flex-direction: column;
@@ -162,14 +146,8 @@
             font-size: 0.9rem; margin-bottom: 16px; display: none;
         }
 
-        /* =========================================================
-           SECCIÓN DEL DIPLOMA
-           Estructura: [stage con el diploma escalado] -> [botones]
-           Todo dentro de una columna flex que ocupa el alto disponible,
-           así nunca se necesita scroll.
-        ========================================================= */
         #diplomaSection {
-            display: none; /* se activa con JS: 'flex' */
+            display: none;
             flex-direction: column;
             flex: 1;
             min-height: 0;
@@ -189,9 +167,6 @@
             overflow: hidden;
         }
 
-        /* El lienzo real del diploma: tamaño fijo, nunca cambia.
-           Su apariencia en pantalla se controla SOLO con transform:scale(),
-           aplicado dinámicamente por JS según el espacio disponible. */
         .diploma-preview {
             width: var(--diploma-w);
             height: var(--diploma-h);
@@ -292,10 +267,6 @@
         .btn-download:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .download-note { text-align: center; font-size: 0.78rem; color: #94a3b8; flex-shrink: 0; }
 
-        /* Overlay de carga: ahora cubre TODA la pantalla y con z-index alto.
-           Esto cumple doble función: (1) feedback visual normal, y (2) sirve de
-           "cortina" que oculta al usuario el clon de exportación en resolución
-           completa que se renderiza detrás mientras se genera el PDF. */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -320,10 +291,6 @@
             margin-top: 20px; border-top: 1px solid #f1f0ed; padding-top: 16px;
         }
 
-        /* Nodo de exportación: vive fuera del flujo visual normal (position:fixed,
-           top:0/left:0) para no afectar el scroll ni el layout de la página, pero
-           mantiene opacity:1 y visibility:visible para que html2canvas capture
-           píxeles reales. Queda oculto detrás del overlay de carga (z-index menor). */
         #diplomaExportRoot {
             position: fixed;
             top: 0;
@@ -338,7 +305,7 @@
 <div class="container" id="app">
 
     <div class="brand">
-        <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" style="max-height:60px;">
+        <img src="/assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" style="max-height:60px;">
         <div class="tagline">Formación Profesional</div>
     </div>
 
@@ -437,7 +404,7 @@ const EB00KS = [
     { nombre: 'Guía de autocuidado', url: 'https://drive.google.com/uc?export=download&id=1O1s3SRq1G_GPZBUJu91fHHYU2UFm-w9-' }
 ];
 
-// Tamaño fijo del lienzo del diploma (debe coincidir con --diploma-w/--diploma-h del CSS)
+// Tamaño fijo del lienzo del diploma
 const DIPLOMA_W = 1200;
 const DIPLOMA_H = 848;
 
@@ -533,6 +500,9 @@ async function handleSubmit(e) {
             return;
         }
 
+        // ✅ FIX #1: limpiar códigos huérfanos de diplomas_publicos para esta cédula+conferencia
+        await limpiarDiplomasHuerfanos(cedula, conferenciaTitulo);
+
         codigoUnico = generarCodigo(conferenciaId);
 
         const datos = {
@@ -546,7 +516,10 @@ async function handleSubmit(e) {
             descargado: false,
             ebooksDescargados: false,
             fechaDescarga: null,
-            tipo: 'conferencia'
+            tipo: 'conferencia',
+            // ✅ FIX #3: marcar origen y estado pagado para el admin
+            origen: 'registro-gratuito',
+            pagado: true
         };
 
         await database.ref(`leads/conferencias/${cedula}_${conferenciaId}`).set(datos);
@@ -571,7 +544,6 @@ async function handleSubmit(e) {
         document.getElementById('registroForm').style.display = 'none';
         document.getElementById('diplomaSection').style.display = 'flex';
 
-        // Esperar a que el layout se asiente antes de calcular la escala.
         requestAnimationFrame(() => requestAnimationFrame(fitDiploma));
 
         mostrarExito('✅ ¡Registro completado! Tu diploma está listo para descargar.');
@@ -581,6 +553,31 @@ async function handleSubmit(e) {
         mostrarError('Hubo un error al procesar tu registro. Intenta de nuevo.');
         ocultarOverlay();
         document.getElementById('submitBtn').disabled = false;
+    }
+}
+
+// =============================================
+// ✅ FIX #2: LIMPIAR DIPLOMAS HUÉRFANOS
+// Borra los códigos anteriores en diplomas_publicos que coincidan con
+// la misma cédula + título de conferencia, evitando acumulación.
+// =============================================
+async function limpiarDiplomasHuerfanos(cedula, tituloConferencia) {
+    try {
+        const snap = await database.ref('diplomas_publicos').once('value');
+        const todos = snap.val() || {};
+        const eliminar = [];
+        for (const [cod, data] of Object.entries(todos)) {
+            if (data && data.cedula === cedula && data.tituloConferencia === tituloConferencia) {
+                eliminar.push(cod);
+            }
+        }
+        await Promise.all(eliminar.map(cod => database.ref('diplomas_publicos/' + cod).remove()));
+        if (eliminar.length > 0) {
+            console.log(`🧹 Limpiados ${eliminar.length} diplomas huérfanos`);
+        }
+    } catch (e) {
+        console.warn('No se pudo limpiar diplomas huérfanos:', e);
+        // No bloqueamos el flujo si falla la limpieza
     }
 }
 
@@ -599,10 +596,18 @@ async function verificarRegistroExistente(cedula, conferenciaId) {
 }
 
 // =============================================
-// GENERAR CÓDIGO ÚNICO
+// ✅ FIX #1: GENERAR CÓDIGO ÚNICO SIN COLISIÓN DE PREFIJOS
+// Toma las iniciales de cada palabra del slug, hasta 4 chars.
+// Ej: neuro-liderazgo → NLXX · neuroeducacion → NEXX
 // =============================================
 function generarCodigo(conferenciaId) {
-    const prefix = conferenciaId.substring(0, 3).toUpperCase();
+    const prefix = conferenciaId
+        .split('-')
+        .map(p => p[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 4)
+        .padEnd(4, 'X');
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let codigo = prefix + '-';
     for (let i = 0; i < 7; i++) {
@@ -612,19 +617,13 @@ function generarCodigo(conferenciaId) {
 }
 
 // =============================================
-// MARCADO HTML DEL DIPLOMA (función pura y reutilizable)
-// Se usa TANTO para la vista previa en pantalla COMO para el clon de
-// exportación en alta resolución, garantizando que sean visualmente
-// idénticos: mismo HTML, mismas clases CSS, mismo tamaño de lienzo.
-// El único parámetro que cambia entre ambos usos es el id del contenedor
-// del QR, para poder generar dos códigos QR independientes con la misma
-// librería sin colisión de ids en el DOM.
+// MARCADO HTML DEL DIPLOMA
 // =============================================
 function construirMarkupDiploma(nombre, titulo, codigo, qrContainerId) {
     return `
         <div class="diploma-inner-border"></div>
         <div class="cabecera">
-            <img src="assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma" crossorigin="anonymous">
+            <img src="/assets/img/LYON%20ASESOR.png" alt="Lyon Asesor" class="logo-diploma" crossorigin="anonymous">
             <div class="title-empresa">LYON ASESOR</div>
             <div class="sub-empresa">Formación Profesional</div>
             <div class="line-divider"></div>
@@ -647,8 +646,8 @@ function construirMarkupDiploma(nombre, titulo, codigo, qrContainerId) {
             </div>
             <div class="footer-col center">
                 <div class="sello-firma-inline">
-                    <img src="assets/img/Sello.png" alt="Sello Lyon Asesor" crossorigin="anonymous">
-                    <img src="assets/img/Firma.png" alt="Firma Álvaro Lyon" crossorigin="anonymous">
+                    <img src="/assets/img/Sello.png" alt="Sello Lyon Asesor" crossorigin="anonymous">
+                    <img src="/assets/img/Firma.png" alt="Firma Álvaro Lyon" crossorigin="anonymous">
                 </div>
                 <div class="firma-text">Prof. Mtr. Álvaro Lyon · Director</div>
             </div>
@@ -671,7 +670,7 @@ function urlValidacion(codigo) {
 }
 
 // =============================================
-// MOSTRAR DIPLOMA EN PANTALLA (vista previa escalable)
+// MOSTRAR DIPLOMA EN PANTALLA
 // =============================================
 async function mostrarDiploma(nombre, cedula, titulo, codigo) {
     const live = document.getElementById('diplomaPreviewLive');
@@ -704,14 +703,7 @@ async function mostrarDiploma(nombre, cedula, titulo, codigo) {
 }
 
 // =============================================
-// AJUSTE DE ESCALA EN PANTALLA (sin scroll)
-// Calcula cuánto espacio vertical/horizontal real hay disponible dentro
-// del contenedor y aplica un transform:scale() al lienzo fijo del diploma
-// para que TODO (diploma + botones + nota) quepa en una sola pantalla.
-// El lienzo en sí (1200x848) nunca cambia de tamaño real: solo se ve más
-// grande o más pequeño. Esto es lo que garantiza que lo que se ve en
-// pantalla y lo que se descarga sean el mismo diseño, solo a distinta
-// resolución de salida.
+// AJUSTE DE ESCALA EN PANTALLA
 // =============================================
 function fitDiploma() {
     const section = document.getElementById('diplomaSection');
@@ -720,7 +712,6 @@ function fitDiploma() {
     const stage = document.getElementById('diplomaStage');
     const live = document.getElementById('diplomaPreviewLive');
 
-    // Reset temporal para medir tamaños "naturales" sin la escala previa.
     live.style.transform = 'scale(1)';
     stage.style.height = '';
 
@@ -737,23 +728,7 @@ function fitDiploma() {
 }
 
 // =============================================
-// DESCARGAR PDF — arquitectura de clon en alta resolución
-// =============================================
-// Por qué un clon y no el elemento visible directamente:
-// El elemento visible en pantalla (#diplomaPreviewLive) puede estar
-// escalado con transform (para caber sin scroll) y su tamaño de captura
-// dependería del zoom del navegador, densidad de píxeles, etc. En vez de
-// depender de "cómo se ve ahora mismo", se crea un segundo lienzo
-// IDÉNTICO en HTML/CSS (misma función construirMarkupDiploma), a tamaño
-// real 1200x848 sin transform alguno, oculto detrás del overlay de carga
-// (que cubre toda la pantalla). Se captura ESE, siempre igual, sin
-// importar el dispositivo o el estado de scroll de la página.
-//
-// Por qué el PDF ya no se corta: en vez de forzar el contenido dentro de
-// una página A4 fija (que tiene una proporción distinta a la del
-// diploma), la página del PDF se crea con el tamaño EXACTO en pulgadas
-// que corresponde al lienzo de 1200x848px a 96dpi. El diploma llena la
-// página completa, sin sobrante y sin recorte, siempre.
+// DESCARGAR PDF
 // =============================================
 async function descargarPDF(nombre, codigo, titulo) {
     const btn = document.getElementById('downloadPdfBtn');
@@ -768,7 +743,6 @@ async function descargarPDF(nombre, codigo, titulo) {
     try {
         const clave = `${registroData.cedula}_${registroData.conferencia}`;
 
-        // 1) Construir el clon de exportación a tamaño real, sin transform.
         exportRoot = document.createElement('div');
         exportRoot.id = 'diplomaExportRoot';
 
@@ -789,7 +763,6 @@ async function descargarPDF(nombre, codigo, titulo) {
             correctLevel: QRCode.CorrectLevel.H
         });
 
-        // 2) Esperar fuentes web (Playfair Display, Inter) + imágenes (logo, sello, firma).
         if (document.fonts && document.fonts.ready) {
             try { await document.fonts.ready; } catch (e) {}
         }
@@ -803,10 +776,8 @@ async function descargarPDF(nombre, codigo, titulo) {
             });
         }));
 
-        // 3) Dar un par de frames para que el QR (SVG/canvas) termine de pintarse.
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-        // 4) Registrar la descarga en Firebase (descarga única).
         await database.ref(`leads/conferencias/${clave}`).update({
             descargado: true,
             fechaDescarga: new Date().toISOString()
@@ -815,8 +786,7 @@ async function descargarPDF(nombre, codigo, titulo) {
         await database.ref(`diplomas_publicos/${codigo}`).update({ descargado: true });
         diplomaDescargado = true;
 
-        // 5) Capturar el clon a resolución completa.
-        const RESOLUTION_SCALE = 3; // ~ equivalente a impresión de alta calidad
+        const RESOLUTION_SCALE = 3;
         const canvas = await html2canvas(exportCanvasEl, {
             scale: RESOLUTION_SCALE,
             useCORS: true,
@@ -826,7 +796,6 @@ async function descargarPDF(nombre, codigo, titulo) {
             height: DIPLOMA_H
         });
 
-        // 6) Construir el PDF con página del mismo tamaño/proporción del lienzo.
         const DPI = 96;
         const pdfWidthIn = DIPLOMA_W / DPI;
         const pdfHeightIn = DIPLOMA_H / DPI;
@@ -912,7 +881,7 @@ function ocultarOverlay() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-console.log('✅ Registro de conferencias cargado (arquitectura de exportación v2)');
+console.log('✅ Registro de conferencias cargado (arquitectura de exportación v3 · prefijos únicos + limpieza de huérfanos)');
 </script>
 </body>
 </html>
