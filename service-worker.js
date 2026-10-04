@@ -1,75 +1,91 @@
 // ============================================================
-// Service Worker · Pausa Lyon
-// Permite que la app funcione sin conexión tras la primera visita
+// Service Worker · Pausa Lyon v3.2
 // ============================================================
 
-const CACHE_NAME = 'pausa-lyon-v3.1';
-const CACHE_ASSETS = [
+const CACHE_NAME = 'pausa-lyon-v3.2';
+const CACHE_LOCAL = [
   '/pausa-lyon.html',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap'
+  '/icon-maskable-512.png'
 ];
 
-// Instalar: cachear los assets base
+// --- INSTALACIÓN ---
 self.addEventListener('install', (event) => {
-  console.log('[SW] Instalando Pausa Lyon v3.1');
+  console.log('[SW] Instalando Pausa Lyon v3.2');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(CACHE_ASSETS.map(url => new Request(url, { mode: 'no-cors' })));
+      // Solo cacheamos recursos locales. Las fuentes se cachean en runtime.
+      return cache.addAll(CACHE_LOCAL).catch((err) => {
+        console.warn('[SW] Algunos assets fallaron al cachear:', err);
+        // Continuar aunque uno falle, para no romper la instalación
+      });
     }).then(() => self.skipWaiting())
   );
 });
 
-// Activar: limpiar cachés antiguas
+// --- ACTIVACIÓN ---
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activando Pausa Lyon v3.1');
+  console.log('[SW] Activando Pausa Lyon v3.2');
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
+    caches.keys().then((keys) =>
+      Promise.all(
         keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-      );
-    }).then(() => self.clients.claim())
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch: cache-first con fallback a red
+// --- FETCH ---
 self.addEventListener('fetch', (event) => {
-  // No interceptar requests que no sean GET
-  if (event.request.method !== 'GET') return;
+  const req = event.request;
 
-  // No interceptar llamadas a otros dominios excepto fuentes
-  const url = new URL(event.request.url);
-  if (url.origin !== location.origin && !url.hostname.includes('fonts.google')) {
+  // Solo interceptar GET
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // Ignorar peticiones a otros orígenes (excepto Google Fonts)
+  if (url.origin !== self.location.origin && !url.hostname.includes('fonts.google') && !url.hostname.includes('fonts.gstatic')) {
     return;
   }
 
+  // Estrategia: cache-first, fallback a red
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
+    caches.match(req).then((cached) => {
+      if (cached) {
+        return cached;
+      }
 
-      return fetch(event.request).then((response) => {
-        // No cachear si no es válida
-        if (!response || response.status !== 200) return response;
+      return fetch(req).then((response) => {
+        // Si la respuesta no es válida, devolverla tal cual
+        if (!response || response.status !== 200 || response.type === 'opaque') {
+          return response;
+        }
 
-        const responseClone = response.clone();
+        // Clonar y guardar en cache
+        const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
-          try { cache.put(event.request, responseClone); } catch (e) {}
+          cache.put(req, clone).catch(() => {});
         });
 
         return response;
       }).catch(() => {
-        // Fallback: si es una navegación, devuelve la app
-        if (event.request.mode === 'navigate') {
+        // Si falla la red y es una navegación, devolver la app
+        if (req.mode === 'navigate') {
           return caches.match('/pausa-lyon.html');
         }
+        return new Response('Sin conexión', {
+          status: 503,
+          statusText: 'Sin conexión'
+        });
       });
     })
   );
 });
 
-// Mensaje desde la app (opcional para forzar actualización)
+// --- MENSAJE ---
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
