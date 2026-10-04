@@ -256,6 +256,109 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ============================================
+           APP INVITE · Pausa Lyon
+           Bloque delgado entre hero y servicios
+           ============================================ */
+        .app-invite {
+            padding: 0 24px 20px;
+            position: relative;
+            z-index: 1;
+            margin-top: -40px;
+        }
+        .app-invite-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #ffffff 0%, var(--crema) 100%);
+            border: 1px solid rgba(26, 35, 48, 0.06);
+            border-left: 4px solid var(--naranja);
+            border-radius: var(--radius);
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        .app-invite-inner:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .app-invite-icono {
+            font-size: 38px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .app-invite-texto {
+            flex: 1;
+            min-width: 0;
+        }
+        .app-invite-kicker {
+            font-size: 10.5px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--naranja);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .app-invite-titulo {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+            line-height: 1.15;
+        }
+        .app-invite-titulo em {
+            font-style: italic;
+            color: var(--naranja);
+        }
+        .app-invite-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+        .app-invite-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            box-shadow: var(--shadow-orange);
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .app-invite-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(232, 107, 24, 0.5);
+        }
+        .app-invite-cta svg {
+            transition: transform 0.3s ease;
+        }
+        .app-invite-cta:hover svg {
+            transform: translateX(4px);
+        }
+        @media (max-width: 720px) {
+            .app-invite { padding: 0 16px 20px; margin-top: -20px; }
+            .app-invite-inner {
+                flex-direction: column;
+                text-align: center;
+                padding: 22px 20px;
+                gap: 14px;
+            }
+            .app-invite-cta {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -532,6 +635,24 @@
         <div class="hero-scroll"><div class="hero-scroll-icon"><div class="hero-scroll-dot"></div></div></div>
     </section>
 
+    <!-- ==========================================
+         INVITACIÓN A PAUSA LYON (bloque delgado)
+         ========================================== -->
+    <section class="app-invite reveal">
+        <div class="app-invite-inner">
+            <div class="app-invite-icono">🧘</div>
+            <div class="app-invite-texto">
+                <div class="app-invite-kicker">Herramienta gratuita</div>
+                <h3 class="app-invite-titulo">Pausa <em>Lyon</em></h3>
+                <p class="app-invite-desc">Respiración guiada y diario terapéutico de 30 días. Sin cuenta. Sin rastreo. Todo en tu dispositivo.</p>
+            </div>
+            <a href="/pausa-lyon.html" class="app-invite-cta">
+                Usar ahora
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+        </div>
+    </section>
+
     <section class="section services" id="servicios">
         <div class="section-inner">
             <div class="section-header reveal">
@@ -750,6 +871,7 @@
                         <li><a href="ebook.html">Biblioteca Lyon Asesor</a></li>
                         <li><a href="diagnostico.html">Brújula Emocional</a></li>
                         <li><a href="membresia.html">Membresía</a></li>
+                        <li><a href="pausa-lyon.html">Pausa Lyon (app gratuita)</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
