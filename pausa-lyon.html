@@ -19,6 +19,20 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 
+<!-- FIREBASE (para analytics anónimos) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-003ZC6TLH3');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1145,6 +1159,54 @@ html, body {
   'use strict';
 
   // ============================================
+  // UTILIDADES DE ANALYTICS
+  // ============================================
+  function getUsuarioId() {
+    try {
+      let id = localStorage.getItem('pausa_lyon_user_id');
+      if (!id) {
+        id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem('pausa_lyon_user_id', id);
+      }
+      return id;
+    } catch (e) {
+      return 'anon_' + Date.now();
+    }
+  }
+
+  function getDispositivo() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
+           /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
+  }
+
+  function enviarEventoGA4(nombre, params = {}) {
+    try {
+      if (typeof gtag === 'function') {
+        gtag('event', nombre, params);
+        console.log(`📊 GA4: ${nombre}`, params);
+      }
+    } catch (e) {}
+  }
+
+  function registrarAperturaEnFirebase() {
+    try {
+      const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
+                        window.navigator.standalone === true;
+      if (esModoApp && typeof firebase !== 'undefined' && firebase.database) {
+        firebase.database().ref('pausa_lyon_analytics/aperturas').push({
+          fecha: Date.now(),
+          fechaLegible: new Date().toLocaleString('es-ES'),
+          usuarioId: getUsuarioId(),
+          dispositivo: getDispositivo()
+        }).then(() => console.log('📊 Apertura registrada'));
+      }
+    } catch (e) {}
+  }
+
+  // Ejecutar el rastreo de apertura al inicio
+  registrarAperturaEnFirebase();
+
+  // ============================================
   // RESPIRACIÓN
   // ============================================
   const PROTOCOLOS = {
@@ -1248,6 +1310,19 @@ html, body {
   document.querySelectorAll('.modulo-card').forEach(card => {
     card.addEventListener('click', () => {
       const modulo = card.dataset.modulo;
+      // Registrar uso del módulo
+      enviarEventoGA4('module_used', { event_category: 'engagement', modulo: modulo });
+      try {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+          firebase.database().ref('pausa_lyon_analytics/modulos').push({
+            fecha: Date.now(),
+            usuarioId: getUsuarioId(),
+            modulo: modulo,
+            dispositivo: getDispositivo()
+          });
+        }
+      } catch (e) {}
+
       if (modulo === 'respirar') mostrarPantalla('select');
       else if (modulo === 'diario') abrirDiario();
       else if (modulo === 'cafe') mostrarPantalla('coffee');
@@ -1365,12 +1440,25 @@ html, body {
   function finalizarProtocolo() {
     detenerAnimacion();
     guardarSesion(state.protocoloKey);
+    // Registrar sesión completada
+    enviarEventoGA4('breathing_completed', { event_category: 'engagement', estado: state.protocoloKey });
+    try {
+      if (typeof firebase !== 'undefined' && firebase.database) {
+        firebase.database().ref('pausa_lyon_analytics/respiraciones').push({
+          fecha: Date.now(),
+          usuarioId: getUsuarioId(),
+          estado: state.protocoloKey,
+          duracion: state.protocolo.duracionTotal,
+          dispositivo: getDispositivo()
+        });
+      }
+    } catch (e) {}
     mostrarPantalla('checkout');
     renderHistorial();
   }
 
   // ============================================
-  // HISTORIAL RESPIRACIÓN
+  // HISTORIAL RESPIRACIÓN (local)
   // ============================================
   const STORAGE_KEY = 'pausa_lyon_historial';
 
@@ -1443,6 +1531,16 @@ html, body {
   document.getElementById('btnCompartir').addEventListener('click', async () => {
     const url = window.location.href;
     const texto = 'Pausa Lyon: respiración guiada y diario terapéutico gratuito. Una herramienta de Lyon Asesor.';
+    enviarEventoGA4('share_clicked', { event_category: 'engagement' });
+    try {
+      if (typeof firebase !== 'undefined' && firebase.database) {
+        firebase.database().ref('pausa_lyon_analytics/compartidos').push({
+          fecha: Date.now(),
+          usuarioId: getUsuarioId(),
+          dispositivo: getDispositivo()
+        });
+      }
+    } catch (e) {}
     if (navigator.share) {
       try { await navigator.share({ title: 'Pausa Lyon', text: texto, url: url }); } catch (e) {}
     } else {
@@ -1693,6 +1791,21 @@ html, body {
     };
     guardarDiario(diario);
 
+    // Registrar en analytics (sin contenido, solo metadatos)
+    enviarEventoGA4('journal_entry_saved', { event_category: 'engagement', dia: n, polaridad: analisis.polaridad });
+    try {
+      if (typeof firebase !== 'undefined' && firebase.database) {
+        firebase.database().ref('pausa_lyon_analytics/diario').push({
+          fecha: Date.now(),
+          usuarioId: getUsuarioId(),
+          dia: n,
+          polaridad: analisis.polaridad,
+          totalPalabras: analisis.totalPalabras,
+          dispositivo: getDispositivo()
+        });
+      }
+    } catch (e) {}
+
     renderAnalisis(analisis);
     renderCalendario();
 
@@ -1841,7 +1954,7 @@ html, body {
     } catch (e) {}
   })();
 
-  console.log('%c📖 Pausa Lyon v3.2 — Respiración + Diario + PWA', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.3 — Respiración + Diario + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -1875,6 +1988,11 @@ function cerrarBanner() {
   try { sessionStorage.setItem('pausa_lyon_banner_cerrado', '1'); } catch(e) {}
 }
 
+function getDispositivoApp() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
+         /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
+}
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -1903,12 +2021,46 @@ if (btnCerrarBanner) {
   btnCerrarBanner.addEventListener('click', cerrarBanner);
 }
 
+// ============================================
+// RASTREO DE INSTALACIONES
+// ============================================
 window.addEventListener('appinstalled', () => {
   console.log('✅ App instalada correctamente');
   deferredPrompt = null;
   cerrarBanner();
+
+  // GA4
+  try {
+    if (typeof gtag === 'function') {
+      gtag('event', 'pwa_installed', { event_category: 'pwa' });
+    }
+  } catch (e) {}
+
+  // Firebase
+  try {
+    if (typeof firebase !== 'undefined' && firebase.database) {
+      firebase.database().ref('pausa_lyon_analytics/instalaciones').push({
+        fecha: Date.now(),
+        fechaLegible: new Date().toLocaleString('es-ES'),
+        usuarioId: (function() {
+          try {
+            let id = localStorage.getItem('pausa_lyon_user_id');
+            if (!id) {
+              id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+              localStorage.setItem('pausa_lyon_user_id', id);
+            }
+            return id;
+          } catch(e) { return 'anon'; }
+        })(),
+        dispositivo: getDispositivoApp()
+      }).then(() => console.log('📊 Instalación registrada en Firebase'));
+    }
+  } catch (e) {
+    console.warn('⚠️ Error registrando instalación:', e);
+  }
 });
 
+// Detectar si ya está corriendo en modo app instalada
 if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
   console.log('✅ Corriendo como app instalada');
   if (installBanner) installBanner.style.display = 'none';
