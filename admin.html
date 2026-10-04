@@ -93,23 +93,45 @@
             overflow: hidden;
         }
         .collapsible-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 24px; cursor: pointer; background: white;
-            transition: background 0.2s; user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+            background: white;
+            transition: background 0.2s;
+            user-select: none;
         }
         .collapsible-header:hover { background: #f8fafc; }
         .collapsible-header h2 {
-            font-size: 1.15rem; font-weight: 700; color: #0f172a; margin: 0;
-            display: flex; align-items: center; gap: 10px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .collapsible-header .subtitle { font-size: 0.82rem; color: #94a3b8; font-weight: 400; margin-top: 4px; }
+        .collapsible-header .subtitle {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            font-weight: 400;
+            margin-top: 4px;
+        }
         .collapsible-header .toggle-icon {
-            font-size: 1.3rem; color: #64748b; transition: transform 0.3s ease;
-            font-weight: bold; flex-shrink: 0;
+            font-size: 1.3rem;
+            color: #64748b;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+            flex-shrink: 0;
         }
         .collapsible-section.collapsed .collapsible-body { display: none; }
-        .collapsible-section.collapsed .collapsible-header .toggle-icon { transform: rotate(-90deg); }
-        .collapsible-body { padding: 0 24px 24px; }
+        .collapsible-section.collapsed .collapsible-header .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        .collapsible-body {
+            padding: 0 24px 24px;
+        }
 
         .config-card {
             background: white; border-radius: 20px; border: 1px solid #f1f5f9;
@@ -215,13 +237,28 @@
         .btn-rechazar:hover { background: #dc2626; }
 
         .ncf-input {
-            padding: 6px 10px; border: 1.5px solid #e2e8f0; border-radius: 8px;
-            font-family: monospace; font-size: 0.82rem; width: 130px;
+            padding: 6px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            width: 130px;
         }
-        .ncf-input:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
+        .ncf-input:focus {
+            border-color: #e86b18;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
+        }
         .ncf-save-btn {
-            padding: 5px 12px; border-radius: 8px; border: none; font-size: 0.72rem;
-            font-weight: 700; cursor: pointer; background: #2563eb; color: white; margin-left: 4px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+            margin-left: 4px;
         }
         .ncf-save-btn:hover { background: #1d4ed8; }
 
@@ -268,13 +305,21 @@
         .modal-box .btn-modal:hover { background: #d45f14; }
 
         .info-box {
-            background: #e3f2fd; border-left: 4px solid #1e88e5;
-            padding: 14px 18px; border-radius: 10px;
-            font-size: 0.85rem; color: #0d47a1; margin-bottom: 16px; line-height: 1.6;
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #0d47a1;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }
         .info-box strong { color: #0d47a1; }
+
         .info-box.warning {
-            background: #fff7ed; border-left-color: #e86b18; color: #7c2d12;
+            background: #fff7ed;
+            border-left-color: #e86b18;
+            color: #7c2d12;
         }
         .info-box.warning strong { color: #7c2d12; }
 
@@ -954,6 +999,79 @@
             </div>
         </div>
 
+        <!-- ============================================
+             MÉTRICAS DE PAUSA LYON
+             ============================================ -->
+        <div class="collapsible-section collapsed" id="sectionPausaAnalytics">
+            <div class="collapsible-header" onclick="toggleSection('sectionPausaAnalytics')">
+                <div>
+                    <h2>📊 Métricas de Pausa Lyon</h2>
+                    <div class="subtitle">Instalaciones, aperturas y usuarios recurrentes de la app</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="info-box">
+                    📌 <strong>Instalaciones:</strong> cada vez que alguien añade Pausa Lyon a su pantalla de inicio.
+                    <br>
+                    📌 <strong>Aperturas:</strong> cada vez que alguien abre la app desde el icono instalado.
+                    <br>
+                    📌 <strong>Usuarios únicos:</strong> dispositivos distintos que han abierto la app al menos una vez.
+                </div>
+
+                <div class="stats-grid" style="margin-top: 20px;">
+                    <div class="stat-card">
+                        <div class="stat-label">📲 Instalaciones</div>
+                        <div class="stat-value" id="statPausaInstalaciones">0</div>
+                        <div class="stat-sub">Total acumulado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">🚀 Aperturas</div>
+                        <div class="stat-value" id="statPausaAperturas">0</div>
+                        <div class="stat-sub">Todas las aperturas en modo app</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">👤 Usuarios únicos</div>
+                        <div class="stat-value" id="statPausaUsuarios">0</div>
+                        <div class="stat-sub">Dispositivos distintos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">📈 Recurrencia</div>
+                        <div class="stat-value" id="statPausaRatio">0</div>
+                        <div class="stat-sub">Aperturas por usuario</div>
+                    </div>
+                </div>
+
+                <div class="filters-bar" style="margin-top: 20px;">
+                    <select id="filtroPausaPeriodo" onchange="renderPausaAnalytics()">
+                        <option value="7">Últimos 7 días</option>
+                        <option value="30" selected>Últimos 30 días</option>
+                        <option value="90">Últimos 90 días</option>
+                        <option value="todos">Todo el histórico</option>
+                    </select>
+                    <button class="btn btn-reload" onclick="cargarPausaAnalytics()">🔄 Recargar</button>
+                </div>
+
+                <div class="table-wrapper" style="margin-top: 20px;">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Dispositivo</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pausaAnalyticsTableBody">
+                                <tr><td colspan="4" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -1007,6 +1125,7 @@
     let libroVentasData = [];
     let aprobacionesContadorData = [];
     let miembrosDataGlobal = {};
+    let pausaAnalyticsData = { instalaciones: [], aperturas: [], modulos: [], respiraciones: [], diario: [], compartidos: [] };
 
     // =============================================
     // FUNCIONES AUXILIARES
@@ -1015,10 +1134,6 @@
         const el = document.getElementById(id);
         if (el) el.classList.toggle('collapsed');
     }
-
-    // NOTA: esPlanEmpresarial, esPlanPersonal, etiquetaPlan,
-    // mesDeClase, calcularFechaDesbloqueo, claseDesbloqueada,
-    // razonBloqueo, generarCodigoAcceso vienen de protocolos-data.js
 
     function generarCodigoAccesoAdmin(prefijo) {
         return generarCodigoAcceso(prefijo);
@@ -1068,6 +1183,85 @@
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;')
             .replace(/\n/g, '<br>');
+    }
+
+    // =============================================
+    // MÉTRICAS DE PAUSA LYON
+    // =============================================
+    async function cargarPausaAnalytics() {
+        try {
+            const [snapInst, snapAp, snapMod, snapResp, snapDiario, snapComp] = await Promise.all([
+                database.ref('pausa_lyon_analytics/instalaciones').once('value'),
+                database.ref('pausa_lyon_analytics/aperturas').once('value'),
+                database.ref('pausa_lyon_analytics/modulos').once('value'),
+                database.ref('pausa_lyon_analytics/respiraciones').once('value'),
+                database.ref('pausa_lyon_analytics/diario').once('value'),
+                database.ref('pausa_lyon_analytics/compartidos').once('value')
+            ]);
+
+            const inst = snapInst.val() || {};
+            const ap = snapAp.val() || {};
+            const mod = snapMod.val() || {};
+            const resp = snapResp.val() || {};
+            const dia = snapDiario.val() || {};
+            const comp = snapComp.val() || {};
+
+            pausaAnalyticsData.instalaciones = Object.entries(inst).map(([id, d]) => ({ id, tipo: 'instalacion', ...d }));
+            pausaAnalyticsData.aperturas = Object.entries(ap).map(([id, d]) => ({ id, tipo: 'apertura', ...d }));
+            pausaAnalyticsData.modulos = Object.entries(mod).map(([id, d]) => ({ id, tipo: 'modulo', ...d }));
+            pausaAnalyticsData.respiraciones = Object.entries(resp).map(([id, d]) => ({ id, tipo: 'respiracion', ...d }));
+            pausaAnalyticsData.diario = Object.entries(dia).map(([id, d]) => ({ id, tipo: 'diario', ...d }));
+            pausaAnalyticsData.compartidos = Object.entries(comp).map(([id, d]) => ({ id, tipo: 'compartido', ...d }));
+
+            renderPausaAnalytics();
+        } catch (e) {
+            console.error('Error cargando analytics de Pausa Lyon:', e);
+            const tbody = document.getElementById('pausaAnalyticsTableBody');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+        }
+    }
+
+    function renderPausaAnalytics() {
+        const selectPeriodo = document.getElementById('filtroPausaPeriodo');
+        if (!selectPeriodo) return;
+
+        const periodo = selectPeriodo.value;
+        const ahora = Date.now();
+        const limite = periodo === 'todos' ? 0 : ahora - (parseInt(periodo) * 24 * 60 * 60 * 1000);
+
+        const instalaciones = pausaAnalyticsData.instalaciones.filter(i => i.fecha >= limite);
+        const aperturas = pausaAnalyticsData.aperturas.filter(a => a.fecha >= limite);
+
+        document.getElementById('statPausaInstalaciones').textContent = instalaciones.length;
+        document.getElementById('statPausaAperturas').textContent = aperturas.length;
+
+        const usuariosUnicos = new Set(aperturas.map(a => a.usuarioId).filter(Boolean));
+        document.getElementById('statPausaUsuarios').textContent = usuariosUnicos.size;
+
+        const ratio = usuariosUnicos.size > 0 ? (aperturas.length / usuariosUnicos.size).toFixed(1) : '0';
+        document.getElementById('statPausaRatio').textContent = ratio;
+
+        // Tabla combinada: instalaciones + aperturas + compartidos
+        const combinados = [
+            ...instalaciones.map(i => ({ ...i, tipoLabel: '📲 Instalación' })),
+            ...aperturas.map(a => ({ ...a, tipoLabel: '🚀 Apertura' })),
+            ...pausaAnalyticsData.compartidos.filter(c => c.fecha >= limite).map(c => ({ ...c, tipoLabel: '📤 Compartido' }))
+        ].sort((a, b) => b.fecha - a.fecha).slice(0, 150);
+
+        const tbody = document.getElementById('pausaAnalyticsTableBody');
+        if (combinados.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:2rem; color:#94a3b8;">Sin datos en este periodo.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = combinados.map(r => `
+            <tr>
+                <td style="font-size:0.85rem;">${r.fechaLegible || new Date(r.fecha).toLocaleString('es-ES')}</td>
+                <td>${r.tipoLabel}</td>
+                <td>${r.dispositivo || '—'}</td>
+                <td style="font-family:monospace; font-size:0.75rem;">${r.usuarioId ? r.usuarioId.substring(0, 14) + '…' : '—'}</td>
+            </tr>
+        `).join('');
     }
 
     // =============================================
@@ -1184,7 +1378,6 @@
 
                 const codigo = generarCodigoAccesoAdmin('LYON');
 
-                // Crear miembro con pagosMensuales vacíos para plan Personal
                 const pagosIniciales = esEmpresarial ? null : {
                     mes1: { pagado: false, fecha: null, fechaLegible: null },
                     mes2: { pagado: false, fecha: null, fechaLegible: null },
@@ -1333,7 +1526,7 @@
             cargarAprobacionesContador(),
             cargarSolicitudesConsultorio(),
             cargarPacientesConsultorio(),
-            cargarPagosMensuales()
+            cargarPausaAnalytics()
         ]);
         actualizarStatsConsultorio();
     }
@@ -1434,7 +1627,6 @@
             const asistio = m.asistioCierre === true;
             const clasesCompletas = completadas >= 12;
 
-            // Badge de plan
             const badgePlan = esPlanEmpresarial(m.plan)
                 ? '<span class="badge badge-empresarial">🏢 Empresarial</span>'
                 : '<span class="badge badge-personal">👤 Personal</span>';
@@ -2861,7 +3053,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor v2.0 cargado — Planes Personal/Empresarial, Pagos Mensuales, Magistral de Cierre');
+    console.log('✅ Admin Lyon Asesor v2.2 cargado — Planes Personal/Empresarial, Pagos Mensuales, Magistral de Cierre, Métricas Pausa Lyon');
 </script>
 </body>
 </html>
