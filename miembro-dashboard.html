@@ -11,6 +11,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
+<script src="protocolos-data.js"></script>
 
 <script>
     if (typeof database === 'undefined') {
@@ -78,9 +79,11 @@
     .form-submit:hover { background: var(--naranja-oscuro); }
     .form-note { margin-top: 16px; font-size: 0.85rem; color: var(--text-muted); }
     .form-note a { color: var(--naranja); font-weight: 600; text-decoration: none; }
-    .hidden { display: none !important; }
     .locked-panel { background: #f8fafc; border-radius: var(--radius); padding: 40px 30px; text-align: center; }
     .locked-panel h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); }
+    .locked-panel.payment { background: #fef8f3; border: 2px dashed #fed7aa; }
+    .locked-panel.payment h3 { color: #7c2d12; }
+    .locked-panel.payment p { color: #7c2d12; }
     .progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
     .progress-track { background: rgba(255,255,255,0.2); border-radius: 30px; height: 8px; overflow: hidden; }
     .progress-fill { background: var(--naranja); height: 100%; width: 0%; transition: width 0.5s ease; }
@@ -89,7 +92,8 @@
     .class-tab.active { border-color: var(--naranja); background: var(--naranja); color: #fff; }
     .class-tab.completed { border-color: #22c55e; background: #f0fdf4; color: #166534; }
     .class-tab.locked { opacity: 0.5; cursor: not-allowed; }
-    .class-tab.locked .lock-icon { margin-right: 4px; }
+    .class-tab.locked-pay { opacity: 0.5; cursor: not-allowed; border-color: #fed7aa; background: #fff7ed; color: #9a3412; }
+    .class-tab.locked .lock-icon, .class-tab.locked-pay .lock-icon { margin-right: 4px; }
     .copyright-footer { text-align: center; padding: 40px 0 20px; color: var(--text-muted); font-size: 0.8rem; }
     .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; }
     .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
@@ -102,6 +106,32 @@
     .pdf-frame-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     .info-paragraphs p { background: #f8fafc; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; color: var(--text-dark); line-height: 1.6; border-left: 3px solid var(--naranja); }
     .info-paragraphs p:last-child { margin-bottom: 0; }
+
+    /* ===== PANEL DE PAGOS MENSUALES (solo Plan Personal) ===== */
+    .pagos-panel {
+        background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md);
+        padding: 24px 26px; margin-bottom: 24px; border: 1px solid rgba(26,35,48,0.06);
+    }
+    .pagos-panel h3 {
+        font-family: 'Playfair Display', Georgia, serif; color: var(--navy);
+        font-size: 1.15rem; margin-bottom: 6px;
+    }
+    .pagos-panel .pagos-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px; }
+    .pagos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .pago-chip {
+        border-radius: 12px; padding: 14px 12px; text-align: center;
+        border: 2px solid #e2e8f0; background: #f8fafc; transition: 0.2s;
+    }
+    .pago-chip .mes-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+    .pago-chip .mes-estado { font-size: 0.85rem; font-weight: 700; }
+    .pago-chip.pagado { background: #f0fdf4; border-color: #86efac; }
+    .pago-chip.pagado .mes-estado { color: #166534; }
+    .pago-chip.pendiente { background: #fff7ed; border-color: #fed7aa; }
+    .pago-chip.pendiente .mes-estado { color: #9a3412; }
+    .pago-chip .mes-fecha { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+    @media (max-width: 640px) {
+        .pagos-grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
     /* ===== ESTILOS DEL DIPLOMA ===== */
     .diploma-locked-msg {
@@ -155,8 +185,7 @@
     .diploma-preview .qr-label { font-size: 10px; color: #94a3b8; letter-spacing: 0.05rem; margin-top: 4px; }
 
     #diplomaStage {
-        width: 100%;
-        overflow: hidden;
+        width: 100%; overflow: hidden;
         display: flex; align-items: center; justify-content: center;
         min-height: 300px;
     }
@@ -223,8 +252,16 @@
     </div>
 
     <div class="app-main">
+
+        <!-- PANEL DE PAGOS MENSUALES (solo Plan Personal) -->
+        <div class="pagos-panel hidden" id="pagosPanel">
+            <h3>Estado de tus pagos mensuales</h3>
+            <p class="pagos-sub">Para desbloquear las clases de cada mes, tu pago correspondiente debe estar verificado. Los primeros 3 días de cada mes debes tener tu pago al día.</p>
+            <div class="pagos-grid" id="pagosGrid"></div>
+        </div>
+
         <div class="closing-note reveal visible" style="margin-bottom:24px;">
-            El cierre del programa será un evento online en videoconferencia. Al finalizar las 12 clases, podrás acceder a tu diploma del Programa Completo (300 horas académicas).
+            La <strong>Magistral de Cierre</strong> es un evento en vivo por videoconferencia al que accederás al terminar las 12 clases. Una vez confirmada tu asistencia, podrás descargar tu diploma del Programa Completo (300 horas académicas).
         </div>
 
         <div class="class-tabs" id="classTabs"></div>
@@ -242,15 +279,15 @@
                 <div id="finalDiplomaLocked" class="hidden">
                     <div class="diploma-locked-msg">
                         <strong>🔒 Tu diploma aún no está disponible</strong><br>
-                        El diploma del Programa Completo se desbloqueará <strong>después del evento de cierre en videoconferencia</strong>.
-                        Recibirás un enlace por correo cuando sea el momento.
-                        Una vez que asistas al evento, tu facilitador habilitará la descarga desde el panel administrativo.
+                        El diploma del Programa Completo se desbloqueará <strong>después de la Magistral de Cierre</strong> en videoconferencia.
+                        Recibirás el enlace de acceso por correo cuando sea el momento.
+                        Una vez que asistas a la Magistral, tu facilitador habilitará la descarga desde el panel administrativo.
                     </div>
                 </div>
 
                 <div id="finalDiplomaFormWrap" class="hidden">
                     <p style="color:rgba(255,255,255,0.85); margin-bottom:12px; font-size:0.95rem;">
-                        ✅ Has asistido al evento de cierre. Ya puedes solicitar tu diploma.
+                        ✅ Has asistido a la Magistral de Cierre. Ya puedes solicitar tu diploma.
                     </p>
                     <div class="diploma-form-row" style="justify-content:center;">
                         <input type="text" id="finalNombre" placeholder="Nombre completo" style="max-width:260px;" />
@@ -298,23 +335,15 @@ let diplomaDescargado = false;
 let refreshIntervalId = null;
 
 // =============================================
-// 🔧 FUNCIÓN CENTRAL DE DETECCIÓN DE PLAN
-// Acepta cualquier variante: "acelerado", "acelerado_mensual",
-// "acelerado_completo", "Acelerado", etc.
+// HELPERS — Todos vienen de protocolos-data.js:
+//   esPlanEmpresarial(plan)
+//   esPlanPersonal(plan)
+//   etiquetaPlan(plan)
+//   mesDeClase(n)
+//   calcularFechaDesbloqueo(fechaInicio, plan, n)
+//   claseDesbloqueada(membresia, n)
+//   razonBloqueo(membresia, n)
 // =============================================
-function esPlanAcelerado(plan) {
-    if (!plan || typeof plan !== 'string') return false;
-    return plan.toLowerCase().includes('acelerado');
-}
-
-function diasEntreClases(plan) {
-    return esPlanAcelerado(plan) ? 14 : 30;
-}
-
-function etiquetaPlan(plan) {
-    if (esPlanAcelerado(plan)) return 'Acelerado (6 meses)';
-    return 'Extendido (12 meses)';
-}
 
 // =============================================
 // LOGIN
@@ -371,11 +400,13 @@ function cargarDashboard(data) {
     document.getElementById('logoutBtn').style.display = 'inline-block';
 
     document.getElementById('nombreMiembro').textContent = data.nombre || 'Estudiante';
-    // 🔧 USO DE LA FUNCIÓN CORREGIDA
     document.getElementById('planMiembro').textContent = etiquetaPlan(data.plan);
     const estadoEl = document.getElementById('estadoMiembro');
     estadoEl.textContent = (data.estado || 'activo').charAt(0).toUpperCase() + (data.estado || 'activo').slice(1);
     estadoEl.className = 'status-badge ' + (data.estado || 'activo');
+
+    // Mostrar panel de pagos solo si es Plan Personal
+    renderPagosPanel();
 
     renderTabs();
     const completadas = Object.keys(data.clasesCompletadas || {}).length;
@@ -383,76 +414,73 @@ function cargarDashboard(data) {
         seleccionarClase(12);
         mostrarSeccionFinal();
     } else {
-        seleccionarClase(completadas + 1 > 12 ? 12 : completadas + 1);
+        // Buscar la primera clase no completada (para mostrar en pantalla)
+        let proxima = 1;
+        for (let i = 1; i <= 12; i++) {
+            if (!claseCompletada(i)) { proxima = i; break; }
+        }
+        seleccionarClase(proxima);
     }
     actualizarProgreso();
 
-    // 🔧 Refresco automático cada 60 segundos para detectar desbloqueos en vivo
+    // Refresco automático cada 60 segundos para detectar desbloqueos y cambios de pago
     if (refreshIntervalId) clearInterval(refreshIntervalId);
-    refreshIntervalId = setInterval(refrescarEstadoClases, 60000);
-
-    console.log(`📅 Plan detectado: ${data.plan} → ${diasEntreClases(data.plan)} días entre clases`);
+    refreshIntervalId = setInterval(refrescarEstado, 60000);
 }
 
 // =============================================
-// REFRESCO AUTOMÁTICO (detecta desbloqueos sin recargar)
+// REFRESCO AUTOMÁTICO
 // =============================================
-function refrescarEstadoClases() {
-    if (!MEMBRESIA) return;
-    const completadas = Object.keys(MEMBRESIA.clasesCompletadas || {}).length;
-    const desbloqueadasAntes = [];
-    const desbloqueadasAhora = [];
+async function refrescarEstado() {
+    if (!MEMBRESIA || !CODIGO_ACTUAL) return;
+    try {
+        const dataNueva = await buscarMembresia(CODIGO_ACTUAL);
+        if (!dataNueva) return;
+        MEMBRESIA = dataNueva;
 
-    for (let i = 1; i <= 12; i++) {
-        const desbloqueada = claseDesbloqueada(i);
-        if (desbloqueada) desbloqueadasAhora.push(i);
-    }
+        // Si el admin aprobó el pago del mes, refrescar panel
+        renderPagosPanel();
+        renderTabs();
 
-    // Re-renderizar pestañas por si alguna clase se desbloqueó
-    renderTabs();
-
-    // Si la clase activa ya no está desbloqueada, no hay problema
-    // Si hay una nueva clase desbloqueada, avisar sutilmente
-    const proximaCompletar = completadas + 1;
-    if (proximaCompletar <= 12 && claseDesbloqueada(proximaCompletar)) {
-        const tabs = document.querySelectorAll('.class-tab');
-        if (tabs[proximaCompletar - 1]) {
-            const textoActual = tabs[proximaCompletar - 1].innerHTML;
-            if (textoActual.includes('🔒')) {
-                tabs[proximaCompletar - 1].classList.add('active');
-                console.log(`🎉 Clase ${proximaCompletar} desbloqueada automáticamente`);
-            }
-        }
+        // Re-renderizar la clase activa (por si cambió su estado de desbloqueo)
+        if (claseActivaIdx) renderClase(claseActivaIdx);
+    } catch (e) {
+        console.warn('Error refrescando estado:', e);
     }
 }
 
 // =============================================
-// BUSCAR MEMBRESÍA
+// PANEL DE PAGOS MENSUALES
 // =============================================
-function buscarMembresia(codigo) {
-    return database.ref('membresias/' + codigo).once('value').then(snap => {
-        if (!snap.exists()) return null;
-        const data = snap.val();
-        return { ...data, codigo };
-    });
-}
+function renderPagosPanel() {
+    const panel = document.getElementById('pagosPanel');
+    if (!panel) return;
+    if (esPlanEmpresarial(MEMBRESIA.plan)) {
+        panel.classList.add('hidden');
+        return;
+    }
+    panel.classList.remove('hidden');
 
-// =============================================
-// LÓGICA DE DESBLOQUEO (CORREGIDA)
-// =============================================
-function claseDesbloqueada(n) {
-    if (!MEMBRESIA.fechaInicio) return n === 1;
-    const fechaDesbloqueo = calcularFechaDesbloqueo(MEMBRESIA.fechaInicio, MEMBRESIA.plan, n);
-    return Date.now() >= fechaDesbloqueo;
-}
+    const pagos = MEMBRESIA.pagosMensuales || {};
+    const grid = document.getElementById('pagosGrid');
+    const nombres = ['Mes 1', 'Mes 2', 'Mes 3', 'Mes 4'];
 
-function calcularFechaDesbloqueo(fechaInicio, plan, n) {
-    const dias = diasEntreClases(plan); // 🔧 usa la función central
-    return new Date(fechaInicio + (n - 1) * dias * 86400000);
-}
-
-function claseCompletada(n) {
-    return !!(MEMBRESIA.clasesCompletadas && MEMBRESIA.clasesCompletadas[n]);
+    grid.innerHTML = nombres.map((label, i) => {
+        const mes = i + 1;
+        const campo = 'mes' + mes;
+        const info = pagos[campo] || {};
+        const pagado = info.pagado === true;
+        const clase = `pago-chip ${pagado ? 'pagado' : 'pendiente'}`;
+        const estado = pagado ? '✅ Pagado' : '⏳ Pendiente';
+        const fecha = pagado && info.fechaLegible ? info.fechaLegible : '';
+        return `
+            <div class="${clase}">
+                <div class="mes-label">${label}</div>
+                <div class="mes-estado">${estado}</div>
+                ${fecha ? `<div class="mes-fecha">${fecha}</div>` : ''}
+            </div>
+        `;
+    }).join('');
 }
 
 // =============================================
@@ -467,11 +495,38 @@ function renderTabs() {
     }
     LYON_CLASES.forEach(c => {
         const btn = document.createElement('button');
-        const desbloqueada = claseDesbloqueada(c.n);
+        const razon = razonBloqueo(MEMBRESIA, c.n);
         const completada = claseCompletada(c.n);
-        btn.className = 'class-tab' + (completada ? ' completed' : '') + (!desbloqueada ? ' locked' : '');
-        btn.innerHTML = (!desbloqueada ? '<span class="lock-icon">🔒</span>' : (completada ? '✓ ' : '')) + 'Clase ' + c.n;
-        btn.addEventListener('click', () => { if (desbloqueada) seleccionarClase(c.n); });
+
+        let claseCSS = 'class-tab';
+        let icono = '';
+        if (completada) {
+            claseCSS += ' completed';
+            icono = '✓ ';
+        } else if (razon === 'disponible') {
+            // sin cambios
+        } else if (razon === 'esperando_pago') {
+            claseCSS += ' locked-pay';
+            icono = '<span class="lock-icon">💳</span>';
+        } else {
+            claseCSS += ' locked';
+            icono = '<span class="lock-icon">🔒</span>';
+        }
+
+        btn.className = claseCSS;
+        btn.innerHTML = icono + 'Clase ' + c.n;
+
+        btn.addEventListener('click', () => {
+            if (razon === 'disponible' || completada) {
+                seleccionarClase(c.n);
+            } else if (razon === 'esperando_pago') {
+                alert('Esta clase está retenida hasta que se verifique el pago del mes ' + mesDeClase(c.n) + '. Si ya pagaste, escríbenos por WhatsApp para activarla.');
+                seleccionarClase(c.n);
+            } else {
+                // esperando fecha: no hace nada, ya está bloqueada visualmente
+            }
+        });
+
         wrap.appendChild(btn);
     });
 }
@@ -488,10 +543,11 @@ function seleccionarClase(n) {
 function renderClase(n) {
     const clase = LYON_CLASES.find(c => c.n === n);
     const contenido = LYON_CONTENIDO_CLASES[n];
-    const desbloqueada = claseDesbloqueada(n);
+    const razon = razonBloqueo(MEMBRESIA, n);
     const container = document.getElementById('classContent');
 
-    if (!desbloqueada) {
+    // CASO 1: bloqueada por fecha
+    if (razon === 'esperando_fecha') {
         const fechaDesbloqueo = new Date(calcularFechaDesbloqueo(MEMBRESIA.fechaInicio, MEMBRESIA.plan, n));
         const diasRestantes = Math.ceil((fechaDesbloqueo - Date.now()) / 86400000);
         container.innerHTML = `
@@ -504,6 +560,27 @@ function renderClase(n) {
         return;
     }
 
+    // CASO 2: bloqueada por pago pendiente (solo Plan Personal)
+    if (razon === 'esperando_pago') {
+        const mes = mesDeClase(n);
+        const mensajeWA = encodeURIComponent(
+            `Hola Álvaro, soy ${MEMBRESIA.nombre || 'un miembro'} (código ${CODIGO_ACTUAL}). Necesito verificar el pago del mes ${mes} de mi membresía para desbloquear las clases del mes.`
+        );
+        container.innerHTML = `
+            <div class="locked-panel payment">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <h3>Clase ${n} — Pago del mes ${mes} pendiente</h3>
+                <p>Esta clase se desbloqueará cuando tu pago del <strong>mes ${mes}</strong> esté verificado.</p>
+                <p style="font-size:0.85rem; margin-top:10px; opacity:0.85;">Los primeros 3 días de cada mes debes tener tu pago al día. Si ya pagaste, envía tu comprobante para activarlo.</p>
+                <a href="https://wa.me/584148610464?text=${mensajeWA}" target="_blank"
+                   style="display:inline-flex; align-items:center; gap:8px; margin-top:18px; padding:12px 24px; background:#25D366; color:#fff; border-radius:30px; font-weight:700; text-decoration:none; font-size:0.9rem;">
+                    💬 Enviar comprobante por WhatsApp
+                </a>
+            </div>`;
+        return;
+    }
+
+    // CASO 3: disponible — render normal
     const videoId = clase.video.split('/').pop();
     const yaCompletada = claseCompletada(n);
     const diplomaClaseDescargado = !!(MEMBRESIA.diplomasDescargados && MEMBRESIA.diplomasDescargados[n]);
@@ -615,7 +692,7 @@ function actualizarProgreso() {
 }
 
 // =============================================
-// SECCIÓN FINAL DEL DIPLOMA
+// SECCIÓN FINAL DEL DIPLOMA (Magistral de Cierre)
 // =============================================
 function mostrarSeccionFinal() {
     const section = document.getElementById('finalDiplomaSection');
@@ -647,9 +724,6 @@ function mostrarSeccionFinal() {
     }
 }
 
-// =============================================
-// SOLICITUD Y GENERACIÓN DEL DIPLOMA FINAL
-// =============================================
 async function manejarSolicitudDiplomaFinal() {
     const nombre = document.getElementById('finalNombre').value.trim();
     const cedula = document.getElementById('finalCedula').value.trim();
@@ -676,7 +750,7 @@ function construirMarkupDiplomaPrograma(nombre, codigo, qrContainerId) {
                 Ha culminado y aprobado satisfactoriamente el programa
             </div>
             <div class="titulo-conferencia">"Programa Integral en NeuroLiderazgo y Transformación Humana"</div>
-            <div class="horas-text">con una duración total de 300 horas académicas, distribuidas en 12 clases.</div>
+            <div class="horas-text">con una duración total de 300 horas académicas, distribuidas en 12 clases y la Magistral de Cierre.</div>
         </div>
 
         <div class="footer-diploma">
@@ -849,19 +923,8 @@ function ocultarOverlay() {
 // =============================================
 // AUXILIARES
 // =============================================
-function generarCodigoAcceso(prefijo) {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let codigo = '';
-    for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
-    return `${prefijo}-${codigo}`;
-}
-
-function marcarClaseCompletada(codigo, n) {
-    return database.ref('membresias/' + codigo + '/clasesCompletadas/' + n).set(Date.now());
-}
-
-function marcarDiplomaDescargado(codigo, n) {
-    return database.ref('membresias/' + codigo + '/diplomasDescargados/' + n).set(true);
+function claseCompletada(n) {
+    return !!(MEMBRESIA.clasesCompletadas && MEMBRESIA.clasesCompletadas[n]);
 }
 </script>
 </body>
