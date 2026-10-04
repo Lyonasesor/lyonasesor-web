@@ -42,38 +42,25 @@ html, body {
   color: var(--texto);
   background: var(--crema);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-#app {
-  position: relative;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-}
+#app { position: relative; height: 100vh; height: 100dvh; overflow: hidden; }
 
 .screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  visibility: hidden;
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; visibility: hidden;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto; overflow-x: hidden;
 }
 .screen.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition-delay: 0s;
-  z-index: 2;
+  opacity: 1; visibility: visible; transform: translateY(0);
+  transition-delay: 0s; z-index: 2;
 }
 
 /* ============================================
-   PANTALLA HOME
+   HOME
    ============================================ */
 #screen-home {
   background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
@@ -81,798 +68,670 @@ html, body {
 }
 
 .home-inner {
-  max-width: 480px;
-  margin: 0 auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+  max-width: 480px; margin: 0 auto; width: 100%;
+  display: flex; flex-direction: column; min-height: 100%;
 }
 
-.home-header {
-  text-align: center;
-  padding: 20px 0 36px;
-}
+.home-header { text-align: center; padding: 20px 0 36px; }
 
 .logo-wordmark {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 13px;
-  color: var(--navy);
-  margin-bottom: 22px;
+  font-family: 'Inter', sans-serif; font-weight: 800;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: 13px; color: var(--navy); margin-bottom: 22px;
 }
 .logo-wordmark .acento { color: var(--naranja); }
 
 .home-titulo {
-  font-family: var(--font-titulo);
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1.02;
-  color: var(--navy);
-  margin-bottom: 10px;
-  letter-spacing: -0.025em;
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 46px; line-height: 1.02; color: var(--navy);
+  margin-bottom: 10px; letter-spacing: -0.025em;
 }
-.home-titulo em {
-  font-style: italic;
-  color: var(--naranja);
-}
+.home-titulo em { font-style: italic; color: var(--naranja); }
 
 .home-sub {
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--texto-muted);
-  max-width: 340px;
-  margin: 0 auto;
+  font-size: 14.5px; line-height: 1.55; color: var(--texto-muted);
+  max-width: 340px; margin: 0 auto;
 }
 
 .home-modulos {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+  display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;
 }
 
 .modulo-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  display: flex; align-items: flex-start; gap: 16px;
   padding: 20px 22px;
   background: var(--blanco);
   border: 1.5px solid var(--borde);
   border-radius: var(--radius);
-  cursor: pointer;
-  font-family: var(--font-cuerpo);
-  font-size: 15px;
-  text-align: left;
-  color: var(--texto);
+  cursor: pointer; font-family: var(--font-cuerpo);
+  font-size: 15px; text-align: left; color: var(--texto);
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 2px 8px rgba(26,35,48,0.04);
-  font-weight: 500;
-  width: 100%;
+  font-weight: 500; width: 100%;
 }
 .modulo-card:hover, .modulo-card:active {
-  border-color: var(--naranja);
-  transform: translateY(-2px);
+  border-color: var(--naranja); transform: translateY(-2px);
   box-shadow: var(--sombra);
 }
 .modulo-card .icono {
-  font-size: 30px;
-  flex-shrink: 0;
-  width: 44px;
-  text-align: center;
-  line-height: 1;
-  padding-top: 2px;
+  font-size: 30px; flex-shrink: 0; width: 44px;
+  text-align: center; line-height: 1; padding-top: 2px;
 }
-.modulo-card .contenido {
-  flex: 1;
-  min-width: 0;
-}
+.modulo-card .contenido { flex: 1; min-width: 0; }
 .modulo-card .contenido b {
-  display: block;
-  font-family: var(--font-titulo);
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 4px;
-  font-size: 18px;
-  line-height: 1.15;
+  display: block; font-family: var(--font-titulo);
+  font-weight: 700; color: var(--navy); margin-bottom: 4px;
+  font-size: 18px; line-height: 1.15;
 }
 .modulo-card .contenido span {
-  display: block;
-  font-size: 13px;
-  color: var(--texto-muted);
-  font-weight: 400;
-  line-height: 1.5;
+  display: block; font-size: 13px; color: var(--texto-muted);
+  font-weight: 400; line-height: 1.5;
 }
 .modulo-card .badge-tiempo {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 3px 10px;
-  background: rgba(232,107,24,0.1);
-  color: var(--naranja);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 20px;
+  display: inline-block; margin-top: 8px; padding: 3px 10px;
+  background: rgba(232,107,24,0.1); color: var(--naranja);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; border-radius: 20px;
+}
+.modulo-card .badge-progreso {
+  display: inline-block; margin-top: 8px; padding: 3px 10px;
+  background: rgba(34,197,94,0.12); color: #15803d;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; border-radius: 20px;
 }
 
 .home-pie {
-  margin-top: auto;
-  padding-top: 24px;
-  text-align: center;
-  font-size: 11.5px;
-  color: var(--texto-muted);
-  line-height: 1.6;
+  margin-top: auto; padding-top: 24px; text-align: center;
+  font-size: 11.5px; color: var(--texto-muted); line-height: 1.6;
 }
-.home-pie a {
-  color: var(--naranja);
-  text-decoration: none;
-  font-weight: 500;
-}
-.home-pie .separador {
-  display: inline-block;
-  margin: 0 8px;
-  opacity: 0.4;
-}
+.home-pie a { color: var(--naranja); text-decoration: none; font-weight: 500; }
+.home-pie .separador { display: inline-block; margin: 0 8px; opacity: 0.4; }
 
 /* ============================================
-   PANTALLA SELECCIÓN DE ESTADO
+   BOTÓN BACK
    ============================================ */
-#screen-select {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
-
-.select-header {
-  text-align: center;
-  padding: 8px 0 28px;
-  flex-shrink: 0;
-}
-
 .btn-back {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  background: rgba(26,35,48,0.05);
-  border: none;
-  color: var(--texto-muted);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-  z-index: 5;
+  position: absolute; top: 18px; left: 18px;
+  background: rgba(26,35,48,0.05); border: none;
+  color: var(--texto-muted); width: 38px; height: 38px;
+  border-radius: 50%; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: 0.2s; z-index: 5;
 }
 .btn-back:hover { background: rgba(26,35,48,0.1); color: var(--navy); }
 
+/* ============================================
+   SELECT DE ESTADO
+   ============================================ */
+#screen-select { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+.select-header { text-align: center; padding: 8px 0 28px; flex-shrink: 0; }
 .select-titulo {
-  font-family: var(--font-titulo);
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 1.1;
-  color: var(--navy);
-  margin-bottom: 10px;
-  letter-spacing: -0.02em;
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 36px; line-height: 1.1; color: var(--navy);
+  margin-bottom: 10px; letter-spacing: -0.02em;
 }
 .select-titulo em { font-style: italic; color: var(--naranja); }
+.select-sub { font-size: 14.5px; color: var(--texto-muted); max-width: 320px; margin: 0 auto; line-height: 1.55; }
 
-.select-sub {
-  font-size: 14.5px;
-  color: var(--texto-muted);
-  max-width: 320px;
-  margin: 0 auto;
-  line-height: 1.55;
-}
-
-.estados-lista {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 440px;
-  margin: 0 auto;
-  width: 100%;
-}
-
+.estados-lista { display: flex; flex-direction: column; gap: 12px; max-width: 440px; margin: 0 auto; width: 100%; }
 .estado-btn {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 22px;
-  background: var(--blanco);
-  border: 1.5px solid var(--borde);
-  border-radius: var(--radius);
-  cursor: pointer;
-  font-family: var(--font-cuerpo);
-  font-size: 15px;
-  text-align: left;
-  color: var(--texto);
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; background: var(--blanco);
+  border: 1.5px solid var(--borde); border-radius: var(--radius);
+  cursor: pointer; font-family: var(--font-cuerpo);
+  font-size: 15px; text-align: left; color: var(--texto);
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 2px 8px rgba(26,35,48,0.04);
-  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(26,35,48,0.04); font-weight: 500;
 }
 .estado-btn:hover, .estado-btn:active {
-  border-color: var(--naranja);
-  transform: translateY(-2px);
-  box-shadow: var(--sombra);
+  border-color: var(--naranja); transform: translateY(-2px); box-shadow: var(--sombra);
 }
-.estado-btn .icono {
-  font-size: 26px;
-  flex-shrink: 0;
-  width: 40px;
-  text-align: center;
-}
+.estado-btn .icono { font-size: 26px; flex-shrink: 0; width: 40px; text-align: center; }
 .estado-btn .texto { flex: 1; }
-.estado-btn .texto b {
-  display: block;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 2px;
-  font-size: 15px;
-}
-.estado-btn .texto span {
-  display: block;
-  font-size: 12.5px;
-  color: var(--texto-muted);
-  font-weight: 400;
-}
-.estado-btn .flecha {
-  color: var(--naranja);
-  font-size: 18px;
-  flex-shrink: 0;
-}
+.estado-btn .texto b { display: block; font-weight: 600; color: var(--navy); margin-bottom: 2px; font-size: 15px; }
+.estado-btn .texto span { display: block; font-size: 12.5px; color: var(--texto-muted); font-weight: 400; }
+.estado-btn .flecha { color: var(--naranja); font-size: 18px; flex-shrink: 0; }
 
 /* ============================================
-   PANTALLA PRÁCTICA
+   PRÁCTICA
    ============================================ */
 #screen-practice {
   background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
-  color: #fff;
-  padding: 24px 20px 32px;
-  overflow: hidden;
+  color: #fff; padding: 24px 20px 32px; overflow: hidden;
 }
-
-.practice-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-  padding-bottom: 20px;
-}
-
-.practice-protocolo {
-  font-size: 13px;
-  color: var(--naranja-luz);
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
+.practice-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 20px; }
+.practice-protocolo { font-size: 13px; color: var(--naranja-luz); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
 .btn-cerrar {
-  background: rgba(255,255,255,0.08);
-  border: none;
-  color: rgba(255,255,255,0.7);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
+  background: rgba(255,255,255,0.08); border: none;
+  color: rgba(255,255,255,0.7); width: 38px; height: 38px;
+  border-radius: 50%; font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: 0.2s;
 }
 .btn-cerrar:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
 .progress-track {
-  width: 100%;
-  height: 3px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-bottom: 32px;
-  flex-shrink: 0;
+  width: 100%; height: 3px; background: rgba(255,255,255,0.12);
+  border-radius: 2px; overflow: hidden; margin-bottom: 32px; flex-shrink: 0;
 }
 .progress-fill {
-  height: 100%;
-  width: 0%;
+  height: 100%; width: 0%;
   background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
-  transition: width 0.2s linear;
-  border-radius: 2px;
+  transition: width 0.2s linear; border-radius: 2px;
 }
 
 .practice-cuerpo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  min-height: 0;
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 28px; min-height: 0;
 }
-
 .circulo-wrap {
-  position: relative;
-  width: min(72vw, 320px);
-  height: min(72vw, 320px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  position: relative; width: min(72vw, 320px); height: min(72vw, 320px);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-
 .circulo-aura {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
+  position: absolute; inset: 0; border-radius: 50%;
   background: radial-gradient(circle, rgba(232,107,24,0.22) 0%, transparent 70%);
   transition: transform 0.6s ease;
 }
-
 .circulo-borde {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
+  position: absolute; inset: 0; border-radius: 50%;
   border: 1.5px solid rgba(242,140,78,0.35);
 }
-
 .circulo {
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
+  width: 60%; height: 60%; border-radius: 50%;
   background: linear-gradient(135deg, var(--naranja) 0%, var(--naranja-luz) 100%);
-  box-shadow:
-    0 0 60px rgba(232,107,24,0.5),
-    0 0 100px rgba(232,107,24,0.25),
-    inset 0 0 40px rgba(255,255,255,0.15);
-  transform: scale(0.6);
-  will-change: transform;
+  box-shadow: 0 0 60px rgba(232,107,24,0.5), 0 0 100px rgba(232,107,24,0.25), inset 0 0 40px rgba(255,255,255,0.15);
+  transform: scale(0.6); will-change: transform;
 }
-
 .fase-nombre {
-  font-family: var(--font-titulo);
-  font-size: 32px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  min-height: 40px;
-  text-align: center;
+  font-family: var(--font-titulo); font-size: 32px; font-weight: 700;
+  color: #fff; letter-spacing: -0.02em; line-height: 1; min-height: 40px; text-align: center;
 }
-
 .fase-countdown {
-  font-size: 15px;
-  color: var(--naranja-luz);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  margin-top: -18px;
-  min-height: 22px;
+  font-size: 15px; color: var(--naranja-luz); font-weight: 600;
+  letter-spacing: 0.1em; margin-top: -18px; min-height: 22px;
 }
-
 .practice-info {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.05em;
-  text-align: center;
-  margin-top: 8px;
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em; text-align: center; margin-top: 8px;
 }
-
-.practice-controles {
-  display: flex;
-  gap: 12px;
-  padding-bottom: 20px;
-  flex-shrink: 0;
-  justify-content: center;
-}
-
+.practice-controles { display: flex; gap: 12px; padding-bottom: 20px; flex-shrink: 0; justify-content: center; }
 .btn-control {
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-family: var(--font-cuerpo);
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.2s;
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
+  color: #fff; padding: 12px 24px; border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: 0.2s;
 }
-.btn-control:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.3);
-}
+.btn-control:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
 .btn-control.primario {
   background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-  border-color: transparent;
-  box-shadow: 0 4px 16px rgba(232,107,24,0.4);
+  border-color: transparent; box-shadow: 0 4px 16px rgba(232,107,24,0.4);
 }
-.btn-control.primario:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(232,107,24,0.55);
-}
+.btn-control.primario:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,107,24,0.55); }
 
 /* ============================================
-   PANTALLA CHECK-OUT
+   CHECK-OUT
    ============================================ */
-#screen-checkout {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
-
-.checkout-inner {
-  max-width: 480px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.checkout-header {
-  text-align: center;
-  padding: 20px 0 28px;
-}
-
+#screen-checkout { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+.checkout-inner { max-width: 480px; margin: 0 auto; width: 100%; }
+.checkout-header { text-align: center; padding: 20px 0 28px; }
 .checkout-titulo {
-  font-family: var(--font-titulo);
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--navy);
-  line-height: 1.1;
-  margin-bottom: 8px;
+  font-family: var(--font-titulo); font-size: 32px; font-weight: 700;
+  color: var(--navy); line-height: 1.1; margin-bottom: 8px;
 }
 .checkout-titulo em { font-style: italic; color: var(--naranja); }
-
-.checkout-sub {
-  font-size: 14px;
-  color: var(--texto-muted);
-  line-height: 1.5;
-}
-
-.checkout-escala {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-bottom: 28px;
-}
-
+.checkout-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.5; }
+.checkout-escala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 28px; }
 .escala-btn {
-  aspect-ratio: 1;
-  background: var(--blanco);
-  border: 1.5px solid var(--borde);
-  border-radius: var(--radius-sm);
-  font-size: 26px;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+  aspect-ratio: 1; background: var(--blanco); border: 1.5px solid var(--borde);
+  border-radius: var(--radius-sm); font-size: 26px; cursor: pointer;
+  transition: 0.2s; display: flex; align-items: center; justify-content: center; padding: 0;
 }
 .escala-btn:hover { border-color: var(--naranja); transform: scale(1.06); }
 .escala-btn.seleccionado {
   background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-  border-color: var(--naranja);
-  transform: scale(1.08);
+  border-color: var(--naranja); transform: scale(1.08);
   box-shadow: 0 4px 16px rgba(232,107,24,0.35);
 }
 .escala-btn.seleccionado .emoji { filter: brightness(10); }
 .escala-btn .emoji { font-size: 26px; line-height: 1; }
 
 .checkout-cta {
-  background: var(--blanco);
-  border-radius: var(--radius);
-  padding: 24px 22px;
-  text-align: center;
-  box-shadow: var(--sombra);
-  margin-bottom: 20px;
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 24px 22px; text-align: center;
+  box-shadow: var(--sombra); margin-bottom: 20px;
 }
-
 .checkout-cta .kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--naranja);
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 10px;
 }
-
 .checkout-cta h3 {
-  font-family: var(--font-titulo);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--navy);
-  line-height: 1.25;
-  margin-bottom: 10px;
+  font-family: var(--font-titulo); font-size: 20px; font-weight: 700;
+  color: var(--navy); line-height: 1.25; margin-bottom: 10px;
 }
-
 .checkout-cta p {
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--texto-muted);
-  margin-bottom: 18px;
+  font-size: 13.5px; line-height: 1.55; color: var(--texto-muted); margin-bottom: 18px;
 }
-
 .btn-wa {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: var(--verde-wa);
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  font-family: var(--font-cuerpo);
-  font-weight: 600;
-  font-size: 14.5px;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
-  transition: 0.2s;
-  width: 100%;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; background: var(--verde-wa); color: #fff;
+  border: none; border-radius: 30px; font-family: var(--font-cuerpo);
+  font-weight: 600; font-size: 14.5px; cursor: pointer; text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: 0.2s; width: 100%;
 }
-.btn-wa:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(37,211,102,0.5);
-}
-
+.btn-wa:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
 .btn-compartir {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: transparent;
-  color: var(--navy);
-  border: 1.5px solid var(--borde);
-  border-radius: 30px;
-  font-family: var(--font-cuerpo);
-  font-weight: 600;
-  font-size: 14.5px;
-  cursor: pointer;
-  transition: 0.2s;
-  width: 100%;
-  margin-top: 10px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; background: transparent; color: var(--navy);
+  border: 1.5px solid var(--borde); border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 600; font-size: 14.5px;
+  cursor: pointer; transition: 0.2s; width: 100%; margin-top: 10px;
 }
-.btn-compartir:hover {
-  border-color: var(--naranja);
-  color: var(--naranja);
-}
-
+.btn-compartir:hover { border-color: var(--naranja); color: var(--naranja); }
 .btn-volver {
-  display: inline-block;
-  margin-top: 20px;
-  background: none;
-  border: none;
-  color: var(--texto-muted);
-  font-family: var(--font-cuerpo);
-  font-size: 13px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-block; margin-top: 20px; background: none; border: none;
+  color: var(--texto-muted); font-family: var(--font-cuerpo); font-size: 13px;
+  cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
 }
 
 /* ============================================
-   PANTALLA CAFÉ (DONACIÓN)
+   CAFÉ
    ============================================ */
-#screen-coffee {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
-
-.coffee-inner {
-  max-width: 480px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.coffee-header {
-  text-align: center;
-  padding: 20px 0 28px;
-}
-
-.coffee-icono {
-  font-size: 58px;
-  line-height: 1;
-  margin-bottom: 14px;
-}
-
+#screen-coffee { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+.coffee-inner { max-width: 480px; margin: 0 auto; width: 100%; }
+.coffee-header { text-align: center; padding: 20px 0 28px; }
+.coffee-icono { font-size: 58px; line-height: 1; margin-bottom: 14px; }
 .coffee-titulo {
-  font-family: var(--font-titulo);
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--navy);
-  line-height: 1.1;
-  margin-bottom: 10px;
-  letter-spacing: -0.02em;
+  font-family: var(--font-titulo); font-size: 32px; font-weight: 700;
+  color: var(--navy); line-height: 1.1; margin-bottom: 10px; letter-spacing: -0.02em;
 }
 .coffee-titulo em { font-style: italic; color: var(--naranja); }
-
 .coffee-sub {
-  font-size: 14.5px;
-  color: var(--texto-muted);
-  line-height: 1.55;
-  max-width: 360px;
-  margin: 0 auto;
+  font-size: 14.5px; color: var(--texto-muted); line-height: 1.55;
+  max-width: 360px; margin: 0 auto;
 }
-
-/* Bloque PayPal destacado */
 .coffee-paypal {
   background: linear-gradient(135deg, #003087 0%, #0070ba 100%);
-  border-radius: var(--radius);
-  padding: 28px 24px 24px;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0,48,135,0.25);
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
+  border-radius: var(--radius); padding: 28px 24px 24px;
+  text-align: center; box-shadow: 0 8px 24px rgba(0,48,135,0.25);
+  margin-bottom: 16px; position: relative; overflow: hidden;
 }
-
 .coffee-paypal::before {
-  content: "";
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
+  content: ""; position: absolute; top: -60px; right: -60px;
+  width: 180px; height: 180px; border-radius: 50%;
   background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
 }
-
 .coffee-paypal .paypal-kicker {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
-  font-weight: 700;
-  margin-bottom: 10px;
-  position: relative;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.65); font-weight: 700; margin-bottom: 10px; position: relative;
 }
-
 .coffee-paypal .paypal-monto {
-  font-family: var(--font-titulo);
-  font-size: 56px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
-  position: relative;
+  font-family: var(--font-titulo); font-size: 56px; font-weight: 700;
+  color: #fff; line-height: 1; margin-bottom: 6px;
+  letter-spacing: -0.02em; position: relative;
 }
-
 .coffee-paypal .paypal-label {
-  font-size: 14px;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 20px;
-  position: relative;
-  line-height: 1.45;
+  font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 20px;
+  position: relative; line-height: 1.45;
 }
-
 .btn-paypal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 15px 28px;
-  background: #FFC439;
-  color: #003087;
-  border: none;
-  border-radius: 30px;
-  font-family: var(--font-cuerpo);
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.2s;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 15px 28px; background: #FFC439; color: #003087;
+  border: none; border-radius: 30px; font-family: var(--font-cuerpo);
+  font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none;
+  transition: 0.2s; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative;
 }
-.btn-paypal:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-}
+.btn-paypal:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 
-/* Bloque Pago Móvil libre */
 .coffee-pagomovil {
-  background: var(--blanco);
-  border-radius: var(--radius);
-  padding: 24px 22px;
-  margin-bottom: 16px;
-  box-shadow: var(--sombra);
-  border: 1.5px solid var(--borde);
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 24px 22px; margin-bottom: 16px;
+  box-shadow: var(--sombra); border: 1.5px solid var(--borde);
 }
-
 .coffee-pagomovil .pm-kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--naranja);
-  font-weight: 700;
-  margin-bottom: 12px;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 12px;
 }
-
 .coffee-pagomovil h3 {
-  font-family: var(--font-titulo);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 14px;
-  line-height: 1.25;
+  font-family: var(--font-titulo); font-size: 18px; font-weight: 700;
+  color: var(--navy); margin-bottom: 14px; line-height: 1.25;
 }
-
 .coffee-pagomovil .pm-datos {
-  background: var(--crema);
-  border-radius: var(--radius-sm);
-  padding: 14px 16px;
-  margin-bottom: 14px;
+  background: var(--crema); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 14px;
 }
-
 .coffee-pagomovil .pm-datos p {
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: var(--texto);
-  margin-bottom: 3px;
+  font-size: 13.5px; line-height: 1.7; color: var(--texto); margin-bottom: 3px;
 }
 .coffee-pagomovil .pm-datos p:last-child { margin-bottom: 0; }
 .coffee-pagomovil .pm-datos p strong {
-  color: var(--navy);
-  font-weight: 600;
-  display: inline-block;
-  min-width: 82px;
+  color: var(--navy); font-weight: 600; display: inline-block; min-width: 82px;
 }
-
 .coffee-pagomovil .pm-nota {
-  font-size: 12.5px;
-  color: var(--texto-muted);
-  line-height: 1.6;
-  margin-bottom: 16px;
-  padding-left: 14px;
-  border-left: 3px solid var(--naranja);
+  font-size: 12.5px; color: var(--texto-muted); line-height: 1.6;
+  margin-bottom: 16px; padding-left: 14px; border-left: 3px solid var(--naranja);
 }
-
 .coffee-nota {
-  font-size: 12.5px;
-  color: var(--texto-muted);
-  line-height: 1.65;
-  text-align: center;
-  padding: 16px 8px 0;
+  font-size: 12.5px; color: var(--texto-muted); line-height: 1.65;
+  text-align: center; padding: 16px 8px 0;
+}
+.coffee-nota strong { color: var(--navy); font-weight: 600; }
+
+/* ============================================
+   DIARIO · CALENDARIO
+   ============================================ */
+#screen-journal-calendar {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+.journal-inner { max-width: 520px; margin: 0 auto; width: 100%; }
+.journal-header { text-align: center; padding: 8px 0 24px; }
+.journal-titulo {
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 34px; line-height: 1.1; color: var(--navy);
+  margin-bottom: 8px; letter-spacing: -0.02em;
+}
+.journal-titulo em { font-style: italic; color: var(--naranja); }
+.journal-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.55; max-width: 380px; margin: 0 auto; }
+
+.journal-progreso {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 18px 22px; margin-bottom: 20px;
+  box-shadow: var(--sombra);
+}
+.journal-progreso .pgt-label {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 6px;
+}
+.journal-progreso .pgt-num {
+  font-family: var(--font-titulo); font-size: 28px; font-weight: 700;
+  color: var(--navy); line-height: 1; margin-bottom: 8px;
+}
+.journal-progreso .pgt-num span {
+  font-size: 15px; color: var(--texto-muted); font-weight: 400; margin-left: 4px;
+}
+.journal-progreso .pgt-track {
+  height: 6px; background: rgba(26,35,48,0.08);
+  border-radius: 4px; overflow: hidden;
+}
+.journal-progreso .pgt-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+  transition: width 0.5s ease; border-radius: 4px;
 }
 
-.coffee-nota strong {
-  color: var(--navy);
-  font-weight: 600;
+.journal-calendario {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 20px 18px; margin-bottom: 20px;
+  box-shadow: var(--sombra);
+}
+.journal-calendario .cal-titulo {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 14px;
+}
+.cal-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+}
+.cal-dia {
+  aspect-ratio: 1; border-radius: 10px;
+  background: var(--crema); border: 1.5px solid transparent;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: var(--font-cuerpo); font-weight: 600;
+  color: var(--texto-muted); cursor: pointer;
+  transition: 0.2s; padding: 2px;
+  font-size: 13px;
+}
+.cal-dia:hover { transform: scale(1.05); border-color: var(--naranja); }
+.cal-dia .dia-num { line-height: 1; font-size: 14px; }
+.cal-dia .dia-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: transparent; margin-top: 3px;
+}
+.cal-dia.escrito { background: rgba(232,107,24,0.1); border-color: rgba(232,107,24,0.25); color: var(--naranja); }
+.cal-dia.escrito .dia-dot { background: var(--naranja); }
+.cal-dia.analizado { background: rgba(232,107,24,0.18); border-color: var(--naranja); color: var(--naranja); }
+.cal-dia.analizado .dia-dot { background: var(--naranja); }
+.cal-dia.hoy {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px rgba(26,35,48,0.08);
+}
+.cal-dia.hoy .dia-num { color: var(--navy); }
+.cal-dia.futuro { opacity: 0.4; cursor: not-allowed; }
+.cal-dia.futuro:hover { transform: none; border-color: transparent; }
+
+.journal-acciones {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.journal-btn {
+  padding: 14px 18px; border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 600; font-size: 13.5px;
+  cursor: pointer; transition: 0.2s; border: 1.5px solid var(--borde);
+  background: var(--blanco); color: var(--navy);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.journal-btn:hover { border-color: var(--naranja); color: var(--naranja); transform: translateY(-2px); }
+.journal-btn.primario {
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+  color: #fff; border-color: transparent;
+  box-shadow: 0 4px 16px rgba(232,107,24,0.35);
+}
+.journal-btn.primario:hover {
+  color: #fff; transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(232,107,24,0.5);
 }
 
 /* ============================================
-   UTILIDADES COMUNES
+   DIARIO · ENTRADA
    ============================================ */
-.adsense-bloque {
-  margin-top: 24px;
-  padding: 12px;
-  background: var(--blanco);
-  border-radius: var(--radius);
-  border: 1px dashed var(--borde);
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--texto-muted);
-  font-size: 12px;
-  text-align: center;
-  overflow: hidden;
+#screen-journal-entry {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+.entry-inner { max-width: 520px; margin: 0 auto; width: 100%; }
+.entry-header { text-align: center; padding: 8px 0 24px; }
+.entry-titulo {
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 32px; line-height: 1.1; color: var(--navy);
+  margin-bottom: 6px; letter-spacing: -0.02em;
+}
+.entry-titulo em { font-style: italic; color: var(--naranja); }
+.entry-fecha {
+  font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700;
 }
 
+.entry-pregunta {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 20px 22px; margin-bottom: 14px;
+  box-shadow: var(--sombra);
+}
+.entry-pregunta .ep-num {
+  display: inline-block; width: 24px; height: 24px;
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+  color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+}
+.entry-pregunta h3 {
+  font-family: var(--font-titulo); font-size: 18px; font-weight: 700;
+  color: var(--navy); margin-bottom: 4px; line-height: 1.25;
+}
+.entry-pregunta .ep-hint {
+  font-size: 12.5px; color: var(--texto-muted);
+  line-height: 1.5; margin-bottom: 12px;
+}
+.entry-pregunta textarea {
+  width: 100%; min-height: 100px; padding: 14px 16px;
+  border: 1.5px solid var(--borde); border-radius: var(--radius-sm);
+  font-family: var(--font-cuerpo); font-size: 14.5px;
+  line-height: 1.6; color: var(--texto); resize: vertical;
+  background: var(--crema); transition: 0.2s;
+}
+.entry-pregunta textarea:focus {
+  outline: none; border-color: var(--naranja);
+  background: var(--blanco);
+  box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
+}
+.entry-pregunta textarea::placeholder { color: #A9B4C0; }
+
+.entry-acciones {
+  display: flex; flex-direction: column; gap: 10px; margin-top: 20px;
+}
+
+/* ============================================
+   DIARIO · ANÁLISIS
+   ============================================ */
+.entry-analisis {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: #fff; border-radius: var(--radius);
+  padding: 26px 24px; margin-top: 20px;
+  box-shadow: var(--sombra-fuerte);
+  display: none;
+}
+.entry-analisis.visible { display: block; animation: aparecer 0.5s ease; }
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.entry-analisis .ea-kicker {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--naranja-luz); font-weight: 700; margin-bottom: 12px;
+}
+.entry-analisis h3 {
+  font-family: var(--font-titulo); font-size: 22px;
+  font-weight: 700; line-height: 1.25; margin-bottom: 14px;
+}
+.entry-analisis p {
+  font-size: 14px; line-height: 1.65;
+  color: rgba(255,255,255,0.85); margin-bottom: 14px;
+}
+.entry-analisis .ea-metricas {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 16px;
+}
+.ea-metrica {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 14px 12px; text-align: center;
+}
+.ea-metrica .em-valor {
+  font-family: var(--font-titulo); font-size: 22px;
+  font-weight: 700; color: var(--naranja-luz); line-height: 1; margin-bottom: 4px;
+}
+.ea-metrica .em-label {
+  font-size: 10.5px; letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.6); line-height: 1.3;
+}
+.entry-analisis .ea-palabras {
+  font-size: 13px; color: rgba(255,255,255,0.7);
+  line-height: 1.6; margin-bottom: 16px;
+}
+.entry-analisis .ea-palabras strong {
+  color: var(--naranja-luz); font-weight: 600;
+}
+.entry-analisis .ea-cierre {
+  background: rgba(255,255,255,0.06);
+  border-left: 3px solid var(--naranja-luz);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 16px; font-size: 13.5px;
+  line-height: 1.6; color: rgba(255,255,255,0.9);
+  font-style: italic;
+}
+
+/* ============================================
+   DIARIO · RESUMEN
+   ============================================ */
+#screen-journal-summary {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+.summary-inner { max-width: 520px; margin: 0 auto; width: 100%; }
+.summary-header { text-align: center; padding: 8px 0 24px; }
+.summary-titulo {
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 32px; line-height: 1.1; color: var(--navy);
+  margin-bottom: 8px; letter-spacing: -0.02em;
+}
+.summary-titulo em { font-style: italic; color: var(--naranja); }
+.summary-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.55; }
+
+.summary-bloque {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 22px 22px; margin-bottom: 14px;
+  box-shadow: var(--sombra);
+}
+.summary-bloque .sb-kicker {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 8px;
+}
+.summary-bloque h3 {
+  font-family: var(--font-titulo); font-size: 18px;
+  font-weight: 700; color: var(--navy); margin-bottom: 10px; line-height: 1.25;
+}
+.summary-bloque p {
+  font-size: 13.5px; line-height: 1.65; color: var(--texto);
+}
+.summary-bloque .sb-metricas {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-top: 14px;
+}
+.sb-metrica {
+  background: var(--crema); border-radius: 10px;
+  padding: 12px 10px; text-align: center;
+}
+.sb-metrica .sm-valor {
+  font-family: var(--font-titulo); font-size: 22px;
+  font-weight: 700; color: var(--naranja); line-height: 1; margin-bottom: 4px;
+}
+.sb-metrica .sm-label {
+  font-size: 10.5px; color: var(--texto-muted);
+  line-height: 1.3; letter-spacing: 0.03em;
+}
+
+.summary-semana {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 20px 22px; margin-bottom: 14px;
+  box-shadow: var(--sombra);
+}
+.summary-semana h4 {
+  font-family: var(--font-titulo); font-size: 16px;
+  font-weight: 700; color: var(--navy); margin-bottom: 12px;
+}
+.semana-barras {
+  display: flex; gap: 6px; height: 60px;
+  align-items: flex-end; margin-bottom: 8px;
+}
+.semana-barra {
+  flex: 1; background: linear-gradient(180deg, var(--naranja-luz), var(--naranja));
+  border-radius: 6px 6px 0 0; min-height: 4px;
+  position: relative; transition: 0.4s;
+}
+.semana-barra.vacia {
+  background: rgba(26,35,48,0.08);
+}
+.semana-labels {
+  display: flex; gap: 6px; font-size: 10px;
+  color: var(--texto-muted); text-align: center;
+}
+.semana-labels > div { flex: 1; }
+
+.summary-vacio {
+  text-align: center; padding: 40px 20px;
+  color: var(--texto-muted); font-size: 14px; line-height: 1.6;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+.adsense-bloque {
+  margin-top: 24px; padding: 12px; background: var(--blanco);
+  border-radius: var(--radius); border: 1px dashed var(--borde);
+  min-height: 100px; display: flex; align-items: center; justify-content: center;
+  color: var(--texto-muted); font-size: 12px; text-align: center; overflow: hidden;
+}
 .checkout-historial {
-  margin-top: 20px;
-  padding: 16px 20px;
-  background: rgba(26,35,48,0.04);
-  border-radius: var(--radius-sm);
-  font-size: 12.5px;
-  color: var(--texto-muted);
+  margin-top: 20px; padding: 16px 20px;
+  background: rgba(26,35,48,0.04); border-radius: var(--radius-sm);
+  font-size: 12.5px; color: var(--texto-muted);
 }
 .checkout-historial b { color: var(--navy); font-weight: 600; }
 
@@ -896,7 +755,7 @@ html, body {
 <div id="app">
 
   <!-- ==========================================
-       PANTALLA HOME
+       HOME
        ========================================== -->
   <section id="screen-home" class="screen active">
     <div class="home-inner">
@@ -921,7 +780,7 @@ html, body {
           <span class="contenido">
             <b>Diario Terapéutico</b>
             <span>30 días de escritura guiada con análisis automático</span>
-            <span class="badge-tiempo">Un mes completo</span>
+            <span class="badge-progreso" id="badgeProgresoDiario">Un mes completo</span>
           </span>
         </button>
 
@@ -946,7 +805,7 @@ html, body {
   </section>
 
   <!-- ==========================================
-       PANTALLA SELECCIÓN DE ESTADO
+       SELECT DE ESTADO
        ========================================== -->
   <section id="screen-select" class="screen">
     <button class="btn-back" data-ir="home">←</button>
@@ -959,74 +818,53 @@ html, body {
     <div class="estados-lista" id="estadosLista">
       <button class="estado-btn" data-estado="ansioso">
         <span class="icono">😰</span>
-        <span class="texto">
-          <b>Ansioso</b>
-          <span>Activación, preocupación, mente acelerada</span>
-        </span>
+        <span class="texto"><b>Ansioso</b><span>Activación, preocupación, mente acelerada</span></span>
         <span class="flecha">→</span>
       </button>
       <button class="estado-btn" data-estado="agotado">
         <span class="icono">😩</span>
-        <span class="texto">
-          <b>Agotado</b>
-          <span>Cansancio mental, saturación, sin energía</span>
-        </span>
+        <span class="texto"><b>Agotado</b><span>Cansancio mental, saturación, sin energía</span></span>
         <span class="flecha">→</span>
       </button>
       <button class="estado-btn" data-estado="disperso">
         <span class="icono">🌀</span>
-        <span class="texto">
-          <b>Disperso</b>
-          <span>Falta de foco, muchas pestañas abiertas</span>
-        </span>
+        <span class="texto"><b>Disperso</b><span>Falta de foco, muchas pestañas abiertas</span></span>
         <span class="flecha">→</span>
       </button>
       <button class="estado-btn" data-estado="bajaEnergia">
         <span class="icono">💤</span>
-        <span class="texto">
-          <b>Baja energía</b>
-          <span>Desánimo, apatía, cuesta arrancar</span>
-        </span>
+        <span class="texto"><b>Baja energía</b><span>Desánimo, apatía, cuesta arrancar</span></span>
         <span class="flecha">→</span>
       </button>
       <button class="estado-btn" data-estado="calma">
         <span class="icono">🌿</span>
-        <span class="texto">
-          <b>En calma</b>
-          <span>Bien, quiero profundizar este estado</span>
-        </span>
+        <span class="texto"><b>En calma</b><span>Bien, quiero profundizar este estado</span></span>
         <span class="flecha">→</span>
       </button>
     </div>
   </section>
 
   <!-- ==========================================
-       PANTALLA PRÁCTICA
+       PRÁCTICA
        ========================================== -->
   <section id="screen-practice" class="screen">
     <div class="practice-header">
       <div class="practice-protocolo" id="protocoloNombre">—</div>
       <button class="btn-cerrar" id="btnCerrar" aria-label="Salir">✕</button>
     </div>
-
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="practice-cuerpo">
       <div class="circulo-wrap">
         <div class="circulo-aura" id="circuloAura"></div>
         <div class="circulo-borde"></div>
         <div class="circulo" id="circulo"></div>
       </div>
-
       <div style="text-align:center;">
         <div class="fase-nombre" id="faseNombre">Inhala</div>
         <div class="fase-countdown" id="faseCountdown">4</div>
         <div class="practice-info" id="practiceInfo">Ciclo 1 · 5:00 restantes</div>
       </div>
     </div>
-
     <div class="practice-controles">
       <button class="btn-control" id="btnPausar">⏸ Pausar</button>
       <button class="btn-control primario" id="btnTerminar">Terminar</button>
@@ -1034,7 +872,7 @@ html, body {
   </section>
 
   <!-- ==========================================
-       PANTALLA CHECK-OUT
+       CHECK-OUT
        ========================================== -->
   <section id="screen-checkout" class="screen">
     <div class="checkout-inner">
@@ -1042,7 +880,6 @@ html, body {
         <h2 class="checkout-titulo">¿Cómo te sientes <em>ahora</em>?</h2>
         <p class="checkout-sub">Tu respuesta nos ayuda a mejorar la herramienta. No se comparte con nadie.</p>
       </div>
-
       <div class="checkout-escala" id="escalaEmocional">
         <button class="escala-btn" data-valor="1"><span class="emoji">😣</span></button>
         <button class="escala-btn" data-valor="2"><span class="emoji">😕</span></button>
@@ -1050,7 +887,6 @@ html, body {
         <button class="escala-btn" data-valor="4"><span class="emoji">🙂</span></button>
         <button class="escala-btn" data-valor="5"><span class="emoji">😌</span></button>
       </div>
-
       <div class="checkout-cta">
         <div class="kicker">Siguiente paso</div>
         <h3>Si esta pausa te ayudó, hay mucho más.</h3>
@@ -1058,72 +894,119 @@ html, body {
         <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20us%C3%A9%20la%20app%20Pausa%20Lyon%20y%20quiero%20informaci%C3%B3n%20sobre%20la%20conferencia%20de%20Estrategias%20de%20Bienestar." target="_blank" rel="noopener" class="btn-wa">
           💬 Recibir información por WhatsApp
         </a>
-        <button class="btn-compartir" id="btnCompartir">
-          📤 Compartir esta herramienta
-        </button>
+        <button class="btn-compartir" id="btnCompartir">📤 Compartir esta herramienta</button>
       </div>
-
       <div class="checkout-historial" id="historialBox" style="display:none;">
         <b>Tu historial</b>
         <div id="historialTexto"></div>
       </div>
-
       <button class="btn-volver" data-ir="home">← Volver al inicio</button>
-
-      <div class="adsense-bloque">
-        Espacio reservado para anuncio
-      </div>
+      <div class="adsense-bloque">Espacio reservado para anuncio</div>
     </div>
   </section>
 
   <!-- ==========================================
-       PANTALLA CAFÉ (DONACIÓN)
+       CAFÉ
        ========================================== -->
   <section id="screen-coffee" class="screen">
     <button class="btn-back" data-ir="home">←</button>
-
     <div class="coffee-inner">
       <div class="coffee-header">
         <div class="coffee-icono">☕</div>
         <h1 class="coffee-titulo">Invítame un <em>café</em></h1>
         <p class="coffee-sub">Esta app es gratuita y siempre lo será. Si te sirvió, un pequeño gesto ayuda a mantenerla viva.</p>
       </div>
-
-      <!-- OPCIÓN 1: PayPal $3 -->
       <div class="coffee-paypal">
         <div class="paypal-kicker">Con PayPal o tarjeta</div>
         <div class="paypal-monto">$3</div>
         <div class="paypal-label">Un café para Lyon Asesor</div>
-        <a href="https://www.paypal.com/ncp/payment/4RUNPZEWBWFSU" target="_blank" rel="noopener" class="btn-paypal">
-          ☕ Invitar un café
-        </a>
+        <a href="https://www.paypal.com/ncp/payment/4RUNPZEWBWFSU" target="_blank" rel="noopener" class="btn-paypal">☕ Invitar un café</a>
       </div>
-
-      <!-- OPCIÓN 2: Pago Móvil Libre -->
       <div class="coffee-pagomovil">
         <div class="pm-kicker">Desde Venezuela</div>
         <h3>Pago Móvil · aporte libre</h3>
-
         <div class="pm-datos">
           <p><strong>Banco:</strong> BBVA Provincial</p>
           <p><strong>C.I.:</strong> 17633035</p>
           <p><strong>Teléfono:</strong> +58 414-8610464</p>
           <p><strong>Tasa:</strong> Cambio del día</p>
         </div>
-
         <p class="pm-nota">Cualquier monto es bienvenido y agradecido. No hay mínimo ni máximo.</p>
-
-        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20te%20invit%C3%A9%20un%20caf%C3%A9%20desde%20la%20app%20Pausa%20Lyon.%20Aqu%C3%AD%20est%C3%A1%20mi%20comprobante." target="_blank" rel="noopener" class="btn-wa">
-          💬 Enviar comprobante por WhatsApp
-        </a>
+        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20te%20invit%C3%A9%20un%20caf%C3%A9%20desde%20la%20app%20Pausa%20Lyon.%20Aqu%C3%AD%20est%C3%A1%20mi%20comprobante." target="_blank" rel="noopener" class="btn-wa">💬 Enviar comprobante por WhatsApp</a>
       </div>
-
       <div class="coffee-nota">
         <strong>Gracias por apoyar Lyon Asesor.</strong><br>
         Cada aporte se convierte en mejores herramientas, más conferencias, y más personas acompañadas.
       </div>
-
       <button class="btn-volver" data-ir="home">← Volver al inicio</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       DIARIO · CALENDARIO
+       ========================================== -->
+  <section id="screen-journal-calendar" class="screen">
+    <button class="btn-back" data-ir="home">←</button>
+    <div class="journal-inner">
+      <div class="journal-header">
+        <h1 class="journal-titulo">Tu Diario <em>Terapéutico</em></h1>
+        <p class="journal-sub">30 días de escritura guiada. Un mes para mirarte con honestidad y sin juicio.</p>
+      </div>
+
+      <div class="journal-progreso">
+        <div class="pgt-label">Tu avance este ciclo</div>
+        <div class="pgt-num"><span id="pgtDias">0</span> <span>de 30 días escritos</span></div>
+        <div class="pgt-track"><div class="pgt-fill" id="pgtFill"></div></div>
+      </div>
+
+      <div class="journal-calendario">
+        <div class="cal-titulo">Tus 30 días</div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <div class="journal-acciones">
+        <button class="journal-btn" id="btnVerResumen">📊 Ver resumen</button>
+        <button class="journal-btn" id="btnReiniciarDiario">🔄 Reiniciar ciclo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       DIARIO · ENTRADA
+       ========================================== -->
+  <section id="screen-journal-entry" class="screen">
+    <button class="btn-back" id="btnVolverCalendario">←</button>
+    <div class="entry-inner">
+      <div class="entry-header">
+        <h1 class="entry-titulo">Día <em id="entryDiaNum">1</em></h1>
+        <div class="entry-fecha" id="entryFecha">—</div>
+      </div>
+
+      <div id="entryPreguntas"></div>
+
+      <div class="entry-acciones">
+        <button class="journal-btn primario" id="btnGuardarEntrada">💾 Guardar y analizar</button>
+        <button class="journal-btn" id="btnCancelarEntrada">Cancelar</button>
+      </div>
+
+      <div class="entry-analisis" id="entryAnalisis"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       DIARIO · RESUMEN
+       ========================================== -->
+  <section id="screen-journal-summary" class="screen">
+    <button class="btn-back" id="btnVolverCalendarioDesdeResumen">←</button>
+    <div class="summary-inner">
+      <div class="summary-header">
+        <h1 class="summary-titulo">Resumen de tu <em>mes</em></h1>
+        <p class="summary-sub">Una mirada al patrón emocional de los últimos 30 días.</p>
+      </div>
+
+      <div id="summaryContenido"></div>
+
+      <button class="journal-btn primario" id="btnVolverCalendarioFinal" style="margin-top:20px; width:100%;">← Volver al calendario</button>
     </div>
   </section>
 
@@ -1134,76 +1017,89 @@ html, body {
   'use strict';
 
   // ============================================
-  // PROTOCOLOS DE RESPIRACIÓN
+  // RESPIRACIÓN
   // ============================================
   const PROTOCOLOS = {
-    ansioso: {
-      nombre: 'Regulación 4·7·8',
-      descripcion: 'Activación del sistema parasimpático',
-      duracionTotal: 300,
-      fases: [
-        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
-        { nombre: 'Sostén', duracion: 7, tipo: 'hold' },
-        { nombre: 'Exhala', duracion: 8, tipo: 'exhale' }
-      ]
-    },
-    agotado: {
-      nombre: 'Respiración Cuadrada',
-      descripcion: 'Equilibrio del sistema nervioso',
-      duracionTotal: 240,
-      fases: [
-        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
-        { nombre: 'Sostén', duracion: 4, tipo: 'hold' },
-        { nombre: 'Exhala', duracion: 4, tipo: 'exhale' },
-        { nombre: 'Sostén', duracion: 4, tipo: 'hold' }
-      ]
-    },
-    disperso: {
-      nombre: 'Coherencia Cardíaca',
-      descripcion: 'Foco y claridad mental',
-      duracionTotal: 300,
-      fases: [
-        { nombre: 'Inhala', duracion: 5, tipo: 'inhale' },
-        { nombre: 'Exhala', duracion: 5, tipo: 'exhale' }
-      ]
-    },
-    bajaEnergia: {
-      nombre: 'Activación Suave',
-      descripcion: 'Energía sin agitación',
-      duracionTotal: 180,
-      fases: [
-        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
-        { nombre: 'Sostén', duracion: 2, tipo: 'hold' },
-        { nombre: 'Exhala', duracion: 2, tipo: 'exhale' }
-      ]
-    },
-    calma: {
-      nombre: 'Gratitud Consciente',
-      descripcion: 'Profundizar el estado de calma',
-      duracionTotal: 300,
-      fases: [
-        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
-        { nombre: 'Exhala', duracion: 6, tipo: 'exhale' }
-      ]
-    }
+    ansioso: { nombre: 'Regulación 4·7·8', duracionTotal: 300, fases: [
+      { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+      { nombre: 'Sostén', duracion: 7, tipo: 'hold' },
+      { nombre: 'Exhala', duracion: 8, tipo: 'exhale' }
+    ]},
+    agotado: { nombre: 'Respiración Cuadrada', duracionTotal: 240, fases: [
+      { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+      { nombre: 'Sostén', duracion: 4, tipo: 'hold' },
+      { nombre: 'Exhala', duracion: 4, tipo: 'exhale' },
+      { nombre: 'Sostén', duracion: 4, tipo: 'hold' }
+    ]},
+    disperso: { nombre: 'Coherencia Cardíaca', duracionTotal: 300, fases: [
+      { nombre: 'Inhala', duracion: 5, tipo: 'inhale' },
+      { nombre: 'Exhala', duracion: 5, tipo: 'exhale' }
+    ]},
+    bajaEnergia: { nombre: 'Activación Suave', duracionTotal: 180, fases: [
+      { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+      { nombre: 'Sostén', duracion: 2, tipo: 'hold' },
+      { nombre: 'Exhala', duracion: 2, tipo: 'exhale' }
+    ]},
+    calma: { nombre: 'Gratitud Consciente', duracionTotal: 300, fases: [
+      { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+      { nombre: 'Exhala', duracion: 6, tipo: 'exhale' }
+    ]}
   };
 
   // ============================================
-  // ESTADO GLOBAL
+  // DIARIO · PREGUNTAS
+  // ============================================
+  const PREGUNTAS_DIARIO = [
+    { id: 'q1', texto: '¿Cómo llegué hoy?', hint: 'Tu estado físico, mental y emocional al comenzar el día.' },
+    { id: 'q2', texto: '¿Qué sentí y qué lo disparó?', hint: 'Nombra la emoción y el momento o situación que la provocó.' },
+    { id: 'q3', texto: '¿Qué necesito y qué haré con eso?', hint: 'Un paso concreto, pequeño, que puedas dar hoy o mañana.' }
+  ];
+
+  // ============================================
+  // DIARIO · PALABRAS EMOCIONALES
+  // ============================================
+  const PALABRAS_POSITIVAS = [
+    'bien','calma','calma','amor','alegría','alegre','gratitud','gracias','paz','tranquilo','tranquila',
+    'contento','contenta','feliz','felicidad','esperanza','confianza','orgullo','logro','avance','crecimiento',
+    'conexión','apoyo','apoyado','apoyada','tranquilidad','bendición','bendecido','bendecida','luz','fuerza',
+    'éxito','logré','logrado','lograda','pude','poder','capaz','amable','amabilidad','ternura','cariño',
+    'amistad','familia','amigos','amigas','amigo','amiga','salud','energía','vitalidad','descanso','descansé'
+  ];
+
+  const PALABRAS_NEGATIVAS = [
+    'ansiedad','ansioso','ansiosa','miedo','temeroso','temerosa','rabia','enojado','enojada','ira','enojo',
+    'tristeza','triste','deprimido','deprimida','depresión','cansancio','cansado','cansada','agotado','agotada',
+    'estrés','estresado','estresada','preocupación','preocupado','preocupada','angustia','angustiado','angustiada',
+    'culpa','culpable','vergüenza','frustración','frustrado','frustrada','solo','sola','soledad','aislado','aislada',
+    'dolor','duele','sufro','sufrimiento','lloré','lloro','llanto','confusión','confundido','confundida',
+    'inseguridad','inseguro','insegura','duda','dudas','fracaso','fracasé','fracasado','fracasada','odio',
+    'irritado','irritada','irritación','tensión','tenso','tensa','nervioso','nerviosa','nervios','negativo',
+    'negativa','oscuro','oscuridad','vacío','vacía','perdido','perdida','bloqueo','bloqueado','bloqueada'
+  ];
+
+  const STOPWORDS = new Set([
+    'de','la','que','el','en','y','a','los','del','se','las','por','un','para','con','no','una','su','al',
+    'lo','como','más','pero','sus','le','ya','o','este','sí','porque','esta','entre','cuando','muy','sin',
+    'sobre','también','me','hasta','hay','donde','quien','desde','todo','nos','durante','todos','uno','les',
+    'ni','contra','otros','ese','eso','ante','ellos','e','esto','mí','antes','algunos','qué','unos','yo',
+    'otro','otras','otra','él','tanto','esa','estos','mucho','quienes','nada','muchos','cual','poco','ella',
+    'estar','estas','algunas','algo','nosotros','mi','mis','tú','te','ti','tu','tus','ellas','nosotras',
+    'vosotros','vosotras','os','mío','mía','míos','mías','tuyo','tuya','tuyos','tuyas','suyo','suya',
+    'suyos','suyas','nuestro','nuestra','nuestros','nuestras','vuestro','vuestra','vuestros','vuestras',
+    'esos','esas','estoy','estás','está','estamos','estáis','están','he','has','ha','hemos','habéis','han',
+    'soy','eres','es','somos','sois','son','fui','fuiste','fue','fuimos','fuisteis','fueron','ser','tengo',
+    'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','allí','ahí'
+  ]);
+
+  // ============================================
+  // ESTADO
   // ============================================
   const state = {
     pantallaActual: 'home',
-    protocolo: null,
-    protocoloKey: null,
-    faseIndex: 0,
-    faseElapsed: 0,
-    totalElapsed: 0,
-    ciclo: 1,
-    pausado: false,
-    ultimoTimestamp: 0,
-    rafId: null,
-    audioCtx: null,
-    chime: false
+    protocolo: null, protocoloKey: null,
+    faseIndex: 0, faseElapsed: 0, totalElapsed: 0, ciclo: 1,
+    pausado: false, ultimoTimestamp: 0, rafId: null, audioCtx: null, chime: false,
+    diaActualDiario: 1
   };
 
   // ============================================
@@ -1212,35 +1108,26 @@ html, body {
   function mostrarPantalla(nombre) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const el = document.getElementById('screen-' + nombre);
-    if (el) el.classList.add('active');
+    if (el) { el.classList.add('active'); el.scrollTop = 0; }
     state.pantallaActual = nombre;
-    if (nombre !== 'practice') {
-      detenerAnimacion();
-    }
-    if (el) el.scrollTop = 0;
+    if (nombre !== 'practice') detenerAnimacion();
   }
 
   document.querySelectorAll('[data-ir]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      mostrarPantalla(btn.dataset.ir);
-    });
+    btn.addEventListener('click', () => mostrarPantalla(btn.dataset.ir));
   });
 
   document.querySelectorAll('.modulo-card').forEach(card => {
     card.addEventListener('click', () => {
       const modulo = card.dataset.modulo;
-      if (modulo === 'respirar') {
-        mostrarPantalla('select');
-      } else if (modulo === 'diario') {
-        alert('El Diario Terapéutico estará disponible en la próxima actualización.');
-      } else if (modulo === 'cafe') {
-        mostrarPantalla('coffee');
-      }
+      if (modulo === 'respirar') mostrarPantalla('select');
+      else if (modulo === 'diario') abrirDiario();
+      else if (modulo === 'cafe') mostrarPantalla('coffee');
     });
   });
 
   // ============================================
-  // UTILIDADES
+  // UTILIDADES GENERALES
   // ============================================
   function formatearTiempo(segundos) {
     const m = Math.floor(segundos / 60);
@@ -1268,7 +1155,7 @@ html, body {
   }
 
   // ============================================
-  // MOTOR DE RESPIRACIÓN
+  // MOTOR RESPIRACIÓN
   // ============================================
   const circulo = document.getElementById('circulo');
   const circuloAura = document.getElementById('circuloAura');
@@ -1281,20 +1168,13 @@ html, body {
   function iniciarProtocolo(key) {
     state.protocoloKey = key;
     state.protocolo = PROTOCOLOS[key];
-    state.faseIndex = 0;
-    state.faseElapsed = 0;
-    state.totalElapsed = 0;
-    state.ciclo = 1;
-    state.pausado = false;
-    state.ultimoTimestamp = 0;
-
+    state.faseIndex = 0; state.faseElapsed = 0; state.totalElapsed = 0;
+    state.ciclo = 1; state.pausado = false; state.ultimoTimestamp = 0;
     protocoloNombre.textContent = state.protocolo.nombre;
     progressFill.style.width = '0%';
     document.getElementById('btnPausar').textContent = '⏸ Pausar';
-
     actualizarFaseUI();
     mostrarPantalla('practice');
-
     state.rafId = requestAnimationFrame(loop);
   }
 
@@ -1303,13 +1183,10 @@ html, body {
     if (!state.ultimoTimestamp) state.ultimoTimestamp = timestamp;
     const delta = Math.min((timestamp - state.ultimoTimestamp) / 1000, 0.1);
     state.ultimoTimestamp = timestamp;
-
     const prot = state.protocolo;
     const fase = prot.fases[state.faseIndex];
-
     state.faseElapsed += delta;
     state.totalElapsed += delta;
-
     if (state.faseElapsed >= fase.duracion) {
       state.faseElapsed = 0;
       state.faseIndex = (state.faseIndex + 1) % prot.fases.length;
@@ -1317,41 +1194,29 @@ html, body {
       playChime();
       actualizarFaseUI();
     }
-
     actualizarAnimacion();
     actualizarProgreso();
-
-    if (state.totalElapsed >= prot.duracionTotal) {
-      finalizarProtocolo();
-      return;
-    }
-
+    if (state.totalElapsed >= prot.duracionTotal) { finalizarProtocolo(); return; }
     state.rafId = requestAnimationFrame(loop);
   }
 
   function actualizarFaseUI() {
-    const fase = state.protocolo.fases[state.faseIndex];
-    faseNombre.textContent = fase.nombre;
+    faseNombre.textContent = state.protocolo.fases[state.faseIndex].nombre;
   }
 
   function actualizarAnimacion() {
     const prot = state.protocolo;
     const fase = prot.fases[state.faseIndex];
     const progreso = Math.min(state.faseElapsed / fase.duracion, 1);
-
     let escala;
-    if (fase.tipo === 'inhale') {
-      escala = 0.6 + 0.4 * progreso;
-    } else if (fase.tipo === 'exhale') {
-      escala = 1.0 - 0.4 * progreso;
-    } else {
+    if (fase.tipo === 'inhale') escala = 0.6 + 0.4 * progreso;
+    else if (fase.tipo === 'exhale') escala = 1.0 - 0.4 * progreso;
+    else {
       const fasePrevia = prot.fases[(state.faseIndex - 1 + prot.fases.length) % prot.fases.length];
       escala = fasePrevia.tipo === 'exhale' ? 0.6 : 1.0;
     }
-
     circulo.style.transform = `scale(${escala})`;
     circuloAura.style.transform = `scale(${escala * 1.1})`;
-
     const restante = Math.max(0, Math.ceil(fase.duracion - state.faseElapsed));
     faseCountdown.textContent = restante;
   }
@@ -1360,16 +1225,12 @@ html, body {
     const prot = state.protocolo;
     const progresoTotal = Math.min(state.totalElapsed / prot.duracionTotal, 1);
     progressFill.style.width = `${progresoTotal * 100}%`;
-
     const restante = Math.max(0, prot.duracionTotal - state.totalElapsed);
     practiceInfo.textContent = `Ciclo ${state.ciclo} · ${formatearTiempo(restante)} restantes`;
   }
 
   function detenerAnimacion() {
-    if (state.rafId) {
-      cancelAnimationFrame(state.rafId);
-      state.rafId = null;
-    }
+    if (state.rafId) { cancelAnimationFrame(state.rafId); state.rafId = null; }
     state.ultimoTimestamp = 0;
   }
 
@@ -1381,18 +1242,14 @@ html, body {
   }
 
   // ============================================
-  // PERSISTENCIA
+  // HISTORIAL RESPIRACIÓN
   // ============================================
   const STORAGE_KEY = 'pausa_lyon_historial';
 
   function guardarSesion(estado) {
     try {
       const historial = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      historial.push({
-        fecha: new Date().toISOString(),
-        estado: estado,
-        duracion: state.protocolo.duracionTotal
-      });
+      historial.push({ fecha: new Date().toISOString(), estado: estado, duracion: state.protocolo.duracionTotal });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(historial.slice(-20)));
     } catch (e) {}
   }
@@ -1400,10 +1257,7 @@ html, body {
   function renderHistorial() {
     try {
       const historial = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      if (historial.length < 2) {
-        document.getElementById('historialBox').style.display = 'none';
-        return;
-      }
+      if (historial.length < 2) { document.getElementById('historialBox').style.display = 'none'; return; }
       const ultimas = historial.slice(-3).reverse();
       const texto = ultimas.map(s => {
         const fecha = new Date(s.fecha);
@@ -1421,7 +1275,7 @@ html, body {
   }
 
   // ============================================
-  // EVENTOS · SELECCIÓN DE ESTADO
+  // EVENTOS · RESPIRACIÓN
   // ============================================
   document.getElementById('estadosLista').addEventListener('click', (e) => {
     const btn = e.target.closest('.estado-btn');
@@ -1429,26 +1283,19 @@ html, body {
     iniciarProtocolo(btn.dataset.estado);
   });
 
-  // ============================================
-  // EVENTOS · PRÁCTICA
-  // ============================================
   document.getElementById('btnPausar').addEventListener('click', function() {
     if (state.pausado) {
-      state.pausado = false;
-      state.ultimoTimestamp = 0;
+      state.pausado = false; state.ultimoTimestamp = 0;
       this.textContent = '⏸ Pausar';
       state.rafId = requestAnimationFrame(loop);
     } else {
-      state.pausado = true;
-      this.textContent = '▶ Reanudar';
+      state.pausado = true; this.textContent = '▶ Reanudar';
       detenerAnimacion();
     }
   });
 
   document.getElementById('btnTerminar').addEventListener('click', () => {
-    if (confirm('¿Terminar la práctica ahora?')) {
-      finalizarProtocolo();
-    }
+    if (confirm('¿Terminar la práctica ahora?')) finalizarProtocolo();
   });
 
   document.getElementById('btnCerrar').addEventListener('click', () => {
@@ -1458,9 +1305,6 @@ html, body {
     }
   });
 
-  // ============================================
-  // EVENTOS · CHECK-OUT
-  // ============================================
   document.getElementById('escalaEmocional').addEventListener('click', (e) => {
     const btn = e.target.closest('.escala-btn');
     if (!btn) return;
@@ -1468,33 +1312,400 @@ html, body {
     btn.classList.add('seleccionado');
   });
 
-  // ============================================
-  // COMPARTIR
-  // ============================================
   document.getElementById('btnCompartir').addEventListener('click', async () => {
     const url = window.location.href;
     const texto = 'Pausa Lyon: respiración guiada y diario terapéutico gratuito. Una herramienta de Lyon Asesor.';
-
     if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Pausa Lyon',
-          text: texto,
-          url: url
-        });
-      } catch (e) {}
+      try { await navigator.share({ title: 'Pausa Lyon', text: texto, url: url }); } catch (e) {}
     } else {
-      try {
-        await navigator.clipboard.writeText(`${texto} ${url}`);
-        alert('Enlace copiado al portapapeles');
-      } catch (e) {
-        prompt('Copia este enlace:', url);
-      }
+      try { await navigator.clipboard.writeText(`${texto} ${url}`); alert('Enlace copiado al portapapeles'); }
+      catch (e) { prompt('Copia este enlace:', url); }
     }
   });
 
   // ============================================
-  // BLOQUEO DE SALIDA ACCIDENTAL DURANTE PRÁCTICA
+  // DIARIO · PERSISTENCIA
+  // ============================================
+  const DIARIO_KEY = 'pausa_lyon_diario_v1';
+
+  function leerDiario() {
+    try {
+      const data = JSON.parse(localStorage.getItem(DIARIO_KEY) || 'null');
+      if (!data || !data.entradas) {
+        return { cicloInicio: Date.now(), entradas: {} };
+      }
+      return data;
+    } catch (e) {
+      return { cicloInicio: Date.now(), entradas: {} };
+    }
+  }
+
+  function guardarDiario(data) {
+    try { localStorage.setItem(DIARIO_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  function diaActual() {
+    const d = leerDiario();
+    const dias = Math.floor((Date.now() - d.cicloInicio) / 86400000) + 1;
+    return Math.max(1, Math.min(30, dias));
+  }
+
+  function esDiaFuturo(n) {
+    return n > diaActual();
+  }
+
+  function entradaDelDia(n) {
+    const d = leerDiario();
+    return d.entradas[String(n)] || null;
+  }
+
+  // ============================================
+  // DIARIO · ANÁLISIS
+  // ============================================
+  function analizarTexto(texto) {
+    if (!texto || !texto.trim()) return null;
+
+    const textoLower = texto.toLowerCase();
+    const palabras = textoLower
+      .replace(/[^\wáéíóúñü\s]/g, ' ')
+      .split(/\s+/)
+      .filter(p => p.length > 2 && !STOPWORDS.has(p));
+
+    const totalPalabras = palabras.length;
+    const totalCaracteres = texto.length;
+
+    // Contar positivas y negativas
+    let contPos = 0, contNeg = 0;
+    const encontradasPos = [], encontradasNeg = [];
+    palabras.forEach(p => {
+      if (PALABRAS_POSITIVAS.includes(p)) { contPos++; if (!encontradasPos.includes(p)) encontradasPos.push(p); }
+      if (PALABRAS_NEGATIVAS.includes(p)) { contNeg++; if (!encontradasNeg.includes(p)) encontradasNeg.push(p); }
+    });
+
+    // Frecuencia de palabras
+    const freq = {};
+    palabras.forEach(p => freq[p] = (freq[p] || 0) + 1);
+    const topPalabras = Object.entries(freq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([w, c]) => ({ palabra: w, count: c }));
+
+    // Polaridad
+    let polaridad = 'neutra';
+    if (contPos > contNeg) polaridad = 'positiva';
+    else if (contNeg > contPos) polaridad = 'negativa';
+
+    // Mensaje interpretativo
+    let mensaje = '';
+    if (polaridad === 'positiva') {
+      mensaje = 'Hoy tu escritura refleja un estado mayormente positivo. Reconoce eso — no es casualidad, es tu trabajo interior.';
+    } else if (polaridad === 'negativa') {
+      mensaje = 'Tu escritura refleja emociones difíciles. No estás roto. Estás sintiendo. Y eso, en sí mismo, ya es un paso.';
+    } else {
+      mensaje = 'Tu escritura está en equilibrio entre lo que pesa y lo que sostiene. La claridad también es un logro.';
+    }
+
+    return {
+      polaridad,
+      totalPalabras,
+      totalCaracteres,
+      contPos,
+      contNeg,
+      encontradasPos: encontradasPos.slice(0, 5),
+      encontradasNeg: encontradasNeg.slice(0, 5),
+      topPalabras,
+      mensaje
+    };
+  }
+
+  // ============================================
+  // DIARIO · VISTAS
+  // ============================================
+  function abrirDiario() {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  }
+
+  function renderCalendario() {
+    const diario = leerDiario();
+    const hoy = diaActual();
+    const totalEscritos = Object.keys(diario.entradas).length;
+    const totalAnalizados = Object.values(diario.entradas).filter(e => e.analisis).length;
+
+    document.getElementById('pgtDias').textContent = totalEscritos;
+    document.getElementById('pgtFill').style.width = `${(totalEscritos / 30) * 100}%`;
+
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 30; i++) {
+      const entrada = diario.entradas[String(i)];
+      const clases = ['cal-dia'];
+      if (entrada) {
+        clases.push(entrada.analisis ? 'analizado' : 'escrito');
+      }
+      if (i === hoy) clases.push('hoy');
+      if (esDiaFuturo(i)) clases.push('futuro');
+
+      const div = document.createElement('div');
+      div.className = clases.join(' ');
+      div.innerHTML = `<span class="dia-num">${i}</span><span class="dia-dot"></span>`;
+      if (!esDiaFuturo(i)) {
+        div.addEventListener('click', () => abrirEntrada(i));
+      }
+      grid.appendChild(div);
+    }
+
+    // Actualizar badge del home
+    const badge = document.getElementById('badgeProgresoDiario');
+    if (badge) {
+      if (totalEscritos === 0) badge.textContent = 'Un mes completo';
+      else badge.textContent = `${totalEscritos} de 30 días`;
+    }
+  }
+
+  function abrirEntrada(n) {
+    if (esDiaFuturo(n)) return;
+    state.diaActualDiario = n;
+    const entrada = entradaDelDia(n);
+
+    document.getElementById('entryDiaNum').textContent = n;
+
+    // Fecha legible
+    const diario = leerDiario();
+    const fecha = new Date(diario.cicloInicio + (n - 1) * 86400000);
+    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    document.getElementById('entryFecha').textContent = `${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
+
+    // Preguntas
+    const cont = document.getElementById('entryPreguntas');
+    cont.innerHTML = PREGUNTAS_DIARIO.map((q, i) => {
+      const valor = entrada && entrada.respuestas && entrada.respuestas[q.id] ? entrada.respuestas[q.id] : '';
+      return `
+        <div class="entry-pregunta">
+          <span class="ep-num">${i + 1}</span>
+          <h3>${q.texto}</h3>
+          <p class="ep-hint">${q.hint}</p>
+          <textarea id="ta_${q.id}" placeholder="Escribe aquí...">${valor.replace(/</g, '&lt;')}</textarea>
+        </div>
+      `;
+    }).join('');
+
+    // Análisis previo
+    const analisisBox = document.getElementById('entryAnalisis');
+    if (entrada && entrada.analisis) {
+      renderAnalisis(entrada.analisis);
+    } else {
+      analisisBox.classList.remove('visible');
+      analisisBox.innerHTML = '';
+    }
+
+    mostrarPantalla('journal-entry');
+  }
+
+  function renderAnalisis(analisis) {
+    const box = document.getElementById('entryAnalisis');
+    const topPalabras = analisis.topPalabras && analisis.topPalabras.length
+      ? analisis.topPalabras.map(p => p.palabra).slice(0, 5).join(', ')
+      : '—';
+
+    box.innerHTML = `
+      <div class="ea-kicker">Análisis automático</div>
+      <h3>Tu escritura de hoy</h3>
+      <div class="ea-metricas">
+        <div class="ea-metrica">
+          <div class="em-valor">${analisis.totalPalabras}</div>
+          <div class="em-label">Palabras</div>
+        </div>
+        <div class="ea-metrica">
+          <div class="em-valor">${analisis.contPos}</div>
+          <div class="em-label">Emociones positivas</div>
+        </div>
+        <div class="ea-metrica">
+          <div class="em-valor">${analisis.contNeg}</div>
+          <div class="em-label">Emociones difíciles</div>
+        </div>
+      </div>
+      <div class="ea-palabras">
+        <strong>Palabras más repetidas:</strong> ${topPalabras}
+      </div>
+      <div class="ea-cierre">${analisis.mensaje}</div>
+    `;
+    box.classList.add('visible');
+  }
+
+  // ============================================
+  // DIARIO · EVENTOS
+  // ============================================
+  document.getElementById('btnVolverCalendario').addEventListener('click', () => {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  });
+
+  document.getElementById('btnCancelarEntrada').addEventListener('click', () => {
+    if (confirm('¿Salir sin guardar?')) {
+      renderCalendario();
+      mostrarPantalla('journal-calendar');
+    }
+  });
+
+  document.getElementById('btnGuardarEntrada').addEventListener('click', () => {
+    const n = state.diaActualDiario;
+    const respuestas = {};
+    PREGUNTAS_DIARIO.forEach(q => {
+      const ta = document.getElementById('ta_' + q.id);
+      if (ta) respuestas[q.id] = ta.value.trim();
+    });
+
+    const textoCompleto = Object.values(respuestas).join(' ').trim();
+    if (textoCompleto.length < 10) {
+      alert('Escribe un poco más antes de guardar. Al menos unas líneas.');
+      return;
+    }
+
+    const analisis = analizarTexto(textoCompleto);
+
+    const diario = leerDiario();
+    diario.entradas[String(n)] = {
+      fecha: new Date().toISOString(),
+      respuestas,
+      analisis,
+      timestamp: Date.now()
+    };
+    guardarDiario(diario);
+
+    renderAnalisis(analisis);
+    renderCalendario();
+
+    // Scroll al análisis
+    setTimeout(() => {
+      document.getElementById('entryAnalisis').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  });
+
+  document.getElementById('btnVerResumen').addEventListener('click', () => {
+    renderResumen();
+    mostrarPantalla('journal-summary');
+  });
+
+  document.getElementById('btnVolverCalendarioDesdeResumen').addEventListener('click', () => {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  });
+
+  document.getElementById('btnVolverCalendarioFinal').addEventListener('click', () => {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  });
+
+  document.getElementById('btnReiniciarDiario').addEventListener('click', () => {
+    if (!confirm('¿Reiniciar el ciclo de 30 días? Se borrarán todas las entradas actuales. Esta acción no se puede deshacer.')) return;
+    if (!confirm('Confirma una vez más: perderás todo lo escrito en este ciclo.')) return;
+    localStorage.removeItem(DIARIO_KEY);
+    renderCalendario();
+    alert('Ciclo reiniciado. Comienza un nuevo mes de escritura.');
+  });
+
+  // ============================================
+  // DIARIO · RESUMEN
+  // ============================================
+  function renderResumen() {
+    const diario = leerDiario();
+    const entradas = Object.entries(diario.entradas).sort((a, b) => Number(a[0]) - Number(b[0]));
+
+    const cont = document.getElementById('summaryContenido');
+
+    if (entradas.length === 0) {
+      cont.innerHTML = `<div class="summary-vacio">Aún no has escrito ninguna entrada. Vuelve al calendario y comienza tu primer día.</div>`;
+      return;
+    }
+
+    // Totales
+    const totalDias = entradas.length;
+    let totalPalabras = 0, totalPos = 0, totalNeg = 0;
+    let positivos = 0, negativos = 0, neutros = 0;
+
+    entradas.forEach(([_, e]) => {
+      if (e.analisis) {
+        totalPalabras += e.analisis.totalPalabras || 0;
+        totalPos += e.analisis.contPos || 0;
+        totalNeg += e.analisis.contNeg || 0;
+        if (e.analisis.polaridad === 'positiva') positivos++;
+        else if (e.analisis.polaridad === 'negativa') negativos++;
+        else neutros++;
+      }
+    });
+
+    const promedioPolaridad = positivos > negativos ? 'positiva' : (negativos > positivos ? 'difícil' : 'equilibrada');
+
+    let mensajeFinal = '';
+    if (promedioPolaridad === 'positiva') {
+      mensajeFinal = 'Tu mes refleja un estado mayormente positivo. Eso es fruto de tu trabajo interior, no de la casualidad.';
+    } else if (promedioPolaridad === 'difícil') {
+      mensajeFinal = 'Tu mes refleja emociones difíciles con presencia. Escribirlas es el primer paso para transformarlas. Sigue aquí.';
+    } else {
+      mensajeFinal = 'Tu mes está en equilibrio. La claridad emocional no es tener solo días buenos — es reconocerlos todos.';
+    }
+
+    // Barras por semana (4 semanas de 7-8 días)
+    const semanas = [[], [], [], []];
+    entradas.forEach(([n, e]) => {
+      const num = Number(n);
+      const idx = Math.min(Math.floor((num - 1) / 7.5), 3);
+      semanas[idx].push(e);
+    });
+
+    const diasSemana = ['S1', 'S2', 'S3', 'S4'];
+    const valoresSemana = semanas.map(sem => {
+      const palabras = sem.reduce((acc, e) => acc + (e.analisis ? e.analisis.totalPalabras : 0), 0);
+      return palabras;
+    });
+    const maxValor = Math.max(1, ...valoresSemana);
+
+    // Render
+    let html = '';
+
+    // Bloque resumen general
+    html += `
+      <div class="summary-bloque">
+        <div class="sb-kicker">Panorama general</div>
+        <h3>Un mes de escritura honesta</h3>
+        <p>${mensajeFinal}</p>
+        <div class="sb-metricas">
+          <div class="sb-metrica"><div class="sm-valor">${totalDias}</div><div class="sm-label">Días escritos</div></div>
+          <div class="sb-metrica"><div class="sm-valor">${totalPalabras}</div><div class="sm-label">Palabras totales</div></div>
+          <div class="sb-metrica"><div class="sm-valor">${totalPos + totalNeg}</div><div class="sm-label">Emociones</div></div>
+        </div>
+      </div>
+    `;
+
+    // Bloque balance emocional
+    html += `
+      <div class="summary-bloque">
+        <div class="sb-kicker">Balance emocional</div>
+        <h3>Lo que apareció en tu escritura</h3>
+        <p>Tus entradas registraron <strong>${totalPos}</strong> emociones positivas y <strong>${totalNeg}</strong> emociones difíciles. Días mayormente positivos: <strong>${positivos}</strong>. Días mayormente difíciles: <strong>${negativos}</strong>. Días en equilibrio: <strong>${neutros}</strong>.</p>
+      </div>
+    `;
+
+    // Bloque semana por semana
+    html += `
+      <div class="summary-semana">
+        <h4>Intensidad de escritura por semana</h4>
+        <div class="semana-barras">
+          ${valoresSemana.map(v => {
+            const h = v === 0 ? 4 : Math.max(8, (v / maxValor) * 60);
+            return `<div class="semana-barra ${v === 0 ? 'vacia' : ''}" style="height:${h}px;" title="${v} palabras"></div>`;
+          }).join('')}
+        </div>
+        <div class="semana-labels">${diasSemana.map(d => `<div>${d}</div>`).join('')}</div>
+      </div>
+    `;
+
+    cont.innerHTML = html;
+  }
+
+  // ============================================
+  // BLOQUEO DE SALIDA
   // ============================================
   window.addEventListener('beforeunload', (e) => {
     if (state.pantallaActual === 'practice' && state.totalElapsed > 10) {
@@ -1503,7 +1714,22 @@ html, body {
     }
   });
 
-  console.log('%c🧘 Pausa Lyon v3.0.1', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  // ============================================
+  // INICIALIZACIÓN
+  // ============================================
+  // Actualizar el badge del home al cargar
+  (function actualizarBadgeInicial() {
+    try {
+      const d = leerDiario();
+      const total = Object.keys(d.entradas || {}).length;
+      const badge = document.getElementById('badgeProgresoDiario');
+      if (badge) {
+        badge.textContent = total === 0 ? 'Un mes completo' : `${total} de 30 días`;
+      }
+    } catch (e) {}
+  })();
+
+  console.log('%c📖 Pausa Lyon v3.1 — Respiración + Diario', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
