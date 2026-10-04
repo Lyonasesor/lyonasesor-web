@@ -19,7 +19,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 
-<!-- FIREBASE (para analytics anónimos) -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
@@ -877,9 +877,7 @@ html, body {
 
 <div id="app">
 
-  <!-- ==========================================
-       HOME
-       ========================================== -->
+  <!-- HOME -->
   <section id="screen-home" class="screen active">
     <div class="home-inner">
       <div class="home-header">
@@ -933,9 +931,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       SELECT DE ESTADO
-       ========================================== -->
+  <!-- SELECT DE ESTADO -->
   <section id="screen-select" class="screen">
     <button class="btn-back" data-ir="home">←</button>
 
@@ -973,9 +969,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       PRÁCTICA
-       ========================================== -->
+  <!-- PRÁCTICA -->
   <section id="screen-practice" class="screen">
     <div class="practice-header">
       <div class="practice-protocolo" id="protocoloNombre">—</div>
@@ -1000,9 +994,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       CHECK-OUT
-       ========================================== -->
+  <!-- CHECK-OUT -->
   <section id="screen-checkout" class="screen">
     <div class="checkout-inner">
       <div class="checkout-header">
@@ -1034,9 +1026,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       CAFÉ
-       ========================================== -->
+  <!-- CAFÉ -->
   <section id="screen-coffee" class="screen">
     <button class="btn-back" data-ir="home">←</button>
     <div class="coffee-inner">
@@ -1071,9 +1061,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       DIARIO · CALENDARIO
-       ========================================== -->
+  <!-- DIARIO · CALENDARIO -->
   <section id="screen-journal-calendar" class="screen">
     <button class="btn-back" data-ir="home">←</button>
     <div class="journal-inner">
@@ -1100,9 +1088,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       DIARIO · ENTRADA
-       ========================================== -->
+  <!-- DIARIO · ENTRADA -->
   <section id="screen-journal-entry" class="screen">
     <button class="btn-back" id="btnVolverCalendario">←</button>
     <div class="entry-inner">
@@ -1122,9 +1108,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       DIARIO · RESUMEN
-       ========================================== -->
+  <!-- DIARIO · RESUMEN -->
   <section id="screen-journal-summary" class="screen">
     <button class="btn-back" id="btnVolverCalendarioDesdeResumen">←</button>
     <div class="summary-inner">
@@ -1139,9 +1123,7 @@ html, body {
     </div>
   </section>
 
-  <!-- ==========================================
-       INSTALL BANNER (PWA)
-       ========================================== -->
+  <!-- INSTALL BANNER -->
   <div class="install-banner" id="installBanner">
     <span class="ib-icono">📲</span>
     <div class="ib-texto">
@@ -1179,32 +1161,50 @@ html, body {
            /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
   }
 
-  function enviarEventoGA4(nombre, params = {}) {
+  function enviarEventoGA4(nombre, params) {
+    params = params || {};
     try {
       if (typeof gtag === 'function') {
         gtag('event', nombre, params);
-        console.log(`📊 GA4: ${nombre}`, params);
+        console.log('📊 GA4: ' + nombre, params);
       }
     } catch (e) {}
   }
 
-  function registrarAperturaEnFirebase() {
+  function registrarFirebase(ruta, datos) {
     try {
-      const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
-                        window.navigator.standalone === true;
-      if (esModoApp && typeof firebase !== 'undefined' && firebase.database) {
-        firebase.database().ref('pausa_lyon_analytics/aperturas').push({
-          fecha: Date.now(),
-          fechaLegible: new Date().toLocaleString('es-ES'),
-          usuarioId: getUsuarioId(),
-          dispositivo: getDispositivo()
-        }).then(() => console.log('📊 Apertura registrada'));
+      if (typeof firebase !== 'undefined' && firebase.database) {
+        const ref = firebase.database().ref('pausa_lyon_analytics/' + ruta);
+        return ref.push(datos).then(function() {
+          console.log('📊 Firebase OK: ' + ruta);
+        }).catch(function(err) {
+          console.warn('⚠️ Firebase error en ' + ruta + ':', err.message);
+        });
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('⚠️ Firebase no disponible:', e);
+    }
+    return Promise.resolve();
   }
 
-  // Ejecutar el rastreo de apertura al inicio
-  registrarAperturaEnFirebase();
+  // ============================================
+  // RASTREO DE APERTURA (ejecutar al inicio)
+  // ============================================
+  (function registrarApertura() {
+    const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
+                      window.navigator.standalone === true;
+    
+    if (esModoApp) {
+      console.log('🚀 Apertura en modo app detectada');
+      registrarFirebase('aperturas', {
+        fecha: Date.now(),
+        fechaLegible: new Date().toLocaleString('es-ES'),
+        usuarioId: getUsuarioId(),
+        dispositivo: getDispositivo()
+      });
+      enviarEventoGA4('pwa_opened_standalone', { event_category: 'pwa' });
+    }
+  })();
 
   // ============================================
   // RESPIRACIÓN
@@ -1236,18 +1236,12 @@ html, body {
     ]}
   };
 
-  // ============================================
-  // DIARIO · PREGUNTAS
-  // ============================================
   const PREGUNTAS_DIARIO = [
     { id: 'q1', texto: '¿Cómo llegué hoy?', hint: 'Tu estado físico, mental y emocional al comenzar el día.' },
     { id: 'q2', texto: '¿Qué sentí y qué lo disparó?', hint: 'Nombra la emoción y el momento o situación que la provocó.' },
     { id: 'q3', texto: '¿Qué necesito y qué haré con eso?', hint: 'Un paso concreto, pequeño, que puedas dar hoy o mañana.' }
   ];
 
-  // ============================================
-  // DIARIO · PALABRAS EMOCIONALES
-  // ============================================
   const PALABRAS_POSITIVAS = [
     'bien','calma','amor','alegría','alegre','gratitud','gracias','paz','tranquilo','tranquila',
     'contento','contenta','feliz','felicidad','esperanza','confianza','orgullo','logro','avance','crecimiento',
@@ -1281,9 +1275,6 @@ html, body {
     'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','allí','ahí'
   ]);
 
-  // ============================================
-  // ESTADO
-  // ============================================
   const state = {
     pantallaActual: 'home',
     protocolo: null, protocoloKey: null,
@@ -1292,36 +1283,28 @@ html, body {
     diaActualDiario: 1
   };
 
-  // ============================================
-  // NAVEGACIÓN
-  // ============================================
   function mostrarPantalla(nombre) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     const el = document.getElementById('screen-' + nombre);
     if (el) { el.classList.add('active'); el.scrollTop = 0; }
     state.pantallaActual = nombre;
     if (nombre !== 'practice') detenerAnimacion();
   }
 
-  document.querySelectorAll('[data-ir]').forEach(btn => {
-    btn.addEventListener('click', () => mostrarPantalla(btn.dataset.ir));
+  document.querySelectorAll('[data-ir]').forEach(function(btn) {
+    btn.addEventListener('click', function() { mostrarPantalla(btn.dataset.ir); });
   });
 
-  document.querySelectorAll('.modulo-card').forEach(card => {
-    card.addEventListener('click', () => {
+  document.querySelectorAll('.modulo-card').forEach(function(card) {
+    card.addEventListener('click', function() {
       const modulo = card.dataset.modulo;
-      // Registrar uso del módulo
       enviarEventoGA4('module_used', { event_category: 'engagement', modulo: modulo });
-      try {
-        if (typeof firebase !== 'undefined' && firebase.database) {
-          firebase.database().ref('pausa_lyon_analytics/modulos').push({
-            fecha: Date.now(),
-            usuarioId: getUsuarioId(),
-            modulo: modulo,
-            dispositivo: getDispositivo()
-          });
-        }
-      } catch (e) {}
+      registrarFirebase('modulos', {
+        fecha: Date.now(),
+        usuarioId: getUsuarioId(),
+        modulo: modulo,
+        dispositivo: getDispositivo()
+      });
 
       if (modulo === 'respirar') mostrarPantalla('select');
       else if (modulo === 'diario') abrirDiario();
@@ -1329,13 +1312,10 @@ html, body {
     });
   });
 
-  // ============================================
-  // UTILIDADES GENERALES
-  // ============================================
   function formatearTiempo(segundos) {
     const m = Math.floor(segundos / 60);
     const s = Math.floor(segundos % 60);
-    return `${m}:${String(s).padStart(2, '0')}`;
+    return m + ':' + String(s).padStart(2, '0');
   }
 
   function playChime() {
@@ -1357,9 +1337,6 @@ html, body {
     } catch (e) {}
   }
 
-  // ============================================
-  // MOTOR RESPIRACIÓN
-  // ============================================
   const circulo = document.getElementById('circulo');
   const circuloAura = document.getElementById('circuloAura');
   const faseNombre = document.getElementById('faseNombre');
@@ -1418,8 +1395,8 @@ html, body {
       const fasePrevia = prot.fases[(state.faseIndex - 1 + prot.fases.length) % prot.fases.length];
       escala = fasePrevia.tipo === 'exhale' ? 0.6 : 1.0;
     }
-    circulo.style.transform = `scale(${escala})`;
-    circuloAura.style.transform = `scale(${escala * 1.1})`;
+    circulo.style.transform = 'scale(' + escala + ')';
+    circuloAura.style.transform = 'scale(' + (escala * 1.1) + ')';
     const restante = Math.max(0, Math.ceil(fase.duracion - state.faseElapsed));
     faseCountdown.textContent = restante;
   }
@@ -1427,9 +1404,9 @@ html, body {
   function actualizarProgreso() {
     const prot = state.protocolo;
     const progresoTotal = Math.min(state.totalElapsed / prot.duracionTotal, 1);
-    progressFill.style.width = `${progresoTotal * 100}%`;
+    progressFill.style.width = (progresoTotal * 100) + '%';
     const restante = Math.max(0, prot.duracionTotal - state.totalElapsed);
-    practiceInfo.textContent = `Ciclo ${state.ciclo} · ${formatearTiempo(restante)} restantes`;
+    practiceInfo.textContent = 'Ciclo ' + state.ciclo + ' · ' + formatearTiempo(restante) + ' restantes';
   }
 
   function detenerAnimacion() {
@@ -1440,26 +1417,18 @@ html, body {
   function finalizarProtocolo() {
     detenerAnimacion();
     guardarSesion(state.protocoloKey);
-    // Registrar sesión completada
     enviarEventoGA4('breathing_completed', { event_category: 'engagement', estado: state.protocoloKey });
-    try {
-      if (typeof firebase !== 'undefined' && firebase.database) {
-        firebase.database().ref('pausa_lyon_analytics/respiraciones').push({
-          fecha: Date.now(),
-          usuarioId: getUsuarioId(),
-          estado: state.protocoloKey,
-          duracion: state.protocolo.duracionTotal,
-          dispositivo: getDispositivo()
-        });
-      }
-    } catch (e) {}
+    registrarFirebase('respiraciones', {
+      fecha: Date.now(),
+      usuarioId: getUsuarioId(),
+      estado: state.protocoloKey,
+      duracion: state.protocolo.duracionTotal,
+      dispositivo: getDispositivo()
+    });
     mostrarPantalla('checkout');
     renderHistorial();
   }
 
-  // ============================================
-  // HISTORIAL RESPIRACIÓN (local)
-  // ============================================
   const STORAGE_KEY = 'pausa_lyon_historial';
 
   function guardarSesion(estado) {
@@ -1475,25 +1444,22 @@ html, body {
       const historial = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       if (historial.length < 2) { document.getElementById('historialBox').style.display = 'none'; return; }
       const ultimas = historial.slice(-3).reverse();
-      const texto = ultimas.map(s => {
+      const texto = ultimas.map(function(s) {
         const fecha = new Date(s.fecha);
         const hoy = new Date();
         const diff = Math.floor((hoy - fecha) / 86400000);
         let cuando;
         if (diff === 0) cuando = 'Hoy';
         else if (diff === 1) cuando = 'Ayer';
-        else cuando = `Hace ${diff} días`;
-        return `<div style="margin-top:6px;">${cuando} · ${s.estado}</div>`;
+        else cuando = 'Hace ' + diff + ' días';
+        return '<div style="margin-top:6px;">' + cuando + ' · ' + s.estado + '</div>';
       }).join('');
       document.getElementById('historialTexto').innerHTML = texto;
       document.getElementById('historialBox').style.display = 'block';
     } catch (e) {}
   }
 
-  // ============================================
-  // EVENTOS · RESPIRACIÓN
-  // ============================================
-  document.getElementById('estadosLista').addEventListener('click', (e) => {
+  document.getElementById('estadosLista').addEventListener('click', function(e) {
     const btn = e.target.closest('.estado-btn');
     if (!btn) return;
     iniciarProtocolo(btn.dataset.estado);
@@ -1510,48 +1476,41 @@ html, body {
     }
   });
 
-  document.getElementById('btnTerminar').addEventListener('click', () => {
+  document.getElementById('btnTerminar').addEventListener('click', function() {
     if (confirm('¿Terminar la práctica ahora?')) finalizarProtocolo();
   });
 
-  document.getElementById('btnCerrar').addEventListener('click', () => {
+  document.getElementById('btnCerrar').addEventListener('click', function() {
     if (confirm('¿Salir sin completar la práctica?')) {
       detenerAnimacion();
       mostrarPantalla('select');
     }
   });
 
-  document.getElementById('escalaEmocional').addEventListener('click', (e) => {
+  document.getElementById('escalaEmocional').addEventListener('click', function(e) {
     const btn = e.target.closest('.escala-btn');
     if (!btn) return;
-    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('seleccionado'));
+    document.querySelectorAll('.escala-btn').forEach(function(b) { b.classList.remove('seleccionado'); });
     btn.classList.add('seleccionado');
   });
 
-  document.getElementById('btnCompartir').addEventListener('click', async () => {
+  document.getElementById('btnCompartir').addEventListener('click', async function() {
     const url = window.location.href;
     const texto = 'Pausa Lyon: respiración guiada y diario terapéutico gratuito. Una herramienta de Lyon Asesor.';
     enviarEventoGA4('share_clicked', { event_category: 'engagement' });
-    try {
-      if (typeof firebase !== 'undefined' && firebase.database) {
-        firebase.database().ref('pausa_lyon_analytics/compartidos').push({
-          fecha: Date.now(),
-          usuarioId: getUsuarioId(),
-          dispositivo: getDispositivo()
-        });
-      }
-    } catch (e) {}
+    registrarFirebase('compartidos', {
+      fecha: Date.now(),
+      usuarioId: getUsuarioId(),
+      dispositivo: getDispositivo()
+    });
     if (navigator.share) {
       try { await navigator.share({ title: 'Pausa Lyon', text: texto, url: url }); } catch (e) {}
     } else {
-      try { await navigator.clipboard.writeText(`${texto} ${url}`); alert('Enlace copiado al portapapeles'); }
+      try { await navigator.clipboard.writeText(texto + ' ' + url); alert('Enlace copiado al portapapeles'); }
       catch (e) { prompt('Copia este enlace:', url); }
     }
   });
 
-  // ============================================
-  // DIARIO · PERSISTENCIA
-  // ============================================
   const DIARIO_KEY = 'pausa_lyon_diario_v1';
 
   function leerDiario() {
@@ -1585,9 +1544,6 @@ html, body {
     return d.entradas[String(n)] || null;
   }
 
-  // ============================================
-  // DIARIO · ANÁLISIS
-  // ============================================
   function analizarTexto(texto) {
     if (!texto || !texto.trim()) return null;
 
@@ -1595,24 +1551,23 @@ html, body {
     const palabras = textoLower
       .replace(/[^\wáéíóúñü\s]/g, ' ')
       .split(/\s+/)
-      .filter(p => p.length > 2 && !STOPWORDS.has(p));
+      .filter(function(p) { return p.length > 2 && !STOPWORDS.has(p); });
 
     const totalPalabras = palabras.length;
-    const totalCaracteres = texto.length;
 
     let contPos = 0, contNeg = 0;
     const encontradasPos = [], encontradasNeg = [];
-    palabras.forEach(p => {
-      if (PALABRAS_POSITIVAS.includes(p)) { contPos++; if (!encontradasPos.includes(p)) encontradasPos.push(p); }
-      if (PALABRAS_NEGATIVAS.includes(p)) { contNeg++; if (!encontradasNeg.includes(p)) encontradasNeg.push(p); }
+    palabras.forEach(function(p) {
+      if (PALABRAS_POSITIVAS.indexOf(p) !== -1) { contPos++; if (encontradasPos.indexOf(p) === -1) encontradasPos.push(p); }
+      if (PALABRAS_NEGATIVAS.indexOf(p) !== -1) { contNeg++; if (encontradasNeg.indexOf(p) === -1) encontradasNeg.push(p); }
     });
 
     const freq = {};
-    palabras.forEach(p => freq[p] = (freq[p] || 0) + 1);
+    palabras.forEach(function(p) { freq[p] = (freq[p] || 0) + 1; });
     const topPalabras = Object.entries(freq)
-      .sort((a, b) => b[1] - a[1])
+      .sort(function(a, b) { return b[1] - a[1]; })
       .slice(0, 6)
-      .map(([w, c]) => ({ palabra: w, count: c }));
+      .map(function(par) { return { palabra: par[0], count: par[1] }; });
 
     let polaridad = 'neutra';
     if (contPos > contNeg) polaridad = 'positiva';
@@ -1628,21 +1583,16 @@ html, body {
     }
 
     return {
-      polaridad,
-      totalPalabras,
-      totalCaracteres,
-      contPos,
-      contNeg,
-      encontradasPos: encontradasPos.slice(0, 5),
-      encontradasNeg: encontradasNeg.slice(0, 5),
-      topPalabras,
-      mensaje
+      polaridad: polaridad,
+      totalPalabras: totalPalabras,
+      totalCaracteres: texto.length,
+      contPos: contPos,
+      contNeg: contNeg,
+      topPalabras: topPalabras,
+      mensaje: mensaje
     };
   }
 
-  // ============================================
-  // DIARIO · VISTAS
-  // ============================================
   function abrirDiario() {
     renderCalendario();
     mostrarPantalla('journal-calendar');
@@ -1652,10 +1602,9 @@ html, body {
     const diario = leerDiario();
     const hoy = diaActual();
     const totalEscritos = Object.keys(diario.entradas).length;
-    const totalAnalizados = Object.values(diario.entradas).filter(e => e.analisis).length;
 
     document.getElementById('pgtDias').textContent = totalEscritos;
-    document.getElementById('pgtFill').style.width = `${(totalEscritos / 30) * 100}%`;
+    document.getElementById('pgtFill').style.width = ((totalEscritos / 30) * 100) + '%';
 
     const grid = document.getElementById('calGrid');
     grid.innerHTML = '';
@@ -1670,9 +1619,11 @@ html, body {
 
       const div = document.createElement('div');
       div.className = clases.join(' ');
-      div.innerHTML = `<span class="dia-num">${i}</span><span class="dia-dot"></span>`;
+      div.innerHTML = '<span class="dia-num">' + i + '</span><span class="dia-dot"></span>';
       if (!esDiaFuturo(i)) {
-        div.addEventListener('click', () => abrirEntrada(i));
+        (function(numero) {
+          div.addEventListener('click', function() { abrirEntrada(numero); });
+        })(i);
       }
       grid.appendChild(div);
     }
@@ -1680,7 +1631,7 @@ html, body {
     const badge = document.getElementById('badgeProgresoDiario');
     if (badge) {
       if (totalEscritos === 0) badge.textContent = 'Un mes completo';
-      else badge.textContent = `${totalEscritos} de 30 días`;
+      else badge.textContent = totalEscritos + ' de 30 días';
     }
   }
 
@@ -1694,19 +1645,17 @@ html, body {
     const diario = leerDiario();
     const fecha = new Date(diario.cicloInicio + (n - 1) * 86400000);
     const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    document.getElementById('entryFecha').textContent = `${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
+    document.getElementById('entryFecha').textContent = fecha.getDate() + ' de ' + meses[fecha.getMonth()];
 
     const cont = document.getElementById('entryPreguntas');
-    cont.innerHTML = PREGUNTAS_DIARIO.map((q, i) => {
+    cont.innerHTML = PREGUNTAS_DIARIO.map(function(q, i) {
       const valor = entrada && entrada.respuestas && entrada.respuestas[q.id] ? entrada.respuestas[q.id] : '';
-      return `
-        <div class="entry-pregunta">
-          <span class="ep-num">${i + 1}</span>
-          <h3>${q.texto}</h3>
-          <p class="ep-hint">${q.hint}</p>
-          <textarea id="ta_${q.id}" placeholder="Escribe aquí...">${valor.replace(/</g, '&lt;')}</textarea>
-        </div>
-      `;
+      return '<div class="entry-pregunta">' +
+        '<span class="ep-num">' + (i + 1) + '</span>' +
+        '<h3>' + q.texto + '</h3>' +
+        '<p class="ep-hint">' + q.hint + '</p>' +
+        '<textarea id="ta_' + q.id + '" placeholder="Escribe aquí...">' + valor.replace(/</g, '&lt;') + '</textarea>' +
+      '</div>';
     }).join('');
 
     const analisisBox = document.getElementById('entryAnalisis');
@@ -1723,53 +1672,38 @@ html, body {
   function renderAnalisis(analisis) {
     const box = document.getElementById('entryAnalisis');
     const topPalabras = analisis.topPalabras && analisis.topPalabras.length
-      ? analisis.topPalabras.map(p => p.palabra).slice(0, 5).join(', ')
+      ? analisis.topPalabras.map(function(p) { return p.palabra; }).slice(0, 5).join(', ')
       : '—';
 
-    box.innerHTML = `
-      <div class="ea-kicker">Análisis automático</div>
-      <h3>Tu escritura de hoy</h3>
-      <div class="ea-metricas">
-        <div class="ea-metrica">
-          <div class="em-valor">${analisis.totalPalabras}</div>
-          <div class="em-label">Palabras</div>
-        </div>
-        <div class="ea-metrica">
-          <div class="em-valor">${analisis.contPos}</div>
-          <div class="em-label">Emociones positivas</div>
-        </div>
-        <div class="ea-metrica">
-          <div class="em-valor">${analisis.contNeg}</div>
-          <div class="em-label">Emociones difíciles</div>
-        </div>
-      </div>
-      <div class="ea-palabras">
-        <strong>Palabras más repetidas:</strong> ${topPalabras}
-      </div>
-      <div class="ea-cierre">${analisis.mensaje}</div>
-    `;
+    box.innerHTML =
+      '<div class="ea-kicker">Análisis automático</div>' +
+      '<h3>Tu escritura de hoy</h3>' +
+      '<div class="ea-metricas">' +
+        '<div class="ea-metrica"><div class="em-valor">' + analisis.totalPalabras + '</div><div class="em-label">Palabras</div></div>' +
+        '<div class="ea-metrica"><div class="em-valor">' + analisis.contPos + '</div><div class="em-label">Emociones positivas</div></div>' +
+        '<div class="ea-metrica"><div class="em-valor">' + analisis.contNeg + '</div><div class="em-label">Emociones difíciles</div></div>' +
+      '</div>' +
+      '<div class="ea-palabras"><strong>Palabras más repetidas:</strong> ' + topPalabras + '</div>' +
+      '<div class="ea-cierre">' + analisis.mensaje + '</div>';
     box.classList.add('visible');
   }
 
-  // ============================================
-  // DIARIO · EVENTOS
-  // ============================================
-  document.getElementById('btnVolverCalendario').addEventListener('click', () => {
+  document.getElementById('btnVolverCalendario').addEventListener('click', function() {
     renderCalendario();
     mostrarPantalla('journal-calendar');
   });
 
-  document.getElementById('btnCancelarEntrada').addEventListener('click', () => {
+  document.getElementById('btnCancelarEntrada').addEventListener('click', function() {
     if (confirm('¿Salir sin guardar?')) {
       renderCalendario();
       mostrarPantalla('journal-calendar');
     }
   });
 
-  document.getElementById('btnGuardarEntrada').addEventListener('click', () => {
+  document.getElementById('btnGuardarEntrada').addEventListener('click', function() {
     const n = state.diaActualDiario;
     const respuestas = {};
-    PREGUNTAS_DIARIO.forEach(q => {
+    PREGUNTAS_DIARIO.forEach(function(q) {
       const ta = document.getElementById('ta_' + q.id);
       if (ta) respuestas[q.id] = ta.value.trim();
     });
@@ -1785,51 +1719,46 @@ html, body {
     const diario = leerDiario();
     diario.entradas[String(n)] = {
       fecha: new Date().toISOString(),
-      respuestas,
-      analisis,
+      respuestas: respuestas,
+      analisis: analisis,
       timestamp: Date.now()
     };
     guardarDiario(diario);
 
-    // Registrar en analytics (sin contenido, solo metadatos)
     enviarEventoGA4('journal_entry_saved', { event_category: 'engagement', dia: n, polaridad: analisis.polaridad });
-    try {
-      if (typeof firebase !== 'undefined' && firebase.database) {
-        firebase.database().ref('pausa_lyon_analytics/diario').push({
-          fecha: Date.now(),
-          usuarioId: getUsuarioId(),
-          dia: n,
-          polaridad: analisis.polaridad,
-          totalPalabras: analisis.totalPalabras,
-          dispositivo: getDispositivo()
-        });
-      }
-    } catch (e) {}
+    registrarFirebase('diario', {
+      fecha: Date.now(),
+      usuarioId: getUsuarioId(),
+      dia: n,
+      polaridad: analisis.polaridad,
+      totalPalabras: analisis.totalPalabras,
+      dispositivo: getDispositivo()
+    });
 
     renderAnalisis(analisis);
     renderCalendario();
 
-    setTimeout(() => {
+    setTimeout(function() {
       document.getElementById('entryAnalisis').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 200);
   });
 
-  document.getElementById('btnVerResumen').addEventListener('click', () => {
+  document.getElementById('btnVerResumen').addEventListener('click', function() {
     renderResumen();
     mostrarPantalla('journal-summary');
   });
 
-  document.getElementById('btnVolverCalendarioDesdeResumen').addEventListener('click', () => {
+  document.getElementById('btnVolverCalendarioDesdeResumen').addEventListener('click', function() {
     renderCalendario();
     mostrarPantalla('journal-calendar');
   });
 
-  document.getElementById('btnVolverCalendarioFinal').addEventListener('click', () => {
+  document.getElementById('btnVolverCalendarioFinal').addEventListener('click', function() {
     renderCalendario();
     mostrarPantalla('journal-calendar');
   });
 
-  document.getElementById('btnReiniciarDiario').addEventListener('click', () => {
+  document.getElementById('btnReiniciarDiario').addEventListener('click', function() {
     if (!confirm('¿Reiniciar el ciclo de 30 días? Se borrarán todas las entradas actuales. Esta acción no se puede deshacer.')) return;
     if (!confirm('Confirma una vez más: perderás todo lo escrito en este ciclo.')) return;
     localStorage.removeItem(DIARIO_KEY);
@@ -1837,17 +1766,14 @@ html, body {
     alert('Ciclo reiniciado. Comienza un nuevo mes de escritura.');
   });
 
-  // ============================================
-  // DIARIO · RESUMEN
-  // ============================================
   function renderResumen() {
     const diario = leerDiario();
-    const entradas = Object.entries(diario.entradas).sort((a, b) => Number(a[0]) - Number(b[0]));
+    const entradas = Object.entries(diario.entradas).sort(function(a, b) { return Number(a[0]) - Number(b[0]); });
 
     const cont = document.getElementById('summaryContenido');
 
     if (entradas.length === 0) {
-      cont.innerHTML = `<div class="summary-vacio">Aún no has escrito ninguna entrada. Vuelve al calendario y comienza tu primer día.</div>`;
+      cont.innerHTML = '<div class="summary-vacio">Aún no has escrito ninguna entrada. Vuelve al calendario y comienza tu primer día.</div>';
       return;
     }
 
@@ -1855,7 +1781,8 @@ html, body {
     let totalPalabras = 0, totalPos = 0, totalNeg = 0;
     let positivos = 0, negativos = 0, neutros = 0;
 
-    entradas.forEach(([_, e]) => {
+    entradas.forEach(function(par) {
+      const e = par[1];
       if (e.analisis) {
         totalPalabras += e.analisis.totalPalabras || 0;
         totalPos += e.analisis.contPos || 0;
@@ -1878,83 +1805,70 @@ html, body {
     }
 
     const semanas = [[], [], [], []];
-    entradas.forEach(([n, e]) => {
-      const num = Number(n);
+    entradas.forEach(function(par) {
+      const num = Number(par[0]);
       const idx = Math.min(Math.floor((num - 1) / 7.5), 3);
-      semanas[idx].push(e);
+      semanas[idx].push(par[1]);
     });
 
     const diasSemana = ['S1', 'S2', 'S3', 'S4'];
-    const valoresSemana = semanas.map(sem => {
-      const palabras = sem.reduce((acc, e) => acc + (e.analisis ? e.analisis.totalPalabras : 0), 0);
-      return palabras;
+    const valoresSemana = semanas.map(function(sem) {
+      return sem.reduce(function(acc, e) { return acc + (e.analisis ? e.analisis.totalPalabras : 0); }, 0);
     });
-    const maxValor = Math.max(1, ...valoresSemana);
+    const maxValor = Math.max(1, Math.max.apply(null, valoresSemana));
 
     let html = '';
 
-    html += `
-      <div class="summary-bloque">
-        <div class="sb-kicker">Panorama general</div>
-        <h3>Un mes de escritura honesta</h3>
-        <p>${mensajeFinal}</p>
-        <div class="sb-metricas">
-          <div class="sb-metrica"><div class="sm-valor">${totalDias}</div><div class="sm-label">Días escritos</div></div>
-          <div class="sb-metrica"><div class="sm-valor">${totalPalabras}</div><div class="sm-label">Palabras totales</div></div>
-          <div class="sb-metrica"><div class="sm-valor">${totalPos + totalNeg}</div><div class="sm-label">Emociones</div></div>
-        </div>
-      </div>
-    `;
+    html += '<div class="summary-bloque">' +
+      '<div class="sb-kicker">Panorama general</div>' +
+      '<h3>Un mes de escritura honesta</h3>' +
+      '<p>' + mensajeFinal + '</p>' +
+      '<div class="sb-metricas">' +
+        '<div class="sb-metrica"><div class="sm-valor">' + totalDias + '</div><div class="sm-label">Días escritos</div></div>' +
+        '<div class="sb-metrica"><div class="sm-valor">' + totalPalabras + '</div><div class="sm-label">Palabras totales</div></div>' +
+        '<div class="sb-metrica"><div class="sm-valor">' + (totalPos + totalNeg) + '</div><div class="sm-label">Emociones</div></div>' +
+      '</div>' +
+    '</div>';
 
-    html += `
-      <div class="summary-bloque">
-        <div class="sb-kicker">Balance emocional</div>
-        <h3>Lo que apareció en tu escritura</h3>
-        <p>Tus entradas registraron <strong>${totalPos}</strong> emociones positivas y <strong>${totalNeg}</strong> emociones difíciles. Días mayormente positivos: <strong>${positivos}</strong>. Días mayormente difíciles: <strong>${negativos}</strong>. Días en equilibrio: <strong>${neutros}</strong>.</p>
-      </div>
-    `;
+    html += '<div class="summary-bloque">' +
+      '<div class="sb-kicker">Balance emocional</div>' +
+      '<h3>Lo que apareció en tu escritura</h3>' +
+      '<p>Tus entradas registraron <strong>' + totalPos + '</strong> emociones positivas y <strong>' + totalNeg + '</strong> emociones difíciles. Días mayormente positivos: <strong>' + positivos + '</strong>. Días mayormente difíciles: <strong>' + negativos + '</strong>. Días en equilibrio: <strong>' + neutros + '</strong>.</p>' +
+    '</div>';
 
-    html += `
-      <div class="summary-semana">
-        <h4>Intensidad de escritura por semana</h4>
-        <div class="semana-barras">
-          ${valoresSemana.map(v => {
-            const h = v === 0 ? 4 : Math.max(8, (v / maxValor) * 60);
-            return `<div class="semana-barra ${v === 0 ? 'vacia' : ''}" style="height:${h}px;" title="${v} palabras"></div>`;
-          }).join('')}
-        </div>
-        <div class="semana-labels">${diasSemana.map(d => `<div>${d}</div>`).join('')}</div>
-      </div>
-    `;
+    html += '<div class="summary-semana">' +
+      '<h4>Intensidad de escritura por semana</h4>' +
+      '<div class="semana-barras">' +
+        valoresSemana.map(function(v) {
+          const h = v === 0 ? 4 : Math.max(8, (v / maxValor) * 60);
+          return '<div class="semana-barra ' + (v === 0 ? 'vacia' : '') + '" style="height:' + h + 'px;" title="' + v + ' palabras"></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="semana-labels">' + diasSemana.map(function(d) { return '<div>' + d + '</div>'; }).join('') + '</div>' +
+    '</div>';
 
     cont.innerHTML = html;
   }
 
-  // ============================================
-  // BLOQUEO DE SALIDA
-  // ============================================
-  window.addEventListener('beforeunload', (e) => {
+  window.addEventListener('beforeunload', function(e) {
     if (state.pantallaActual === 'practice' && state.totalElapsed > 10) {
       e.preventDefault();
       e.returnValue = '';
     }
   });
 
-  // ============================================
-  // INICIALIZACIÓN
-  // ============================================
   (function actualizarBadgeInicial() {
     try {
       const d = leerDiario();
       const total = Object.keys(d.entradas || {}).length;
       const badge = document.getElementById('badgeProgresoDiario');
       if (badge) {
-        badge.textContent = total === 0 ? 'Un mes completo' : `${total} de 30 días`;
+        badge.textContent = total === 0 ? 'Un mes completo' : total + ' de 30 días';
       }
     } catch (e) {}
   })();
 
-  console.log('%c📖 Pausa Lyon v3.3 — Respiración + Diario + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.3.1 — Respiración + Diario + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -1965,16 +1879,13 @@ html, body {
 // SERVICE WORKER · PWA
 // ============================================
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+  window.addEventListener('load', function() {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
-      .catch(err => console.warn('⚠️ Service Worker:', err));
+      .then(function(reg) { console.log('✅ Service Worker registrado:', reg.scope); })
+      .catch(function(err) { console.warn('⚠️ Service Worker:', err); });
   });
 }
 
-// ============================================
-// INSTALACIÓN DE LA PWA
-// ============================================
 let deferredPrompt = null;
 const installBanner = document.getElementById('installBanner');
 const btnInstalar = document.getElementById('btnInstalar');
@@ -1993,25 +1904,35 @@ function getDispositivoApp() {
          /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
 }
 
-window.addEventListener('beforeinstallprompt', (e) => {
+function getUsuarioIdApp() {
+  try {
+    let id = localStorage.getItem('pausa_lyon_user_id');
+    if (!id) {
+      id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem('pausa_lyon_user_id', id);
+    }
+    return id;
+  } catch (e) { return 'anon_' + Date.now(); }
+}
+
+window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   deferredPrompt = e;
   console.log('📱 App instalable detectada');
-
   if (!bannerCerrado() && installBanner) {
-    setTimeout(() => installBanner.classList.add('visible'), 2000);
+    setTimeout(function() { installBanner.classList.add('visible'); }, 2000);
   }
 });
 
 if (btnInstalar) {
-  btnInstalar.addEventListener('click', async () => {
+  btnInstalar.addEventListener('click', async function() {
     if (!deferredPrompt) {
       alert('La instalación no está disponible en este navegador. En iPhone, usa Compartir → "Añadir a pantalla de inicio".');
       return;
     }
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('Usuario eligió:', outcome);
+    const opcion = await deferredPrompt.userChoice;
+    console.log('Usuario eligió:', opcion.outcome);
     deferredPrompt = null;
     cerrarBanner();
   });
@@ -2021,46 +1942,35 @@ if (btnCerrarBanner) {
   btnCerrarBanner.addEventListener('click', cerrarBanner);
 }
 
-// ============================================
-// RASTREO DE INSTALACIONES
-// ============================================
-window.addEventListener('appinstalled', () => {
+window.addEventListener('appinstalled', function() {
   console.log('✅ App instalada correctamente');
   deferredPrompt = null;
   cerrarBanner();
 
-  // GA4
   try {
     if (typeof gtag === 'function') {
       gtag('event', 'pwa_installed', { event_category: 'pwa' });
     }
   } catch (e) {}
 
-  // Firebase
   try {
     if (typeof firebase !== 'undefined' && firebase.database) {
       firebase.database().ref('pausa_lyon_analytics/instalaciones').push({
         fecha: Date.now(),
         fechaLegible: new Date().toLocaleString('es-ES'),
-        usuarioId: (function() {
-          try {
-            let id = localStorage.getItem('pausa_lyon_user_id');
-            if (!id) {
-              id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
-              localStorage.setItem('pausa_lyon_user_id', id);
-            }
-            return id;
-          } catch(e) { return 'anon'; }
-        })(),
+        usuarioId: getUsuarioIdApp(),
         dispositivo: getDispositivoApp()
-      }).then(() => console.log('📊 Instalación registrada en Firebase'));
+      }).then(function() {
+        console.log('📊 Instalación registrada en Firebase');
+      }).catch(function(err) {
+        console.warn('⚠️ Error registrando instalación:', err.message);
+      });
     }
   } catch (e) {
     console.warn('⚠️ Error registrando instalación:', e);
   }
 });
 
-// Detectar si ya está corriendo en modo app instalada
 if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
   console.log('✅ Corriendo como app instalada');
   if (installBanner) installBanner.style.display = 'none';
