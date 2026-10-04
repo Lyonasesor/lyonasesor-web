@@ -7,6 +7,16 @@
 <title>Pausa Lyon · Respira, escribe, vuelve a ti</title>
 <meta name="description" content="Herramienta gratuita de Lyon Asesor: respiración guiada y diario terapéutico para regular tu sistema nervioso. Sin cuenta. Sin rastreo. Todo en tu dispositivo.">
 
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pausa Lyon">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -146,6 +156,23 @@ html, body {
 }
 .home-pie a { color: var(--naranja); text-decoration: none; font-weight: 500; }
 .home-pie .separador { display: inline-block; margin: 0 8px; opacity: 0.4; }
+.home-pie .nota-instalar {
+  display: block;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(26,35,48,0.04);
+  border-radius: 10px;
+  font-size: 10.5px;
+  color: var(--texto-muted);
+  line-height: 1.55;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.home-pie .nota-instalar strong {
+  color: var(--navy);
+  font-weight: 600;
+}
 
 /* ============================================
    BOTÓN BACK
@@ -800,6 +827,12 @@ html, body {
         Neurociencia aplicada
         <br>
         Sin cuenta. Sin rastreo. Todo queda en tu dispositivo.
+
+        <span class="nota-instalar">
+          📱 <strong>En iPhone:</strong> pulsa el botón Compartir y elige "Añadir a pantalla de inicio" para instalarla.
+          <br>
+          <strong>En Android:</strong> el navegador te ofrecerá instalarla automáticamente.
+        </span>
       </div>
     </div>
   </section>
@@ -1059,7 +1092,7 @@ html, body {
   // DIARIO · PALABRAS EMOCIONALES
   // ============================================
   const PALABRAS_POSITIVAS = [
-    'bien','calma','calma','amor','alegría','alegre','gratitud','gracias','paz','tranquilo','tranquila',
+    'bien','calma','amor','alegría','alegre','gratitud','gracias','paz','tranquilo','tranquila',
     'contento','contenta','feliz','felicidad','esperanza','confianza','orgullo','logro','avance','crecimiento',
     'conexión','apoyo','apoyado','apoyada','tranquilidad','bendición','bendecido','bendecida','luz','fuerza',
     'éxito','logré','logrado','lograda','pude','poder','capaz','amable','amabilidad','ternura','cariño',
@@ -1374,7 +1407,6 @@ html, body {
     const totalPalabras = palabras.length;
     const totalCaracteres = texto.length;
 
-    // Contar positivas y negativas
     let contPos = 0, contNeg = 0;
     const encontradasPos = [], encontradasNeg = [];
     palabras.forEach(p => {
@@ -1382,7 +1414,6 @@ html, body {
       if (PALABRAS_NEGATIVAS.includes(p)) { contNeg++; if (!encontradasNeg.includes(p)) encontradasNeg.push(p); }
     });
 
-    // Frecuencia de palabras
     const freq = {};
     palabras.forEach(p => freq[p] = (freq[p] || 0) + 1);
     const topPalabras = Object.entries(freq)
@@ -1390,12 +1421,10 @@ html, body {
       .slice(0, 6)
       .map(([w, c]) => ({ palabra: w, count: c }));
 
-    // Polaridad
     let polaridad = 'neutra';
     if (contPos > contNeg) polaridad = 'positiva';
     else if (contNeg > contPos) polaridad = 'negativa';
 
-    // Mensaje interpretativo
     let mensaje = '';
     if (polaridad === 'positiva') {
       mensaje = 'Hoy tu escritura refleja un estado mayormente positivo. Reconoce eso — no es casualidad, es tu trabajo interior.';
@@ -1455,7 +1484,6 @@ html, body {
       grid.appendChild(div);
     }
 
-    // Actualizar badge del home
     const badge = document.getElementById('badgeProgresoDiario');
     if (badge) {
       if (totalEscritos === 0) badge.textContent = 'Un mes completo';
@@ -1470,13 +1498,11 @@ html, body {
 
     document.getElementById('entryDiaNum').textContent = n;
 
-    // Fecha legible
     const diario = leerDiario();
     const fecha = new Date(diario.cicloInicio + (n - 1) * 86400000);
     const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
     document.getElementById('entryFecha').textContent = `${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
 
-    // Preguntas
     const cont = document.getElementById('entryPreguntas');
     cont.innerHTML = PREGUNTAS_DIARIO.map((q, i) => {
       const valor = entrada && entrada.respuestas && entrada.respuestas[q.id] ? entrada.respuestas[q.id] : '';
@@ -1490,7 +1516,6 @@ html, body {
       `;
     }).join('');
 
-    // Análisis previo
     const analisisBox = document.getElementById('entryAnalisis');
     if (entrada && entrada.analisis) {
       renderAnalisis(entrada.analisis);
@@ -1576,7 +1601,6 @@ html, body {
     renderAnalisis(analisis);
     renderCalendario();
 
-    // Scroll al análisis
     setTimeout(() => {
       document.getElementById('entryAnalisis').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 200);
@@ -1619,7 +1643,6 @@ html, body {
       return;
     }
 
-    // Totales
     const totalDias = entradas.length;
     let totalPalabras = 0, totalPos = 0, totalNeg = 0;
     let positivos = 0, negativos = 0, neutros = 0;
@@ -1646,7 +1669,6 @@ html, body {
       mensajeFinal = 'Tu mes está en equilibrio. La claridad emocional no es tener solo días buenos — es reconocerlos todos.';
     }
 
-    // Barras por semana (4 semanas de 7-8 días)
     const semanas = [[], [], [], []];
     entradas.forEach(([n, e]) => {
       const num = Number(n);
@@ -1661,10 +1683,8 @@ html, body {
     });
     const maxValor = Math.max(1, ...valoresSemana);
 
-    // Render
     let html = '';
 
-    // Bloque resumen general
     html += `
       <div class="summary-bloque">
         <div class="sb-kicker">Panorama general</div>
@@ -1678,7 +1698,6 @@ html, body {
       </div>
     `;
 
-    // Bloque balance emocional
     html += `
       <div class="summary-bloque">
         <div class="sb-kicker">Balance emocional</div>
@@ -1687,7 +1706,6 @@ html, body {
       </div>
     `;
 
-    // Bloque semana por semana
     html += `
       <div class="summary-semana">
         <h4>Intensidad de escritura por semana</h4>
@@ -1717,7 +1735,6 @@ html, body {
   // ============================================
   // INICIALIZACIÓN
   // ============================================
-  // Actualizar el badge del home al cargar
   (function actualizarBadgeInicial() {
     try {
       const d = leerDiario();
@@ -1729,10 +1746,35 @@ html, body {
     } catch (e) {}
   })();
 
-  console.log('%c📖 Pausa Lyon v3.1 — Respiración + Diario', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.1.1 — Respiración + Diario + PWA', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
+</script>
+
+<script>
+// ============================================
+// SERVICE WORKER · PWA
+// ============================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
+      .catch(err => console.warn('⚠️ Service Worker:', err));
+  });
+}
+
+// Detectar si la app está instalada
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredPrompt = e;
+  console.log('📱 App instalable');
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('✅ App instalada correctamente');
+  window.deferredPrompt = null;
+});
 </script>
 
 </body>
