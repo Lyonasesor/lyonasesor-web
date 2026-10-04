@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A2330">
+<title>Pausa Lyon · Respira, escribe, vuelve a ti</title>
+<meta name="description" content="Herramienta gratuita de Lyon Asesor: respiración guiada y diario terapéutico para regular tu sistema nervioso. Sin cuenta. Sin rastreo. Todo en tu dispositivo.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --naranja: #E86B18;
+  --naranja-luz: #F28C4E;
+  --navy: #1A2330;
+  --navy-light: #243042;
+  --navy-dark: #0F1720;
+  --crema: #FAF8F5;
+  --blanco: #FEFDFB;
+  --texto: #2C3E50;
+  --texto-muted: #5A6C7D;
+  --borde: #E8EAED;
+  --exito: #22c55e;
+  --verde-wa: #25D366;
+  --sombra: 0 4px 20px rgba(26,35,48,0.10);
+  --sombra-fuerte: 0 8px 40px rgba(26,35,48,0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-titulo: 'Playfair Display', Georgia, serif;
+  --font-cuerpo: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-cuerpo);
+  color: var(--texto);
+  background: var(--crema);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#app {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+  z-index: 2;
+}
+
+/* ============================================
+   PANTALLA HOME
+   ============================================ */
+#screen-home {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+
+.home-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.home-header {
+  text-align: center;
+  padding: 20px 0 36px;
+}
+
+.logo-wordmark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--navy);
+  margin-bottom: 22px;
+}
+.logo-wordmark .acento { color: var(--naranja); }
+
+.home-titulo {
+  font-family: var(--font-titulo);
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.02;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: -0.025em;
+}
+.home-titulo em {
+  font-style: italic;
+  color: var(--naranja);
+}
+
+.home-sub {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--texto-muted);
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.home-modulos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.modulo-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 22px;
+  background: var(--blanco);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-cuerpo);
+  font-size: 15px;
+  text-align: left;
+  color: var(--texto);
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 8px rgba(26,35,48,0.04);
+  font-weight: 500;
+  width: 100%;
+}
+.modulo-card:hover, .modulo-card:active {
+  border-color: var(--naranja);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra);
+}
+.modulo-card .icono {
+  font-size: 30px;
+  flex-shrink: 0;
+  width: 44px;
+  text-align: center;
+  line-height: 1;
+  padding-top: 2px;
+}
+.modulo-card .contenido {
+  flex: 1;
+  min-width: 0;
+}
+.modulo-card .contenido b {
+  display: block;
+  font-family: var(--font-titulo);
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+  font-size: 18px;
+  line-height: 1.15;
+}
+.modulo-card .contenido span {
+  display: block;
+  font-size: 13px;
+  color: var(--texto-muted);
+  font-weight: 400;
+  line-height: 1.5;
+}
+.modulo-card .badge-tiempo {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 10px;
+  background: rgba(232,107,24,0.1);
+  color: var(--naranja);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 20px;
+}
+
+.home-pie {
+  margin-top: auto;
+  padding-top: 24px;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--texto-muted);
+  line-height: 1.6;
+}
+.home-pie a {
+  color: var(--naranja);
+  text-decoration: none;
+  font-weight: 500;
+}
+.home-pie .separador {
+  display: inline-block;
+  margin: 0 8px;
+  opacity: 0.4;
+}
+
+/* ============================================
+   PANTALLA SELECCIÓN DE ESTADO
+   ============================================ */
+#screen-select {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+
+.select-header {
+  text-align: center;
+  padding: 8px 0 28px;
+  flex-shrink: 0;
+}
+
+.btn-back {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(26,35,48,0.05);
+  border: none;
+  color: var(--texto-muted);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  z-index: 5;
+}
+.btn-back:hover { background: rgba(26,35,48,0.1); color: var(--navy); }
+
+.select-titulo {
+  font-family: var(--font-titulo);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.1;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+.select-titulo em { font-style: italic; color: var(--naranja); }
+
+.select-sub {
+  font-size: 14.5px;
+  color: var(--texto-muted);
+  max-width: 320px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+.estados-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.estado-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--blanco);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-cuerpo);
+  font-size: 15px;
+  text-align: left;
+  color: var(--texto);
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 8px rgba(26,35,48,0.04);
+  font-weight: 500;
+}
+.estado-btn:hover, .estado-btn:active {
+  border-color: var(--naranja);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra);
+}
+.estado-btn .icono {
+  font-size: 26px;
+  flex-shrink: 0;
+  width: 40px;
+  text-align: center;
+}
+.estado-btn .texto { flex: 1; }
+.estado-btn .texto b {
+  display: block;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 2px;
+  font-size: 15px;
+}
+.estado-btn .texto span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--texto-muted);
+  font-weight: 400;
+}
+.estado-btn .flecha {
+  color: var(--naranja);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   PANTALLA PRÁCTICA
+   ============================================ */
+#screen-practice {
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+  color: #fff;
+  padding: 24px 20px 32px;
+  overflow: hidden;
+}
+
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  padding-bottom: 20px;
+}
+
+.practice-protocolo {
+  font-size: 13px;
+  color: var(--naranja-luz);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.btn-cerrar {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: rgba(255,255,255,0.7);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.btn-cerrar:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--naranja), var(--naranja-luz));
+  transition: width 0.2s linear;
+  border-radius: 2px;
+}
+
+.practice-cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  min-height: 0;
+}
+
+.circulo-wrap {
+  position: relative;
+  width: min(72vw, 320px);
+  height: min(72vw, 320px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.circulo-aura {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,107,24,0.22) 0%, transparent 70%);
+  transition: transform 0.6s ease;
+}
+
+.circulo-borde {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(242,140,78,0.35);
+}
+
+.circulo {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--naranja) 0%, var(--naranja-luz) 100%);
+  box-shadow:
+    0 0 60px rgba(232,107,24,0.5),
+    0 0 100px rgba(232,107,24,0.25),
+    inset 0 0 40px rgba(255,255,255,0.15);
+  transform: scale(0.6);
+  will-change: transform;
+}
+
+.fase-nombre {
+  font-family: var(--font-titulo);
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  min-height: 40px;
+  text-align: center;
+}
+
+.fase-countdown {
+  font-size: 15px;
+  color: var(--naranja-luz);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-top: -18px;
+  min-height: 22px;
+}
+
+.practice-info {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.practice-controles {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 20px;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.btn-control {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-family: var(--font-cuerpo);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-control:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+}
+.btn-control.primario {
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(232,107,24,0.4);
+}
+.btn-control.primario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(232,107,24,0.55);
+}
+
+/* ============================================
+   PANTALLA CHECK-OUT
+   ============================================ */
+#screen-checkout {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+
+.checkout-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.checkout-header {
+  text-align: center;
+  padding: 20px 0 28px;
+}
+
+.checkout-titulo {
+  font-family: var(--font-titulo);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.checkout-titulo em { font-style: italic; color: var(--naranja); }
+
+.checkout-sub {
+  font-size: 14px;
+  color: var(--texto-muted);
+  line-height: 1.5;
+}
+
+.checkout-escala {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.escala-btn {
+  aspect-ratio: 1;
+  background: var(--blanco);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radius-sm);
+  font-size: 26px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.escala-btn:hover { border-color: var(--naranja); transform: scale(1.06); }
+.escala-btn.seleccionado {
+  background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+  border-color: var(--naranja);
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(232,107,24,0.35);
+}
+.escala-btn.seleccionado .emoji { filter: brightness(10); }
+.escala-btn .emoji { font-size: 26px; line-height: 1; }
+
+.checkout-cta {
+  background: var(--blanco);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  text-align: center;
+  box-shadow: var(--sombra);
+  margin-bottom: 20px;
+}
+
+.checkout-cta .kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.checkout-cta h3 {
+  font-family: var(--font-titulo);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.checkout-cta p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto-muted);
+  margin-bottom: 18px;
+}
+
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--verde-wa);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-family: var(--font-cuerpo);
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+  transition: 0.2s;
+  width: 100%;
+}
+.btn-wa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+}
+
+.btn-compartir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--borde);
+  border-radius: 30px;
+  font-family: var(--font-cuerpo);
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 100%;
+  margin-top: 10px;
+}
+.btn-compartir:hover {
+  border-color: var(--naranja);
+  color: var(--naranja);
+}
+
+.btn-volver {
+  display: inline-block;
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: var(--texto-muted);
+  font-family: var(--font-cuerpo);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============================================
+   PANTALLA CAFÉ (DONACIÓN)
+   ============================================ */
+#screen-coffee {
+  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
+  padding: 32px 20px 40px;
+}
+
+.coffee-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.coffee-header {
+  text-align: center;
+  padding: 20px 0 28px;
+}
+
+.coffee-icono {
+  font-size: 58px;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.coffee-titulo {
+  font-family: var(--font-titulo);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+.coffee-titulo em { font-style: italic; color: var(--naranja); }
+
+.coffee-sub {
+  font-size: 14.5px;
+  color: var(--texto-muted);
+  line-height: 1.55;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* Bloque PayPal destacado */
+.coffee-paypal {
+  background: linear-gradient(135deg, #003087 0%, #0070ba 100%);
+  border-radius: var(--radius);
+  padding: 28px 24px 24px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,48,135,0.25);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.coffee-paypal::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+}
+
+.coffee-paypal .paypal-kicker {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  font-weight: 700;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.coffee-paypal .paypal-monto {
+  font-family: var(--font-titulo);
+  font-size: 56px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+.coffee-paypal .paypal-label {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 20px;
+  position: relative;
+  line-height: 1.45;
+}
+
+.btn-paypal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 28px;
+  background: #FFC439;
+  color: #003087;
+  border: none;
+  border-radius: 30px;
+  font-family: var(--font-cuerpo);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.2s;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.btn-paypal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* Bloque Pago Móvil libre */
+.coffee-pagomovil {
+  background: var(--blanco);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra);
+  border: 1.5px solid var(--borde);
+}
+
+.coffee-pagomovil .pm-kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.coffee-pagomovil h3 {
+  font-family: var(--font-titulo);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+  line-height: 1.25;
+}
+
+.coffee-pagomovil .pm-datos {
+  background: var(--crema);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.coffee-pagomovil .pm-datos p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--texto);
+  margin-bottom: 3px;
+}
+.coffee-pagomovil .pm-datos p:last-child { margin-bottom: 0; }
+.coffee-pagomovil .pm-datos p strong {
+  color: var(--navy);
+  font-weight: 600;
+  display: inline-block;
+  min-width: 82px;
+}
+
+.coffee-pagomovil .pm-nota {
+  font-size: 12.5px;
+  color: var(--texto-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  padding-left: 14px;
+  border-left: 3px solid var(--naranja);
+}
+
+.coffee-nota {
+  font-size: 12.5px;
+  color: var(--texto-muted);
+  line-height: 1.65;
+  text-align: center;
+  padding: 16px 8px 0;
+}
+
+.coffee-nota strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ============================================
+   UTILIDADES COMUNES
+   ============================================ */
+.adsense-bloque {
+  margin-top: 24px;
+  padding: 12px;
+  background: var(--blanco);
+  border-radius: var(--radius);
+  border: 1px dashed var(--borde);
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--texto-muted);
+  font-size: 12px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.checkout-historial {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(26,35,48,0.04);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  color: var(--texto-muted);
+}
+.checkout-historial b { color: var(--navy); font-weight: 600; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (min-width: 700px) {
+  .home-titulo { font-size: 56px; }
+  .fase-nombre { font-size: 40px; }
+}
+@media (max-height: 620px) {
+  .home-titulo { font-size: 38px; }
+  .home-header { padding: 10px 0 20px; }
+  .circulo-wrap { width: min(52vh, 240px); height: min(52vh, 240px); }
+  .fase-nombre { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ==========================================
+       PANTALLA HOME
+       ========================================== -->
+  <section id="screen-home" class="screen active">
+    <div class="home-inner">
+      <div class="home-header">
+        <div class="logo-wordmark">Lyon<span class="acento">Asesor</span></div>
+        <h1 class="home-titulo">Pausa <em>Lyon</em></h1>
+        <p class="home-sub">Respira, escribe, vuelve a ti. Herramientas gratuitas para regular tu sistema nervioso.</p>
+      </div>
+
+      <div class="home-modulos">
+        <button class="modulo-card" data-modulo="respirar">
+          <span class="icono">🧘</span>
+          <span class="contenido">
+            <b>Respirar</b>
+            <span>Cinco protocolos guiados según cómo llegas hoy</span>
+            <span class="badge-tiempo">3 - 5 minutos</span>
+          </span>
+        </button>
+
+        <button class="modulo-card" data-modulo="diario">
+          <span class="icono">📖</span>
+          <span class="contenido">
+            <b>Diario Terapéutico</b>
+            <span>30 días de escritura guiada con análisis automático</span>
+            <span class="badge-tiempo">Un mes completo</span>
+          </span>
+        </button>
+
+        <button class="modulo-card" data-modulo="cafe">
+          <span class="icono">☕</span>
+          <span class="contenido">
+            <b>Invítame un café</b>
+            <span>Si esta app te sirvió, puedes apoyar a Lyon Asesor</span>
+            <span class="badge-tiempo">Donación voluntaria</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="home-pie">
+        Una herramienta de <a href="https://lyonasesor.com" target="_blank" rel="noopener">Lyon Asesor</a>
+        <span class="separador">·</span>
+        Neurociencia aplicada
+        <br>
+        Sin cuenta. Sin rastreo. Todo queda en tu dispositivo.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PANTALLA SELECCIÓN DE ESTADO
+       ========================================== -->
+  <section id="screen-select" class="screen">
+    <button class="btn-back" data-ir="home">←</button>
+
+    <div class="select-header">
+      <h1 class="select-titulo">¿Cómo llegas <em>hoy</em>?</h1>
+      <p class="select-sub">Elige tu estado y te guiamos con la respiración que tu sistema nervioso necesita.</p>
+    </div>
+
+    <div class="estados-lista" id="estadosLista">
+      <button class="estado-btn" data-estado="ansioso">
+        <span class="icono">😰</span>
+        <span class="texto">
+          <b>Ansioso</b>
+          <span>Activación, preocupación, mente acelerada</span>
+        </span>
+        <span class="flecha">→</span>
+      </button>
+      <button class="estado-btn" data-estado="agotado">
+        <span class="icono">😩</span>
+        <span class="texto">
+          <b>Agotado</b>
+          <span>Cansancio mental, saturación, sin energía</span>
+        </span>
+        <span class="flecha">→</span>
+      </button>
+      <button class="estado-btn" data-estado="disperso">
+        <span class="icono">🌀</span>
+        <span class="texto">
+          <b>Disperso</b>
+          <span>Falta de foco, muchas pestañas abiertas</span>
+        </span>
+        <span class="flecha">→</span>
+      </button>
+      <button class="estado-btn" data-estado="bajaEnergia">
+        <span class="icono">💤</span>
+        <span class="texto">
+          <b>Baja energía</b>
+          <span>Desánimo, apatía, cuesta arrancar</span>
+        </span>
+        <span class="flecha">→</span>
+      </button>
+      <button class="estado-btn" data-estado="calma">
+        <span class="icono">🌿</span>
+        <span class="texto">
+          <b>En calma</b>
+          <span>Bien, quiero profundizar este estado</span>
+        </span>
+        <span class="flecha">→</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PANTALLA PRÁCTICA
+       ========================================== -->
+  <section id="screen-practice" class="screen">
+    <div class="practice-header">
+      <div class="practice-protocolo" id="protocoloNombre">—</div>
+      <button class="btn-cerrar" id="btnCerrar" aria-label="Salir">✕</button>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="practice-cuerpo">
+      <div class="circulo-wrap">
+        <div class="circulo-aura" id="circuloAura"></div>
+        <div class="circulo-borde"></div>
+        <div class="circulo" id="circulo"></div>
+      </div>
+
+      <div style="text-align:center;">
+        <div class="fase-nombre" id="faseNombre">Inhala</div>
+        <div class="fase-countdown" id="faseCountdown">4</div>
+        <div class="practice-info" id="practiceInfo">Ciclo 1 · 5:00 restantes</div>
+      </div>
+    </div>
+
+    <div class="practice-controles">
+      <button class="btn-control" id="btnPausar">⏸ Pausar</button>
+      <button class="btn-control primario" id="btnTerminar">Terminar</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PANTALLA CHECK-OUT
+       ========================================== -->
+  <section id="screen-checkout" class="screen">
+    <div class="checkout-inner">
+      <div class="checkout-header">
+        <h2 class="checkout-titulo">¿Cómo te sientes <em>ahora</em>?</h2>
+        <p class="checkout-sub">Tu respuesta nos ayuda a mejorar la herramienta. No se comparte con nadie.</p>
+      </div>
+
+      <div class="checkout-escala" id="escalaEmocional">
+        <button class="escala-btn" data-valor="1"><span class="emoji">😣</span></button>
+        <button class="escala-btn" data-valor="2"><span class="emoji">😕</span></button>
+        <button class="escala-btn" data-valor="3"><span class="emoji">😐</span></button>
+        <button class="escala-btn" data-valor="4"><span class="emoji">🙂</span></button>
+        <button class="escala-btn" data-valor="5"><span class="emoji">😌</span></button>
+      </div>
+
+      <div class="checkout-cta">
+        <div class="kicker">Siguiente paso</div>
+        <h3>Si esta pausa te ayudó, hay mucho más.</h3>
+        <p>En la conferencia <strong>Estrategias de Bienestar</strong> profundizamos en la neurociencia detrás de estas técnicas y en cómo aplicarlas con tu equipo sin que se sienta forzado.</p>
+        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20us%C3%A9%20la%20app%20Pausa%20Lyon%20y%20quiero%20informaci%C3%B3n%20sobre%20la%20conferencia%20de%20Estrategias%20de%20Bienestar." target="_blank" rel="noopener" class="btn-wa">
+          💬 Recibir información por WhatsApp
+        </a>
+        <button class="btn-compartir" id="btnCompartir">
+          📤 Compartir esta herramienta
+        </button>
+      </div>
+
+      <div class="checkout-historial" id="historialBox" style="display:none;">
+        <b>Tu historial</b>
+        <div id="historialTexto"></div>
+      </div>
+
+      <button class="btn-volver" data-ir="home">← Volver al inicio</button>
+
+      <div class="adsense-bloque">
+        Espacio reservado para anuncio
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PANTALLA CAFÉ (DONACIÓN)
+       ========================================== -->
+  <section id="screen-coffee" class="screen">
+    <button class="btn-back" data-ir="home">←</button>
+
+    <div class="coffee-inner">
+      <div class="coffee-header">
+        <div class="coffee-icono">☕</div>
+        <h1 class="coffee-titulo">Invítame un <em>café</em></h1>
+        <p class="coffee-sub">Esta app es gratuita y siempre lo será. Si te sirvió, un pequeño gesto ayuda a mantenerla viva.</p>
+      </div>
+
+      <!-- OPCIÓN 1: PayPal $3 -->
+      <div class="coffee-paypal">
+        <div class="paypal-kicker">Con PayPal o tarjeta</div>
+        <div class="paypal-monto">$3</div>
+        <div class="paypal-label">Un café para Lyon Asesor</div>
+        <a href="https://www.paypal.com/ncp/payment/4RUNPZEWBWFSU" target="_blank" rel="noopener" class="btn-paypal">
+          ☕ Invitar un café
+        </a>
+      </div>
+
+      <!-- OPCIÓN 2: Pago Móvil Libre -->
+      <div class="coffee-pagomovil">
+        <div class="pm-kicker">Desde Venezuela</div>
+        <h3>Pago Móvil · aporte libre</h3>
+
+        <div class="pm-datos">
+          <p><strong>Banco:</strong> BBVA Provincial</p>
+          <p><strong>C.I.:</strong> 17633035</p>
+          <p><strong>Teléfono:</strong> +58 414-8610464</p>
+          <p><strong>Tasa:</strong> Cambio del día</p>
+        </div>
+
+        <p class="pm-nota">Cualquier monto es bienvenido y agradecido. No hay mínimo ni máximo.</p>
+
+        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20te%20invit%C3%A9%20un%20caf%C3%A9%20desde%20la%20app%20Pausa%20Lyon.%20Aqu%C3%AD%20est%C3%A1%20mi%20comprobante." target="_blank" rel="noopener" class="btn-wa">
+          💬 Enviar comprobante por WhatsApp
+        </a>
+      </div>
+
+      <div class="coffee-nota">
+        <strong>Gracias por apoyar Lyon Asesor.</strong><br>
+        Cada aporte se convierte en mejores herramientas, más conferencias, y más personas acompañadas.
+      </div>
+
+      <button class="btn-volver" data-ir="home">← Volver al inicio</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============================================
+  // PROTOCOLOS DE RESPIRACIÓN
+  // ============================================
+  const PROTOCOLOS = {
+    ansioso: {
+      nombre: 'Regulación 4·7·8',
+      descripcion: 'Activación del sistema parasimpático',
+      duracionTotal: 300,
+      fases: [
+        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+        { nombre: 'Sostén', duracion: 7, tipo: 'hold' },
+        { nombre: 'Exhala', duracion: 8, tipo: 'exhale' }
+      ]
+    },
+    agotado: {
+      nombre: 'Respiración Cuadrada',
+      descripcion: 'Equilibrio del sistema nervioso',
+      duracionTotal: 240,
+      fases: [
+        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+        { nombre: 'Sostén', duracion: 4, tipo: 'hold' },
+        { nombre: 'Exhala', duracion: 4, tipo: 'exhale' },
+        { nombre: 'Sostén', duracion: 4, tipo: 'hold' }
+      ]
+    },
+    disperso: {
+      nombre: 'Coherencia Cardíaca',
+      descripcion: 'Foco y claridad mental',
+      duracionTotal: 300,
+      fases: [
+        { nombre: 'Inhala', duracion: 5, tipo: 'inhale' },
+        { nombre: 'Exhala', duracion: 5, tipo: 'exhale' }
+      ]
+    },
+    bajaEnergia: {
+      nombre: 'Activación Suave',
+      descripcion: 'Energía sin agitación',
+      duracionTotal: 180,
+      fases: [
+        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+        { nombre: 'Sostén', duracion: 2, tipo: 'hold' },
+        { nombre: 'Exhala', duracion: 2, tipo: 'exhale' }
+      ]
+    },
+    calma: {
+      nombre: 'Gratitud Consciente',
+      descripcion: 'Profundizar el estado de calma',
+      duracionTotal: 300,
+      fases: [
+        { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
+        { nombre: 'Exhala', duracion: 6, tipo: 'exhale' }
+      ]
+    }
+  };
+
+  // ============================================
+  // ESTADO GLOBAL
+  // ============================================
+  const state = {
+    pantallaActual: 'home',
+    protocolo: null,
+    protocoloKey: null,
+    faseIndex: 0,
+    faseElapsed: 0,
+    totalElapsed: 0,
+    ciclo: 1,
+    pausado: false,
+    ultimoTimestamp: 0,
+    rafId: null,
+    audioCtx: null,
+    chime: false
+  };
+
+  // ============================================
+  // NAVEGACIÓN
+  // ============================================
+  function mostrarPantalla(nombre) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('screen-' + nombre);
+    if (el) el.classList.add('active');
+    state.pantallaActual = nombre;
+    if (nombre !== 'practice') {
+      detenerAnimacion();
+    }
+    if (el) el.scrollTop = 0;
+  }
+
+  document.querySelectorAll('[data-ir]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      mostrarPantalla(btn.dataset.ir);
+    });
+  });
+
+  document.querySelectorAll('.modulo-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const modulo = card.dataset.modulo;
+      if (modulo === 'respirar') {
+        mostrarPantalla('select');
+      } else if (modulo === 'diario') {
+        alert('El Diario Terapéutico estará disponible en la próxima actualización.');
+      } else if (modulo === 'cafe') {
+        mostrarPantalla('coffee');
+      }
+    });
+  });
+
+  // ============================================
+  // UTILIDADES
+  // ============================================
+  function formatearTiempo(segundos) {
+    const m = Math.floor(segundos / 60);
+    const s = Math.floor(segundos % 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
+  function playChime() {
+    if (!state.chime) return;
+    try {
+      if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = state.audioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = 528;
+      osc.type = 'sine';
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.4);
+    } catch (e) {}
+  }
+
+  // ============================================
+  // MOTOR DE RESPIRACIÓN
+  // ============================================
+  const circulo = document.getElementById('circulo');
+  const circuloAura = document.getElementById('circuloAura');
+  const faseNombre = document.getElementById('faseNombre');
+  const faseCountdown = document.getElementById('faseCountdown');
+  const practiceInfo = document.getElementById('practiceInfo');
+  const progressFill = document.getElementById('progressFill');
+  const protocoloNombre = document.getElementById('protocoloNombre');
+
+  function iniciarProtocolo(key) {
+    state.protocoloKey = key;
+    state.protocolo = PROTOCOLOS[key];
+    state.faseIndex = 0;
+    state.faseElapsed = 0;
+    state.totalElapsed = 0;
+    state.ciclo = 1;
+    state.pausado = false;
+    state.ultimoTimestamp = 0;
+
+    protocoloNombre.textContent = state.protocolo.nombre;
+    progressFill.style.width = '0%';
+    document.getElementById('btnPausar').textContent = '⏸ Pausar';
+
+    actualizarFaseUI();
+    mostrarPantalla('practice');
+
+    state.rafId = requestAnimationFrame(loop);
+  }
+
+  function loop(timestamp) {
+    if (state.pausado) return;
+    if (!state.ultimoTimestamp) state.ultimoTimestamp = timestamp;
+    const delta = Math.min((timestamp - state.ultimoTimestamp) / 1000, 0.1);
+    state.ultimoTimestamp = timestamp;
+
+    const prot = state.protocolo;
+    const fase = prot.fases[state.faseIndex];
+
+    state.faseElapsed += delta;
+    state.totalElapsed += delta;
+
+    if (state.faseElapsed >= fase.duracion) {
+      state.faseElapsed = 0;
+      state.faseIndex = (state.faseIndex + 1) % prot.fases.length;
+      if (state.faseIndex === 0) state.ciclo++;
+      playChime();
+      actualizarFaseUI();
+    }
+
+    actualizarAnimacion();
+    actualizarProgreso();
+
+    if (state.totalElapsed >= prot.duracionTotal) {
+      finalizarProtocolo();
+      return;
+    }
+
+    state.rafId = requestAnimationFrame(loop);
+  }
+
+  function actualizarFaseUI() {
+    const fase = state.protocolo.fases[state.faseIndex];
+    faseNombre.textContent = fase.nombre;
+  }
+
+  function actualizarAnimacion() {
+    const prot = state.protocolo;
+    const fase = prot.fases[state.faseIndex];
+    const progreso = Math.min(state.faseElapsed / fase.duracion, 1);
+
+    let escala;
+    if (fase.tipo === 'inhale') {
+      escala = 0.6 + 0.4 * progreso;
+    } else if (fase.tipo === 'exhale') {
+      escala = 1.0 - 0.4 * progreso;
+    } else {
+      const fasePrevia = prot.fases[(state.faseIndex - 1 + prot.fases.length) % prot.fases.length];
+      escala = fasePrevia.tipo === 'exhale' ? 0.6 : 1.0;
+    }
+
+    circulo.style.transform = `scale(${escala})`;
+    circuloAura.style.transform = `scale(${escala * 1.1})`;
+
+    const restante = Math.max(0, Math.ceil(fase.duracion - state.faseElapsed));
+    faseCountdown.textContent = restante;
+  }
+
+  function actualizarProgreso() {
+    const prot = state.protocolo;
+    const progresoTotal = Math.min(state.totalElapsed / prot.duracionTotal, 1);
+    progressFill.style.width = `${progresoTotal * 100}%`;
+
+    const restante = Math.max(0, prot.duracionTotal - state.totalElapsed);
+    practiceInfo.textContent = `Ciclo ${state.ciclo} · ${formatearTiempo(restante)} restantes`;
+  }
+
+  function detenerAnimacion() {
+    if (state.rafId) {
+      cancelAnimationFrame(state.rafId);
+      state.rafId = null;
+    }
+    state.ultimoTimestamp = 0;
+  }
+
+  function finalizarProtocolo() {
+    detenerAnimacion();
+    guardarSesion(state.protocoloKey);
+    mostrarPantalla('checkout');
+    renderHistorial();
+  }
+
+  // ============================================
+  // PERSISTENCIA
+  // ============================================
+  const STORAGE_KEY = 'pausa_lyon_historial';
+
+  function guardarSesion(estado) {
+    try {
+      const historial = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      historial.push({
+        fecha: new Date().toISOString(),
+        estado: estado,
+        duracion: state.protocolo.duracionTotal
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(historial.slice(-20)));
+    } catch (e) {}
+  }
+
+  function renderHistorial() {
+    try {
+      const historial = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      if (historial.length < 2) {
+        document.getElementById('historialBox').style.display = 'none';
+        return;
+      }
+      const ultimas = historial.slice(-3).reverse();
+      const texto = ultimas.map(s => {
+        const fecha = new Date(s.fecha);
+        const hoy = new Date();
+        const diff = Math.floor((hoy - fecha) / 86400000);
+        let cuando;
+        if (diff === 0) cuando = 'Hoy';
+        else if (diff === 1) cuando = 'Ayer';
+        else cuando = `Hace ${diff} días`;
+        return `<div style="margin-top:6px;">${cuando} · ${s.estado}</div>`;
+      }).join('');
+      document.getElementById('historialTexto').innerHTML = texto;
+      document.getElementById('historialBox').style.display = 'block';
+    } catch (e) {}
+  }
+
+  // ============================================
+  // EVENTOS · SELECCIÓN DE ESTADO
+  // ============================================
+  document.getElementById('estadosLista').addEventListener('click', (e) => {
+    const btn = e.target.closest('.estado-btn');
+    if (!btn) return;
+    iniciarProtocolo(btn.dataset.estado);
+  });
+
+  // ============================================
+  // EVENTOS · PRÁCTICA
+  // ============================================
+  document.getElementById('btnPausar').addEventListener('click', function() {
+    if (state.pausado) {
+      state.pausado = false;
+      state.ultimoTimestamp = 0;
+      this.textContent = '⏸ Pausar';
+      state.rafId = requestAnimationFrame(loop);
+    } else {
+      state.pausado = true;
+      this.textContent = '▶ Reanudar';
+      detenerAnimacion();
+    }
+  });
+
+  document.getElementById('btnTerminar').addEventListener('click', () => {
+    if (confirm('¿Terminar la práctica ahora?')) {
+      finalizarProtocolo();
+    }
+  });
+
+  document.getElementById('btnCerrar').addEventListener('click', () => {
+    if (confirm('¿Salir sin completar la práctica?')) {
+      detenerAnimacion();
+      mostrarPantalla('select');
+    }
+  });
+
+  // ============================================
+  // EVENTOS · CHECK-OUT
+  // ============================================
+  document.getElementById('escalaEmocional').addEventListener('click', (e) => {
+    const btn = e.target.closest('.escala-btn');
+    if (!btn) return;
+    document.querySelectorAll('.escala-btn').forEach(b => b.classList.remove('seleccionado'));
+    btn.classList.add('seleccionado');
+  });
+
+  // ============================================
+  // COMPARTIR
+  // ============================================
+  document.getElementById('btnCompartir').addEventListener('click', async () => {
+    const url = window.location.href;
+    const texto = 'Pausa Lyon: respiración guiada y diario terapéutico gratuito. Una herramienta de Lyon Asesor.';
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Pausa Lyon',
+          text: texto,
+          url: url
+        });
+      } catch (e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${texto} ${url}`);
+        alert('Enlace copiado al portapapeles');
+      } catch (e) {
+        prompt('Copia este enlace:', url);
+      }
+    }
+  });
+
+  // ============================================
+  // BLOQUEO DE SALIDA ACCIDENTAL DURANTE PRÁCTICA
+  // ============================================
+  window.addEventListener('beforeunload', (e) => {
+    if (state.pantallaActual === 'practice' && state.totalElapsed > 10) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  console.log('%c🧘 Pausa Lyon v3.0.1', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
+
+})();
+</script>
+
+</body>
+</html>
