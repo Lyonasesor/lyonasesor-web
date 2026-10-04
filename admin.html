@@ -93,45 +93,23 @@
             overflow: hidden;
         }
         .collapsible-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            cursor: pointer;
-            background: white;
-            transition: background 0.2s;
-            user-select: none;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px; cursor: pointer; background: white;
+            transition: background 0.2s; user-select: none;
         }
         .collapsible-header:hover { background: #f8fafc; }
         .collapsible-header h2 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.15rem; font-weight: 700; color: #0f172a; margin: 0;
+            display: flex; align-items: center; gap: 10px;
         }
-        .collapsible-header .subtitle {
-            font-size: 0.82rem;
-            color: #94a3b8;
-            font-weight: 400;
-            margin-top: 4px;
-        }
+        .collapsible-header .subtitle { font-size: 0.82rem; color: #94a3b8; font-weight: 400; margin-top: 4px; }
         .collapsible-header .toggle-icon {
-            font-size: 1.3rem;
-            color: #64748b;
-            transition: transform 0.3s ease;
-            font-weight: bold;
-            flex-shrink: 0;
+            font-size: 1.3rem; color: #64748b; transition: transform 0.3s ease;
+            font-weight: bold; flex-shrink: 0;
         }
         .collapsible-section.collapsed .collapsible-body { display: none; }
-        .collapsible-section.collapsed .collapsible-header .toggle-icon {
-            transform: rotate(-90deg);
-        }
-        .collapsible-body {
-            padding: 0 24px 24px;
-        }
+        .collapsible-section.collapsed .collapsible-header .toggle-icon { transform: rotate(-90deg); }
+        .collapsible-body { padding: 0 24px 24px; }
 
         .config-card {
             background: white; border-radius: 20px; border: 1px solid #f1f5f9;
@@ -202,6 +180,8 @@
         .badge-pendiente { background: #fee2e2; color: #991b1b; }
         .badge-gratis { background: #dbeafe; color: #1e40af; }
         .badge-tipo { background: #eef2ff; color: #4338ca; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .badge-personal { background: #fef3c7; color: #92400e; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .badge-empresarial { background: #dbeafe; color: #1e40af; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
         .badge-ncf-si { background: #dcfce7; color: #166534; }
         .badge-ncf-no { background: #fef9c3; color: #854d0e; }
         .btn-pagar {
@@ -235,28 +215,13 @@
         .btn-rechazar:hover { background: #dc2626; }
 
         .ncf-input {
-            padding: 6px 10px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.82rem;
-            width: 130px;
+            padding: 6px 10px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+            font-family: monospace; font-size: 0.82rem; width: 130px;
         }
-        .ncf-input:focus {
-            border-color: #e86b18;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(232,107,24,0.1);
-        }
+        .ncf-input:focus { border-color: #e86b18; outline: none; box-shadow: 0 0 0 3px rgba(232,107,24,0.1); }
         .ncf-save-btn {
-            padding: 5px 12px;
-            border-radius: 8px;
-            border: none;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            background: #2563eb;
-            color: white;
-            margin-left: 4px;
+            padding: 5px 12px; border-radius: 8px; border: none; font-size: 0.72rem;
+            font-weight: 700; cursor: pointer; background: #2563eb; color: white; margin-left: 4px;
         }
         .ncf-save-btn:hover { background: #1d4ed8; }
 
@@ -303,23 +268,61 @@
         .modal-box .btn-modal:hover { background: #d45f14; }
 
         .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #1e88e5;
-            padding: 14px 18px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            color: #0d47a1;
-            margin-bottom: 16px;
-            line-height: 1.6;
+            background: #e3f2fd; border-left: 4px solid #1e88e5;
+            padding: 14px 18px; border-radius: 10px;
+            font-size: 0.85rem; color: #0d47a1; margin-bottom: 16px; line-height: 1.6;
         }
         .info-box strong { color: #0d47a1; }
-
         .info-box.warning {
-            background: #fff7ed;
-            border-left-color: #e86b18;
-            color: #7c2d12;
+            background: #fff7ed; border-left-color: #e86b18; color: #7c2d12;
         }
         .info-box.warning strong { color: #7c2d12; }
+
+        /* ============================================
+           VERIFICACIÓN DE PAGOS MENSUALES
+           ============================================ */
+        .pagos-mensuales-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px;
+        }
+        .pago-card {
+            background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 16px;
+            padding: 18px 20px;
+        }
+        .pago-card .pago-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 14px; gap: 12px; flex-wrap: wrap;
+        }
+        .pago-card .pago-nombre { font-weight: 700; font-size: 1rem; color: #0f172a; }
+        .pago-card .pago-codigo { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+        .pago-card .pago-plan-badge {
+            display: inline-block; font-size: 0.65rem; padding: 3px 10px; border-radius: 40px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .pago-card .pago-plan-badge.personal { background: #fef3c7; color: #92400e; }
+        .pago-card .pago-plan-badge.empresarial { background: #dbeafe; color: #1e40af; }
+
+        .meses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+        .mes-chip {
+            padding: 12px 8px; border-radius: 10px; text-align: center;
+            border: 2px solid #e2e8f0; background: white; font-size: 0.8rem;
+            cursor: pointer; transition: 0.2s;
+        }
+        .mes-chip:hover { transform: translateY(-1px); }
+        .mes-chip .mes-num { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.5px; color: #64748b; }
+        .mes-chip .mes-icono { font-size: 1.2rem; display: block; margin: 3px 0; }
+        .mes-chip .mes-estado { font-size: 0.68rem; font-weight: 600; }
+        .mes-chip.pagado { background: #f0fdf4; border-color: #86efac; }
+        .mes-chip.pagado .mes-estado { color: #166534; }
+        .mes-chip.pagado .mes-num { color: #166534; }
+        .mes-chip.pendiente { background: #fff7ed; border-color: #fed7aa; }
+        .mes-chip.pendiente .mes-estado { color: #9a3412; }
+        .mes-chip.pendiente .mes-num { color: #9a3412; }
+
+        .pago-card .pago-info {
+            font-size: 0.78rem; color: #64748b; margin-top: 12px;
+            padding-top: 12px; border-top: 1px dashed #e2e8f0;
+        }
+        .pago-card .pago-info strong { color: #475569; }
 
         /* ============================================
            EXPEDIENTE DEL PACIENTE (Panel del Terapeuta)
@@ -474,7 +477,6 @@
             font-style:italic;font-size:0.95rem;
         }
 
-        /* Informe Terapéutico dentro del expediente */
         .informe-view{
             background:#fff;border-radius:16px;padding:0;
         }
@@ -521,6 +523,8 @@
             .filters-bar select, .filters-bar input { min-width: 120px; }
             .collapsible-header { padding: 16px; }
             .collapsible-body { padding: 0 16px 16px; }
+            .pagos-mensuales-grid { grid-template-columns: 1fr; }
+            .meses-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 400px) { .stats-grid { grid-template-columns: 1fr; } }
 
@@ -668,11 +672,24 @@
             <div class="collapsible-header" onclick="toggleSection('sectionMiembros')">
                 <div>
                     <h2>🎓 Gestión de Miembros</h2>
-                    <div class="subtitle">Marca "Asistió al cierre" para desbloquear el diploma del Programa Completo</div>
+                    <div class="subtitle">Marca "Asistió a Magistral de Cierre" para desbloquear el diploma del Programa Completo</div>
                 </div>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="collapsible-body">
+                <div class="filters-bar">
+                    <select id="filtroTipoMiembro" onchange="renderTablaMiembros()">
+                        <option value="todos">Todos los planes</option>
+                        <option value="personal">👤 Personal</option>
+                        <option value="empresarial">🏢 Empresarial</option>
+                    </select>
+                    <select id="filtroEstadoMiembro" onchange="renderTablaMiembros()">
+                        <option value="todos">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="pausado">Pausados</option>
+                        <option value="finalizado">Finalizados</option>
+                    </select>
+                </div>
                 <div class="table-wrapper">
                     <div class="table-scroll">
                         <table>
@@ -680,12 +697,30 @@
                                 <tr>
                                     <th>Código</th><th>Nombre</th><th>Email</th><th>Plan</th><th>Inicio</th>
                                     <th>Clases</th><th>Próxima clase</th><th>Diplomas</th><th>Estado</th>
-                                    <th>Cierre</th><th>Acción</th>
+                                    <th>Magistral</th><th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="miembrosTableBody"><tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Cargando...</td></tr></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapsible-section" id="sectionPagosMensuales">
+            <div class="collapsible-header" onclick="toggleSection('sectionPagosMensuales')">
+                <div>
+                    <h2>💳 Verificación de Pagos Mensuales</h2>
+                    <div class="subtitle">Solo Plan Personal · Marca cada mes cuando verifiques el pago</div>
+                </div>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-body">
+                <div class="info-box">
+                    📌 <strong>Flujo:</strong> El miembro paga los primeros 3 días de cada mes y envía el comprobante. Al verificar el pago, marca el mes correspondiente aquí. Las clases del mes se desbloquean automáticamente. El <strong>Plan Empresarial</strong> no aparece aquí porque su desbloqueo es automático por fecha.
+                </div>
+                <div id="pagosMensualesList">
+                    <p style="color:#94a3b8;">Cargando miembros del Plan Personal...</p>
                 </div>
             </div>
         </div>
@@ -971,6 +1006,7 @@
     let allLeads = [];
     let libroVentasData = [];
     let aprobacionesContadorData = [];
+    let miembrosDataGlobal = {};
 
     // =============================================
     // FUNCIONES AUXILIARES
@@ -980,24 +1016,12 @@
         if (el) el.classList.toggle('collapsed');
     }
 
-    function esPlanAcelerado(plan) {
-        if (!plan || typeof plan !== 'string') return false;
-        return plan.toLowerCase().includes('acelerado');
-    }
-
-    function etiquetaPlanCorta(plan) {
-        return esPlanAcelerado(plan) ? 'Acelerado' : 'Extendido';
-    }
-
-    function diasEntreClases(plan) {
-        return esPlanAcelerado(plan) ? 14 : 30;
-    }
+    // NOTA: esPlanEmpresarial, esPlanPersonal, etiquetaPlan,
+    // mesDeClase, calcularFechaDesbloqueo, claseDesbloqueada,
+    // razonBloqueo, generarCodigoAcceso vienen de protocolos-data.js
 
     function generarCodigoAccesoAdmin(prefijo) {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let codigo = '';
-        for (let i = 0; i < 6; i++) codigo += chars.charAt(Math.floor(Math.random() * chars.length));
-        return `${prefijo}-${codigo}`;
+        return generarCodigoAcceso(prefijo);
     }
 
     function parsePrecioNumero(precioStr) {
@@ -1154,19 +1178,31 @@
                 const nombre = s.nombre || s.contacto || s.nombreCompleto || s.full_name || s.name || 'Estudiante';
                 const email = s.email || s.correo || '';
                 const telefono = s.telefono || s.phone || s.celular || '';
-                const plan = s.plan || s.tipoPlan || 'extendido';
+                const plan = s.plan || 'personal';
                 const pais = s.pais || 'Venezuela';
+                const esEmpresarial = esPlanEmpresarial(plan);
 
                 const codigo = generarCodigoAccesoAdmin('LYON');
 
-                await database.ref('membresias/' + codigo).set({
+                // Crear miembro con pagosMensuales vacíos para plan Personal
+                const pagosIniciales = esEmpresarial ? null : {
+                    mes1: { pagado: false, fecha: null, fechaLegible: null },
+                    mes2: { pagado: false, fecha: null, fechaLegible: null },
+                    mes3: { pagado: false, fecha: null, fechaLegible: null },
+                    mes4: { pagado: false, fecha: null, fechaLegible: null }
+                };
+
+                const nuevoMiembro = {
                     nombre, email, telefono, plan,
                     fechaInicio: Date.now(),
                     estado: 'activo',
                     clasesCompletadas: {},
                     diplomasDescargados: {},
                     asistioCierre: false
-                });
+                };
+                if (pagosIniciales) nuevoMiembro.pagosMensuales = pagosIniciales;
+
+                await database.ref('membresias/' + codigo).set(nuevoMiembro);
 
                 await database.ref('solicitudes_membresia/' + id).update({
                     estado: 'aprobada',
@@ -1181,12 +1217,12 @@
                 await registrarEnLibroVentas({
                     key: 'membresia_' + codigo,
                     tipo: 'membresia',
-                    descripcion: 'Membresía ' + (s.planLabel || plan),
+                    descripcion: 'Membresía ' + (s.planLabel || plan) + (esEmpresarial ? '' : ' — Mes 1'),
                     clienteNombre: nombre,
                     clienteEmail: email,
                     clienteUbicacion: esVE ? 'VE' : 'exterior',
                     clientePais: pais,
-                    montoUSD: montoUSD,
+                    montoUSD: esEmpresarial ? montoUSD : (montoUSD || 10.99),
                     refOriginal: codigo
                 });
 
@@ -1194,10 +1230,18 @@
                     '🎓 Membresía aprobada',
                     `El código de acceso para <strong>${nombre}</strong> es:`,
                     codigo,
-                    'Compártelo por correo o WhatsApp. El usuario debe ingresarlo en la página de membresía.'
+                    esEmpresarial
+                        ? 'Plan Empresarial. El desbloqueo es automático cada 10 días. Comparte el código por correo o WhatsApp.'
+                        : 'Plan Personal. Ahora debes verificar el pago del mes 1 en la sección "Verificación de Pagos Mensuales" para desbloquear las primeras clases.'
                 );
 
-                await Promise.all([cargarSolicitudes(), cargarMiembros(), cargarAfiliados(), cargarLibroVentas()]);
+                await Promise.all([
+                    cargarSolicitudes(),
+                    cargarMiembros(),
+                    cargarAfiliados(),
+                    cargarLibroVentas(),
+                    cargarPagosMensuales()
+                ]);
 
             } else if (tipo === 'Afiliado') {
                 const snap = await database.ref('solicitudes_afiliado/' + id).once('value');
@@ -1288,7 +1332,8 @@
             cargarLibroVentas(),
             cargarAprobacionesContador(),
             cargarSolicitudesConsultorio(),
-            cargarPacientesConsultorio()
+            cargarPacientesConsultorio(),
+            cargarPagosMensuales()
         ]);
         actualizarStatsConsultorio();
     }
@@ -1348,69 +1393,91 @@
     // GESTIÓN DE MIEMBROS
     // =============================================
     async function cargarMiembros() {
-        const tbody = document.getElementById('miembrosTableBody');
         try {
             const snap = await database.ref('membresias').once('value');
-            const data = snap.val() || {};
-            const codigos = Object.keys(data);
-            if (codigos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Sin miembros activos aún.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = codigos.map(codigo => {
-                const m = data[codigo];
-                const completadas = Object.keys(m.clasesCompletadas || {}).length;
-                const diplomas = Object.keys(m.diplomasDescargados || {}).length;
-                const dias = diasEntreClases(m.plan);
-                const etiquetaPlan = etiquetaPlanCorta(m.plan);
-                const proxNum = Math.min(completadas + 1, 12);
-                const proxFecha = new Date((m.fechaInicio || Date.now()) + dias * (proxNum - 1) * 86400000);
-                const asistio = m.asistioCierre === true;
-                const clasesCompletas = completadas >= 12;
-
-                let botonCierre;
-                if (clasesCompletas) {
-                    botonCierre = asistio
-                        ? `<button class="btn-cierre si" onclick="toggleAsistioCierre('${codigo}', false)">✅ Sí asistió</button>`
-                        : `<button class="btn-cierre no" onclick="toggleAsistioCierre('${codigo}', true)">⛔ No asistió</button>`;
-                } else {
-                    botonCierre = `<span style="color:#cbd5e1; font-size:0.7rem;">—</span>`;
-                }
-
-                return `
-                <tr>
-                    <td>${codigo}</td>
-                    <td>${m.nombre || ''}</td>
-                    <td>${m.email || ''}</td>
-                    <td>${etiquetaPlan}</td>
-                    <td>${m.fechaInicio ? new Date(m.fechaInicio).toLocaleDateString('es-ES') : '—'}</td>
-                    <td>${completadas}/12</td>
-                    <td>${completadas >= 12 ? '—' : proxFecha.toLocaleDateString('es-ES')}</td>
-                    <td>${diplomas}</td>
-                    <td>${m.estado || 'activo'}</td>
-                    <td>${botonCierre}</td>
-                    <td>
-                        <select onchange="cambiarEstadoMiembro('${codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
-                            <option value="activo" ${m.estado==='activo'?'selected':''}>Activo</option>
-                            <option value="pausado" ${m.estado==='pausado'?'selected':''}>Pausado</option>
-                            <option value="finalizado" ${m.estado==='finalizado'?'selected':''}>Finalizado</option>
-                        </select>
-                    </td>
-                </tr>`;
-            }).join('');
+            miembrosDataGlobal = snap.val() || {};
+            renderTablaMiembros();
         } catch (e) {
             console.error('Error cargando miembros:', e);
-            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
+            document.getElementById('miembrosTableBody').innerHTML =
+                '<tr><td colspan="11" style="text-align:center; color:#ef4444;">Error al cargar.</td></tr>';
         }
     }
 
+    function renderTablaMiembros() {
+        const tbody = document.getElementById('miembrosTableBody');
+        const filtroTipo = document.getElementById('filtroTipoMiembro').value;
+        const filtroEstado = document.getElementById('filtroEstadoMiembro').value;
+
+        let codigos = Object.keys(miembrosDataGlobal);
+
+        if (filtroTipo === 'personal') {
+            codigos = codigos.filter(c => esPlanPersonal(miembrosDataGlobal[c].plan));
+        } else if (filtroTipo === 'empresarial') {
+            codigos = codigos.filter(c => esPlanEmpresarial(miembrosDataGlobal[c].plan));
+        }
+        if (filtroEstado !== 'todos') {
+            codigos = codigos.filter(c => (miembrosDataGlobal[c].estado || 'activo') === filtroEstado);
+        }
+
+        if (codigos.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:2rem; color:#94a3b8;">Sin miembros que coincidan con el filtro.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = codigos.map(codigo => {
+            const m = miembrosDataGlobal[codigo];
+            const completadas = Object.keys(m.clasesCompletadas || {}).length;
+            const diplomas = Object.keys(m.diplomasDescargados || {}).length;
+            const proxNum = Math.min(completadas + 1, 12);
+            const proxFecha = new Date((m.fechaInicio || Date.now()) + LYON_DIAS_ENTRE_CLASES * (proxNum - 1) * 86400000);
+            const asistio = m.asistioCierre === true;
+            const clasesCompletas = completadas >= 12;
+
+            // Badge de plan
+            const badgePlan = esPlanEmpresarial(m.plan)
+                ? '<span class="badge badge-empresarial">🏢 Empresarial</span>'
+                : '<span class="badge badge-personal">👤 Personal</span>';
+
+            let botonCierre;
+            if (clasesCompletas) {
+                botonCierre = asistio
+                    ? `<button class="btn-cierre si" onclick="toggleAsistioCierre('${codigo}', false)">✅ Asistió</button>`
+                    : `<button class="btn-cierre no" onclick="toggleAsistioCierre('${codigo}', true)">⛔ No asistió</button>`;
+            } else {
+                botonCierre = `<span style="color:#cbd5e1; font-size:0.7rem;">—</span>`;
+            }
+
+            return `
+            <tr>
+                <td>${codigo}</td>
+                <td>${m.nombre || ''}</td>
+                <td>${m.email || ''}</td>
+                <td>${badgePlan}</td>
+                <td>${m.fechaInicio ? new Date(m.fechaInicio).toLocaleDateString('es-ES') : '—'}</td>
+                <td>${completadas}/12</td>
+                <td>${completadas >= 12 ? '—' : proxFecha.toLocaleDateString('es-ES')}</td>
+                <td>${diplomas}</td>
+                <td>${m.estado || 'activo'}</td>
+                <td>${botonCierre}</td>
+                <td>
+                    <select onchange="cambiarEstadoMiembro('${codigo}', this.value)" style="padding:4px 8px; border-radius:6px;">
+                        <option value="activo" ${m.estado==='activo'?'selected':''}>Activo</option>
+                        <option value="pausado" ${m.estado==='pausado'?'selected':''}>Pausado</option>
+                        <option value="finalizado" ${m.estado==='finalizado'?'selected':''}>Finalizado</option>
+                    </select>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
     window.cambiarEstadoMiembro = function(codigo, estado) {
-        database.ref('membresias/' + codigo + '/estado').set(estado);
+        database.ref('membresias/' + codigo + '/estado').set(estado).then(() => cargarMiembros());
     };
 
     window.toggleAsistioCierre = async function(codigo, valor) {
         if (!confirm(valor
-            ? '¿Confirmas que este miembro SÍ asistió al evento de cierre? Se desbloqueará su diploma del Programa Completo (300h).'
+            ? '¿Confirmas que este miembro SÍ asistió a la Magistral de Cierre? Se desbloqueará su diploma del Programa Completo (300h).'
             : '¿Marcar como NO asistió? Se bloqueará el diploma del Programa Completo hasta que lo marques de nuevo.')) return;
         try {
             await database.ref('membresias/' + codigo + '/asistioCierre').set(valor);
@@ -1421,6 +1488,104 @@
             await cargarMiembros();
         } catch (e) {
             console.error('❌ Error al actualizar asistioCierre:', e);
+            alert('Error: ' + e.message);
+        }
+    };
+
+    // =============================================
+    // VERIFICACIÓN DE PAGOS MENSUALES (solo Plan Personal)
+    // =============================================
+    async function cargarPagosMensuales() {
+        const container = document.getElementById('pagosMensualesList');
+        try {
+            const snap = await database.ref('membresias').once('value');
+            const data = snap.val() || {};
+
+            const personal = Object.entries(data)
+                .filter(([codigo, m]) => esPlanPersonal(m.plan))
+                .map(([codigo, m]) => ({ codigo, ...m }));
+
+            if (personal.length === 0) {
+                container.innerHTML = '<p style="color:#94a3b8; padding:1rem 0;">No hay miembros del Plan Personal registrados aún.</p>';
+                return;
+            }
+
+            container.innerHTML = '<div class="pagos-mensuales-grid">' + personal.map(m => {
+                const pagos = m.pagosMensuales || {};
+                const chips = [1, 2, 3, 4].map(mes => {
+                    const campo = 'mes' + mes;
+                    const info = pagos[campo] || {};
+                    const pagado = info.pagado === true;
+                    const clase = pagado ? 'pagado' : 'pendiente';
+                    const icono = pagado ? '✅' : '⏳';
+                    const estado = pagado ? 'Pagado' : 'Pendiente';
+                    const onclick = pagado
+                        ? `onclick="desmarcarMes('${m.codigo}', ${mes})"`
+                        : `onclick="marcarMes('${m.codigo}', ${mes})"`;
+                    return `
+                        <div class="mes-chip ${clase}" ${onclick} title="Clic para ${pagado ? 'desmarcar' : 'marcar'} este mes">
+                            <div class="mes-num">MES ${mes}</div>
+                            <span class="mes-icono">${icono}</span>
+                            <div class="mes-estado">${estado}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                const totalPagado = Object.values(pagos).filter(p => p.pagado).length;
+                const inicio = m.fechaInicio ? new Date(m.fechaInicio).toLocaleDateString('es-ES') : '—';
+
+                return `
+                    <div class="pago-card">
+                        <div class="pago-header">
+                            <div>
+                                <div class="pago-nombre">${escapeHtmlAdmin(m.nombre || 'Sin nombre')}</div>
+                                <div class="pago-codigo">${m.codigo}</div>
+                            </div>
+                            <span class="pago-plan-badge personal">👤 Personal</span>
+                        </div>
+                        <div class="meses-grid">${chips}</div>
+                        <div class="pago-info">
+                            <strong>${totalPagado} de 4</strong> meses verificados · Inicio: <strong>${inicio}</strong>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+
+        } catch (e) {
+            console.error('Error cargando pagos mensuales:', e);
+            container.innerHTML = '<p style="color:#ef4444;">Error al cargar los pagos mensuales.</p>';
+        }
+    }
+
+    window.marcarMes = async function(codigo, mes) {
+        if (!confirm(`¿Confirmas que verificaste el pago del mes ${mes} para este miembro?`)) return;
+        try {
+            await database.ref(`membresias/${codigo}/pagosMensuales/mes${mes}`).set({
+                pagado: true,
+                fecha: Date.now(),
+                fechaLegible: new Date().toLocaleString('es-ES'),
+                verificadoPor: 'admin'
+            });
+            console.log(`✅ Mes ${mes} marcado como pagado para ${codigo}`);
+            await Promise.all([cargarPagosMensuales(), cargarMiembros()]);
+        } catch (e) {
+            console.error('Error marcando mes:', e);
+            alert('Error: ' + e.message);
+        }
+    };
+
+    window.desmarcarMes = async function(codigo, mes) {
+        if (!confirm(`¿Desmarcar el pago del mes ${mes}? Las clases de ese mes se bloquearán.`)) return;
+        try {
+            await database.ref(`membresias/${codigo}/pagosMensuales/mes${mes}`).set({
+                pagado: false,
+                fecha: Date.now(),
+                fechaLegible: new Date().toLocaleString('es-ES')
+            });
+            console.log(`↩️ Mes ${mes} desmarcado para ${codigo}`);
+            await Promise.all([cargarPagosMensuales(), cargarMiembros()]);
+        } catch (e) {
+            console.error('Error desmarcando mes:', e);
             alert('Error: ' + e.message);
         }
     };
@@ -1733,9 +1898,6 @@
         }
     };
 
-    // =============================================
-    // EXPORTAR LIBRO DE VENTAS: CSV
-    // =============================================
     window.exportarLibroVentasCSV = function() {
         if (libroVentasData.length === 0) { alert('No hay registros para exportar.'); return; }
 
@@ -1776,9 +1938,6 @@
         URL.revokeObjectURL(url);
     };
 
-    // =============================================
-    // EXPORTAR LIBRO DE VENTAS: PDF
-    // =============================================
     window.exportarLibroVentasPDF = function() {
         if (libroVentasData.length === 0) { alert('No hay registros para exportar.'); return; }
 
@@ -1797,7 +1956,7 @@
         doc.text('LYON ASESOR, F.P.', 14, 15);
         doc.setFontSize(10);
         doc.setTextColor(100, 116, 139);
-        doc.text('RIF: V-17633035-6 | info@lyonasesor.com | lyonasesor.com', 14, 21);
+        doc.text('RIF: V-1763***5-6 | info@lyonasesor.com | lyonasesor.com', 14, 21);
         doc.setFontSize(13);
         doc.setTextColor(15, 23, 42);
         doc.text('Libro de Ventas', 14, 30);
@@ -2080,7 +2239,6 @@
 
     // =============================================
     // TABLA PRINCIPAL (Leads)
-    // ✅ FIX aplicado: badge "Gratis" para registro-gratuito
     // =============================================
     function renderTabla() {
         const tipoFiltro = document.getElementById('tipoFiltro').value;
@@ -2112,7 +2270,6 @@
             const pagado = item.pagado || false;
             const esGratuito = item.origen === 'registro-gratuito';
 
-            // ✅ FIX: tres tipos de badge (Gratis / Pagado / Pendiente)
             let estadoBadge;
             if (esGratuito) {
                 estadoBadge = '<span class="badge badge-gratis">🎓 Gratis</span>';
@@ -2404,10 +2561,9 @@
       } catch (e) { console.error(e); }
     }
 
-    /* =============================================
-       EXPEDIENTE DEL PACIENTE (Panel del Terapeuta)
-       ============================================= */
-
+    // =============================================
+    // EXPEDIENTE DEL PACIENTE (Panel del Terapeuta)
+    // =============================================
     window.verDetallePaciente = async function(codigo) {
       try {
         const snap = await database.ref('pacientes_consultorio/' + codigo).once('value');
@@ -2431,7 +2587,6 @@
           <div><strong>Registrado:</strong> ${p.fechaRegistro ? new Date(p.fechaRegistro).toLocaleDateString('es-ES') : '—'}</div>
         `;
 
-        // === TAB 1: RESPUESTAS ===
         let respuestasHtml = '';
 
         if (totalCompletados === 0) {
@@ -2459,7 +2614,6 @@
           });
         }
 
-        // Notas privadas al final del tab de respuestas
         respuestasHtml += `
           <div class="exp-notas">
             <h3>📝 Notas privadas del terapeuta</h3>
@@ -2471,7 +2625,6 @@
 
         document.getElementById('expTabRespuestas').innerHTML = respuestasHtml;
 
-        // === TAB 2: INFORME TERAPÉUTICO ===
         const informeHtml = p.informeFinalTexto
           ? `<div class="informe-view">${p.informeFinalTexto}</div>`
           : `<div class="exp-empty">
@@ -2708,8 +2861,7 @@
         if (user && user.email === ADMIN_EMAIL) cargarTodosLosDatos();
     }, 30000);
 
-    console.log('✅ Admin Lyon Asesor cargado con Libro de Ventas, Aprobación del Contador, Consultorio Privado y Panel del Terapeuta');
-    console.log('✅ FIX v2 aplicado: badges diferenciados Gratis / Pagado / Pendiente para leads de conferencia');
+    console.log('✅ Admin Lyon Asesor v2.0 cargado — Planes Personal/Empresarial, Pagos Mensuales, Magistral de Cierre');
 </script>
 </body>
 </html>
