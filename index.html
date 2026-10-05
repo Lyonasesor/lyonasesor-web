@@ -95,6 +95,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.pexels.com" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
     <style>
@@ -198,6 +199,8 @@
 
         /* ============================================
            IMAGEN CINEMATOGRÁFICA CON KEN-BURNS LENTO
+           La URL base se define aquí como fallback.
+           El JS rota dinámicamente entre 6 imágenes.
            ============================================ */
         .hero-bg-image {
             position: absolute;
@@ -212,6 +215,12 @@
             z-index: 0;
             animation: kenBurns 45s ease-in-out infinite;
             will-change: transform;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        .hero-bg-image.loaded {
+            opacity: 1;
         }
 
         @keyframes kenBurns {
@@ -651,7 +660,7 @@
     </nav>
 
     <section class="hero" id="hero">
-        <div class="hero-bg-image" aria-hidden="true"></div>
+        <div class="hero-bg-image" id="heroBgImage" aria-hidden="true"></div>
         <div class="hero-bg-overlay" aria-hidden="true"></div>
         <div class="hero-particles" id="particles"></div>
         <div class="hero-waves">
@@ -959,6 +968,46 @@
     </button>
 
     <script>
+        // =============================================
+        // ROTACIÓN AUTOMÁTICA DE IMÁGENES DEL HERO
+        // =============================================
+        (function rotacionHero() {
+            const IMAGENES_HERO = [
+                'https://images.pexels.com/photos/4434592/pexels-photo-4434592.jpeg?auto=compress&cs=tinysrgb&w=2560',
+                'https://images.pexels.com/photos/32505700/pexels-photo-32505700.jpeg?auto=compress&cs=tinysrgb&w=2560',
+                'https://images.pexels.com/photos/33407030/pexels-photo-33407030.jpeg?auto=compress&cs=tinysrgb&w=2560',
+                'https://images.pexels.com/photos/34960157/pexels-photo-34960157.jpeg?auto=compress&cs=tinysrgb&w=2560',
+                'https://images.pexels.com/photos/22270037/pexels-photo-22270037.jpeg?auto=compress&cs=tinysrgb&w=2560',
+                'https://images.pexels.com/photos/10840391/pexels-photo-10840391.jpeg?auto=compress&cs=tinysrgb&w=2560'
+            ];
+
+            const heroBg = document.getElementById('heroBgImage');
+            if (!heroBg) return;
+
+            // Elegir imagen: evita repetir la última vista por el mismo usuario
+            let ultimaVista = null;
+            try { ultimaVista = localStorage.getItem('lyon_hero_last'); } catch (e) {}
+
+            let disponibles = IMAGENES_HERO.filter(url => url !== ultimaVista);
+            if (disponibles.length === 0) disponibles = IMAGENES_HERO;
+
+            const elegida = disponibles[Math.floor(Math.random() * disponibles.length)];
+
+            // Precargar la imagen antes de mostrarla
+            const img = new Image();
+            img.onload = function() {
+                heroBg.style.backgroundImage = "url('" + elegida + "')";
+                heroBg.classList.add('loaded');
+                try { localStorage.setItem('lyon_hero_last', elegida); } catch (e) {}
+            };
+            img.onerror = function() {
+                // Fallback: si la imagen falla, mostrar la primera del array
+                heroBg.style.backgroundImage = "url('" + IMAGENES_HERO[0] + "')";
+                heroBg.classList.add('loaded');
+            };
+            img.src = elegida;
+        })();
+
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
