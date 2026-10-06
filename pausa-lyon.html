@@ -622,7 +622,7 @@ html, body {
 }
 
 /* ============================================
-   DIARIO · ANÁLISIS
+   DIARIO · REFLEXIÓN
    ============================================ */
 .entry-analisis {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
@@ -900,7 +900,7 @@ html, body {
           <span class="icono">📖</span>
           <span class="contenido">
             <b>Diario Terapéutico</b>
-            <span>30 días de escritura guiada con análisis automático</span>
+            <span>30 días de escritura guiada con reflexión diaria</span>
             <span class="badge-progreso" id="badgeProgresoDiario">Un mes completo</span>
           </span>
         </button>
@@ -1100,7 +1100,7 @@ html, body {
       <div id="entryPreguntas"></div>
 
       <div class="entry-acciones">
-        <button class="journal-btn primario" id="btnGuardarEntrada">💾 Guardar y analizar</button>
+        <button class="journal-btn primario" id="btnGuardarEntrada">💾 Guardar y reflexionar</button>
         <button class="journal-btn" id="btnCancelarEntrada">Cancelar</button>
       </div>
 
@@ -1188,7 +1188,79 @@ html, body {
   }
 
   // ============================================
-  // RASTREO DE APERTURA (ejecutar al inicio)
+  // REFLEXIONES DEL DIARIO
+  // ============================================
+  const REFLEXIONES_DIA = [
+    // Día 1
+    'Hoy comenzaste. Es el paso que la mayoría no da.',
+    // Día 2
+    'Volviste. Eso significa que algo dentro de ti quiere seguir.',
+    // Día 3
+    'Los primeros días son de reconocimiento. No de soluciones.',
+    // Día 4
+    'La honestidad con uno mismo incomoda. No es una mala señal.',
+    // Día 5
+    'Si te costó escribir hoy, eso también es información valiosa.',
+    // Día 6
+    'Empiezas a notar patrones. Eso es el principio del cambio.',
+    // Día 7
+    'Una semana. Tu sistema nervioso ya sabe que este espacio existe.',
+    // Día 8
+    'Hoy el cuerpo habló. Escúchalo también fuera de este diario.',
+    // Día 9
+    'Distinguir emoción de pensamiento es una de las habilidades más valiosas.',
+    // Día 10
+    'Diez días. Los cambios no son dramáticos, pero están ahí.',
+    // Día 11
+    'Lo que evitas decir también comunica algo sobre ti.',
+    // Día 12
+    'Aquello que proteges con más fuerza suele ser lo más frágil.',
+    // Día 13
+    'Escribir sin audiencia es un ejercicio de autenticidad poco común.',
+    // Día 14
+    'Casi dos semanas. El ritmo ya es tuyo.',
+    // Día 15
+    'La mitad del recorrido. A veces aquí aparece el cansancio.',
+    // Día 16
+    'El peso que cargas también tiene historia. Y también puede soltarse.',
+    // Día 17
+    'Lo que heredaste no lo elegiste. Pero sí puedes decidir qué hacer con ello.',
+    // Día 18
+    'No escribes para encontrar respuestas. Escribes para escucharte.',
+    // Día 19
+    'El control da seguridad, pero también limita. Hoy vale la pena notarlo.',
+    // Día 20
+    'Veinte días. Ya no eres la misma persona que empezó.',
+    // Día 21
+    'Algo se está moviendo. No hace falta que sepas qué exactamente.',
+    // Día 22
+    'Los patrones viejos vuelven cuando algo nuevo se asoma. Es normal.',
+    // Día 23
+    'Estás aprendiendo a sostener lo nuevo sin abandonar lo que eras.',
+    // Día 24
+    'Integrar no es olvidar. Es hacer espacio para lo nuevo sin perder lo viejo.',
+    // Día 25
+    'Cinco días para cerrar. No todo tiene que quedar resuelto.',
+    // Día 26
+    'Ahora sabes cosas que no sabías. ¿Las estás aplicando?',
+    // Día 27
+    'Reconoce también lo que todavía no entiendes. Es parte del proceso.',
+    // Día 28
+    'Estás cerca. El cierre no es el final, es la transición.',
+    // Día 29
+    'Última reflexión completa antes del cierre. Nota cómo llegaste aquí.',
+    // Día 30
+    'Treinta días. Este espacio fue tuyo. Y ahora podrás llevarlo contigo.'
+  ];
+
+  const CIERRES_POLARIDAD = {
+    positiva: 'Reconoce lo que hiciste hoy. No es casualidad — es tu trabajo interior.',
+    negativa: 'No tienes que resolver todo hoy. Basta con haberlo escrito. Escribirlo ya es un paso.',
+    neutra:   'La claridad no siempre viene con emoción. A veces viene con presencia. Y hoy estuviste aquí.'
+  };
+
+  // ============================================
+  // RASTREO DE APERTURA
   // ============================================
   (function registrarApertura() {
     const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
@@ -1573,23 +1645,13 @@ html, body {
     if (contPos > contNeg) polaridad = 'positiva';
     else if (contNeg > contPos) polaridad = 'negativa';
 
-    let mensaje = '';
-    if (polaridad === 'positiva') {
-      mensaje = 'Hoy tu escritura refleja un estado mayormente positivo. Reconoce eso — no es casualidad, es tu trabajo interior.';
-    } else if (polaridad === 'negativa') {
-      mensaje = 'Tu escritura refleja emociones difíciles. No estás roto. Estás sintiendo. Y eso, en sí mismo, ya es un paso.';
-    } else {
-      mensaje = 'Tu escritura está en equilibrio entre lo que pesa y lo que sostiene. La claridad también es un logro.';
-    }
-
     return {
       polaridad: polaridad,
       totalPalabras: totalPalabras,
       totalCaracteres: texto.length,
       contPos: contPos,
       contNeg: contNeg,
-      topPalabras: topPalabras,
-      mensaje: mensaje
+      topPalabras: topPalabras
     };
   }
 
@@ -1660,7 +1722,7 @@ html, body {
 
     const analisisBox = document.getElementById('entryAnalisis');
     if (entrada && entrada.analisis) {
-      renderAnalisis(entrada.analisis);
+      renderReflexion(entrada.analisis);
     } else {
       analisisBox.classList.remove('visible');
       analisisBox.innerHTML = '';
@@ -1669,14 +1731,20 @@ html, body {
     mostrarPantalla('journal-entry');
   }
 
-  function renderAnalisis(analisis) {
+  function renderReflexion(analisis) {
     const box = document.getElementById('entryAnalisis');
     const topPalabras = analisis.topPalabras && analisis.topPalabras.length
       ? analisis.topPalabras.map(function(p) { return p.palabra; }).slice(0, 5).join(', ')
       : '—';
 
+    // Reflexión del día + cierre por polaridad
+    const dia = state.diaActualDiario;
+    const reflexionBase = REFLEXIONES_DIA[Math.min(dia - 1, REFLEXIONES_DIA.length - 1)] || REFLEXIONES_DIA[0];
+    const cierre = CIERRES_POLARIDAD[analisis.polaridad] || CIERRES_POLARIDAD.neutra;
+    const reflexionFinal = reflexionBase + ' ' + cierre;
+
     box.innerHTML =
-      '<div class="ea-kicker">Análisis automático</div>' +
+      '<div class="ea-kicker">Reflexión para ti</div>' +
       '<h3>Tu escritura de hoy</h3>' +
       '<div class="ea-metricas">' +
         '<div class="ea-metrica"><div class="em-valor">' + analisis.totalPalabras + '</div><div class="em-label">Palabras</div></div>' +
@@ -1684,7 +1752,7 @@ html, body {
         '<div class="ea-metrica"><div class="em-valor">' + analisis.contNeg + '</div><div class="em-label">Emociones difíciles</div></div>' +
       '</div>' +
       '<div class="ea-palabras"><strong>Palabras más repetidas:</strong> ' + topPalabras + '</div>' +
-      '<div class="ea-cierre">' + analisis.mensaje + '</div>';
+      '<div class="ea-cierre">' + reflexionFinal + '</div>';
     box.classList.add('visible');
   }
 
@@ -1735,7 +1803,7 @@ html, body {
       dispositivo: getDispositivo()
     });
 
-    renderAnalisis(analisis);
+    renderReflexion(analisis);
     renderCalendario();
 
     setTimeout(function() {
@@ -1868,7 +1936,7 @@ html, body {
     } catch (e) {}
   })();
 
-  console.log('%c📖 Pausa Lyon v3.3.1 — Respiración + Diario + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.4 — Reflexiones diarias + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
