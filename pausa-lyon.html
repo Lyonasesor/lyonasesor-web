@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1A2330">
 <title>Pausa Lyon · Respira, escribe, vuelve a ti</title>
 <meta name="description" content="Herramienta gratuita de Lyon Asesor: respiración guiada y diario terapéutico para regular tu sistema nervioso. Sin cuenta. Sin rastreo. Todo en tu dispositivo.">
@@ -66,11 +66,52 @@ html, body {
   overflow: hidden;
   font-family: var(--font-cuerpo);
   color: var(--texto);
-  background: var(--crema);
+  background: var(--navy-dark);
   -webkit-font-smoothing: antialiased;
 }
 
-#app { position: relative; height: 100vh; height: 100dvh; overflow: hidden; }
+/* ============================================
+   APP BASE — contiene gradiente y canvas
+   ============================================ */
+#app {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0F1720 0%, #1A2330 45%, #243042 100%);
+}
+
+/* Halo naranja decorativo (como en el index) */
+#app::before {
+  content: "";
+  position: absolute;
+  top: -300px; right: -300px;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,107,24,0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+#app::after {
+  content: "";
+  position: absolute;
+  bottom: -350px; left: -250px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,140,78,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#lyon-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+}
 
 .screen {
   position: absolute; inset: 0;
@@ -79,17 +120,27 @@ html, body {
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.5s;
   overflow-y: auto; overflow-x: hidden;
+  background: rgba(250, 248, 245, 0.88);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  z-index: 2;
 }
 .screen.active {
   opacity: 1; visibility: visible; transform: translateY(0);
-  transition-delay: 0s; z-index: 2;
+  transition-delay: 0s; z-index: 3;
+}
+
+/* Pantalla de práctica: fondo oscuro semi-transparente sobre las partículas */
+#screen-practice {
+  background: rgba(15, 23, 32, 0.72);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
 }
 
 /* ============================================
    HOME
    ============================================ */
 #screen-home {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
   padding: 32px 20px 40px;
 }
 
@@ -206,7 +257,7 @@ html, body {
 /* ============================================
    SELECT DE ESTADO
    ============================================ */
-#screen-select { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+#screen-select { padding: 32px 20px 40px; }
 .select-header { text-align: center; padding: 8px 0 28px; flex-shrink: 0; }
 .select-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -239,7 +290,6 @@ html, body {
    PRÁCTICA
    ============================================ */
 #screen-practice {
-  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
   color: #fff; padding: 24px 20px 32px; overflow: hidden;
 }
 .practice-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 20px; }
@@ -314,7 +364,7 @@ html, body {
 /* ============================================
    CHECK-OUT
    ============================================ */
-#screen-checkout { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+#screen-checkout { padding: 32px 20px 40px; }
 .checkout-inner { max-width: 480px; margin: 0 auto; width: 100%; }
 .checkout-header { text-align: center; padding: 20px 0 28px; }
 .checkout-titulo {
@@ -379,7 +429,7 @@ html, body {
 /* ============================================
    CAFÉ
    ============================================ */
-#screen-coffee { background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%); padding: 32px 20px 40px; }
+#screen-coffee { padding: 32px 20px 40px; }
 .coffee-inner { max-width: 480px; margin: 0 auto; width: 100%; }
 .coffee-header { text-align: center; padding: 20px 0 28px; }
 .coffee-icono { font-size: 58px; line-height: 1; margin-bottom: 14px; }
@@ -462,10 +512,7 @@ html, body {
 /* ============================================
    DIARIO · CALENDARIO
    ============================================ */
-#screen-journal-calendar {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
+#screen-journal-calendar { padding: 32px 20px 40px; }
 .journal-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .journal-header { text-align: center; padding: 8px 0 24px; }
 .journal-titulo {
@@ -566,10 +613,7 @@ html, body {
 /* ============================================
    DIARIO · ENTRADA
    ============================================ */
-#screen-journal-entry {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
+#screen-journal-entry { padding: 32px 20px 40px; }
 .entry-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .entry-header { text-align: center; padding: 8px 0 24px; }
 .entry-titulo {
@@ -683,10 +727,7 @@ html, body {
 /* ============================================
    DIARIO · RESUMEN
    ============================================ */
-#screen-journal-summary {
-  background: linear-gradient(180deg, var(--crema) 0%, #F2EDE4 100%);
-  padding: 32px 20px 40px;
-}
+#screen-journal-summary { padding: 32px 20px 40px; }
 .summary-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .summary-header { text-align: center; padding: 8px 0 24px; }
 .summary-titulo {
@@ -806,38 +847,20 @@ html, body {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.install-banner .ib-icono {
-  font-size: 28px;
-  flex-shrink: 0;
-}
-.install-banner .ib-texto {
-  flex: 1;
-  min-width: 0;
-}
+.install-banner .ib-icono { font-size: 28px; flex-shrink: 0; }
+.install-banner .ib-texto { flex: 1; min-width: 0; }
 .install-banner .ib-titulo {
-  font-weight: 700;
-  font-size: 14.5px;
-  margin-bottom: 2px;
-  color: #fff;
-  line-height: 1.25;
+  font-weight: 700; font-size: 14.5px;
+  margin-bottom: 2px; color: #fff; line-height: 1.25;
 }
 .install-banner .ib-desc {
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.4;
+  font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.4;
 }
 .install-banner .ib-btn {
   background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-family: var(--font-cuerpo);
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
+  color: #fff; border: none; padding: 10px 20px; border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 700; font-size: 13px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(232,107,24,0.4);
 }
 .install-banner .ib-btn:hover {
@@ -845,18 +868,12 @@ html, body {
   box-shadow: 0 6px 20px rgba(232,107,24,0.55);
 }
 .install-banner .ib-cerrar {
-  background: transparent;
-  border: none;
-  color: rgba(255,255,255,0.4);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px 6px;
-  flex-shrink: 0;
-  line-height: 1;
+  background: transparent; border: none;
+  color: rgba(255,255,255,0.4); font-size: 18px;
+  cursor: pointer; padding: 4px 6px;
+  flex-shrink: 0; line-height: 1;
 }
-.install-banner .ib-cerrar:hover {
-  color: rgba(255,255,255,0.8);
-}
+.install-banner .ib-cerrar:hover { color: rgba(255,255,255,0.8); }
 
 /* ============================================
    RESPONSIVE
@@ -871,14 +888,32 @@ html, body {
   .circulo-wrap { width: min(52vh, 240px); height: min(52vh, 240px); }
   .fase-nombre { font-size: 26px; }
 }
+
+/* ============================================
+   ACCESIBILIDAD / MOVIMIENTO REDUCIDO
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 </style>
 </head>
 <body>
 
 <div id="app">
 
+  <canvas id="lyon-particles" aria-hidden="true"></canvas>
+
   <!-- HOME -->
-  <section id="screen-home" class="screen active">
+  <section id="screen-home" class="screen active" aria-label="Pantalla de inicio">
     <div class="home-inner">
       <div class="home-header">
         <div class="logo-wordmark">Lyon<span class="acento">Asesor</span></div>
@@ -887,8 +922,8 @@ html, body {
       </div>
 
       <div class="home-modulos">
-        <button class="modulo-card" data-modulo="respirar">
-          <span class="icono">🧘</span>
+        <button class="modulo-card" data-modulo="respirar" aria-label="Abrir módulo Respirar">
+          <span class="icono" aria-hidden="true">🧘</span>
           <span class="contenido">
             <b>Respirar</b>
             <span>Cinco protocolos guiados según cómo llegas hoy</span>
@@ -896,8 +931,8 @@ html, body {
           </span>
         </button>
 
-        <button class="modulo-card" data-modulo="diario">
-          <span class="icono">📖</span>
+        <button class="modulo-card" data-modulo="diario" aria-label="Abrir Diario Terapéutico">
+          <span class="icono" aria-hidden="true">📖</span>
           <span class="contenido">
             <b>Diario Terapéutico</b>
             <span>30 días de escritura guiada con reflexión diaria</span>
@@ -905,8 +940,8 @@ html, body {
           </span>
         </button>
 
-        <button class="modulo-card" data-modulo="cafe">
-          <span class="icono">☕</span>
+        <button class="modulo-card" data-modulo="cafe" aria-label="Abrir Invítame un café">
+          <span class="icono" aria-hidden="true">☕</span>
           <span class="contenido">
             <b>Invítame un café</b>
             <span>Si esta app te sirvió, puedes apoyar a Lyon Asesor</span>
@@ -916,8 +951,8 @@ html, body {
       </div>
 
       <div class="home-pie">
-        Una herramienta de <a href="https://lyonasesor.com" target="_blank" rel="noopener">Lyon Asesor</a>
-        <span class="separador">·</span>
+        Una herramienta de <a href="https://lyonasesor.com" target="_blank" rel="noopener noreferrer">Lyon Asesor</a>
+        <span class="separador" aria-hidden="true">·</span>
         Neurociencia aplicada
         <br>
         Sin cuenta. Sin rastreo. Todo queda en tu dispositivo.
@@ -932,8 +967,8 @@ html, body {
   </section>
 
   <!-- SELECT DE ESTADO -->
-  <section id="screen-select" class="screen">
-    <button class="btn-back" data-ir="home">←</button>
+  <section id="screen-select" class="screen" aria-label="Selección de estado">
+    <button class="btn-back" data-ir="home" aria-label="Volver al inicio">←</button>
 
     <div class="select-header">
       <h1 class="select-titulo">¿Cómo llegas <em>hoy</em>?</h1>
@@ -941,46 +976,46 @@ html, body {
     </div>
 
     <div class="estados-lista" id="estadosLista">
-      <button class="estado-btn" data-estado="ansioso">
-        <span class="icono">😰</span>
+      <button class="estado-btn" data-estado="ansioso" aria-label="Estado ansioso">
+        <span class="icono" aria-hidden="true">😰</span>
         <span class="texto"><b>Ansioso</b><span>Activación, preocupación, mente acelerada</span></span>
-        <span class="flecha">→</span>
+        <span class="flecha" aria-hidden="true">→</span>
       </button>
-      <button class="estado-btn" data-estado="agotado">
-        <span class="icono">😩</span>
+      <button class="estado-btn" data-estado="agotado" aria-label="Estado agotado">
+        <span class="icono" aria-hidden="true">😩</span>
         <span class="texto"><b>Agotado</b><span>Cansancio mental, saturación, sin energía</span></span>
-        <span class="flecha">→</span>
+        <span class="flecha" aria-hidden="true">→</span>
       </button>
-      <button class="estado-btn" data-estado="disperso">
-        <span class="icono">🌀</span>
+      <button class="estado-btn" data-estado="disperso" aria-label="Estado disperso">
+        <span class="icono" aria-hidden="true">🌀</span>
         <span class="texto"><b>Disperso</b><span>Falta de foco, muchas pestañas abiertas</span></span>
-        <span class="flecha">→</span>
+        <span class="flecha" aria-hidden="true">→</span>
       </button>
-      <button class="estado-btn" data-estado="bajaEnergia">
-        <span class="icono">💤</span>
+      <button class="estado-btn" data-estado="bajaEnergia" aria-label="Estado de baja energía">
+        <span class="icono" aria-hidden="true">💤</span>
         <span class="texto"><b>Baja energía</b><span>Desánimo, apatía, cuesta arrancar</span></span>
-        <span class="flecha">→</span>
+        <span class="flecha" aria-hidden="true">→</span>
       </button>
-      <button class="estado-btn" data-estado="calma">
-        <span class="icono">🌿</span>
+      <button class="estado-btn" data-estado="calma" aria-label="Estado en calma">
+        <span class="icono" aria-hidden="true">🌿</span>
         <span class="texto"><b>En calma</b><span>Bien, quiero profundizar este estado</span></span>
-        <span class="flecha">→</span>
+        <span class="flecha" aria-hidden="true">→</span>
       </button>
     </div>
   </section>
 
   <!-- PRÁCTICA -->
-  <section id="screen-practice" class="screen">
+  <section id="screen-practice" class="screen" aria-label="Práctica de respiración">
     <div class="practice-header">
       <div class="practice-protocolo" id="protocoloNombre">—</div>
-      <button class="btn-cerrar" id="btnCerrar" aria-label="Salir">✕</button>
+      <button class="btn-cerrar" id="btnCerrar" aria-label="Salir de la práctica">✕</button>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="practice-cuerpo">
       <div class="circulo-wrap">
-        <div class="circulo-aura" id="circuloAura"></div>
-        <div class="circulo-borde"></div>
-        <div class="circulo" id="circulo"></div>
+        <div class="circulo-aura" id="circuloAura" aria-hidden="true"></div>
+        <div class="circulo-borde" aria-hidden="true"></div>
+        <div class="circulo" id="circulo" aria-hidden="true"></div>
       </div>
       <div style="text-align:center;">
         <div class="fase-nombre" id="faseNombre">Inhala</div>
@@ -995,24 +1030,24 @@ html, body {
   </section>
 
   <!-- CHECK-OUT -->
-  <section id="screen-checkout" class="screen">
+  <section id="screen-checkout" class="screen" aria-label="Reflexión posterior a la práctica">
     <div class="checkout-inner">
       <div class="checkout-header">
         <h2 class="checkout-titulo">¿Cómo te sientes <em>ahora</em>?</h2>
         <p class="checkout-sub">Tu respuesta nos ayuda a mejorar la herramienta. No se comparte con nadie.</p>
       </div>
-      <div class="checkout-escala" id="escalaEmocional">
-        <button class="escala-btn" data-valor="1"><span class="emoji">😣</span></button>
-        <button class="escala-btn" data-valor="2"><span class="emoji">😕</span></button>
-        <button class="escala-btn" data-valor="3"><span class="emoji">😐</span></button>
-        <button class="escala-btn" data-valor="4"><span class="emoji">🙂</span></button>
-        <button class="escala-btn" data-valor="5"><span class="emoji">😌</span></button>
+      <div class="checkout-escala" id="escalaEmocional" role="group" aria-label="Selecciona cómo te sientes ahora">
+        <button class="escala-btn" data-valor="1" aria-label="Muy mal"><span class="emoji" aria-hidden="true">😣</span></button>
+        <button class="escala-btn" data-valor="2" aria-label="Mal"><span class="emoji" aria-hidden="true">😕</span></button>
+        <button class="escala-btn" data-valor="3" aria-label="Neutro"><span class="emoji" aria-hidden="true">😐</span></button>
+        <button class="escala-btn" data-valor="4" aria-label="Bien"><span class="emoji" aria-hidden="true">🙂</span></button>
+        <button class="escala-btn" data-valor="5" aria-label="Muy bien"><span class="emoji" aria-hidden="true">😌</span></button>
       </div>
       <div class="checkout-cta">
         <div class="kicker">Siguiente paso</div>
         <h3>Si esta pausa te ayudó, hay mucho más.</h3>
         <p>En la conferencia <strong>Estrategias de Bienestar</strong> profundizamos en la neurociencia detrás de estas técnicas y en cómo aplicarlas con tu equipo sin que se sienta forzado.</p>
-        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20us%C3%A9%20la%20app%20Pausa%20Lyon%20y%20quiero%20informaci%C3%B3n%20sobre%20la%20conferencia%20de%20Estrategias%20de%20Bienestar." target="_blank" rel="noopener" class="btn-wa">
+        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20us%C3%A9%20la%20app%20Pausa%20Lyon%20y%20quiero%20informaci%C3%B3n%20sobre%20la%20conferencia%20de%20Estrategias%20de%20Bienestar." target="_blank" rel="noopener noreferrer" class="btn-wa">
           💬 Recibir información por WhatsApp
         </a>
         <button class="btn-compartir" id="btnCompartir">📤 Compartir esta herramienta</button>
@@ -1027,11 +1062,11 @@ html, body {
   </section>
 
   <!-- CAFÉ -->
-  <section id="screen-coffee" class="screen">
-    <button class="btn-back" data-ir="home">←</button>
+  <section id="screen-coffee" class="screen" aria-label="Apoyo a Lyon Asesor">
+    <button class="btn-back" data-ir="home" aria-label="Volver al inicio">←</button>
     <div class="coffee-inner">
       <div class="coffee-header">
-        <div class="coffee-icono">☕</div>
+        <div class="coffee-icono" aria-hidden="true">☕</div>
         <h1 class="coffee-titulo">Invítame un <em>café</em></h1>
         <p class="coffee-sub">Esta app es gratuita y siempre lo será. Si te sirvió, un pequeño gesto ayuda a mantenerla viva.</p>
       </div>
@@ -1039,7 +1074,7 @@ html, body {
         <div class="paypal-kicker">Con PayPal o tarjeta</div>
         <div class="paypal-monto">$3</div>
         <div class="paypal-label">Un café para Lyon Asesor</div>
-        <a href="https://www.paypal.com/ncp/payment/4RUNPZEWBWFSU" target="_blank" rel="noopener" class="btn-paypal">☕ Invitar un café</a>
+        <a href="https://www.paypal.com/ncp/payment/4RUNPZEWBWFSU" target="_blank" rel="noopener noreferrer" class="btn-paypal">☕ Invitar un café</a>
       </div>
       <div class="coffee-pagomovil">
         <div class="pm-kicker">Desde Venezuela</div>
@@ -1051,7 +1086,7 @@ html, body {
           <p><strong>Tasa:</strong> Cambio del día</p>
         </div>
         <p class="pm-nota">Cualquier monto es bienvenido y agradecido. No hay mínimo ni máximo.</p>
-        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20te%20invit%C3%A9%20un%20caf%C3%A9%20desde%20la%20app%20Pausa%20Lyon.%20Aqu%C3%AD%20est%C3%A1%20mi%20comprobante." target="_blank" rel="noopener" class="btn-wa">💬 Enviar comprobante por WhatsApp</a>
+        <a href="https://wa.me/584148610464?text=Hola%20Lyon%2C%20te%20invit%C3%A9%20un%20caf%C3%A9%20desde%20la%20app%20Pausa%20Lyon.%20Aqu%C3%AD%20est%C3%A1%20mi%20comprobante." target="_blank" rel="noopener noreferrer" class="btn-wa">💬 Enviar comprobante por WhatsApp</a>
       </div>
       <div class="coffee-nota">
         <strong>Gracias por apoyar Lyon Asesor.</strong><br>
@@ -1062,8 +1097,8 @@ html, body {
   </section>
 
   <!-- DIARIO · CALENDARIO -->
-  <section id="screen-journal-calendar" class="screen">
-    <button class="btn-back" data-ir="home">←</button>
+  <section id="screen-journal-calendar" class="screen" aria-label="Calendario del diario">
+    <button class="btn-back" data-ir="home" aria-label="Volver al inicio">←</button>
     <div class="journal-inner">
       <div class="journal-header">
         <h1 class="journal-titulo">Tu Diario <em>Terapéutico</em></h1>
@@ -1089,8 +1124,8 @@ html, body {
   </section>
 
   <!-- DIARIO · ENTRADA -->
-  <section id="screen-journal-entry" class="screen">
-    <button class="btn-back" id="btnVolverCalendario">←</button>
+  <section id="screen-journal-entry" class="screen" aria-label="Entrada del diario">
+    <button class="btn-back" id="btnVolverCalendario" aria-label="Volver al calendario">←</button>
     <div class="entry-inner">
       <div class="entry-header">
         <h1 class="entry-titulo">Día <em id="entryDiaNum">1</em></h1>
@@ -1104,13 +1139,13 @@ html, body {
         <button class="journal-btn" id="btnCancelarEntrada">Cancelar</button>
       </div>
 
-      <div class="entry-analisis" id="entryAnalisis"></div>
+      <div class="entry-analisis" id="entryAnalisis" role="region" aria-label="Reflexión del día" aria-live="polite"></div>
     </div>
   </section>
 
   <!-- DIARIO · RESUMEN -->
-  <section id="screen-journal-summary" class="screen">
-    <button class="btn-back" id="btnVolverCalendarioDesdeResumen">←</button>
+  <section id="screen-journal-summary" class="screen" aria-label="Resumen del mes">
+    <button class="btn-back" id="btnVolverCalendarioDesdeResumen" aria-label="Volver al calendario">←</button>
     <div class="summary-inner">
       <div class="summary-header">
         <h1 class="summary-titulo">Resumen de tu <em>mes</em></h1>
@@ -1124,14 +1159,14 @@ html, body {
   </section>
 
   <!-- INSTALL BANNER -->
-  <div class="install-banner" id="installBanner">
-    <span class="ib-icono">📲</span>
+  <div class="install-banner" id="installBanner" role="dialog" aria-label="Instalar aplicación">
+    <span class="ib-icono" aria-hidden="true">📲</span>
     <div class="ib-texto">
       <div class="ib-titulo">Instala Pausa Lyon</div>
       <div class="ib-desc">Tenla siempre a mano. Funciona sin conexión.</div>
     </div>
     <button class="ib-btn" id="btnInstalar">Instalar</button>
-    <button class="ib-cerrar" id="btnCerrarBanner" aria-label="Cerrar">✕</button>
+    <button class="ib-cerrar" id="btnCerrarBanner" aria-label="Cerrar aviso de instalación">✕</button>
   </div>
 
 </div>
@@ -1141,7 +1176,7 @@ html, body {
   'use strict';
 
   // ============================================
-  // UTILIDADES DE ANALYTICS
+  // UTILIDADES COMPARTIDAS (una sola definición)
   // ============================================
   function getUsuarioId() {
     try {
@@ -1159,6 +1194,15 @@ html, body {
   function getDispositivo() {
     return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
            /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
+  }
+
+  function escapeHTML(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
   function enviarEventoGA4(nombre, params) {
@@ -1188,68 +1232,195 @@ html, body {
   }
 
   // ============================================
+  // SISTEMA DE PARTÍCULAS
+  // ============================================
+  const PARTICULAS = {
+    canvas: null,
+    ctx: null,
+    ancho: 0,
+    alto: 0,
+    items: [],
+    cantidad: 60,
+    distanciaConexion: 150,
+    colorActual: '232, 107, 24',
+    opacidadBase: 0.45,
+    lineasOpacidad: 0.12,
+    reducidoMovimiento: false
+  };
+
+  (function initParticulas() {
+    PARTICULAS.canvas = document.getElementById('lyon-particles');
+    if (!PARTICULAS.canvas) return;
+    PARTICULAS.ctx = PARTICULAS.canvas.getContext('2d');
+    PARTICULAS.reducidoMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Menos partículas en pantallas pequeñas
+    if (window.innerWidth < 768) {
+      PARTICULAS.cantidad = 40;
+      PARTICULAS.distanciaConexion = 120;
+    }
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = PARTICULAS.canvas.getBoundingClientRect();
+      PARTICULAS.ancho = rect.width;
+      PARTICULAS.alto = rect.height;
+      PARTICULAS.canvas.width = rect.width * dpr;
+      PARTICULAS.canvas.height = rect.height * dpr;
+      PARTICULAS.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initItems();
+    }
+
+    function crearItem() {
+      return {
+        x: Math.random() * PARTICULAS.ancho,
+        y: Math.random() * PARTICULAS.alto,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        tam: 1.5 + Math.random() * 2.5,
+        pulso: Math.random() * Math.PI * 2,
+        velocidadPulso: 0.01 + Math.random() * 0.02
+      };
+    }
+
+    function initItems() {
+      PARTICULAS.items = [];
+      for (let i = 0; i < PARTICULAS.cantidad; i++) {
+        PARTICULAS.items.push(crearItem());
+      }
+    }
+
+    function dibujar() {
+      const ctx = PARTICULAS.ctx;
+      const color = PARTICULAS.colorActual;
+      const opBase = PARTICULAS.opacidadBase;
+      const opLineas = PARTICULAS.lineasOpacidad;
+      const distMax = PARTICULAS.distanciaConexion;
+      const items = PARTICULAS.items;
+
+      ctx.clearRect(0, 0, PARTICULAS.ancho, PARTICULAS.alto);
+
+      // Líneas de conexión
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          const dx = items[i].x - items[j].x;
+          const dy = items[i].y - items[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < distMax) {
+            const alpha = (1 - dist / distMax) * opLineas;
+            ctx.beginPath();
+            ctx.moveTo(items[i].x, items[i].y);
+            ctx.lineTo(items[j].x, items[j].y);
+            ctx.strokeStyle = 'rgba(' + color + ',' + alpha + ')';
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Puntos
+      for (let k = 0; k < items.length; k++) {
+        const p = items[k];
+        p.pulso += p.velocidadPulso;
+        const factor = 0.7 + 0.3 * Math.sin(p.pulso);
+        const tam = p.tam * factor;
+
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, tam * 3);
+        grad.addColorStop(0, 'rgba(' + color + ',' + (opBase * 0.9) + ')');
+        grad.addColorStop(0.5, 'rgba(' + color + ',' + (opBase * 0.35) + ')');
+        grad.addColorStop(1, 'rgba(' + color + ',0)');
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, tam * 3, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, tam * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + (opBase * 0.5) + ')';
+        ctx.fill();
+      }
+    }
+
+    function actualizar() {
+      if (PARTICULAS.reducidoMovimiento) return;
+      const items = PARTICULAS.items;
+      for (let k = 0; k < items.length; k++) {
+        const p = items[k];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > PARTICULAS.ancho) p.vx *= -1;
+        if (p.y < 0 || p.y > PARTICULAS.alto) p.vy *= -1;
+        p.x = Math.max(0, Math.min(PARTICULAS.ancho, p.x));
+        p.y = Math.max(0, Math.min(PARTICULAS.alto, p.y));
+      }
+    }
+
+    function loop() {
+      actualizar();
+      dibujar();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', function() {
+      // Al volver a la pestaña, no hacemos nada especial — el rAF se reanuda solo
+    });
+
+    resize();
+    loop();
+  })();
+
+  // ============================================
+  // TEMA VISUAL DE PARTÍCULAS SEGÚN PANTALLA
+  // ============================================
+  function actualizarTemaParticulas(nombrePantalla) {
+    const oscuras = ['practice'];
+    const esOscura = oscuras.indexOf(nombrePantalla) !== -1;
+    if (esOscura) {
+      PARTICULAS.colorActual = '242, 140, 78';
+      PARTICULAS.opacidadBase = 0.75;
+      PARTICULAS.lineasOpacidad = 0.22;
+    } else {
+      PARTICULAS.colorActual = '232, 107, 24';
+      PARTICULAS.opacidadBase = 0.42;
+      PARTICULAS.lineasOpacidad = 0.10;
+    }
+  }
+
+  // ============================================
   // REFLEXIONES DEL DIARIO
   // ============================================
   const REFLEXIONES_DIA = [
-    // Día 1
     'Hoy comenzaste. Es el paso que la mayoría no da.',
-    // Día 2
     'Volviste. Eso significa que algo dentro de ti quiere seguir.',
-    // Día 3
     'Los primeros días son de reconocimiento. No de soluciones.',
-    // Día 4
     'La honestidad con uno mismo incomoda. No es una mala señal.',
-    // Día 5
     'Si te costó escribir hoy, eso también es información valiosa.',
-    // Día 6
     'Empiezas a notar patrones. Eso es el principio del cambio.',
-    // Día 7
     'Una semana. Tu sistema nervioso ya sabe que este espacio existe.',
-    // Día 8
     'Hoy el cuerpo habló. Escúchalo también fuera de este diario.',
-    // Día 9
     'Distinguir emoción de pensamiento es una de las habilidades más valiosas.',
-    // Día 10
     'Diez días. Los cambios no son dramáticos, pero están ahí.',
-    // Día 11
     'Lo que evitas decir también comunica algo sobre ti.',
-    // Día 12
     'Aquello que proteges con más fuerza suele ser lo más frágil.',
-    // Día 13
     'Escribir sin audiencia es un ejercicio de autenticidad poco común.',
-    // Día 14
     'Casi dos semanas. El ritmo ya es tuyo.',
-    // Día 15
     'La mitad del recorrido. A veces aquí aparece el cansancio.',
-    // Día 16
     'El peso que cargas también tiene historia. Y también puede soltarse.',
-    // Día 17
     'Lo que heredaste no lo elegiste. Pero sí puedes decidir qué hacer con ello.',
-    // Día 18
     'No escribes para encontrar respuestas. Escribes para escucharte.',
-    // Día 19
     'El control da seguridad, pero también limita. Hoy vale la pena notarlo.',
-    // Día 20
     'Veinte días. Ya no eres la misma persona que empezó.',
-    // Día 21
     'Algo se está moviendo. No hace falta que sepas qué exactamente.',
-    // Día 22
     'Los patrones viejos vuelven cuando algo nuevo se asoma. Es normal.',
-    // Día 23
     'Estás aprendiendo a sostener lo nuevo sin abandonar lo que eras.',
-    // Día 24
     'Integrar no es olvidar. Es hacer espacio para lo nuevo sin perder lo viejo.',
-    // Día 25
     'Cinco días para cerrar. No todo tiene que quedar resuelto.',
-    // Día 26
     'Ahora sabes cosas que no sabías. ¿Las estás aplicando?',
-    // Día 27
     'Reconoce también lo que todavía no entiendes. Es parte del proceso.',
-    // Día 28
     'Estás cerca. El cierre no es el final, es la transición.',
-    // Día 29
     'Última reflexión completa antes del cierre. Nota cómo llegaste aquí.',
-    // Día 30
     'Treinta días. Este espacio fue tuyo. Y ahora podrás llevarlo contigo.'
   ];
 
@@ -1265,7 +1436,6 @@ html, body {
   (function registrarApertura() {
     const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
                       window.navigator.standalone === true;
-    
     if (esModoApp) {
       console.log('🚀 Apertura en modo app detectada');
       registrarFirebase('aperturas', {
@@ -1335,32 +1505,45 @@ html, body {
 
   const STOPWORDS = new Set([
     'de','la','que','el','en','y','a','los','del','se','las','por','un','para','con','no','una','su','al',
-    'lo','como','más','pero','sus','le','ya','o','este','sí','porque','esta','entre','cuando','muy','sin',
-    'sobre','también','me','hasta','hay','donde','quien','desde','todo','nos','durante','todos','uno','les',
-    'ni','contra','otros','ese','eso','ante','ellos','e','esto','mí','antes','algunos','qué','unos','yo',
+    'lo','como','más','mas','pero','sus','le','ya','o','este','sí','si','porque','esta','entre','cuando','muy','sin',
+    'sobre','también','tambien','me','hasta','hay','donde','quien','desde','todo','nos','durante','todos','uno','les',
+    'ni','contra','otros','ese','eso','ante','ellos','e','esto','mí','antes','algunos','qué','que','unos','yo',
     'otro','otras','otra','él','tanto','esa','estos','mucho','quienes','nada','muchos','cual','poco','ella',
     'estar','estas','algunas','algo','nosotros','mi','mis','tú','te','ti','tu','tus','ellas','nosotras',
     'vosotros','vosotras','os','mío','mía','míos','mías','tuyo','tuya','tuyos','tuyas','suyo','suya',
     'suyos','suyas','nuestro','nuestra','nuestros','nuestras','vuestro','vuestra','vuestros','vuestras',
     'esos','esas','estoy','estás','está','estamos','estáis','están','he','has','ha','hemos','habéis','han',
     'soy','eres','es','somos','sois','son','fui','fuiste','fue','fuimos','fuisteis','fueron','ser','tengo',
-    'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','allí','ahí'
+    'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','aquí','allí','ahí'
   ]);
 
+  // ============================================
+  // ESTADO
+  // ============================================
   const state = {
     pantallaActual: 'home',
-    protocolo: null, protocoloKey: null,
-    faseIndex: 0, faseElapsed: 0, totalElapsed: 0, ciclo: 1,
-    pausado: false, ultimoTimestamp: 0, rafId: null, audioCtx: null, chime: false,
+    protocolo: null,
+    protocoloKey: null,
+    faseIndex: 0,
+    faseElapsed: 0,
+    totalElapsed: 0,
+    ciclo: 1,
+    pausado: false,
+    ultimoTimestamp: 0,
+    rafId: null,
     diaActualDiario: 1
   };
 
+  // ============================================
+  // NAVEGACIÓN
+  // ============================================
   function mostrarPantalla(nombre) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     const el = document.getElementById('screen-' + nombre);
     if (el) { el.classList.add('active'); el.scrollTop = 0; }
     state.pantallaActual = nombre;
     if (nombre !== 'practice') detenerAnimacion();
+    actualizarTemaParticulas(nombre);
   }
 
   document.querySelectorAll('[data-ir]').forEach(function(btn) {
@@ -1377,38 +1560,24 @@ html, body {
         modulo: modulo,
         dispositivo: getDispositivo()
       });
-
       if (modulo === 'respirar') mostrarPantalla('select');
       else if (modulo === 'diario') abrirDiario();
       else if (modulo === 'cafe') mostrarPantalla('coffee');
     });
   });
 
+  // ============================================
+  // UTILIDADES
+  // ============================================
   function formatearTiempo(segundos) {
     const m = Math.floor(segundos / 60);
     const s = Math.floor(segundos % 60);
     return m + ':' + String(s).padStart(2, '0');
   }
 
-  function playChime() {
-    if (!state.chime) return;
-    try {
-      if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const ctx = state.audioCtx;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.frequency.value = 528;
-      osc.type = 'sine';
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      gain.gain.setValueAtTime(0.001, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.06, ctx.currentTime + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.4);
-    } catch (e) {}
-  }
-
+  // ============================================
+  // MOTOR RESPIRACIÓN
+  // ============================================
   const circulo = document.getElementById('circulo');
   const circuloAura = document.getElementById('circuloAura');
   const faseNombre = document.getElementById('faseNombre');
@@ -1420,8 +1589,12 @@ html, body {
   function iniciarProtocolo(key) {
     state.protocoloKey = key;
     state.protocolo = PROTOCOLOS[key];
-    state.faseIndex = 0; state.faseElapsed = 0; state.totalElapsed = 0;
-    state.ciclo = 1; state.pausado = false; state.ultimoTimestamp = 0;
+    state.faseIndex = 0;
+    state.faseElapsed = 0;
+    state.totalElapsed = 0;
+    state.ciclo = 1;
+    state.pausado = false;
+    state.ultimoTimestamp = 0;
     protocoloNombre.textContent = state.protocolo.nombre;
     progressFill.style.width = '0%';
     document.getElementById('btnPausar').textContent = '⏸ Pausar';
@@ -1443,7 +1616,6 @@ html, body {
       state.faseElapsed = 0;
       state.faseIndex = (state.faseIndex + 1) % prot.fases.length;
       if (state.faseIndex === 0) state.ciclo++;
-      playChime();
       actualizarFaseUI();
     }
     actualizarAnimacion();
@@ -1524,7 +1696,7 @@ html, body {
         if (diff === 0) cuando = 'Hoy';
         else if (diff === 1) cuando = 'Ayer';
         else cuando = 'Hace ' + diff + ' días';
-        return '<div style="margin-top:6px;">' + cuando + ' · ' + s.estado + '</div>';
+        return '<div style="margin-top:6px;">' + cuando + ' · ' + escapeHTML(s.estado) + '</div>';
       }).join('');
       document.getElementById('historialTexto').innerHTML = texto;
       document.getElementById('historialBox').style.display = 'block';
@@ -1539,11 +1711,13 @@ html, body {
 
   document.getElementById('btnPausar').addEventListener('click', function() {
     if (state.pausado) {
-      state.pausado = false; state.ultimoTimestamp = 0;
+      state.pausado = false;
+      state.ultimoTimestamp = 0;
       this.textContent = '⏸ Pausar';
       state.rafId = requestAnimationFrame(loop);
     } else {
-      state.pausado = true; this.textContent = '▶ Reanudar';
+      state.pausado = true;
+      this.textContent = '▶ Reanudar';
       detenerAnimacion();
     }
   });
@@ -1562,8 +1736,12 @@ html, body {
   document.getElementById('escalaEmocional').addEventListener('click', function(e) {
     const btn = e.target.closest('.escala-btn');
     if (!btn) return;
-    document.querySelectorAll('.escala-btn').forEach(function(b) { b.classList.remove('seleccionado'); });
+    document.querySelectorAll('.escala-btn').forEach(function(b) {
+      b.classList.remove('seleccionado');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('seleccionado');
+    btn.setAttribute('aria-pressed', 'true');
   });
 
   document.getElementById('btnCompartir').addEventListener('click', async function() {
@@ -1583,6 +1761,9 @@ html, body {
     }
   });
 
+  // ============================================
+  // DIARIO
+  // ============================================
   const DIARIO_KEY = 'pausa_lyon_diario_v1';
 
   function leerDiario() {
@@ -1601,10 +1782,15 @@ html, body {
     try { localStorage.setItem(DIARIO_KEY, JSON.stringify(data)); } catch (e) {}
   }
 
+  // Corrección: día calculado por calendario, no por milisegundos exactos
   function diaActual() {
     const d = leerDiario();
-    const dias = Math.floor((Date.now() - d.cicloInicio) / 86400000) + 1;
-    return Math.max(1, Math.min(30, dias));
+    const inicio = new Date(d.cicloInicio);
+    inicio.setHours(0, 0, 0, 0);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const diffDias = Math.round((hoy - inicio) / 86400000) + 1;
+    return Math.max(1, Math.min(30, diffDias));
   }
 
   function esDiaFuturo(n) {
@@ -1614,6 +1800,14 @@ html, body {
   function entradaDelDia(n) {
     const d = leerDiario();
     return d.entradas[String(n)] || null;
+  }
+
+  // Stemming básico: reduce plurales en -s al singular
+  function normalizarPalabra(p) {
+    if (p.length > 3 && p.charAt(p.length - 1) === 's') {
+      return p.slice(0, -1);
+    }
+    return p;
   }
 
   function analizarTexto(texto) {
@@ -1626,16 +1820,22 @@ html, body {
       .filter(function(p) { return p.length > 2 && !STOPWORDS.has(p); });
 
     const totalPalabras = palabras.length;
-
     let contPos = 0, contNeg = 0;
     const encontradasPos = [], encontradasNeg = [];
+
     palabras.forEach(function(p) {
-      if (PALABRAS_POSITIVAS.indexOf(p) !== -1) { contPos++; if (encontradasPos.indexOf(p) === -1) encontradasPos.push(p); }
-      if (PALABRAS_NEGATIVAS.indexOf(p) !== -1) { contNeg++; if (encontradasNeg.indexOf(p) === -1) encontradasNeg.push(p); }
+      const pNorm = normalizarPalabra(p);
+      const esPos = PALABRAS_POSITIVAS.indexOf(p) !== -1 || PALABRAS_POSITIVAS.indexOf(pNorm) !== -1;
+      const esNeg = PALABRAS_NEGATIVAS.indexOf(p) !== -1 || PALABRAS_NEGATIVAS.indexOf(pNorm) !== -1;
+      if (esPos) { contPos++; if (encontradasPos.indexOf(p) === -1) encontradasPos.push(p); }
+      if (esNeg) { contNeg++; if (encontradasNeg.indexOf(p) === -1) encontradasNeg.push(p); }
     });
 
     const freq = {};
-    palabras.forEach(function(p) { freq[p] = (freq[p] || 0) + 1; });
+    palabras.forEach(function(p) {
+      const base = normalizarPalabra(p);
+      freq[base] = (freq[base] || 0) + 1;
+    });
     const topPalabras = Object.entries(freq)
       .sort(function(a, b) { return b[1] - a[1]; })
       .slice(0, 6)
@@ -1660,6 +1860,19 @@ html, body {
     mostrarPantalla('journal-calendar');
   }
 
+  // Delegación de eventos en el contenedor del calendario
+  (function prepararDelegacionCalendario() {
+    const grid = document.getElementById('calGrid');
+    if (!grid) return;
+    grid.addEventListener('click', function(e) {
+      const dia = e.target.closest('.cal-dia');
+      if (!dia) return;
+      if (dia.classList.contains('futuro')) return;
+      const numero = parseInt(dia.dataset.dia, 10);
+      if (!isNaN(numero)) abrirEntrada(numero);
+    });
+  })();
+
   function renderCalendario() {
     const diario = leerDiario();
     const hoy = diaActual();
@@ -1681,12 +1894,12 @@ html, body {
 
       const div = document.createElement('div');
       div.className = clases.join(' ');
-      div.innerHTML = '<span class="dia-num">' + i + '</span><span class="dia-dot"></span>';
-      if (!esDiaFuturo(i)) {
-        (function(numero) {
-          div.addEventListener('click', function() { abrirEntrada(numero); });
-        })(i);
-      }
+      div.dataset.dia = i;
+      div.setAttribute('role', 'button');
+      div.setAttribute('tabindex', esDiaFuturo(i) ? '-1' : '0');
+      div.setAttribute('aria-label', 'Día ' + i);
+      if (entrada) div.setAttribute('aria-label', 'Día ' + i + ', escrito');
+      div.innerHTML = '<span class="dia-num">' + i + '</span><span class="dia-dot" aria-hidden="true"></span>';
       grid.appendChild(div);
     }
 
@@ -1713,10 +1926,10 @@ html, body {
     cont.innerHTML = PREGUNTAS_DIARIO.map(function(q, i) {
       const valor = entrada && entrada.respuestas && entrada.respuestas[q.id] ? entrada.respuestas[q.id] : '';
       return '<div class="entry-pregunta">' +
-        '<span class="ep-num">' + (i + 1) + '</span>' +
-        '<h3>' + q.texto + '</h3>' +
-        '<p class="ep-hint">' + q.hint + '</p>' +
-        '<textarea id="ta_' + q.id + '" placeholder="Escribe aquí...">' + valor.replace(/</g, '&lt;') + '</textarea>' +
+        '<span class="ep-num" aria-hidden="true">' + (i + 1) + '</span>' +
+        '<h3>' + escapeHTML(q.texto) + '</h3>' +
+        '<p class="ep-hint">' + escapeHTML(q.hint) + '</p>' +
+        '<textarea id="ta_' + q.id + '" placeholder="Escribe aquí..." aria-label="' + escapeHTML(q.texto) + '">' + escapeHTML(valor) + '</textarea>' +
       '</div>';
     }).join('');
 
@@ -1737,7 +1950,6 @@ html, body {
       ? analisis.topPalabras.map(function(p) { return p.palabra; }).slice(0, 5).join(', ')
       : '—';
 
-    // Reflexión del día + cierre por polaridad
     const dia = state.diaActualDiario;
     const reflexionBase = REFLEXIONES_DIA[Math.min(dia - 1, REFLEXIONES_DIA.length - 1)] || REFLEXIONES_DIA[0];
     const cierre = CIERRES_POLARIDAD[analisis.polaridad] || CIERRES_POLARIDAD.neutra;
@@ -1751,8 +1963,8 @@ html, body {
         '<div class="ea-metrica"><div class="em-valor">' + analisis.contPos + '</div><div class="em-label">Emociones positivas</div></div>' +
         '<div class="ea-metrica"><div class="em-valor">' + analisis.contNeg + '</div><div class="em-label">Emociones difíciles</div></div>' +
       '</div>' +
-      '<div class="ea-palabras"><strong>Palabras más repetidas:</strong> ' + topPalabras + '</div>' +
-      '<div class="ea-cierre">' + reflexionFinal + '</div>';
+      '<div class="ea-palabras"><strong>Palabras más repetidas:</strong> ' + escapeHTML(topPalabras) + '</div>' +
+      '<div class="ea-cierre">' + escapeHTML(reflexionFinal) + '</div>';
     box.classList.add('visible');
   }
 
@@ -1890,7 +2102,7 @@ html, body {
     html += '<div class="summary-bloque">' +
       '<div class="sb-kicker">Panorama general</div>' +
       '<h3>Un mes de escritura honesta</h3>' +
-      '<p>' + mensajeFinal + '</p>' +
+      '<p>' + escapeHTML(mensajeFinal) + '</p>' +
       '<div class="sb-metricas">' +
         '<div class="sb-metrica"><div class="sm-valor">' + totalDias + '</div><div class="sm-label">Días escritos</div></div>' +
         '<div class="sb-metrica"><div class="sm-valor">' + totalPalabras + '</div><div class="sm-label">Palabras totales</div></div>' +
@@ -1936,7 +2148,10 @@ html, body {
     } catch (e) {}
   })();
 
-  console.log('%c📖 Pausa Lyon v3.4 — Reflexiones diarias + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  // Inicializar tema de partículas en la pantalla inicial
+  actualizarTemaParticulas('home');
+
+  console.log('%c📖 Pausa Lyon v3.5 — Partículas + Reflexiones + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -1967,12 +2182,12 @@ function cerrarBanner() {
   try { sessionStorage.setItem('pausa_lyon_banner_cerrado', '1'); } catch(e) {}
 }
 
-function getDispositivoApp() {
+function getDispositivoPWA() {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
          /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
 }
 
-function getUsuarioIdApp() {
+function getUsuarioIdPWA() {
   try {
     let id = localStorage.getItem('pausa_lyon_user_id');
     if (!id) {
@@ -2026,8 +2241,8 @@ window.addEventListener('appinstalled', function() {
       firebase.database().ref('pausa_lyon_analytics/instalaciones').push({
         fecha: Date.now(),
         fechaLegible: new Date().toLocaleString('es-ES'),
-        usuarioId: getUsuarioIdApp(),
-        dispositivo: getDispositivoApp()
+        usuarioId: getUsuarioIdPWA(),
+        dispositivo: getDispositivoPWA()
       }).then(function() {
         console.log('📊 Instalación registrada en Firebase');
       }).catch(function(err) {
