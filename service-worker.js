@@ -1,18 +1,19 @@
 // ============================================================
-// Service Worker · Pausa Lyon v3.6.2
+// Service Worker · Pausa Lyon v3.6.3
 // ============================================================
-// CAMBIOS v3.6.2 (vs v3.3):
-//   - Estrategia NETWORK-FIRST para HTML (antes era cache-first).
-//     Esto soluciona que los cambios visuales no se veían tras
-//     subir el HTML nuevo a GitHub. El navegador ahora siempre
-//     intenta descargar el HTML actualizado desde la red.
-//   - CACHE-FIRST solo para assets estáticos (iconos, manifest).
-//   - Versión de caché subida para invalidar el caché v3.3 anterior.
+// CAMBIOS v3.6.3 (vs v3.3):
+//   - AISLADO: este SW SOLO gestiona /pausa-lyon.html y sus
+//     assets. Ignora por completo el resto del sitio web
+//     (home, blog, otras páginas) para no interferir con ellas.
+//   - NETWORK-FIRST para HTML → siempre ves la versión más
+//     reciente subida a GitHub.
+//   - CACHE-FIRST solo para assets estáticos (iconos, fuentes).
+//   - Fallback offline corregido (ya no redirige todo a la app).
 // ============================================================
 
-const CACHE_NAME = 'pausa-lyon-v3.6.2';
+const CACHE_NAME = 'pausa-lyon-v3.6.3';
 
-// Assets estáticos que SÍ conviene servir desde caché (no cambian seguido)
+// Assets estáticos propios de la app
 const CACHE_STATIC = [
   '/manifest.json',
   '/icon-192.png',
@@ -20,24 +21,41 @@ const CACHE_STATIC = [
   '/icon-maskable-512.png'
 ];
 
-// Página principal de la app (se sirve como fallback offline)
+// Página principal de la app (fallback offline)
 const PAGINA_APP = '/pausa-lyon.html';
+
+// ============================================================
+// Utilidad: ¿Esta petición pertenece a Pausa Lyon?
+// ============================================================
+function esDeLaApp(url) {
+  // Página principal
+  if (url.pathname === PAGINA_APP) return true;
+  if (url.pathname === '/pausa-lyon') return true;
+
+  // Manifest e iconos
+  if (CACHE_STATIC.indexOf(url.pathname) !== -1) return true;
+
+  // Otros iconos que empiecen por /icon-
+  if (url.pathname.startsWith('/icon-')) return true;
+
+  // Fuentes de Google (las cacheamos porque son estáticas y universales)
+  if (url.hostname.indexOf('fonts.google') !== -1) return true;
+  if (url.hostname.indexOf('fonts.gstatic') !== -1) return true;
+
+  return false;
+}
 
 // ============================================================
 // INSTALACIÓN
 // ============================================================
 self.addEventListener('install', function(event) {
-  console.log('[SW] Instalando Pausa Lyon v3.6.2');
+  console.log('[SW] Instalando Pausa Lyon v3.6.3');
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
-      // Cacheamos los estáticos (tolerante a fallos: si un icono no existe,
-      // el resto se cachea igualmente y no rompemos la instalación).
       return cache.addAll(CACHE_STATIC).catch(function(err) {
         console.warn('[SW] Algunos assets estáticos fallaron al cachear:', err);
       });
     }).then(function() {
-      // Forzamos que el SW nuevo tome el control sin esperar a que
-      // se cierren todas las pestañas.
       return self.skipWaiting();
     })
   );
@@ -47,10 +65,10 @@ self.addEventListener('install', function(event) {
 // ACTIVACIÓN
 // ============================================================
 self.addEventListener('activate', function(event) {
-  console.log('[SW] Activando Pausa Lyon v3.6.2');
+  console.log('[SW] Activando Pausa Lyon v3.6.3');
   event.waitUntil(
     caches.keys().then(function(keys) {
-      // Borramos TODOS los cachés antiguos (incluido el v3.3).
+      // Borramos TODOS los cachés antiguos (incluidos v3.3, v3.6.1, etc.)
       return Promise.all(
         keys.filter(function(k) { return k !== CACHE_NAME; })
             .map(function(k) {
@@ -59,18 +77,13 @@ self.addEventListener('activate', function(event) {
             })
       );
     }).then(function() {
-      // Tomamos el control de todas las pestañas abiertas inmediatamente.
       return self.clients.claim();
     })
   );
 });
 
 // ============================================================
-// FETCH · Estrategia mixta
-// ============================================================
-// - HTML y navegaciones → NETWORK-FIRST (siempre lo más nuevo)
-// - Assets estáticos     → CACHE-FIRST  (rápido, no cambian)
-// - Resto                → NETWORK      (sin caché)
+// FETCH · Estrategia mixta y aislada a Pausa Lyon
 // ============================================================
 self.addEventListener('fetch', function(event) {
   const req = event.request;
@@ -80,12 +93,9 @@ self.addEventListener('fetch', function(event) {
 
   const url = new URL(req.url);
 
-  // Ignoramos dominios externos salvo Google Fonts (que queremos cachear)
-  const esFuenteExterna =
-    url.hostname.indexOf('fonts.google') !== -1 ||
-    url.hostname.indexOf('fonts.gstatic') !== -1;
-
-  if (url.origin !== self.location.origin && !esFuenteExterna) {
+  // ⭐ FILTRO CLAVE: si no es de la app, dejamos pasar la petición
+  // sin interceptarla. Así el resto del sitio web NO se ve afectado.
+  if (!esDeLaApp(url)) {
     return;
   }
 
@@ -102,7 +112,6 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
       fetch(req)
         .then(function(response) {
-          // Guardamos copia fresca en caché como respaldo offline
           if (response && response.status === 200) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(function(cache) {
@@ -112,10 +121,8 @@ self.addEventListener('fetch', function(event) {
           return response;
         })
         .catch(function() {
-          // Sin red: intentamos servir la copia cacheada del HTML pedido
           return caches.match(req).then(function(cached) {
             if (cached) return cached;
-            // Último recurso: la página principal de la app
             return caches.match(PAGINA_APP);
           });
         })
@@ -137,7 +144,8 @@ self.addEventListener('fetch', function(event) {
     url.pathname.endsWith('.css') ||
     url.pathname.endsWith('.js') ||
     url.pathname.endsWith('.json') ||
-    esFuenteExterna;
+    url.hostname.indexOf('fonts.google') !== -1 ||
+    url.hostname.indexOf('fonts.gstatic') !== -1;
 
   if (esEstatico) {
     event.respondWith(
@@ -159,7 +167,7 @@ self.addEventListener('fetch', function(event) {
   }
 
   // --------------------------------------------------------
-  // 3) RESTO → NETWORK normal con fallback a caché
+  // 3) RESTO → NETWORK con fallback a caché
   // --------------------------------------------------------
   event.respondWith(
     fetch(req).catch(function() {
@@ -176,7 +184,6 @@ self.addEventListener('message', function(event) {
     self.skipWaiting();
   }
   if (event.data === 'CLEAR_CACHE') {
-    // Permite a la app pedir un borrado manual del caché
     caches.keys().then(function(keys) {
       return Promise.all(keys.map(function(k) { return caches.delete(k); }));
     }).then(function() {
