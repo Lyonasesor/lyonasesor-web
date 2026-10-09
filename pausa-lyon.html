@@ -2427,7 +2427,7 @@ html, body {
 
   actualizarTemaParticulas('home');
 
-  console.log('%c📖 Pausa Lyon v3.6.1 — Partículas visibles + Frosted Glass + Archivo de ciclos', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.6.3 — Partículas + Frosted Glass + SW aislado', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -2435,12 +2435,15 @@ html, body {
 
 <script>
 // ============================================
-// SERVICE WORKER · PWA
+// SERVICE WORKER · PWA (scope restringido a Pausa Lyon)
 // ============================================
+// ⭐ v3.6.3: el SW ahora SOLO controla /pausa-lyon.html y sus
+// assets. El resto del sitio web (home, blog, otras páginas)
+// no se ve afectado por este Service Worker.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(function(reg) { console.log('✅ Service Worker registrado:', reg.scope); })
+    navigator.serviceWorker.register('/service-worker.js', { scope: '/pausa-lyon.html' })
+      .then(function(reg) { console.log('✅ Service Worker registrado. Scope:', reg.scope); })
       .catch(function(err) { console.warn('⚠️ Service Worker:', err); });
   });
 }
