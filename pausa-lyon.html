@@ -81,14 +81,13 @@ html, body {
   background: linear-gradient(160deg, #0F1720 0%, #1A2330 45%, #243042 100%);
 }
 
-/* Halo naranja decorativo (como en el index) */
 #app::before {
   content: "";
   position: absolute;
   top: -300px; right: -300px;
   width: 700px; height: 700px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(232,107,24,0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(232,107,24,0.22) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -98,7 +97,7 @@ html, body {
   bottom: -350px; left: -250px;
   width: 600px; height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(242,140,78,0.10) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(242,140,78,0.14) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -120,9 +119,7 @@ html, body {
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.5s;
   overflow-y: auto; overflow-x: hidden;
-  background: rgba(250, 248, 245, 0.88);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
-  backdrop-filter: blur(22px) saturate(140%);
+  background: rgba(250, 248, 245, 0.68);
   z-index: 2;
 }
 .screen.active {
@@ -130,11 +127,8 @@ html, body {
   transition-delay: 0s; z-index: 3;
 }
 
-/* Pantalla de práctica: fondo oscuro semi-transparente sobre las partículas */
 #screen-practice {
-  background: rgba(15, 23, 32, 0.72);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
-  backdrop-filter: blur(6px) saturate(120%);
+  background: rgba(15, 23, 32, 0.62);
 }
 
 /* ============================================
@@ -523,6 +517,43 @@ html, body {
 .journal-titulo em { font-style: italic; color: var(--naranja); }
 .journal-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.55; max-width: 380px; margin: 0 auto; }
 
+/* Banner de ciclo completado */
+.completado-banner {
+  display: none;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: #fff; border-radius: var(--radius);
+  padding: 22px 22px; margin-bottom: 20px;
+  box-shadow: var(--sombra-fuerte);
+  position: relative; overflow: hidden;
+}
+.completado-banner.visible { display: block; animation: aparecer 0.6s ease; }
+.completado-banner::before {
+  content: ""; position: absolute; top: -80px; right: -80px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,107,24,0.25) 0%, transparent 70%);
+}
+.completado-banner .cb-kicker {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--naranja-luz); font-weight: 700; margin-bottom: 8px; position: relative;
+}
+.completado-banner h3 {
+  font-family: var(--font-titulo); font-size: 22px; font-weight: 700;
+  line-height: 1.2; margin-bottom: 8px; position: relative;
+}
+.completado-banner p {
+  font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,0.82);
+  margin-bottom: 14px; position: relative;
+}
+.completado-banner .cb-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 22px; background: linear-gradient(135deg, var(--naranja), var(--naranja-luz));
+  color: #fff; border: none; border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 700; font-size: 13.5px;
+  cursor: pointer; box-shadow: 0 4px 16px rgba(232,107,24,0.4);
+  transition: 0.2s; position: relative; width: 100%;
+}
+.completado-banner .cb-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(232,107,24,0.55); }
+
 .journal-progreso {
   background: var(--blanco); border-radius: var(--radius);
   padding: 18px 22px; margin-bottom: 20px;
@@ -592,6 +623,8 @@ html, body {
 .journal-acciones {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
 }
+.journal-acciones .full { grid-column: 1 / -1; }
+
 .journal-btn {
   padding: 14px 18px; border-radius: 30px;
   font-family: var(--font-cuerpo); font-weight: 600; font-size: 13.5px;
@@ -802,6 +835,68 @@ html, body {
   text-align: center; padding: 40px 20px;
   color: var(--texto-muted); font-size: 14px; line-height: 1.6;
 }
+
+/* ============================================
+   DIARIO · HISTORIAL DE CICLOS
+   ============================================ */
+#screen-journal-history { padding: 32px 20px 40px; }
+.history-inner { max-width: 520px; margin: 0 auto; width: 100%; }
+.history-header { text-align: center; padding: 8px 0 24px; }
+.history-titulo {
+  font-family: var(--font-titulo); font-weight: 700;
+  font-size: 32px; line-height: 1.1; color: var(--navy);
+  margin-bottom: 8px; letter-spacing: -0.02em;
+}
+.history-titulo em { font-style: italic; color: var(--naranja); }
+.history-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.55; }
+
+.history-ciclo {
+  background: var(--blanco); border-radius: var(--radius);
+  padding: 22px 22px; margin-bottom: 14px;
+  box-shadow: var(--sombra);
+  border-left: 4px solid var(--naranja);
+}
+.history-ciclo .hc-num {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--naranja); font-weight: 700; margin-bottom: 6px;
+}
+.history-ciclo .hc-fecha {
+  font-family: var(--font-titulo); font-size: 19px; font-weight: 700;
+  color: var(--navy); line-height: 1.2; margin-bottom: 12px;
+}
+.history-ciclo .hc-metricas {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 14px;
+}
+.history-ciclo .hc-metrica {
+  background: var(--crema); border-radius: 10px;
+  padding: 10px 8px; text-align: center;
+}
+.history-ciclo .hc-valor {
+  font-family: var(--font-titulo); font-size: 20px; font-weight: 700;
+  color: var(--naranja); line-height: 1; margin-bottom: 3px;
+}
+.history-ciclo .hc-label {
+  font-size: 10px; color: var(--texto-muted); line-height: 1.25;
+  letter-spacing: 0.03em;
+}
+.history-ciclo .hc-detalle {
+  font-size: 13px; line-height: 1.6; color: var(--texto-muted);
+  padding: 12px 14px; background: rgba(26,35,48,0.03);
+  border-radius: 10px;
+}
+.history-ciclo .hc-detalle strong { color: var(--navy); font-weight: 600; }
+
+.history-vacio {
+  text-align: center; padding: 44px 20px;
+  color: var(--texto-muted); font-size: 14px; line-height: 1.7;
+  background: var(--blanco); border-radius: var(--radius);
+  box-shadow: var(--sombra);
+}
+.history-vacio .hv-icono {
+  font-size: 48px; line-height: 1; margin-bottom: 14px; opacity: 0.7;
+}
+.history-vacio strong { color: var(--navy); font-weight: 600; }
 
 /* ============================================
    UTILIDADES
@@ -1105,6 +1200,14 @@ html, body {
         <p class="journal-sub">30 días de escritura guiada. Un mes para mirarte con honestidad y sin juicio.</p>
       </div>
 
+      <!-- Banner de ciclo completado (solo visible al llegar a 30 días escritos) -->
+      <div class="completado-banner" id="completadoBanner" role="region" aria-live="polite">
+        <div class="cb-kicker">Ciclo completado</div>
+        <h3>Has terminado tus 30 días. 🌿</h3>
+        <p>Este mes de escritura ya forma parte de tu historia. Puedes archivarlo y comenzar un nuevo ciclo cuando quieras — no se borrará nada.</p>
+        <button class="cb-btn" id="btnComenzarNuevoCicloBanner">✨ Comenzar un nuevo ciclo</button>
+      </div>
+
       <div class="journal-progreso">
         <div class="pgt-label">Tu avance este ciclo</div>
         <div class="pgt-num"><span id="pgtDias">0</span> <span>de 30 días escritos</span></div>
@@ -1118,7 +1221,8 @@ html, body {
 
       <div class="journal-acciones">
         <button class="journal-btn" id="btnVerResumen">📊 Ver resumen</button>
-        <button class="journal-btn" id="btnReiniciarDiario">🔄 Reiniciar ciclo</button>
+        <button class="journal-btn" id="btnVerHistorial">📚 Ciclos anteriores</button>
+        <button class="journal-btn full" id="btnReiniciarDiario">🔄 Reiniciar ciclo</button>
       </div>
     </div>
   </section>
@@ -1158,6 +1262,21 @@ html, body {
     </div>
   </section>
 
+  <!-- DIARIO · HISTORIAL DE CICLOS -->
+  <section id="screen-journal-history" class="screen" aria-label="Ciclos anteriores del diario">
+    <button class="btn-back" id="btnVolverCalendarioDesdeHistorial" aria-label="Volver al calendario">←</button>
+    <div class="history-inner">
+      <div class="history-header">
+        <h1 class="history-titulo">Tus ciclos <em>anteriores</em></h1>
+        <p class="history-sub">Cada mes de escritura que has completado queda guardado aquí.</p>
+      </div>
+
+      <div id="historyContenido"></div>
+
+      <button class="journal-btn primario" id="btnVolverCalendarioFinalHistorial" style="margin-top:20px; width:100%;">← Volver al calendario</button>
+    </div>
+  </section>
+
   <!-- INSTALL BANNER -->
   <div class="install-banner" id="installBanner" role="dialog" aria-label="Instalar aplicación">
     <span class="ib-icono" aria-hidden="true">📲</span>
@@ -1176,7 +1295,7 @@ html, body {
   'use strict';
 
   // ============================================
-  // UTILIDADES COMPARTIDAS (una sola definición)
+  // UTILIDADES COMPARTIDAS
   // ============================================
   function getUsuarioId() {
     try {
@@ -1240,11 +1359,11 @@ html, body {
     ancho: 0,
     alto: 0,
     items: [],
-    cantidad: 60,
-    distanciaConexion: 150,
+    cantidad: 70,
+    distanciaConexion: 170,
     colorActual: '232, 107, 24',
-    opacidadBase: 0.45,
-    lineasOpacidad: 0.12,
+    opacidadBase: 0.95,
+    lineasOpacidad: 0.35,
     reducidoMovimiento: false
   };
 
@@ -1254,10 +1373,9 @@ html, body {
     PARTICULAS.ctx = PARTICULAS.canvas.getContext('2d');
     PARTICULAS.reducidoMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Menos partículas en pantallas pequeñas
     if (window.innerWidth < 768) {
-      PARTICULAS.cantidad = 40;
-      PARTICULAS.distanciaConexion = 120;
+      PARTICULAS.cantidad = 45;
+      PARTICULAS.distanciaConexion = 130;
     }
 
     function resize() {
@@ -1300,7 +1418,6 @@ html, body {
 
       ctx.clearRect(0, 0, PARTICULAS.ancho, PARTICULAS.alto);
 
-      // Líneas de conexión
       for (let i = 0; i < items.length; i++) {
         for (let j = i + 1; j < items.length; j++) {
           const dx = items[i].x - items[j].x;
@@ -1318,7 +1435,6 @@ html, body {
         }
       }
 
-      // Puntos
       for (let k = 0; k < items.length; k++) {
         const p = items[k];
         p.pulso += p.velocidadPulso;
@@ -1363,9 +1479,6 @@ html, body {
     }
 
     window.addEventListener('resize', resize);
-    document.addEventListener('visibilitychange', function() {
-      // Al volver a la pestaña, no hacemos nada especial — el rAF se reanuda solo
-    });
 
     resize();
     loop();
@@ -1379,12 +1492,12 @@ html, body {
     const esOscura = oscuras.indexOf(nombrePantalla) !== -1;
     if (esOscura) {
       PARTICULAS.colorActual = '242, 140, 78';
-      PARTICULAS.opacidadBase = 0.75;
-      PARTICULAS.lineasOpacidad = 0.22;
+      PARTICULAS.opacidadBase = 1.0;
+      PARTICULAS.lineasOpacidad = 0.5;
     } else {
       PARTICULAS.colorActual = '232, 107, 24';
-      PARTICULAS.opacidadBase = 0.42;
-      PARTICULAS.lineasOpacidad = 0.10;
+      PARTICULAS.opacidadBase = 0.95;
+      PARTICULAS.lineasOpacidad = 0.35;
     }
   }
 
@@ -1507,14 +1620,14 @@ html, body {
     'de','la','que','el','en','y','a','los','del','se','las','por','un','para','con','no','una','su','al',
     'lo','como','más','mas','pero','sus','le','ya','o','este','sí','si','porque','esta','entre','cuando','muy','sin',
     'sobre','también','tambien','me','hasta','hay','donde','quien','desde','todo','nos','durante','todos','uno','les',
-    'ni','contra','otros','ese','eso','ante','ellos','e','esto','mí','antes','algunos','qué','que','unos','yo',
+    'ni','contra','otros','ese','eso','ante','ellos','e','esto','mí','antes','algunos','qué','unos','yo',
     'otro','otras','otra','él','tanto','esa','estos','mucho','quienes','nada','muchos','cual','poco','ella',
     'estar','estas','algunas','algo','nosotros','mi','mis','tú','te','ti','tu','tus','ellas','nosotras',
     'vosotros','vosotras','os','mío','mía','míos','mías','tuyo','tuya','tuyos','tuyas','suyo','suya',
     'suyos','suyas','nuestro','nuestra','nuestros','nuestras','vuestro','vuestra','vuestros','vuestras',
     'esos','esas','estoy','estás','está','estamos','estáis','están','he','has','ha','hemos','habéis','han',
     'soy','eres','es','somos','sois','son','fui','fuiste','fue','fuimos','fuisteis','fueron','ser','tengo',
-    'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','aquí','allí','ahí'
+    'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','allí','ahí'
   ]);
 
   // ============================================
@@ -1765,6 +1878,8 @@ html, body {
   // DIARIO
   // ============================================
   const DIARIO_KEY = 'pausa_lyon_diario_v1';
+  const DIARIO_HISTORICO_KEY = 'pausa_lyon_diario_historico_v1';
+  const MAX_CICLOS_ARCHIVADOS = 12;
 
   function leerDiario() {
     try {
@@ -1782,7 +1897,65 @@ html, body {
     try { localStorage.setItem(DIARIO_KEY, JSON.stringify(data)); } catch (e) {}
   }
 
-  // Corrección: día calculado por calendario, no por milisegundos exactos
+  function leerHistoricoCiclos() {
+    try {
+      const arr = JSON.parse(localStorage.getItem(DIARIO_HISTORICO_KEY) || '[]');
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function guardarHistoricoCiclos(arr) {
+    try {
+      localStorage.setItem(DIARIO_HISTORICO_KEY, JSON.stringify(arr.slice(-MAX_CICLOS_ARCHIVADOS)));
+    } catch (e) {}
+  }
+
+  // Archiva el ciclo actual en el historial (si tiene al menos 1 entrada)
+  function archivarCicloActual() {
+    const d = leerDiario();
+    const dias = Object.keys(d.entradas || {});
+    if (dias.length === 0) return false;
+
+    // Cálculo de métricas del ciclo
+    let totalPalabras = 0, totalPos = 0, totalNeg = 0;
+    let positivos = 0, negativos = 0, neutros = 0;
+
+    Object.values(d.entradas).forEach(function(e) {
+      if (e && e.analisis) {
+        totalPalabras += e.analisis.totalPalabras || 0;
+        totalPos += e.analisis.contPos || 0;
+        totalNeg += e.analisis.contNeg || 0;
+        if (e.analisis.polaridad === 'positiva') positivos++;
+        else if (e.analisis.polaridad === 'negativa') negativos++;
+        else neutros++;
+      }
+    });
+
+    const polaridadDominante = positivos > negativos ? 'positiva' :
+                               (negativos > positivos ? 'negativa' : 'neutra');
+
+    const ciclo = {
+      cicloInicio: d.cicloInicio,
+      cicloFin: Date.now(),
+      totalDias: dias.length,
+      totalPalabras: totalPalabras,
+      totalPos: totalPos,
+      totalNeg: totalNeg,
+      diasPositivos: positivos,
+      diasNegativos: negativos,
+      diasNeutros: neutros,
+      polaridadDominante: polaridadDominante,
+      entradas: d.entradas
+    };
+
+    const historico = leerHistoricoCiclos();
+    historico.push(ciclo);
+    guardarHistoricoCiclos(historico);
+    return true;
+  }
+
   function diaActual() {
     const d = leerDiario();
     const inicio = new Date(d.cicloInicio);
@@ -1802,7 +1975,11 @@ html, body {
     return d.entradas[String(n)] || null;
   }
 
-  // Stemming básico: reduce plurales en -s al singular
+  function cicloCompletado() {
+    const d = leerDiario();
+    return Object.keys(d.entradas || {}).length >= 30;
+  }
+
   function normalizarPalabra(p) {
     if (p.length > 3 && p.charAt(p.length - 1) === 's') {
       return p.slice(0, -1);
@@ -1860,7 +2037,6 @@ html, body {
     mostrarPantalla('journal-calendar');
   }
 
-  // Delegación de eventos en el contenedor del calendario
   (function prepararDelegacionCalendario() {
     const grid = document.getElementById('calGrid');
     if (!grid) return;
@@ -1906,7 +2082,28 @@ html, body {
     const badge = document.getElementById('badgeProgresoDiario');
     if (badge) {
       if (totalEscritos === 0) badge.textContent = 'Un mes completo';
+      else if (totalEscritos >= 30) badge.textContent = '¡Ciclo completado!';
       else badge.textContent = totalEscritos + ' de 30 días';
+    }
+
+    // Mostrar/ocultar banner de ciclo completado
+    const bannerCompletado = document.getElementById('completadoBanner');
+    if (bannerCompletado) {
+      if (totalEscritos >= 30) {
+        bannerCompletado.classList.add('visible');
+      } else {
+        bannerCompletado.classList.remove('visible');
+      }
+    }
+
+    // Botón de reinicio dinámico
+    const btnReset = document.getElementById('btnReiniciarDiario');
+    if (btnReset) {
+      if (totalEscritos >= 30) {
+        btnReset.innerHTML = '✨ Comenzar nuevo ciclo';
+      } else {
+        btnReset.innerHTML = '🔄 Reiniciar ciclo';
+      }
     }
   }
 
@@ -2038,13 +2235,115 @@ html, body {
     mostrarPantalla('journal-calendar');
   });
 
-  document.getElementById('btnReiniciarDiario').addEventListener('click', function() {
-    if (!confirm('¿Reiniciar el ciclo de 30 días? Se borrarán todas las entradas actuales. Esta acción no se puede deshacer.')) return;
-    if (!confirm('Confirma una vez más: perderás todo lo escrito en este ciclo.')) return;
+  // --- Reiniciar ciclo (con archivado automático) ---
+  function reiniciarCiclo() {
+    const d = leerDiario();
+    const diasEscritos = Object.keys(d.entradas || {}).length;
+
+    let mensaje;
+    if (diasEscritos === 0) {
+      mensaje = '¿Reiniciar el ciclo de 30 días? Aún no has escrito ninguna entrada, así que no se perderá nada.';
+    } else if (diasEscritos >= 30) {
+      mensaje = 'Has completado tus 30 días. ¿Comenzar un nuevo ciclo?\n\nTus ' + diasEscritos + ' días escritos se guardarán en "Ciclos anteriores" y podrás consultarlos cuando quieras.';
+    } else {
+      mensaje = '¿Comenzar un nuevo ciclo?\n\nTus ' + diasEscritos + ' días escritos se archivarán en "Ciclos anteriores" y podrás consultarlos después. El nuevo ciclo empieza desde el Día 1.';
+    }
+
+    if (!confirm(mensaje)) return;
+
+    // Archivar si hay contenido
+    if (diasEscritos > 0) {
+      const archivado = archivarCicloActual();
+      if (archivado) {
+        enviarEventoGA4('diary_cycle_archived', { event_category: 'engagement', dias_escritos: diasEscritos });
+        registrarFirebase('diario_ciclos', {
+          fecha: Date.now(),
+          usuarioId: getUsuarioId(),
+          accion: 'archivar',
+          diasEscritos: diasEscritos,
+          dispositivo: getDispositivo()
+        });
+      }
+    }
+
     localStorage.removeItem(DIARIO_KEY);
     renderCalendario();
-    alert('Ciclo reiniciado. Comienza un nuevo mes de escritura.');
+    alert('Nuevo ciclo iniciado. ¡Buena escritura!');
+  }
+
+  document.getElementById('btnReiniciarDiario').addEventListener('click', reiniciarCiclo);
+
+  // Botón del banner de ciclo completado
+  const btnComenzarNuevoCicloBanner = document.getElementById('btnComenzarNuevoCicloBanner');
+  if (btnComenzarNuevoCicloBanner) {
+    btnComenzarNuevoCicloBanner.addEventListener('click', reiniciarCiclo);
+  }
+
+  // --- Historial de ciclos ---
+  document.getElementById('btnVerHistorial').addEventListener('click', function() {
+    renderHistorialCiclos();
+    mostrarPantalla('journal-history');
   });
+
+  document.getElementById('btnVolverCalendarioDesdeHistorial').addEventListener('click', function() {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  });
+
+  document.getElementById('btnVolverCalendarioFinalHistorial').addEventListener('click', function() {
+    renderCalendario();
+    mostrarPantalla('journal-calendar');
+  });
+
+  function formatearFechaCiclo(ts) {
+    const d = new Date(ts);
+    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return d.getDate() + ' de ' + meses[d.getMonth()] + ' de ' + d.getFullYear();
+  }
+
+  function renderHistorialCiclos() {
+    const historico = leerHistoricoCiclos();
+    const cont = document.getElementById('historyContenido');
+
+    if (!historico.length) {
+      cont.innerHTML =
+        '<div class="history-vacio">' +
+          '<div class="hv-icono" aria-hidden="true">📚</div>' +
+          '<p><strong>Aún no hay ciclos archivados.</strong></p>' +
+          '<p style="margin-top:8px;">Cuando reinicies tu diario actual, el ciclo completo se guardará aquí automáticamente para que puedas consultarlo cuando quieras.</p>' +
+        '</div>';
+      return;
+    }
+
+    // Mostramos del más reciente al más antiguo
+    const lista = historico.slice().reverse();
+
+    cont.innerHTML = lista.map(function(ciclo, idx) {
+      const numeroCiclo = historico.length - idx;
+      const totalDias = ciclo.totalDias || 0;
+      const totalPalabras = ciclo.totalPalabras || 0;
+      const polaridad = ciclo.polaridadDominante || 'neutra';
+
+      let polaridadTexto;
+      if (polaridad === 'positiva') polaridadTexto = 'Mayormente <strong>positiva</strong>';
+      else if (polaridad === 'negativa') polaridadTexto = 'Mayormente <strong>difícil</strong>';
+      else polaridadTexto = '<strong>Equilibrada</strong>';
+
+      return '<div class="history-ciclo">' +
+        '<div class="hc-num">Ciclo ' + numeroCiclo + '</div>' +
+        '<div class="hc-fecha">' + formatearFechaCiclo(ciclo.cicloInicio) + '</div>' +
+        '<div class="hc-metricas">' +
+          '<div class="hc-metrica"><div class="hc-valor">' + totalDias + '</div><div class="hc-label">Días escritos</div></div>' +
+          '<div class="hc-metrica"><div class="hc-valor">' + totalPalabras + '</div><div class="hc-label">Palabras</div></div>' +
+          '<div class="hc-metrica"><div class="hc-valor">' + (totalDias >= 30 ? '30' : totalDias) + '</div><div class="hc-label">Días del ciclo</div></div>' +
+        '</div>' +
+        '<div class="hc-detalle">' +
+          'Tono emocional: ' + polaridadTexto + '. ' +
+          'Registraste ' + (ciclo.totalPos || 0) + ' emociones positivas y ' + (ciclo.totalNeg || 0) + ' emociones difíciles.' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
 
   function renderResumen() {
     const diario = leerDiario();
@@ -2143,15 +2442,16 @@ html, body {
       const total = Object.keys(d.entradas || {}).length;
       const badge = document.getElementById('badgeProgresoDiario');
       if (badge) {
-        badge.textContent = total === 0 ? 'Un mes completo' : total + ' de 30 días';
+        if (total === 0) badge.textContent = 'Un mes completo';
+        else if (total >= 30) badge.textContent = '¡Ciclo completado!';
+        else badge.textContent = total + ' de 30 días';
       }
     } catch (e) {}
   })();
 
-  // Inicializar tema de partículas en la pantalla inicial
   actualizarTemaParticulas('home');
 
-  console.log('%c📖 Pausa Lyon v3.5 — Partículas + Reflexiones + PWA + Analytics', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.6 — Archivado de ciclos + Historial + Reinicio seguro', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
