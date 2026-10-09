@@ -112,6 +112,9 @@ html, body {
   display: block;
 }
 
+/* ============================================
+   SCREENS — transparentes para ver las partículas
+   ============================================ */
 .screen {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
@@ -119,7 +122,8 @@ html, body {
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.5s;
   overflow-y: auto; overflow-x: hidden;
-  background: rgba(250, 248, 245, 0.68);
+  background: transparent; /* ✅ AHORA TRANSPARENTE — las partículas se ven detrás */
+  padding: 20px 16px;
   z-index: 2;
 }
 .screen.active {
@@ -127,23 +131,46 @@ html, body {
   transition-delay: 0s; z-index: 3;
 }
 
+/* Pantalla de práctica: fondo oscuro semitransparente para que las partículas naranjas brillen */
 #screen-practice {
-  background: rgba(15, 23, 32, 0.62);
+  background: rgba(15, 23, 32, 0.55);
+  padding: 24px 20px 32px;
+}
+
+/* ============================================
+   CONTENEDORES INTERNOS — efecto cristal (frosted glass)
+   ============================================ */
+.home-inner,
+.select-inner,
+.checkout-inner,
+.coffee-inner,
+.journal-inner,
+.entry-inner,
+.summary-inner,
+.history-inner {
+  background: rgba(250, 248, 245, 0.93);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin: 8px auto;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(15, 23, 32, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  position: relative;
+  z-index: 1;
+}
+
+.home-inner {
+  display: flex; flex-direction: column;
+  min-height: calc(100% - 16px);
 }
 
 /* ============================================
    HOME
    ============================================ */
-#screen-home {
-  padding: 32px 20px 40px;
-}
-
-.home-inner {
-  max-width: 480px; margin: 0 auto; width: 100%;
-  display: flex; flex-direction: column; min-height: 100%;
-}
-
-.home-header { text-align: center; padding: 20px 0 36px; }
+.home-header { text-align: center; padding: 12px 0 32px; }
 
 .logo-wordmark {
   font-family: 'Inter', sans-serif; font-weight: 800;
@@ -240,18 +267,20 @@ html, body {
    ============================================ */
 .btn-back {
   position: absolute; top: 18px; left: 18px;
-  background: rgba(26,35,48,0.05); border: none;
-  color: var(--texto-muted); width: 38px; height: 38px;
+  background: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.6);
+  color: var(--navy); width: 40px; height: 40px;
   border-radius: 50%; font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: 0.2s; z-index: 5;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(15,23,32,0.15);
 }
-.btn-back:hover { background: rgba(26,35,48,0.1); color: var(--navy); }
+.btn-back:hover { background: #fff; transform: scale(1.05); }
 
 /* ============================================
    SELECT DE ESTADO
    ============================================ */
-#screen-select { padding: 32px 20px 40px; }
 .select-header { text-align: center; padding: 8px 0 28px; flex-shrink: 0; }
 .select-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -261,7 +290,7 @@ html, body {
 .select-titulo em { font-style: italic; color: var(--naranja); }
 .select-sub { font-size: 14.5px; color: var(--texto-muted); max-width: 320px; margin: 0 auto; line-height: 1.55; }
 
-.estados-lista { display: flex; flex-direction: column; gap: 12px; max-width: 440px; margin: 0 auto; width: 100%; }
+.estados-lista { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 .estado-btn {
   display: flex; align-items: center; gap: 16px;
   padding: 18px 22px; background: var(--blanco);
@@ -283,18 +312,18 @@ html, body {
 /* ============================================
    PRÁCTICA
    ============================================ */
-#screen-practice {
-  color: #fff; padding: 24px 20px 32px; overflow: hidden;
-}
+#screen-practice { color: #fff; overflow: hidden; }
 .practice-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 20px; }
 .practice-protocolo { font-size: 13px; color: var(--naranja-luz); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
 .btn-cerrar {
-  background: rgba(255,255,255,0.08); border: none;
-  color: rgba(255,255,255,0.7); width: 38px; height: 38px;
+  background: rgba(255,255,255,0.1); border: none;
+  color: rgba(255,255,255,0.85); width: 40px; height: 40px;
   border-radius: 50%; font-size: 20px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; transition: 0.2s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-.btn-cerrar:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.btn-cerrar:hover { background: rgba(255,255,255,0.2); color: #fff; }
 
 .progress-track {
   width: 100%; height: 3px; background: rgba(255,255,255,0.12);
@@ -338,7 +367,7 @@ html, body {
   letter-spacing: 0.1em; margin-top: -18px; min-height: 22px;
 }
 .practice-info {
-  font-size: 13px; color: rgba(255,255,255,0.5);
+  font-size: 13px; color: rgba(255,255,255,0.55);
   letter-spacing: 0.05em; text-align: center; margin-top: 8px;
 }
 .practice-controles { display: flex; gap: 12px; padding-bottom: 20px; flex-shrink: 0; justify-content: center; }
@@ -346,7 +375,8 @@ html, body {
   background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
   color: #fff; padding: 12px 24px; border-radius: 30px;
   font-family: var(--font-cuerpo); font-weight: 600; font-size: 14px;
-  cursor: pointer; transition: 0.2s;
+  cursor: pointer; transition: 0.2s; backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .btn-control:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
 .btn-control.primario {
@@ -358,9 +388,7 @@ html, body {
 /* ============================================
    CHECK-OUT
    ============================================ */
-#screen-checkout { padding: 32px 20px 40px; }
-.checkout-inner { max-width: 480px; margin: 0 auto; width: 100%; }
-.checkout-header { text-align: center; padding: 20px 0 28px; }
+.checkout-header { text-align: center; padding: 12px 0 28px; }
 .checkout-titulo {
   font-family: var(--font-titulo); font-size: 32px; font-weight: 700;
   color: var(--navy); line-height: 1.1; margin-bottom: 8px;
@@ -423,9 +451,7 @@ html, body {
 /* ============================================
    CAFÉ
    ============================================ */
-#screen-coffee { padding: 32px 20px 40px; }
-.coffee-inner { max-width: 480px; margin: 0 auto; width: 100%; }
-.coffee-header { text-align: center; padding: 20px 0 28px; }
+.coffee-header { text-align: center; padding: 12px 0 28px; }
 .coffee-icono { font-size: 58px; line-height: 1; margin-bottom: 14px; }
 .coffee-titulo {
   font-family: var(--font-titulo); font-size: 32px; font-weight: 700;
@@ -506,8 +532,6 @@ html, body {
 /* ============================================
    DIARIO · CALENDARIO
    ============================================ */
-#screen-journal-calendar { padding: 32px 20px 40px; }
-.journal-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .journal-header { text-align: center; padding: 8px 0 24px; }
 .journal-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -517,7 +541,6 @@ html, body {
 .journal-titulo em { font-style: italic; color: var(--naranja); }
 .journal-sub { font-size: 14px; color: var(--texto-muted); line-height: 1.55; max-width: 380px; margin: 0 auto; }
 
-/* Banner de ciclo completado */
 .completado-banner {
   display: none;
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
@@ -646,8 +669,6 @@ html, body {
 /* ============================================
    DIARIO · ENTRADA
    ============================================ */
-#screen-journal-entry { padding: 32px 20px 40px; }
-.entry-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .entry-header { text-align: center; padding: 8px 0 24px; }
 .entry-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -760,8 +781,6 @@ html, body {
 /* ============================================
    DIARIO · RESUMEN
    ============================================ */
-#screen-journal-summary { padding: 32px 20px 40px; }
-.summary-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .summary-header { text-align: center; padding: 8px 0 24px; }
 .summary-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -839,8 +858,6 @@ html, body {
 /* ============================================
    DIARIO · HISTORIAL DE CICLOS
    ============================================ */
-#screen-journal-history { padding: 32px 20px 40px; }
-.history-inner { max-width: 520px; margin: 0 auto; width: 100%; }
 .history-header { text-align: center; padding: 8px 0 24px; }
 .history-titulo {
   font-family: var(--font-titulo); font-weight: 700;
@@ -1064,38 +1081,39 @@ html, body {
   <!-- SELECT DE ESTADO -->
   <section id="screen-select" class="screen" aria-label="Selección de estado">
     <button class="btn-back" data-ir="home" aria-label="Volver al inicio">←</button>
+    <div class="select-inner">
+      <div class="select-header">
+        <h1 class="select-titulo">¿Cómo llegas <em>hoy</em>?</h1>
+        <p class="select-sub">Elige tu estado y te guiamos con la respiración que tu sistema nervioso necesita.</p>
+      </div>
 
-    <div class="select-header">
-      <h1 class="select-titulo">¿Cómo llegas <em>hoy</em>?</h1>
-      <p class="select-sub">Elige tu estado y te guiamos con la respiración que tu sistema nervioso necesita.</p>
-    </div>
-
-    <div class="estados-lista" id="estadosLista">
-      <button class="estado-btn" data-estado="ansioso" aria-label="Estado ansioso">
-        <span class="icono" aria-hidden="true">😰</span>
-        <span class="texto"><b>Ansioso</b><span>Activación, preocupación, mente acelerada</span></span>
-        <span class="flecha" aria-hidden="true">→</span>
-      </button>
-      <button class="estado-btn" data-estado="agotado" aria-label="Estado agotado">
-        <span class="icono" aria-hidden="true">😩</span>
-        <span class="texto"><b>Agotado</b><span>Cansancio mental, saturación, sin energía</span></span>
-        <span class="flecha" aria-hidden="true">→</span>
-      </button>
-      <button class="estado-btn" data-estado="disperso" aria-label="Estado disperso">
-        <span class="icono" aria-hidden="true">🌀</span>
-        <span class="texto"><b>Disperso</b><span>Falta de foco, muchas pestañas abiertas</span></span>
-        <span class="flecha" aria-hidden="true">→</span>
-      </button>
-      <button class="estado-btn" data-estado="bajaEnergia" aria-label="Estado de baja energía">
-        <span class="icono" aria-hidden="true">💤</span>
-        <span class="texto"><b>Baja energía</b><span>Desánimo, apatía, cuesta arrancar</span></span>
-        <span class="flecha" aria-hidden="true">→</span>
-      </button>
-      <button class="estado-btn" data-estado="calma" aria-label="Estado en calma">
-        <span class="icono" aria-hidden="true">🌿</span>
-        <span class="texto"><b>En calma</b><span>Bien, quiero profundizar este estado</span></span>
-        <span class="flecha" aria-hidden="true">→</span>
-      </button>
+      <div class="estados-lista" id="estadosLista">
+        <button class="estado-btn" data-estado="ansioso" aria-label="Estado ansioso">
+          <span class="icono" aria-hidden="true">😰</span>
+          <span class="texto"><b>Ansioso</b><span>Activación, preocupación, mente acelerada</span></span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </button>
+        <button class="estado-btn" data-estado="agotado" aria-label="Estado agotado">
+          <span class="icono" aria-hidden="true">😩</span>
+          <span class="texto"><b>Agotado</b><span>Cansancio mental, saturación, sin energía</span></span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </button>
+        <button class="estado-btn" data-estado="disperso" aria-label="Estado disperso">
+          <span class="icono" aria-hidden="true">🌀</span>
+          <span class="texto"><b>Disperso</b><span>Falta de foco, muchas pestañas abiertas</span></span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </button>
+        <button class="estado-btn" data-estado="bajaEnergia" aria-label="Estado de baja energía">
+          <span class="icono" aria-hidden="true">💤</span>
+          <span class="texto"><b>Baja energía</b><span>Desánimo, apatía, cuesta arrancar</span></span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </button>
+        <button class="estado-btn" data-estado="calma" aria-label="Estado en calma">
+          <span class="icono" aria-hidden="true">🌿</span>
+          <span class="texto"><b>En calma</b><span>Bien, quiero profundizar este estado</span></span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -1200,7 +1218,6 @@ html, body {
         <p class="journal-sub">30 días de escritura guiada. Un mes para mirarte con honestidad y sin juicio.</p>
       </div>
 
-      <!-- Banner de ciclo completado (solo visible al llegar a 30 días escritos) -->
       <div class="completado-banner" id="completadoBanner" role="region" aria-live="polite">
         <div class="cb-kicker">Ciclo completado</div>
         <h3>Has terminado tus 30 días. 🌿</h3>
@@ -1294,9 +1311,6 @@ html, body {
 (function() {
   'use strict';
 
-  // ============================================
-  // UTILIDADES COMPARTIDAS
-  // ============================================
   function getUsuarioId() {
     try {
       let id = localStorage.getItem('pausa_lyon_user_id');
@@ -1484,9 +1498,6 @@ html, body {
     loop();
   })();
 
-  // ============================================
-  // TEMA VISUAL DE PARTÍCULAS SEGÚN PANTALLA
-  // ============================================
   function actualizarTemaParticulas(nombrePantalla) {
     const oscuras = ['practice'];
     const esOscura = oscuras.indexOf(nombrePantalla) !== -1;
@@ -1543,9 +1554,6 @@ html, body {
     neutra:   'La claridad no siempre viene con emoción. A veces viene con presencia. Y hoy estuviste aquí.'
   };
 
-  // ============================================
-  // RASTREO DE APERTURA
-  // ============================================
   (function registrarApertura() {
     const esModoApp = window.matchMedia('(display-mode: standalone)').matches || 
                       window.navigator.standalone === true;
@@ -1561,9 +1569,6 @@ html, body {
     }
   })();
 
-  // ============================================
-  // RESPIRACIÓN
-  // ============================================
   const PROTOCOLOS = {
     ansioso: { nombre: 'Regulación 4·7·8', duracionTotal: 300, fases: [
       { nombre: 'Inhala', duracion: 4, tipo: 'inhale' },
@@ -1630,9 +1635,6 @@ html, body {
     'tienes','tiene','tenemos','tenéis','tienen','hoy','ayer','mañana','ahora','aquí','allí','ahí'
   ]);
 
-  // ============================================
-  // ESTADO
-  // ============================================
   const state = {
     pantallaActual: 'home',
     protocolo: null,
@@ -1647,9 +1649,6 @@ html, body {
     diaActualDiario: 1
   };
 
-  // ============================================
-  // NAVEGACIÓN
-  // ============================================
   function mostrarPantalla(nombre) {
     document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
     const el = document.getElementById('screen-' + nombre);
@@ -1679,18 +1678,12 @@ html, body {
     });
   });
 
-  // ============================================
-  // UTILIDADES
-  // ============================================
   function formatearTiempo(segundos) {
     const m = Math.floor(segundos / 60);
     const s = Math.floor(segundos % 60);
     return m + ':' + String(s).padStart(2, '0');
   }
 
-  // ============================================
-  // MOTOR RESPIRACIÓN
-  // ============================================
   const circulo = document.getElementById('circulo');
   const circuloAura = document.getElementById('circuloAura');
   const faseNombre = document.getElementById('faseNombre');
@@ -1874,9 +1867,6 @@ html, body {
     }
   });
 
-  // ============================================
-  // DIARIO
-  // ============================================
   const DIARIO_KEY = 'pausa_lyon_diario_v1';
   const DIARIO_HISTORICO_KEY = 'pausa_lyon_diario_historico_v1';
   const MAX_CICLOS_ARCHIVADOS = 12;
@@ -1912,13 +1902,11 @@ html, body {
     } catch (e) {}
   }
 
-  // Archiva el ciclo actual en el historial (si tiene al menos 1 entrada)
   function archivarCicloActual() {
     const d = leerDiario();
     const dias = Object.keys(d.entradas || {});
     if (dias.length === 0) return false;
 
-    // Cálculo de métricas del ciclo
     let totalPalabras = 0, totalPos = 0, totalNeg = 0;
     let positivos = 0, negativos = 0, neutros = 0;
 
@@ -1973,11 +1961,6 @@ html, body {
   function entradaDelDia(n) {
     const d = leerDiario();
     return d.entradas[String(n)] || null;
-  }
-
-  function cicloCompletado() {
-    const d = leerDiario();
-    return Object.keys(d.entradas || {}).length >= 30;
   }
 
   function normalizarPalabra(p) {
@@ -2086,7 +2069,6 @@ html, body {
       else badge.textContent = totalEscritos + ' de 30 días';
     }
 
-    // Mostrar/ocultar banner de ciclo completado
     const bannerCompletado = document.getElementById('completadoBanner');
     if (bannerCompletado) {
       if (totalEscritos >= 30) {
@@ -2096,7 +2078,6 @@ html, body {
       }
     }
 
-    // Botón de reinicio dinámico
     const btnReset = document.getElementById('btnReiniciarDiario');
     if (btnReset) {
       if (totalEscritos >= 30) {
@@ -2235,7 +2216,6 @@ html, body {
     mostrarPantalla('journal-calendar');
   });
 
-  // --- Reiniciar ciclo (con archivado automático) ---
   function reiniciarCiclo() {
     const d = leerDiario();
     const diasEscritos = Object.keys(d.entradas || {}).length;
@@ -2251,7 +2231,6 @@ html, body {
 
     if (!confirm(mensaje)) return;
 
-    // Archivar si hay contenido
     if (diasEscritos > 0) {
       const archivado = archivarCicloActual();
       if (archivado) {
@@ -2273,13 +2252,11 @@ html, body {
 
   document.getElementById('btnReiniciarDiario').addEventListener('click', reiniciarCiclo);
 
-  // Botón del banner de ciclo completado
   const btnComenzarNuevoCicloBanner = document.getElementById('btnComenzarNuevoCicloBanner');
   if (btnComenzarNuevoCicloBanner) {
     btnComenzarNuevoCicloBanner.addEventListener('click', reiniciarCiclo);
   }
 
-  // --- Historial de ciclos ---
   document.getElementById('btnVerHistorial').addEventListener('click', function() {
     renderHistorialCiclos();
     mostrarPantalla('journal-history');
@@ -2315,7 +2292,6 @@ html, body {
       return;
     }
 
-    // Mostramos del más reciente al más antiguo
     const lista = historico.slice().reverse();
 
     cont.innerHTML = lista.map(function(ciclo, idx) {
@@ -2451,7 +2427,7 @@ html, body {
 
   actualizarTemaParticulas('home');
 
-  console.log('%c📖 Pausa Lyon v3.6 — Archivado de ciclos + Historial + Reinicio seguro', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.6.1 — Partículas visibles + Frosted Glass + Archivo de ciclos', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
