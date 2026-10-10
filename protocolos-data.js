@@ -1,14 +1,14 @@
 // ============================================================
 // LYON ASESOR — protocolos-data.js  (v3.0 · Octubre 2026)
 // ============================================================
+// ⚠️ MARCADOR DE VERSIÓN:
+//    Si ves "v3.0" en estas primeras líneas al abrir este
+//    archivo en el navegador, la versión nueva ESTÁ SUBIDA.
+//    Si ves "v2.0", el archivo viejo sigue en GitHub.
+// ============================================================
 // Este archivo contiene DOS bloques:
-//
-//   BLOQUE A · MODELO DE MEMBRESÍAS Y AFILIADOS (v2.0)
-//              Usado por membresia.html, afiliados.html, admin.
-//
-//   BLOQUE B · PROTOCOLOS_DATA  (nuevo · v3.0)
-//              Usado EXCLUSIVAMENTE por consultorio.html.
-//              Contiene los 13 protocolos terapéuticos LA-00 a LA-12.
+//   BLOQUE A · Modelo de membresías y afiliados (v2.0)
+//   BLOQUE B · PROTOCOLOS_DATA.protocolos (v3.0 · 13 protocolos)
 // ============================================================
 
 
@@ -222,33 +222,12 @@ window.desmarcarMesPagado = desmarcarMesPagado;
 
 
 // ============================================================
-// BLOQUE B · PROTOCOLOS_DATA  (v3.0 · usado por consultorio.html)
-// ============================================================
-// Estructura:
-//   PROTOCOLOS_DATA.protocolos = [ {id, code, title, subtitle,
-//                                   themeColor, introduction,
-//                                   signature, questions, consent} , ... ]
-//
-// Tipos de pregunta soportados por consultorio.html:
-//   'section_header'      → bloque separador con título
-//   'short_text' | 'long_text' | 'email' | 'date'
-//   'linear_scale'        → escala numérica (1..10 por defecto)
-//   'multiple_choice'     → radio buttons
-//   'checkbox'            → varias opciones
-//   'grid_multiple_choice'→ matriz de filas × columnas (radio)
-//   'grid_checkbox'       → matriz de filas × columnas (check)
-//   + repeatsFor: N       → repite la pregunta N veces como "Día X"
-//
-// Los ids de cada pregunta coinciden EXACTAMENTE con los que lee
-// el Motor Experto de consultorio.html. No renombrar.
+// BLOQUE B · PROTOCOLOS_DATA  (13 protocolos LA-00 a LA-12)
 // ============================================================
 
 const PROTOCOLOS_DATA = {
   protocolos: [
 
-    // ========================================================
-    // LA-00 · TU MAPA INICIAL
-    // ========================================================
     {
       id: 'LA-00',
       code: 'LA-00',
@@ -305,14 +284,11 @@ const PROTOCOLOS_DATA = {
           order: 3,
           required: true,
           text: '¿Qué te trae aquí?',
-          helperText: 'Cuéntame, con tus palabras, qué te llevó a iniciar este proceso. Sin extensión mínima ni máxima.'
+          helperText: 'Cuéntame, con tus palabras, qué te llevó a iniciar este proceso.'
         }
       ]
     },
 
-    // ========================================================
-    // LA-01 · EL OBSERVADOR SILENCIOSO (7 días)
-    // ========================================================
     {
       id: 'LA-01',
       code: 'LA-01',
@@ -346,9 +322,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-02 · CREENCIA NUCLEAR
-    // ========================================================
     {
       id: 'LA-02',
       code: 'LA-02',
@@ -388,9 +361,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-03 · INTERROGATORIO DE LA CREENCIA
-    // ========================================================
     {
       id: 'LA-03',
       code: 'LA-03',
@@ -440,9 +410,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-04 · EL RECUERDO QUE DUELE
-    // ========================================================
     {
       id: 'LA-04',
       code: 'LA-04',
@@ -483,9 +450,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-05 · REESCRIBIENDO LA PELÍCULA
-    // ========================================================
     {
       id: 'LA-05',
       code: 'LA-05',
@@ -527,9 +491,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-06 · DEPENDENCIA EMOCIONAL
-    // ========================================================
     {
       id: 'LA-06',
       code: 'LA-06',
@@ -571,9 +532,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-07 · RE-PARENTALIZACIÓN Y LÍMITES
-    // ========================================================
     {
       id: 'LA-07',
       code: 'LA-07',
@@ -605,9 +563,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-08 · MAPA VINCULAR
-    // ========================================================
     {
       id: 'LA-08',
       code: 'LA-08',
@@ -647,9 +602,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-09 · DIÁLOGO Y LIBERACIÓN
-    // ========================================================
     {
       id: 'LA-09',
       code: 'LA-09',
@@ -690,9 +642,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-10 · TERMÓMETRO EMOCIONAL
-    // ========================================================
     {
       id: 'LA-10',
       code: 'LA-10',
@@ -732,9 +681,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-11 · CAJA DE HERRAMIENTAS
-    // ========================================================
     {
       id: 'LA-11',
       code: 'LA-11',
@@ -782,9 +728,6 @@ const PROTOCOLOS_DATA = {
       ]
     },
 
-    // ========================================================
-    // LA-12 · CIERRE E INTEGRACIÓN
-    // ========================================================
     {
       id: 'LA-12',
       code: 'LA-12',
@@ -840,5 +783,6 @@ window.PROTOCOLOS_DATA = PROTOCOLOS_DATA;
 console.log('✅ protocolos-data.js v3.0 cargado — ' + PROTOCOLOS_DATA.protocolos.length + ' protocolos disponibles (LA-00 a LA-12) + modelo de membresías');
 
 // ============================================================
-// FIN DEL ARCHIVO
+// ✅ FIN DEL ARCHIVO — protocolos-data.js v3.0
+//    (13 protocolos + modelo de membresías v2.0)
 // ============================================================
