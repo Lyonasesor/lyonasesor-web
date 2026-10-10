@@ -846,6 +846,20 @@
             }
             .footer-youtube { font-size: 0.8rem; padding: 8px 16px; }
         }
+
+        /* ===== CORRECCIÓN MENÚ: contraste de la fuente sobre fondo claro ===== */
+        /* Con el menú sin scroll (transparente sobre fondo claro) la fuente es oscura.
+           Al hacer scroll el menú se vuelve navy y la fuente vuelve a ser blanca. */
+        .nav:not(.scrolled) .nav-links a { color: var(--navy); }
+        .nav:not(.scrolled) .nav-links a:hover { color: var(--naranja); }
+        .nav:not(.scrolled) .nav-links .nav-cta { color: #fff !important; }
+        .nav:not(.scrolled) .nav-logo-text .main { color: var(--navy); }
+        .nav:not(.scrolled) .nav-toggle span { background: var(--navy); }
+        @media (max-width: 768px) {
+            .nav:not(.scrolled) .nav-links.active a { color: #fff; }
+            .nav:not(.scrolled) .nav-links.active a:hover { color: var(--naranja-luz); }
+            .nav:not(.scrolled) .nav-toggle.active span { background: #fff; }
+        }
     </style>
 </head>
 <body>
