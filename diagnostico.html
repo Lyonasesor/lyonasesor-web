@@ -54,7 +54,6 @@
     <!-- ===== Fin Meta Pixel ===== -->
     
     <script>
-        // Meta Pixel: el usuario entró a la Brújula Emocional (interés en el diagnóstico)
         if (typeof fbq === 'function') {
             fbq('track', 'ViewContent', {
                 content_name: 'Brújula Emocional',
@@ -74,18 +73,11 @@
             "url": "https://lyonasesor.com/diagnostico.html",
             "description": "Test gratuito de autoconocimiento emocional que te ayuda a identificar tu perfil emocional y recibir un plan personalizado de educación emocional.",
             "applicationCategory": "HealthApplication",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "provider": {
                 "@type": "ProfessionalService",
                 "name": "Lyon Asesor",
-                "areaServed": {
-                    "@type": "Country",
-                    "name": ["España", "México", "Colombia", "Argentina", "Chile", "Perú", "Ecuador", "Venezuela", "Estados Unidos"]
-                }
+                "areaServed": { "@type": "Country", "name": ["España", "México", "Colombia", "Argentina", "Chile", "Perú", "Ecuador", "Venezuela", "Estados Unidos"] }
             },
             "availableLanguage": ["es"]
         }
@@ -163,7 +155,7 @@
         }
 
         /* ============================================
-           NAV — ajustado para coincidir con el index
+           NAV — ahora replica exacta del index
            ============================================ */
         .nav {
             position: fixed;
@@ -171,20 +163,20 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 22px 0;
+            padding: 20px 0;
             transition: var(--transition);
             background: transparent;
         }
         .nav.scrolled {
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
-            padding: 14px 0;
+            padding: 12px 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         }
         .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -192,41 +184,41 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             text-decoration: none;
         }
         .nav-logo-icon {
-            width: 44px;
-            height: 44px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .nav-logo-icon img {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             object-fit: contain;
             border-radius: 50%;
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: 2px;
             color: #fff;
-            line-height: 1.2;
+            line-height: 1.15;
         }
         .nav-logo-text .main span { color: var(--naranja); }
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 36px;
             list-style: none;
         }
         .nav-links a {
             color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             transition: var(--transition-fast);
             position: relative;
@@ -246,7 +238,7 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
             color: #fff !important;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 50px;
             font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
@@ -279,11 +271,11 @@
         }
 
         /* ============================================
-           HEADER — ajustado para coincidir con el index
+           HEADER
            ============================================ */
         .header {
             background: var(--navy);
-            padding: 140px 2rem 4rem;
+            padding: 140px 2rem 4.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -307,29 +299,29 @@
         }
         .brand {
             font-family: 'Inter', sans-serif;
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 500;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.22em;
             color: var(--naranja);
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
             position: relative;
             z-index: 1;
         }
         .compass-icon {
-            width: 64px; height: 64px;
-            margin: 0 auto 1.5rem;
+            width: 68px; height: 68px;
+            margin: 0 auto 1.75rem;
             position: relative;
             z-index: 1;
         }
         .compass-icon svg { width: 100%; height: 100%; }
         .header h1 {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2.4rem, 5vw, 3.4rem);
+            font-size: clamp(2.5rem, 5.5vw, 3.6rem);
             font-weight: 700;
             color: #fff;
-            line-height: 1.1;
-            margin-bottom: 0.85rem;
+            line-height: 1.08;
+            margin-bottom: 1rem;
             position: relative;
             z-index: 1;
         }
@@ -338,10 +330,10 @@
             color: var(--naranja);
         }
         .header-sub {
-            font-size: 15.5px;
-            color: rgba(255,255,255,0.7);
+            font-size: 16px;
+            color: rgba(255,255,255,0.72);
             font-weight: 300;
-            max-width: 500px;
+            max-width: 520px;
             margin: 0 auto;
             line-height: 1.65;
             position: relative;
@@ -428,9 +420,7 @@
         }
 
         /* ===== SECCIONES ===== */
-        .section {
-            margin-bottom: 2.5rem;
-        }
+        .section { margin-bottom: 2.5rem; }
         .section-label {
             display: inline-flex;
             align-items: center;
@@ -457,9 +447,7 @@
         }
 
         /* ===== CAMPO DATOS ===== */
-        .field {
-            margin-bottom: 1.25rem;
-        }
+        .field { margin-bottom: 1.25rem; }
         .field label {
             display: block;
             font-size: 13px;
@@ -482,9 +470,7 @@
             appearance: none;
         }
         .field input:focus,
-        .field select:focus {
-            border-color: var(--naranja);
-        }
+        .field select:focus { border-color: var(--naranja); }
         .field-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -519,11 +505,7 @@
             margin-bottom: 4px;
             display: block;
         }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .options { display: flex; flex-direction: column; gap: 6px; }
         .option {
             display: flex;
             align-items: flex-start;
@@ -533,12 +515,8 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-        .option:hover {
-            background: rgba(232,107,24,0.06);
-        }
-        .option input[type="radio"] {
-            display: none;
-        }
+        .option:hover { background: rgba(232,107,24,0.06); }
+        .option input[type="radio"] { display: none; }
         .option-dot {
             width: 18px; height: 18px;
             border-radius: 50%;
@@ -572,11 +550,7 @@
         }
 
         /* ===== ESCALA LIKERT ===== */
-        .likert-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .likert-wrap { display: flex; flex-direction: column; gap: 8px; }
         .likert-row {
             display: grid;
             grid-template-columns: 1fr repeat(5,44px);
@@ -591,10 +565,7 @@
             color: var(--text-muted);
             line-height: 1.4;
         }
-        .likert-cell {
-            display: flex;
-            justify-content: center;
-        }
+        .likert-cell { display: flex; justify-content: center; }
         .likert-radio {
             width: 20px; height: 20px;
             border-radius: 50%;
@@ -652,17 +623,9 @@
         }
 
         /* ===== RESULTADO ===== */
-        #result-section {
-            display: none;
-        }
-        .result-header {
-            text-align: center;
-            padding: 2rem 0 1.5rem;
-        }
-        .result-compass {
-            width: 80px; height: 80px;
-            margin: 0 auto 1.25rem;
-        }
+        #result-section { display: none; }
+        .result-header { text-align: center; padding: 2rem 0 1.5rem; }
+        .result-compass { width: 80px; height: 80px; margin: 0 auto 1.25rem; }
         .result-header h2 {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.8rem;
@@ -681,22 +644,10 @@
             margin: 1.5rem 0;
             border: 1.5px solid;
         }
-        .profile-card.nivel-1 {
-            background: var(--sage-light);
-            border-color: rgba(90,122,90,0.25);
-        }
-        .profile-card.nivel-2 {
-            background: var(--teal-light);
-            border-color: rgba(45,106,106,0.25);
-        }
-        .profile-card.nivel-3 {
-            background: var(--gold-pale);
-            border-color: var(--gold-light);
-        }
-        .profile-card.nivel-4 {
-            background: var(--coral-light);
-            border-color: rgba(194,90,58,0.25);
-        }
+        .profile-card.nivel-1 { background: var(--sage-light); border-color: rgba(90,122,90,0.25); }
+        .profile-card.nivel-2 { background: var(--teal-light); border-color: rgba(45,106,106,0.25); }
+        .profile-card.nivel-3 { background: var(--gold-pale); border-color: var(--gold-light); }
+        .profile-card.nivel-4 { background: var(--coral-light); border-color: rgba(194,90,58,0.25); }
         .profile-badge {
             display: inline-block;
             font-size: 11px;
@@ -770,9 +721,7 @@
         /* ============================================
            PLAN PERSONALIZADO
            ============================================ */
-        .plan-container {
-            margin: 2rem 0;
-        }
+        .plan-container { margin: 2rem 0; }
         .plan-card {
             border-radius: var(--radius);
             overflow: hidden;
@@ -1123,10 +1072,7 @@
             color: rgba(255, 255, 255, 0.6);
             margin-top: 60px;
         }
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .footer-inner { max-width: 1200px; margin: 0 auto; }
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -1190,12 +1136,8 @@
             font-weight: 600;
             margin-bottom: 18px;
         }
-        .footer-col ul {
-            list-style: none;
-        }
-        .footer-col ul li {
-            margin-bottom: 10px;
-        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
         .footer-col ul a {
             color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
@@ -1244,11 +1186,7 @@
             transform: scale(1.12);
             box-shadow: 0 6px 30px rgba(232,107,24,0.6);
         }
-        .chat-float svg {
-            width: 30px;
-            height: 30px;
-            fill: white;
-        }
+        .chat-float svg { width: 30px; height: 30px; fill: white; }
         @keyframes floatPulseChat {
             0%, 100% { box-shadow: 0 4px 20px rgba(232,107,24,0.4); }
             50% { box-shadow: 0 4px 35px rgba(232,107,24,0.65); }
@@ -1417,10 +1355,13 @@
 
         @media (max-width: 768px) {
             .nav { padding: 14px 0; }
-            .nav-logo-icon { width: 38px; height: 38px; }
-            .nav-logo-icon img { width: 34px; height: 34px; }
-            .nav-logo-text .main { font-size: 1.15rem; letter-spacing: 1.5px; }
-            .header { padding: 110px 1.5rem 2.5rem; }
+            .nav-inner { padding: 0 20px; }
+            .nav-logo-icon { width: 42px; height: 42px; }
+            .nav-logo-icon img { width: 38px; height: 38px; }
+            .nav-logo-text .main { font-size: 1.2rem; letter-spacing: 1.5px; }
+            .header { padding: 110px 1.5rem 3rem; }
+            .compass-icon { width: 56px; height: 56px; }
+            .header h1 { font-size: clamp(2rem, 7vw, 2.6rem); }
             .field-row { grid-template-columns: 1fr; }
             .areas-grid { grid-template-columns: 1fr; }
             .likert-row { grid-template-columns: 1fr repeat(5,36px); }
@@ -2120,88 +2061,24 @@
         // MAPEO DE ÁREAS → CONFERENCIAS
         // =============================================
         const AREA_A_CONFERENCIA = {
-            'Autoestima': {
-                nombre: 'Autoestima Corporativa',
-                desc: 'El pilar del rendimiento sostenible. Aprende a sostener tu valor incluso bajo presión.',
-                url: '/conferencias/autoestima-corporativa.html'
-            },
-            'Regulación emocional': {
-                nombre: 'Estrategias de Bienestar',
-                desc: 'Neurociencia aplicada al manejo del estrés y la ansiedad en el día a día.',
-                url: '/conferencias/bienestar-estres.html'
-            },
-            'Vínculos relacionales': {
-                nombre: 'Vínculos que Sanan',
-                desc: 'Neurobiología de las relaciones saludables. Aprende a construir y sostener conexiones reales.',
-                url: '/conferencias/vinculos-que-sanan.html'
-            },
-            'Creencias limitantes': {
-                nombre: 'Reconfigura Mente',
-                desc: 'Neuroplasticidad aplicada al cambio personal. Reprograma los patrones que ya no te sirven.',
-                url: '/conferencias/reconfigura-mente.html'
-            },
-            'Estado anímico': {
-                nombre: 'Resiliencia Organizacional',
-                desc: 'Cómo recuperar el equilibrio emocional y sostener tu bienestar en entornos exigentes.',
-                url: '/conferencias/resiliencia-organizacional.html'
-            },
-            'Claridad mental': {
-                nombre: 'Neuroeducación',
-                desc: 'Cómo el cerebro aprende y transforma. Herramientas para recuperar el foco y la claridad.',
-                url: '/conferencias/neuroeducacion.html'
-            },
-            'Bienestar físico': {
-                nombre: 'Estrategias de Bienestar',
-                desc: 'Rutinas y prácticas concretas para el equilibrio cuerpo-mente.',
-                url: '/conferencias/bienestar-estres.html'
-            },
-            'Autocompasión': {
-                nombre: 'Liderazgo con Alma',
-                desc: 'Gestión desde el factor humano. Aprende a tratarte con la misma compasión que ofreces a otros.',
-                url: '/conferencias/liderazgo-alma.html'
-            }
+            'Autoestima': { nombre: 'Autoestima Corporativa', desc: 'El pilar del rendimiento sostenible. Aprende a sostener tu valor incluso bajo presión.', url: '/conferencias/autoestima-corporativa.html' },
+            'Regulación emocional': { nombre: 'Estrategias de Bienestar', desc: 'Neurociencia aplicada al manejo del estrés y la ansiedad en el día a día.', url: '/conferencias/bienestar-estres.html' },
+            'Vínculos relacionales': { nombre: 'Vínculos que Sanan', desc: 'Neurobiología de las relaciones saludables. Aprende a construir y sostener conexiones reales.', url: '/conferencias/vinculos-que-sanan.html' },
+            'Creencias limitantes': { nombre: 'Reconfigura Mente', desc: 'Neuroplasticidad aplicada al cambio personal. Reprograma los patrones que ya no te sirven.', url: '/conferencias/reconfigura-mente.html' },
+            'Estado anímico': { nombre: 'Resiliencia Organizacional', desc: 'Cómo recuperar el equilibrio emocional y sostener tu bienestar en entornos exigentes.', url: '/conferencias/resiliencia-organizacional.html' },
+            'Claridad mental': { nombre: 'Neuroeducación', desc: 'Cómo el cerebro aprende y transforma. Herramientas para recuperar el foco y la claridad.', url: '/conferencias/neuroeducacion.html' },
+            'Bienestar físico': { nombre: 'Estrategias de Bienestar', desc: 'Rutinas y prácticas concretas para el equilibrio cuerpo-mente.', url: '/conferencias/bienestar-estres.html' },
+            'Autocompasión': { nombre: 'Liderazgo con Alma', desc: 'Gestión desde el factor humano. Aprende a tratarte con la misma compasión que ofreces a otros.', url: '/conferencias/liderazgo-alma.html' }
         };
 
         // =============================================
         // PLANES POR NIVEL
         // =============================================
         const PLAN_POR_NIVEL = {
-            1: {
-                membresia: {
-                    nombre: 'Extendido',
-                    desc: 'Un año completo de crecimiento a tu propio ritmo. Ideal para sostener la claridad que ya tienes.',
-                    precio: '$10.99 USD/mes',
-                    url: 'membresia.html'
-                },
-                pitch: 'Estás en un momento de claridad. Aprovéchalo para sistematizar y profundizar lo que ya funciona en ti.'
-            },
-            2: {
-                membresia: {
-                    nombre: 'Extendido',
-                    desc: 'Estructura sólida para pasar de la transición a la transformación. 12 meses guiados paso a paso.',
-                    precio: '$10.99 USD/mes',
-                    url: 'membresia.html'
-                },
-                pitch: 'Estás en transición. Este es el momento perfecto para darle estructura a tu crecimiento y consolidar.'
-            },
-            3: {
-                membresia: {
-                    nombre: 'Acelerado',
-                    desc: 'Seis meses de transformación profunda. Ritmo intenso para quien ya no quiere postergar.',
-                    precio: '$24.99 USD/mes',
-                    url: 'membresia.html'
-                },
-                pitch: 'Cargar esto solo tiene un límite. La metodología Lyon está diseñada para exactamente este momento.'
-            },
-            4: {
-                membresia: {
-                    nombre: 'Acelerado',
-                    desc: 'Acompañamiento intenso para reencontrar tu centro. Estructura y guía desde la primera clase.',
-                    precio: '$24.99 USD/mes',
-                    url: 'membresia.html'
-                },
-                pitch: 'No tienes que seguir cargando esto sin apoyo. Hay una metodología y un camino claro para salir.'
-            }
+            1: { membresia: { nombre: 'Extendido', desc: 'Un año completo de crecimiento a tu propio ritmo. Ideal para sostener la claridad que ya tienes.', precio: '$10.99 USD/mes', url: 'membresia.html' }, pitch: 'Estás en un momento de claridad. Aprovéchalo para sistematizar y profundizar lo que ya funciona en ti.' },
+            2: { membresia: { nombre: 'Extendido', desc: 'Estructura sólida para pasar de la transición a la transformación. 12 meses guiados paso a paso.', precio: '$10.99 USD/mes', url: 'membresia.html' }, pitch: 'Estás en transición. Este es el momento perfecto para darle estructura a tu crecimiento y consolidar.' },
+            3: { membresia: { nombre: 'Acelerado', desc: 'Seis meses de transformación profunda. Ritmo intenso para quien ya no quiere postergar.', precio: '$24.99 USD/mes', url: 'membresia.html' }, pitch: 'Cargar esto solo tiene un límite. La metodología Lyon está diseñada para exactamente este momento.' },
+            4: { membresia: { nombre: 'Acelerado', desc: 'Acompañamiento intenso para reencontrar tu centro. Estructura y guía desde la primera clase.', precio: '$24.99 USD/mes', url: 'membresia.html' }, pitch: 'No tienes que seguir cargando esto sin apoyo. Hay una metodología y un camino claro para salir.' }
         };
 
         // =============================================
@@ -2261,20 +2138,16 @@
             let nivel, perfil, descripcion;
 
             if (pct <= 0.35) {
-                nivel = 1;
-                perfil = 'Brújula Orientada';
+                nivel = 1; perfil = 'Brújula Orientada';
                 descripcion = `${nombre.split(' ')[0]}, tu lectura emocional muestra un estado de relativo equilibrio. Tienes recursos internos funcionando bien, una autoestima base sólida y vínculos que te sostienen. Esto no significa que no haya espacio para crecer — significa que tienes el terreno fértil para hacerlo con profundidad y velocidad. El trabajo desde aquí es de expansión, no de reparación.`;
             } else if (pct <= 0.55) {
-                nivel = 2;
-                perfil = 'Brújula en Movimiento';
+                nivel = 2; perfil = 'Brújula en Movimiento';
                 descripcion = `${nombre.split(' ')[0]}, tu lectura muestra un estado de transición: hay claridad en algunas áreas y turbulencia en otras. Estás funcionando — pero hay algo en ti que sabe que podrías estar mejor. Quizás hay patrones que se repiten, emociones que no terminan de procesarse, o relaciones que no fluyen como quisieran. Eso que sientes no es exageración. Es información.`;
             } else if (pct <= 0.72) {
-                nivel = 3;
-                perfil = 'Brújula Buscando Norte';
+                nivel = 3; perfil = 'Brújula Buscando Norte';
                 descripcion = `${nombre.split(' ')[0]}, lo que estás mostrando aquí toma valentía. Tu lectura emocional revela un estado de carga importante: hay patrones que ya no sirven, una voz interna que puede ser dura contigo, relaciones que drenan más de lo que nutren, y una sensación de que algo tiene que cambiar. Llevas un rato cargando esto. Más de lo que debería.`;
             } else {
-                nivel = 4;
-                perfil = 'Brújula en Tormenta';
+                nivel = 4; perfil = 'Brújula en Tormenta';
                 descripcion = `${nombre.split(' ')[0]}, gracias por la honestidad que pusiste en cada respuesta. Tu lectura emocional muestra un estado de agotamiento real: hay heridas activas, patrones que se repiten con intensidad, y una sensación de que el peso que llevas es demasiado para seguir haciéndolo sin apoyo. Eso que sientes no es debilidad. Es la señal de que algo necesita atención ahora.`;
             }
 
@@ -2333,20 +2206,11 @@
             document.getElementById('progressFill').style.width = '100%';
             document.getElementById('progressPct').textContent = '100%';
 
-            // =============================================
-            // META PIXEL: evento Lead del diagnóstico completo
-            // (usuario completó el formulario largo)
-            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'diagnostico', 'nivel': nivel, 'perfil': perfil });
             }
             if (typeof fbq === 'function') {
-                fbq('track', 'Lead', {
-                    value: 0,
-                    currency: 'USD',
-                    content_name: 'Brújula Emocional completada',
-                    content_category: 'diagnostico_nivel_' + nivel
-                });
+                fbq('track', 'Lead', { value: 0, currency: 'USD', content_name: 'Brújula Emocional completada', content_category: 'diagnostico_nivel_' + nivel });
             }
 
             guardarDiagnosticoEnFirebase(nombre, email, perfil, pct, nivel, topAreas);
@@ -2365,9 +2229,6 @@
             return item.peso[v - 1];
         }
 
-        // ============================================
-        // GENERAR PLAN PERSONALIZADO
-        // ============================================
         function generarPlanPersonalizado(nivel, topAreas) {
             const plan = PLAN_POR_NIVEL[nivel];
             if (!plan) return;
@@ -2410,40 +2271,22 @@
             `;
         }
 
-        // ============================================
-        // GUARDAR EN FIREBASE
-        // ============================================
         async function guardarDiagnosticoEnFirebase(nombre, email, perfil, puntaje, nivel, topAreas) {
             try {
                 const datos = {
-                    nombre: nombre,
-                    email: email,
-                    tipo: 'diagnostico',
-                    perfil: perfil,
-                    puntaje: Math.round(puntaje * 100),
-                    nivel: nivel,
-                    areasAtencion: topAreas.map(a => a.nombre),
-                    estado: 'completado',
+                    nombre: nombre, email: email, tipo: 'diagnostico', perfil: perfil,
+                    puntaje: Math.round(puntaje * 100), nivel: nivel,
+                    areasAtencion: topAreas.map(a => a.nombre), estado: 'completado',
                     refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
                 };
-                
-                if (typeof guardarLead === 'function') {
-                    await guardarLead('diagnosticos', datos);
-                }
+                if (typeof guardarLead === 'function') { await guardarLead('diagnosticos', datos); }
                 console.log('✅ Diagnóstico guardado en Firebase');
-            } catch (error) {
-                console.error('❌ Error al guardar diagnóstico en Firebase:', error);
-            }
+            } catch (error) { console.error('❌ Error al guardar diagnóstico en Firebase:', error); }
         }
 
         // ===== CHAT =====
         (function() {
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initChat);
-            } else {
-                initChat();
-            }
-
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initChat); } else { initChat(); }
             function initChat() {
                 const chatToggle = document.getElementById('chatToggle');
                 const chatWindow = document.getElementById('chatWindow');
@@ -2452,13 +2295,9 @@
                 const chatInput = document.getElementById('chatInput');
                 const chatSend = document.getElementById('chatSend');
 
-                if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatInput || !chatSend) {
-                    console.warn('Chat: Elementos no encontrados');
-                    return;
-                }
+                if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatInput || !chatSend) { console.warn('Chat: Elementos no encontrados'); return; }
 
                 let chatOpen = false;
-
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
                 const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
@@ -2469,44 +2308,29 @@
                 function addMessage(text, sender, options = {}) {
                     const div = document.createElement('div');
                     div.className = `chat-message ${sender}`;
-                    if (sender === 'bot' && options.buttons) {
-                        div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons;
-                    } else {
-                        div.textContent = text;
-                    }
+                    if (sender === 'bot' && options.buttons) { div.innerHTML = (text ? escapeHtml(text) : '') + options.buttons; }
+                    else { div.textContent = text; }
                     chatMessages.appendChild(div);
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 }
-
                 function escapeHtml(str) {
                     const d = document.createElement('div');
                     d.textContent = str;
                     return d.innerHTML.replace(/\n/g, '<br>');
                 }
-
                 function setInputEnabled(enabled) {
                     chatInput.disabled = !enabled;
                     chatSend.disabled = !enabled;
                     if (enabled) chatInput.focus();
                 }
-
                 function botonHumano() {
-                    return `<div style="margin-top:6px;">
-                        <a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a>
-                    </div>`;
+                    return `<div style="margin-top:6px;"><a href="${WHATSAPP_HUMANO}" target="_blank" class="product-btn humano" style="text-decoration:none; display:inline-block; padding:8px 16px; border-radius:30px; font-weight:600; font-size:0.85rem; background:#25D366; color:#fff; border:1px solid #25D366;">💬 Hablar con Álvaro</a></div>`;
                 }
-
                 function startChat() {
                     chatMessages.innerHTML = '';
                     chatInput.value = '';
                     setInputEnabled(false);
-
-                    const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟
-
-Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
-
-¿Qué te gustaría explorar?`;
-
+                    const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟\n\nEstoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.\n\n¿Qué te gustaría explorar?`;
                     const botones = `
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
@@ -2518,13 +2342,10 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                     `;
                     addMessage(bienvenida, 'bot', { buttons: botones });
                 }
-
                 function handleProductSelection(producto) {
                     let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
-
                     if (producto === 'biblioteca') {
-                        nombreProducto = '📚 Biblioteca Lyon Asesor';
-                        precio = '$9.99';
+                        nombreProducto = '📚 Biblioteca Lyon Asesor'; precio = '$9.99';
                         descripcion = '4 recursos digitales: "Este Día Es Tuyo", Diario Terapéutico, Guía de Autocuidado y Ejercicios de Bienestar.';
                         botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $9.99 con PayPal</a>`;
                     } else if (producto === 'consulta') {
@@ -2536,23 +2357,13 @@ Estoy aquí para ayudarte a encontrar el servicio que mejor se adapte a ti.
                                 <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $40 (1 sesión)</a>
                                 <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $100 (3 sesiones)</a>
                                 <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="display:inline-block;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;text-align:center;">💳 $150 (5 sesiones)</a>
-                            </div>
-                        `;
+                            </div>`;
                     } else if (producto === 'conferencia') {
-                        nombreProducto = '🎤 Conferencia';
-                        precio = '$150 (tarifa plana)';
+                        nombreProducto = '🎤 Conferencia'; precio = '$150 (tarifa plana)';
                         descripcion = '12 temáticas transformadoras para empresas e instituciones. Incluye diploma y ebook de regalo.';
                         botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#0070ba;color:#fff;border-radius:30px;text-decoration:none;font-weight:600;">💳 Pagar $150 con PayPal</a>`;
                     }
-
-                    const mensaje = `Has seleccionado: **${nombreProducto}**
-
-${descripcion}
-
-**Precio:** ${precio}
-
-Haz clic en el botón de pago para completar tu compra:`;
-
+                    const mensaje = `Has seleccionado: **${nombreProducto}**\n\n${descripcion}\n\n**Precio:** ${precio}\n\nHaz clic en el botón de pago para completar tu compra:`;
                     const botones = `
                         <div style="margin-top:8px;">
                             ${botonesPayPal}
@@ -2562,77 +2373,39 @@ Haz clic en el botón de pago para completar tu compra:`;
                                 <a href="mailto:info@lyonasesor.com" class="product-btn" style="text-decoration:none;display:inline-block;padding:8px 16px;border-radius:30px;font-weight:600;font-size:0.85rem;background:var(--naranja);color:#fff;border:1px solid var(--naranja);">📩 Contactar por correo</a>
                             </div>
                         </div>
-                        ${botonHumano()}
-                    `;
-
+                        ${botonHumano()}`;
                     addMessage(mensaje, 'bot', { buttons: botones });
                 }
-
                 chatMessages.addEventListener('click', function(e) {
                     const btn = e.target.closest('.product-btn[data-role]');
                     if (!btn) return;
                     const rol = btn.dataset.role;
-
-                    if (rol === 'producto') {
-                        handleProductSelection(btn.dataset.producto);
-                        return;
-                    }
-
+                    if (rol === 'producto') { handleProductSelection(btn.dataset.producto); return; }
                     if (rol === 'accion') {
                         const accion = btn.dataset.action;
-                        if (accion === 'volver') {
-                            startChat();
-                        } else if (accion === 'diagnostico') {
-                            window.location.href = 'diagnostico.html';
-                        }
+                        if (accion === 'volver') { startChat(); }
+                        else if (accion === 'diagnostico') { window.location.href = 'diagnostico.html'; }
                     }
                 });
-
                 chatSend.addEventListener('click', function() {
                     const input = chatInput.value.trim();
                     if (!input) return;
-
                     addMessage(input, 'user');
                     chatInput.value = '';
-
                     setInputEnabled(false);
                     const msg = encodeURIComponent(`Mensaje desde el chat de lyonasesor.com: ${input}`);
                     window.open(`https://wa.me/584148610464?text=${msg}`, '_blank');
-                    
                     addMessage('Gracias por tu mensaje. He abierto un chat con Álvaro para que pueda responderte personalmente. 💬', 'bot');
                     setInputEnabled(true);
                 });
-
-                chatInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') chatSend.click();
-                });
-
+                chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') chatSend.click(); });
                 chatToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (chatWindow.classList.contains('open')) {
-                        chatWindow.classList.remove('open');
-                        chatOpen = false;
-                    } else {
-                        chatWindow.classList.add('open');
-                        chatOpen = true;
-                        if (chatMessages.children.length === 0) startChat();
-                        if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300);
-                    }
+                    e.preventDefault(); e.stopPropagation();
+                    if (chatWindow.classList.contains('open')) { chatWindow.classList.remove('open'); chatOpen = false; }
+                    else { chatWindow.classList.add('open'); chatOpen = true; if (chatMessages.children.length === 0) startChat(); if (!chatInput.disabled) setTimeout(() => chatInput.focus(), 300); }
                 });
-
-                chatClose.addEventListener('click', function() {
-                    chatWindow.classList.remove('open');
-                    chatOpen = false;
-                });
-
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && chatOpen) {
-                        chatWindow.classList.remove('open');
-                        chatOpen = false;
-                    }
-                });
+                chatClose.addEventListener('click', function() { chatWindow.classList.remove('open'); chatOpen = false; });
+                document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && chatOpen) { chatWindow.classList.remove('open'); chatOpen = false; } });
             }
         })();
     </script>
