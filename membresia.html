@@ -471,6 +471,20 @@
             }
             .footer-youtube { font-size: 0.8rem; padding: 8px 16px; }
         }
+
+        /* ===== CORRECCIÓN MENÚ: contraste de la fuente sobre fondo claro ===== */
+        /* Con el menú sin scroll (transparente sobre fondo claro) la fuente es oscura.
+           Al hacer scroll el menú se vuelve navy y la fuente vuelve a ser blanca. */
+        .nav:not(.scrolled) .nav-links a { color: var(--navy); }
+        .nav:not(.scrolled) .nav-links a:hover { color: var(--naranja); }
+        .nav:not(.scrolled) .nav-links .nav-cta { color: #fff !important; }
+        .nav:not(.scrolled) .nav-logo-text .main { color: var(--navy); }
+        .nav:not(.scrolled) .nav-toggle span { background: var(--navy); }
+        @media (max-width: 768px) {
+            .nav:not(.scrolled) .nav-links.active a { color: #fff; }
+            .nav:not(.scrolled) .nav-links.active a:hover { color: var(--naranja-luz); }
+            .nav:not(.scrolled) .nav-toggle.active span { background: #fff; }
+        }
     </style>
 </head>
 <body>
@@ -616,9 +630,10 @@
                 </select>
 
                 <div id="pagoMovilInfo" style="display:none; background:rgba(255,255,255,0.06); border-radius:12px; padding:16px 20px; margin:12px 0; font-size:0.9rem;">
-                    <p><strong>Banco:</strong> BBVA Provincial</p>
-                    <p><strong>C.I.:</strong> 17633035</p>
-                    <p><strong>Teléfono:</strong> +58 414-8610464</p>
+                    <p><strong>Nombre:</strong> Alvaro Jose Lyon Abreu</p>
+                    <p><strong>CI:</strong> V-17633035</p>
+                    <p><strong>Banco:</strong> Banco Venezolano de Crédito</p>
+                    <p><strong>Número telefónico:</strong> 0414-8610464</p>
                     <p><strong>Tasa:</strong> Cambio del día (BCV / Dólar paralelo)</p>
                     <p style="opacity:0.8;">Después de transferir, envía tu comprobante por WhatsApp o a info@lyonasesor.com para activar tu cuenta.</p>
                 </div>
@@ -1044,4 +1059,3 @@
     <script src="/assets/js/footer-qr.js?v=6"></script>
 </body>
 </html>
-   
