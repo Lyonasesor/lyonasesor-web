@@ -162,21 +162,23 @@
             z-index: 0;
         }
 
-        /* ===== NAV ===== */
+        /* ============================================
+           NAV — ajustado para coincidir con el index
+           ============================================ */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 16px 0;
+            padding: 22px 0;
             transition: var(--transition);
             background: transparent;
         }
         .nav.scrolled {
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
-            padding: 10px 0;
+            padding: 14px 0;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
         }
         .nav-inner {
@@ -190,27 +192,27 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
             text-decoration: none;
         }
         .nav-logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .nav-logo-icon img {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
             border-radius: 50%;
         }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.1rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: #fff;
             line-height: 1.2;
         }
@@ -218,13 +220,13 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 32px;
             list-style: none;
         }
         .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: var(--transition-fast);
             position: relative;
@@ -244,7 +246,7 @@
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
             color: #fff !important;
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
@@ -253,6 +255,7 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(232,107,24,0.45);
         }
+        .nav-cta::after { display: none; }
         .nav-toggle {
             display: none;
             flex-direction: column;
@@ -275,10 +278,12 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* ===== HEADER ===== */
+        /* ============================================
+           HEADER — ajustado para coincidir con el index
+           ============================================ */
         .header {
             background: var(--navy);
-            padding: 100px 2rem 3rem;
+            padding: 140px 2rem 4rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -307,24 +312,24 @@
             letter-spacing: 0.2em;
             color: var(--naranja);
             text-transform: uppercase;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
             position: relative;
             z-index: 1;
         }
         .compass-icon {
-            width: 56px; height: 56px;
-            margin: 0 auto 1.25rem;
+            width: 64px; height: 64px;
+            margin: 0 auto 1.5rem;
             position: relative;
             z-index: 1;
         }
         .compass-icon svg { width: 100%; height: 100%; }
         .header h1 {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-size: clamp(2.4rem, 5vw, 3.4rem);
             font-weight: 700;
             color: #fff;
             line-height: 1.1;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
             position: relative;
             z-index: 1;
         }
@@ -333,12 +338,12 @@
             color: var(--naranja);
         }
         .header-sub {
-            font-size: 15px;
-            color: rgba(255,255,255,0.65);
+            font-size: 15.5px;
+            color: rgba(255,255,255,0.7);
             font-weight: 300;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.65;
             position: relative;
             z-index: 1;
         }
@@ -1411,7 +1416,11 @@
         }
 
         @media (max-width: 768px) {
-            .header { padding: 80px 1.5rem 2.5rem; }
+            .nav { padding: 14px 0; }
+            .nav-logo-icon { width: 38px; height: 38px; }
+            .nav-logo-icon img { width: 34px; height: 34px; }
+            .nav-logo-text .main { font-size: 1.15rem; letter-spacing: 1.5px; }
+            .header { padding: 110px 1.5rem 2.5rem; }
             .field-row { grid-template-columns: 1fr; }
             .areas-grid { grid-template-columns: 1fr; }
             .likert-row { grid-template-columns: 1fr repeat(5,36px); }
@@ -1443,7 +1452,7 @@
             }
         }
         @media (max-width: 480px) {
-            .header { padding: 70px 1rem 2rem; }
+            .header { padding: 100px 1rem 2rem; }
             .main { padding: 1rem 1rem 3rem; }
             .section { margin-bottom: 1.5rem; }
             .question { padding: 1rem; }
