@@ -155,7 +155,7 @@
         }
 
         /* ============================================
-           NAV — copiado exacto de legal.html
+           NAV — copiado carácter por carácter de legal.html
            ============================================ */
         .nav {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
@@ -194,7 +194,6 @@
             box-shadow: var(--shadow-orange);
         }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(232, 107, 24, 0.45); }
-        .nav-cta::after { display: none; }
         .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; z-index: 1001; }
         .nav-toggle span { width: 22px; height: 2.5px; background: #fff; transition: var(--transition); }
         .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
@@ -1283,6 +1282,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ============================================
+           RESPONSIVE — idéntico a legal.html
+           ============================================ */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .nav-toggle { display: flex; }
@@ -1332,7 +1334,7 @@
 </head>
 <body>
 
-    <!-- ===== NAV ===== -->
+    <!-- ===== NAV — idéntico a legal.html ===== -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
