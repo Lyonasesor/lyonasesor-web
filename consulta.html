@@ -311,6 +311,36 @@
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
 
+        /* ===== BOTÓN SECUNDARIO: INICIAR SESIÓN ===== */
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--navy);
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 2px solid rgba(26,35,48,0.18);
+            transition: var(--transition);
+        }
+        .btn-login:hover {
+            border-color: var(--naranja);
+            color: var(--naranja);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(232,107,24,0.18);
+        }
+        .btn-login .icon { font-size: 1.05rem; }
+
         .section-block {
             background: #fff;
             border-radius: var(--radius);
@@ -848,8 +878,6 @@
         }
 
         /* ===== CORRECCIÓN MENÚ: contraste de la fuente sobre fondo claro ===== */
-        /* Con el menú sin scroll (transparente sobre fondo claro) la fuente es oscura.
-           Al hacer scroll el menú se vuelve navy y la fuente vuelve a ser blanca. */
         .nav:not(.scrolled) .nav-links a { color: var(--navy); }
         .nav:not(.scrolled) .nav-links a:hover { color: var(--naranja); }
         .nav:not(.scrolled) .nav-links .nav-cta { color: #fff !important; }
@@ -893,7 +921,12 @@
                 No es una consulta más. Es un espacio donde tus emociones, tu historia y tu potencial 
                 son escuchados con respeto, ciencia y calidez. Inicia tu proceso hoy, desde cualquier país.
             </p>
-            <a href="#formSection" class="btn-primary">📅 Agendar mi primera sesión</a>
+            <div class="hero-actions">
+                <a href="#formSection" class="btn-primary">📅 Agendar mi primera sesión</a>
+                <a href="consultorio.html" class="btn-login">
+                    <span class="icon">🔑</span> Ya tengo mi código · Iniciar sesión
+                </a>
+            </div>
         </div>
 
         <div class="section-block">
@@ -1124,7 +1157,6 @@
                 refAfiliado: (typeof obtenerAfiliadoActivo === 'function' ? obtenerAfiliadoActivo() : null)
             };
 
-            // Guardar lead en Firebase
             try {
                 if (typeof guardarLead === 'function') {
                     await guardarLead('consultas', datos);
@@ -1134,7 +1166,6 @@
                 console.error('❌ Error al guardar en Firebase (continuamos con el pago):', error);
             }
 
-            // Crear solicitud de consultorio para aprobación manual
             try {
                 await database.ref('solicitudes_consultorio').push({
                     nombre: datos.nombre,
@@ -1157,7 +1188,6 @@
                 console.error('❌ Error creando solicitud consultorio:', e);
             }
 
-            // Guardar email en localStorage para el auto-refresh de gracias.html
             try {
                 localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
                 localStorage.setItem('lyon_pending_producto', 'consulta');
@@ -1167,21 +1197,16 @@
                 console.warn('⚠️ No se pudo guardar en localStorage:', err);
             }
 
-            // =============================================
-            // META PIXEL: eventos de conversión
-            // =============================================
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'consulta' });
             }
             if (typeof fbq === 'function') {
-                // Inicio del checkout: el usuario está a punto de ir a pagar
                 fbq('track', 'InitiateCheckout', {
                     value: monto,
                     currency: 'USD',
                     content_name: paqueteTexto,
                     content_category: 'consulta'
                 });
-                // Lead: usuario completó el formulario
                 fbq('track', 'Lead', {
                     value: monto,
                     currency: 'USD',
@@ -1190,7 +1215,6 @@
                 });
             }
 
-            // Redirigir según método de pago
             if (metodo === 'paypal') {
                 let paypalLink;
                 if (paquete === '70') {
