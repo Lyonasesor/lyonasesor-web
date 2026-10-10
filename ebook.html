@@ -835,6 +835,20 @@
             }
             .footer-youtube { font-size: 0.8rem; padding: 8px 16px; }
         }
+
+        /* ===== CORRECCIÓN MENÚ: contraste de la fuente sobre fondo claro ===== */
+        /* Con el menú sin scroll (transparente sobre fondo claro) la fuente es oscura.
+           Al hacer scroll el menú se vuelve navy y la fuente vuelve a ser blanca. */
+        .nav:not(.scrolled) .nav-links a { color: var(--navy); }
+        .nav:not(.scrolled) .nav-links a:hover { color: var(--naranja); }
+        .nav:not(.scrolled) .nav-links .nav-cta { color: #fff !important; }
+        .nav:not(.scrolled) .nav-logo-text .main { color: var(--navy); }
+        .nav:not(.scrolled) .nav-toggle span { background: var(--navy); }
+        @media (max-width: 768px) {
+            .nav:not(.scrolled) .nav-links.active a { color: #fff; }
+            .nav:not(.scrolled) .nav-links.active a:hover { color: var(--naranja-luz); }
+            .nav:not(.scrolled) .nav-toggle.active span { background: #fff; }
+        }
     </style>
 </head>
 <body>
@@ -970,9 +984,10 @@
                 </div>
                 <div class="payment-method">
                     <h3>📱 Pago Móvil / Transferencia</h3>
-                    <p><strong>Banco:</strong> BBVA Provincial</p>
-                    <p><strong>C.I.:</strong> 17633035</p>
-                    <p><strong>Teléfono:</strong> +58 414-8610464</p>
+                    <p><strong>Nombre:</strong> Alvaro Jose Lyon Abreu</p>
+                    <p><strong>CI:</strong> V-17633035</p>
+                    <p><strong>Banco:</strong> Banco Venezolano de Crédito</p>
+                    <p><strong>Número telefónico:</strong> 0414-8610464</p>
                     <p><strong>Tasa:</strong> Cambio del día (BCV / Dólar paralelo)</p>
                     <p style="font-size:0.85rem; color:var(--text-muted);">Envía el comprobante por WhatsApp para recibir tus archivos.</p>
                     <a href="https://wa.me/584148610464?text=Hola%20Alvaro%2C%20ya%20realic%C3%A9%20el%20pago%20por%20la%20biblioteca%20de%20desarrollo%20personal" 
