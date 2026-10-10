@@ -155,131 +155,61 @@
         }
 
         /* ============================================
-           NAV — ahora replica exacta del index
+           NAV — copiado exacto de legal.html
            ============================================ */
         .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-            transition: var(--transition);
-            background: transparent;
-        }
-        .nav.scrolled {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 10px 0;
             background: rgba(26, 35, 48, 0.97);
             backdrop-filter: blur(20px);
-            padding: 12px 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         }
         .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            max-width: 1200px; margin: 0 auto; padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-        .nav-logo-icon {
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .nav-logo-icon img {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-            border-radius: 50%;
-        }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+        .nav-logo-icon img { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; }
         .nav-logo-text .main {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #fff;
-            line-height: 1.15;
+            font-size: 1.1rem; font-weight: 700; letter-spacing: 1.5px; color: #fff; line-height: 1.2;
         }
         .nav-logo-text .main span { color: var(--naranja); }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-            list-style: none;
-        }
+        .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
         .nav-links a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: var(--transition-fast);
-            position: relative;
+            color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            transition: var(--transition-fast); position: relative;
         }
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--naranja);
-            transition: var(--transition);
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: var(--naranja); transition: var(--transition);
         }
         .nav-links a:hover { color: #fff; }
         .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--naranja-luz); }
         .nav-cta {
             background: linear-gradient(135deg, var(--naranja), var(--naranja-luz)) !important;
-            color: #fff !important;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600 !important;
+            color: #fff !important; padding: 8px 20px; border-radius: 50px; font-weight: 600 !important;
             box-shadow: var(--shadow-orange);
         }
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(232,107,24,0.45);
-        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(232, 107, 24, 0.45); }
         .nav-cta::after { display: none; }
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 6px;
-            z-index: 1001;
-        }
-        .nav-toggle span {
-            width: 22px;
-            height: 2.5px;
-            background: #fff;
-            transition: var(--transition);
-        }
-        .nav-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
+        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; z-index: 1001; }
+        .nav-toggle span { width: 22px; height: 2.5px; background: #fff; transition: var(--transition); }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .nav-toggle.active span:nth-child(2) { opacity: 0; }
-        .nav-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
         /* ============================================
-           HEADER
+           HEADER — mismo gradiente y proporción que legal
            ============================================ */
         .header {
-            background: var(--navy);
-            padding: 140px 2rem 4.5rem;
-            text-align: center;
             position: relative;
+            background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 40%, var(--navy-light) 100%);
+            padding: 150px 24px 70px;
+            text-align: center;
             overflow: hidden;
-            margin-top: 0;
         }
         .header::before {
             content: '';
@@ -299,29 +229,29 @@
         }
         .brand {
             font-family: 'Inter', sans-serif;
-            font-size: 11.5px;
+            font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.22em;
-            color: var(--naranja);
+            color: var(--naranja-luz);
             text-transform: uppercase;
-            margin-bottom: 1.75rem;
+            margin-bottom: 22px;
             position: relative;
             z-index: 1;
         }
         .compass-icon {
-            width: 68px; height: 68px;
-            margin: 0 auto 1.75rem;
+            width: 64px; height: 64px;
+            margin: 0 auto 22px;
             position: relative;
             z-index: 1;
         }
         .compass-icon svg { width: 100%; height: 100%; }
         .header h1 {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2.5rem, 5.5vw, 3.6rem);
+            font-size: clamp(2rem, 5vw, 3.2rem);
             font-weight: 700;
             color: #fff;
-            line-height: 1.08;
-            margin-bottom: 1rem;
+            line-height: 1.1;
+            margin-bottom: 16px;
             position: relative;
             z-index: 1;
         }
@@ -330,12 +260,12 @@
             color: var(--naranja);
         }
         .header-sub {
-            font-size: 16px;
-            color: rgba(255,255,255,0.72);
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 300;
-            max-width: 520px;
+            max-width: 720px;
             margin: 0 auto;
-            line-height: 1.65;
+            line-height: 1.7;
             position: relative;
             z-index: 1;
         }
@@ -1354,35 +1284,19 @@
         }
 
         @media (max-width: 768px) {
-            .nav { padding: 14px 0; }
-            .nav-inner { padding: 0 20px; }
-            .nav-logo-icon { width: 42px; height: 42px; }
-            .nav-logo-icon img { width: 38px; height: 38px; }
-            .nav-logo-text .main { font-size: 1.2rem; letter-spacing: 1.5px; }
-            .header { padding: 110px 1.5rem 3rem; }
-            .compass-icon { width: 56px; height: 56px; }
-            .header h1 { font-size: clamp(2rem, 7vw, 2.6rem); }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+            .nav-links.active {
+                display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
+                width: 100%; height: 100vh; background: rgba(26, 35, 48, 0.98); backdrop-filter: blur(20px);
+                padding: 100px 40px; gap: 28px; z-index: 1000;
+            }
+            .nav-links.active a { font-size: 1.3rem; }
+            .header { padding: 120px 20px 50px; }
             .field-row { grid-template-columns: 1fr; }
             .areas-grid { grid-template-columns: 1fr; }
             .likert-row { grid-template-columns: 1fr repeat(5,36px); }
             .cta-features { flex-direction: column; align-items: center; gap: 10px; }
-            .nav-links { display: none; }
-            .nav-toggle { display: flex; }
-            .nav-links.active {
-                display: flex;
-                flex-direction: column;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(26,35,48,0.98);
-                backdrop-filter: blur(20px);
-                padding: 100px 40px;
-                gap: 28px;
-                z-index: 1000;
-            }
-            .nav-links.active a { font-size: 1.3rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-social { align-items: center; }
             .chat-window {
@@ -1393,7 +1307,7 @@
             }
         }
         @media (max-width: 480px) {
-            .header { padding: 100px 1rem 2rem; }
+            .header { padding: 100px 16px 40px; }
             .main { padding: 1rem 1rem 3rem; }
             .section { margin-bottom: 1.5rem; }
             .question { padding: 1rem; }
@@ -1423,15 +1337,13 @@
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
                 <div class="nav-logo-icon"><img src="logo.png" alt="Lyon Asesor - Educación Emocional y Desarrollo Humano" /></div>
-                <div class="nav-logo-text">
-                    <div class="main">LYON<span>ASESOR</span></div>
-                </div>
+                <div class="nav-logo-text"><div class="main">LYON<span>ASESOR</span></div></div>
             </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="consulta.html">Consulta</a></li>
                 <li><a href="ebook.html">Biblioteca</a></li>
                 <li><a href="index.html#conferencias">Conferencias</a></li>
-                <li><a href="diagnostico.html">Brújula Emocional</a></li>
+                <li><a href="diagnostico.html" class="active">Brújula Emocional</a></li>
                 <li><a href="afiliados.html">Afiliados</a></li>
                 <li><a href="legal.html">Legal</a></li>
                 <li><a href="membresia.html" class="nav-cta">Membresía</a></li>
@@ -1441,7 +1353,7 @@
     </nav>
 
     <!-- ===== HEADER ===== -->
-    <div class="header">
+    <header class="header">
         <p class="brand">Lyon Asesor · Prof. Mtr. Álvaro Lyon</p>
         <div class="compass-icon">
             <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1458,7 +1370,7 @@
         </div>
         <h1>Tu <em>Brújula</em><br>Emocional</h1>
         <p class="header-sub">Un encuentro contigo mismo. 15 minutos que pueden cambiar el rumbo.</p>
-    </div>
+    </header>
 
     <!-- ===== PROGRESS ===== -->
     <div class="progress-wrap">
@@ -1965,11 +1877,6 @@
 
     <script>
         // ===== NAV =====
-        const nav = document.getElementById('nav');
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
         navToggle.addEventListener('click', () => {
