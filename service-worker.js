@@ -18,7 +18,6 @@ const CACHE_STATIC = [
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  '/icon-maskable-512.png'
 ];
 
 // Página principal de la app (fallback offline)

@@ -882,6 +882,7 @@
 
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
                 const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
                 const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
@@ -929,7 +930,7 @@
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
                             <button class="product-btn" data-role="accion" data-action="membresia">🎓 Membresía</button>
                             <button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button>
-                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button>
+                            <button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia desde $70</button>
                             <button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button>
                             <button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button>
                         </div>
@@ -948,11 +949,12 @@
                         botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn">💳 Pagar $9.99 con PayPal</a>`;
                     } else if (producto === 'consulta') {
                         nombreProducto = '🧘 Proceso Terapéutico';
-                        precio = '$70 (individual) / $180 (3 sesiones) / $290 (5 sesiones)';
+                        precio = '$70 (individual) / $130 (2 sesiones) / $180 (3 sesiones) / $290 (5 sesiones)';
                         descripcion = 'Acompañamiento profesional por videollamada. Sesiones de 45-60 minutos.';
                         botonesPayPal = `
                             <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
                                 <a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn" style="text-align:center;">💳 $70 (1 sesión)</a>
+                                <a href="${PAYPAL_CONSULTA_2}" target="_blank" class="paypal-btn" style="text-align:center;">💳 $130 (2 sesiones)</a>
                                 <a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn" style="text-align:center;">💳 $180 (3 sesiones)</a>
                                 <a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn" style="text-align:center;">💳 $290 (5 sesiones)</a>
                             </div>

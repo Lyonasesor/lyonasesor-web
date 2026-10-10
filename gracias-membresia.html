@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://lyonasesor.com/gracias-membresia.html" />
     <meta property="og:title" content="Activando tu membresía | Lyon Asesor" />
     <meta property="og:description" content="Estamos activando tu Membresía Lyon Asesor." />
-    <meta property="og:image" content="https://lyonasesor.com/social-preview.jpg" />
+    <meta property="og:image" content="https://lyonasesor.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_ES" />
@@ -36,30 +36,7 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=847498078082153&ev=PageView&noscript=1" /></noscript>
     <!-- ===== Fin Meta Pixel ===== -->
-    
-    <script>
-        // ============================================
-        // META PIXEL: evento Purchase
-        // Se dispara al llegar aquí (el usuario completó el pago de la membresía).
-        // Como PayPal no pasa el monto real en la URL, usamos $24.99 como valor
-        // representativo del plan Acelerado mensual (el más alto de los planes).
-        // ============================================
-        (function() {
-            try {
-                if (typeof fbq === 'function') {
-                    fbq('track', 'Purchase', {
-                        value: 24.99,
-                        currency: 'USD',
-                        content_name: 'Membresía Lyon Asesor',
-                        content_category: 'membresia'
-                    });
-                }
-            } catch (e) {
-                console.warn('Meta Pixel Purchase: no se pudo disparar el evento', e);
-            }
-        })();
-    </script>
-    
+    <!-- No se dispara Purchase desde esta página: el retorno de PayPal no confirma por sí solo el pago ni el importe. Configurar Purchase mediante una confirmación verificable de pago antes de activar campañas. -->
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
     <script>
@@ -67,11 +44,6 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-003ZC6TLH3');
-        gtag('event', 'conversion', {
-            'send_to': 'AW-XXXXXXXXXX/XXXXXXX',
-            'value': 1.0,
-            'currency': 'USD'
-        });
     </script>
     
     <!-- FIREBASE -->

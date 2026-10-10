@@ -883,10 +883,10 @@
             'Autocompasión': { nombre: 'Liderazgo con Alma', desc: 'Gestión desde el factor humano.', url: '/conferencias/liderazgo-alma.html' }
         };
         const PLAN_POR_NIVEL = {
-            1: { membresia: { nombre: 'Extendido', desc: 'Un año completo de crecimiento a tu propio ritmo.', precio: '$10.99 USD/mes', url: 'membresia.html' }, pitch: 'Estás en un momento de claridad. Aprovéchalo.' },
-            2: { membresia: { nombre: 'Extendido', desc: 'Estructura sólida para pasar de la transición a la transformación.', precio: '$10.99 USD/mes', url: 'membresia.html' }, pitch: 'Estás en transición. Momento perfecto para consolidar.' },
-            3: { membresia: { nombre: 'Acelerado', desc: 'Seis meses de transformación profunda.', precio: '$24.99 USD/mes', url: 'membresia.html' }, pitch: 'Cargar esto solo tiene un límite.' },
-            4: { membresia: { nombre: 'Acelerado', desc: 'Acompañamiento intenso para reencontrar tu centro.', precio: '$24.99 USD/mes', url: 'membresia.html' }, pitch: 'No tienes que seguir cargando esto sin apoyo.' }
+            1: { membresia: { nombre: 'Plan Personal', desc: 'Programa de 12 clases durante 4 meses, con pagos mensuales.', precio: '$10.99 USD/mes (4 pagos)', url: 'membresia.html' }, pitch: 'Estás en un momento de claridad. Aprovéchalo.' },
+            2: { membresia: { nombre: 'Plan Personal', desc: 'Programa de 12 clases durante 4 meses, con pagos mensuales.', precio: '$10.99 USD/mes (4 pagos)', url: 'membresia.html' }, pitch: 'Estás en transición. Momento perfecto para consolidar.' },
+            3: { membresia: { nombre: 'Plan Personal', desc: 'Programa de 12 clases durante 4 meses, con pagos mensuales.', precio: '$10.99 USD/mes (4 pagos)', url: 'membresia.html' }, pitch: 'Cargar esto solo tiene un límite.' },
+            4: { membresia: { nombre: 'Plan Personal', desc: 'Programa de 12 clases durante 4 meses, con pagos mensuales.', precio: '$10.99 USD/mes (4 pagos)', url: 'membresia.html' }, pitch: 'No tienes que seguir cargando esto sin apoyo.' }
         };
 
         function calcularResultado() {
@@ -994,9 +994,11 @@
                 let chatOpen = false;
                 const PAYPAL_LIBRERIA = 'https://www.paypal.com/ncp/payment/KEWDB9R4FFE8S';
                 const PAYPAL_CONSULTA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/TYY8L4VCJKDTG';
+                const PAYPAL_CONSULTA_2 = 'https://www.paypal.com/ncp/payment/2DLHHZG8V2FRN';
                 const PAYPAL_CONSULTA_3 = 'https://www.paypal.com/ncp/payment/QQ49VYZ3JEH84';
                 const PAYPAL_CONSULTA_5 = 'https://www.paypal.com/ncp/payment/TK66E572YUYSQ';
                 const PAYPAL_CONFERENCIA = 'https://www.paypal.com/ncp/payment/5H57FN96U3N2A';
+                const PAYPAL_CONFERENCIA_INDIVIDUAL = 'https://www.paypal.com/ncp/payment/GFLZXQJYLA8LC';
                 const WHATSAPP_HUMANO = 'https://wa.me/584148610464';
                 function addMessage(text, sender, options = {}) {
                     const div = document.createElement('div');
@@ -1012,14 +1014,14 @@
                 function startChat() {
                     chatMessages.innerHTML = ''; chatInput.value = ''; setInputEnabled(false);
                     const bienvenida = `¡Hola! Soy el asistente de Lyon Asesor. 🌟\n\n¿Qué te gustaría explorar?`;
-                    const botones = `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;"><button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button><button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia $40</button><button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150</button><button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button></div>${botonHumano()}`;
+                    const botones = `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;"><button class="product-btn" data-role="producto" data-producto="biblioteca">📚 Biblioteca $9.99</button><button class="product-btn" data-role="producto" data-producto="consulta">🧘 Terapia desde $70</button><button class="product-btn" data-role="producto" data-producto="conferencia">🎤 Conferencia $150/$10</button><button class="product-btn" data-role="accion" data-action="diagnostico">🧭 Brújula Emocional</button></div>${botonHumano()}`;
                     addMessage(bienvenida, 'bot', { buttons: botones });
                 }
                 function handleProductSelection(producto) {
                     let nombreProducto = '', precio = '', descripcion = '', botonesPayPal = '';
                     if (producto === 'biblioteca') { nombreProducto = '📚 Biblioteca Lyon Asesor'; precio = '$9.99'; descripcion = '4 recursos digitales.'; botonesPayPal = `<a href="${PAYPAL_LIBRERIA}" target="_blank" class="paypal-btn">💳 Pagar $9.99 con PayPal</a>`; }
-                    else if (producto === 'consulta') { nombreProducto = '🧘 Proceso Terapéutico'; precio = '$40 / $100 / $150'; descripcion = 'Acompañamiento profesional por videollamada.'; botonesPayPal = `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"><a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn">💳 $40 (1 sesión)</a><a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn">💳 $100 (3 sesiones)</a><a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn">💳 $150 (5 sesiones)</a></div>`; }
-                    else if (producto === 'conferencia') { nombreProducto = '🎤 Conferencia'; precio = '$150'; descripcion = '12 temáticas transformadoras.'; botonesPayPal = `<a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn">💳 Pagar $150 con PayPal</a>`; }
+                    else if (producto === 'consulta') { nombreProducto = '🧘 Proceso Terapéutico'; precio = '$70 / $130 / $180 / $290'; descripcion = 'Acompañamiento profesional por videollamada.'; botonesPayPal = `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"><a href="${PAYPAL_CONSULTA_INDIVIDUAL}" target="_blank" class="paypal-btn">💳 $70 (1 sesión)</a><a href="${PAYPAL_CONSULTA_2}" target="_blank" class="paypal-btn">💳 $130 (2 sesiones)</a><a href="${PAYPAL_CONSULTA_3}" target="_blank" class="paypal-btn">💳 $180 (3 sesiones)</a><a href="${PAYPAL_CONSULTA_5}" target="_blank" class="paypal-btn">💳 $290 (5 sesiones)</a></div>`; }
+                    else if (producto === 'conferencia') { nombreProducto = '🎤 Conferencia'; precio = '$150 (empresa) / $10 (individual)'; descripcion = '12 temáticas transformadoras. Incluye diploma y material descargable.'; botonesPayPal = `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"><a href="${PAYPAL_CONFERENCIA}" target="_blank" class="paypal-btn">💳 $150 (Empresa)</a><a href="${PAYPAL_CONFERENCIA_INDIVIDUAL}" target="_blank" class="paypal-btn">💳 $10 (Individual)</a></div>`; }
                     const mensaje = `Has seleccionado: **${nombreProducto}**\n\n${descripcion}\n\n**Precio:** ${precio}`;
                     const botones = `<div style="margin-top:8px;">${botonesPayPal}<div style="margin-top:8px;"><button class="product-btn" data-role="accion" data-action="volver">🔙 Volver</button></div></div>${botonHumano()}`;
                     addMessage(mensaje, 'bot', { buttons: botones });
