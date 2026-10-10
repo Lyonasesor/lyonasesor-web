@@ -236,6 +236,37 @@
             transition: var(--transition); border: none; cursor: pointer; font-size: 1rem;
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232,107,24,0.5); }
+
+        /* ===== BOTÓN SECUNDARIO: INICIAR SESIÓN ===== */
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--navy);
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 2px solid rgba(26,35,48,0.18);
+            transition: var(--transition);
+        }
+        .btn-login:hover {
+            border-color: var(--naranja);
+            color: var(--naranja);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(232,107,24,0.18);
+        }
+        .btn-login .icon { font-size: 1.05rem; }
+
         .section-block {
             background: #fff; border-radius: var(--radius); padding: 3rem;
             margin-bottom: 60px; border: 1px solid rgba(26,35,48,0.06);
@@ -473,8 +504,6 @@
         }
 
         /* ===== CORRECCIÓN MENÚ: contraste de la fuente sobre fondo claro ===== */
-        /* Con el menú sin scroll (transparente sobre fondo claro) la fuente es oscura.
-           Al hacer scroll el menú se vuelve navy y la fuente vuelve a ser blanca. */
         .nav:not(.scrolled) .nav-links a { color: var(--navy); }
         .nav:not(.scrolled) .nav-links a:hover { color: var(--naranja); }
         .nav:not(.scrolled) .nav-links .nav-cta { color: #fff !important; }
@@ -520,7 +549,12 @@
                 12 clases, 300 horas académicas, 4 meses de recorrido guiado. Tres clases nuevas cada mes.
                 Diploma del Programa Completo al finalizar, tras la Magistral de Cierre en vivo.
             </p>
-            <a href="#planes" class="btn-primary">🎓 Ver planes</a>
+            <div class="hero-actions">
+                <a href="#planes" class="btn-primary">🎓 Ver planes</a>
+                <a href="miembro-dashboard.html" class="btn-login">
+                    <span class="icon">🔑</span> Ya soy miembro · Iniciar sesión
+                </a>
+            </div>
         </div>
 
         <!-- ===== PLANES ===== -->
@@ -796,7 +830,6 @@
                 console.error('❌ Error al guardar en Firebase:', error);
             }
 
-            // Guardar email en localStorage para el auto-refresh de gracias-membresia.html
             try {
                 localStorage.setItem('lyon_pending_email', email.toLowerCase().trim());
                 localStorage.setItem('lyon_pending_producto', 'membresia');
@@ -805,7 +838,6 @@
                 console.warn('⚠️ No se pudo guardar en localStorage:', err);
             }
 
-            // Meta Pixel
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit', { 'event_category': 'membresia', 'plan': plan });
             }
@@ -824,7 +856,6 @@
                 });
             }
 
-            // Redirigir según método
             if (metodo === 'paypal') {
                 window.location.href = paypalLink;
             } else {
