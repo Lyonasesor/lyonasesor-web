@@ -255,7 +255,7 @@ Las reglas de seguridad están documentadas en `/firebase-rules.json`.
 
 **Prof. Mtr. Álvaro Lyon Abreu**
 Director · Lyon Asesor, f.p.
-CI V-17633035 · RIF V-1763***5-6
+CI V-17633035 · RIF V-17633035-6
 
 Este repositorio contiene material propietario. La reproducción total o parcial sin autorización escrita está prohibida.
 
