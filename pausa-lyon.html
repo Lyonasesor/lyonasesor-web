@@ -24,6 +24,317 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
+<!-- AUDIO · Pausa Lyon -->
+<script>
+/* ============================================================
+   Pausa Lyon · Motor de audio para la respiración guiada
+   ------------------------------------------------------------
+   Todo el sonido se sintetiza en el dispositivo (Web Audio API):
+   sin archivos, sin derechos de autor, sin descargas y funciona
+   sin conexión. Cada fase (inhala / sostén / exhala) se programa
+   con el reloj de audio, así que queda sincronizada con el conteo.
+
+   Capas:
+   1) Colchón armónico (drone) propio de cada protocolo.
+   2) Tono guía: sube en la inhalación, baja en la exhalación.
+   3) Cuenco tibetano suave al iniciar cada fase.
+   4) Pulso muy suave en cada segundo del conteo.
+   5) Cuenco final al terminar.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var KEY = 'pausa_lyon_sonido';
+  var habilitado = true;
+  try { habilitado = localStorage.getItem(KEY) !== 'off'; } catch (e) {}
+
+  var ctx = null, master = null, bus = null;
+  var S = null;            // sesión actual
+  var activo = false, pausado = false;
+
+  // Cada protocolo tiene su "color" sonoro
+  var PERFILES = {
+    ansioso:     { raiz: 110.00, acorde: [1, 1.5, 2, 3],        brillo: 520 },  // La · quintas abiertas, grave y envolvente
+    agotado:     { raiz: 130.81, acorde: [1, 1.25, 1.5, 2],     brillo: 640 },  // Do · acorde mayor, cálido
+    disperso:    { raiz: 146.83, acorde: [1, 1.5, 2.25],        brillo: 700 },  // Re · limpio, para enfocar
+    bajaEnergia: { raiz: 164.81, acorde: [1, 1.5, 2, 2.5],      brillo: 900 },  // Mi · más brillante, activa
+    calma:       { raiz: 174.61, acorde: [1, 1.5, 1.875, 2.25], brillo: 760 }   // Fa · lidio, aireado
+  };
+
+  function crearContexto() {
+    if (ctx) return ctx;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+    ctx = new AC();
+
+    var comp = ctx.createDynamicsCompressor();
+    master = ctx.createGain();
+    master.gain.value = habilitado ? 0.8 : 0;
+    master.connect(comp);
+    comp.connect(ctx.destination);
+
+    // Reverberación sintética (cola de ~2.8 s)
+    var len = Math.floor(ctx.sampleRate * 2.8);
+    var buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (var c = 0; c < 2; c++) {
+      var d = buf.getChannelData(c);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    }
+    var conv = ctx.createConvolver();
+    conv.buffer = buf;
+    var wet = ctx.createGain();
+    wet.gain.value = 0.4;
+    bus = ctx.createGain();
+    bus.connect(master);
+    bus.connect(conv);
+    conv.connect(wet);
+    wet.connect(master);
+    return ctx;
+  }
+
+  function osc(tipo, freq, destino, s) {
+    var o = ctx.createOscillator();
+    o.type = tipo;
+    o.frequency.value = freq;
+    o.connect(destino);
+    o.start();
+    s.osc.push(o);
+    return o;
+  }
+
+  function armarSesion(p) {
+    var t = ctx.currentTime;
+    var s = { osc: [], perfil: p };
+
+    s.out = ctx.createGain();
+    s.out.gain.value = 1;
+    s.out.connect(bus);
+
+    // 1) Colchón armónico
+    s.droneGain = ctx.createGain();
+    s.droneGain.gain.setValueAtTime(0, t);
+    s.droneGain.gain.linearRampToValueAtTime(0.5, t + 3);
+    s.droneFiltro = ctx.createBiquadFilter();
+    s.droneFiltro.type = 'lowpass';
+    s.droneFiltro.frequency.value = p.brillo;
+    s.droneFiltro.Q.value = 0.7;
+    s.droneFiltro.connect(s.droneGain);
+    s.droneGain.connect(s.out);
+    p.acorde.forEach(function (r, i) {
+      [-4, 4].forEach(function (det) {
+        var g = ctx.createGain();
+        g.gain.value = i === 0 ? 0.06 : 0.04;
+        g.connect(s.droneFiltro);
+        var o = osc(i === 0 ? 'triangle' : 'sine', p.raiz * r, g, s);
+        o.detune.value = det;
+      });
+    });
+    // Respiración lenta del timbre
+    var lfo = ctx.createOscillator();
+    lfo.frequency.value = 0.07;
+    var lfoG = ctx.createGain();
+    lfoG.gain.value = 110;
+    lfo.connect(lfoG);
+    lfoG.connect(s.droneFiltro.frequency);
+    lfo.start();
+    s.osc.push(lfo);
+
+    // 2) Tono guía
+    s.guiaGain = ctx.createGain();
+    s.guiaGain.gain.value = 0;
+    s.guiaFiltro = ctx.createBiquadFilter();
+    s.guiaFiltro.type = 'lowpass';
+    s.guiaFiltro.frequency.value = 1400;
+    s.guiaFiltro.connect(s.guiaGain);
+    s.guiaGain.connect(s.out);
+    s.guiaOsc = osc('sine', p.raiz * 2, s.guiaFiltro, s);
+    var g2 = ctx.createGain();
+    g2.gain.value = 0.3;
+    g2.connect(s.guiaFiltro);
+    s.guiaOsc2 = osc('triangle', p.raiz * 2, g2, s);
+    s.guiaOsc2.detune.value = 6;
+
+    return s;
+  }
+
+  // 3) Cuenco suave
+  function campana(freq, t, vol, dur) {
+    [[1, 1, 1], [2.76, 0.32, 0.6], [5.4, 0.1, 0.35]].forEach(function (par) {
+      var o = ctx.createOscillator();
+      o.type = 'sine';
+      o.frequency.value = freq * par[0];
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol * par[1], t + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur * par[2]);
+      o.connect(g);
+      g.connect(S.out);
+      o.start(t);
+      o.stop(t + dur * par[2] + 0.05);
+    });
+  }
+
+  // 4) Pulso de conteo
+  function pulso(freq, t) {
+    var o = ctx.createOscillator();
+    o.type = 'sine';
+    o.frequency.value = freq;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.022, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+    o.connect(g);
+    g.connect(S.out);
+    o.start(t);
+    o.stop(t + 0.15);
+  }
+
+  function limpiar(s) {
+    if (!s) return;
+    s.osc.forEach(function (o) { try { o.stop(); } catch (e) {} try { o.disconnect(); } catch (e) {} });
+    try { s.out.disconnect(); } catch (e) {}
+  }
+
+  var API = {
+    iniciar: function (key) {
+      var p = PERFILES[key];
+      if (!p || !crearContexto()) return;
+      if (S) { limpiar(S); S = null; }
+      if (ctx.state === 'suspended') ctx.resume();
+      pausado = false;
+      S = armarSesion(p);
+      activo = true;
+      campana(p.raiz * 3, ctx.currentTime + 0.05, 0.12, 4);
+    },
+
+    // Se llama al comenzar cada fase. fases = lista del protocolo, idx = fase actual.
+    fase: function (fases, idx) {
+      if (!activo || !ctx || !S) return;
+      var f = fases[idx];
+      var prev = fases[(idx - 1 + fases.length) % fases.length];
+      var p = S.perfil;
+      var t = ctx.currentTime + 0.02;
+      var d = f.duracion;
+      var lo = p.raiz * 2, hi = p.raiz * 3;
+      var gMin = 0.03, gMax = 0.15;
+      var gg = S.guiaGain.gain, ff1 = S.guiaOsc.frequency, ff2 = S.guiaOsc2.frequency, df = S.droneFiltro.frequency;
+
+      [gg, ff1, ff2].forEach(function (a) { a.cancelScheduledValues(t); });
+
+      if (f.tipo === 'inhale') {
+        ff1.setValueAtTime(lo, t); ff1.exponentialRampToValueAtTime(hi, t + d);
+        ff2.setValueAtTime(lo, t); ff2.exponentialRampToValueAtTime(hi, t + d);
+        gg.setValueAtTime(gMin, t); gg.linearRampToValueAtTime(gMax, t + d * 0.95);
+        S.guiaFiltro.frequency.cancelScheduledValues(t);
+        S.guiaFiltro.frequency.setValueAtTime(900, t);
+        S.guiaFiltro.frequency.linearRampToValueAtTime(1900, t + d);
+        campana(p.raiz * 4, t, 0.14, Math.min(3, d * 1.1));
+      } else if (f.tipo === 'exhale') {
+        ff1.setValueAtTime(hi, t); ff1.exponentialRampToValueAtTime(lo, t + d);
+        ff2.setValueAtTime(hi, t); ff2.exponentialRampToValueAtTime(lo, t + d);
+        gg.setValueAtTime(gMax, t); gg.linearRampToValueAtTime(gMin, t + d * 0.95);
+        S.guiaFiltro.frequency.cancelScheduledValues(t);
+        S.guiaFiltro.frequency.setValueAtTime(1900, t);
+        S.guiaFiltro.frequency.linearRampToValueAtTime(900, t + d);
+        campana(p.raiz * 2, t, 0.14, Math.min(3, d * 1.1));
+      } else { // sostén
+        var lleno = prev.tipo === 'inhale';
+        var fr = lleno ? hi : lo;
+        ff1.setValueAtTime(fr, t);
+        ff2.setValueAtTime(fr, t);
+        gg.setValueAtTime(lleno ? gMax : gMin, t);
+        campana(p.raiz * 3, t, 0.07, Math.min(2.5, d * 1.1));
+      }
+
+      // Brillo del colchón: se abre al inhalar, se cierra al exhalar
+      df.cancelScheduledValues(t);
+      if (f.tipo === 'inhale') { df.setValueAtTime(p.brillo, t); df.linearRampToValueAtTime(p.brillo * 1.7, t + d); }
+      else if (f.tipo === 'exhale') { df.setValueAtTime(p.brillo * 1.7, t); df.linearRampToValueAtTime(p.brillo, t + d); }
+
+      // Un pulso suave en cada segundo del conteo
+      for (var s = 1; s < d; s++) pulso(p.raiz * 8, t + s);
+    },
+
+    pausar: function () {
+      pausado = true;
+      if (ctx && ctx.state === 'running') ctx.suspend();
+    },
+
+    reanudar: function () {
+      pausado = false;
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+    },
+
+    // 5) Final suave: cuenco triple y desvanecimiento
+    fin: function () {
+      if (!activo || !ctx || !S) return;
+      var s = S, p = s.perfil;
+      activo = false;
+      pausado = false;
+      if (ctx.state === 'suspended') ctx.resume();
+      var t = ctx.currentTime + 0.05;
+      campana(p.raiz * 2, t, 0.16, 6);
+      campana(p.raiz * 3, t + 0.3, 0.13, 6);
+      campana(p.raiz * 4, t + 0.6, 0.1, 6);
+      s.guiaGain.gain.cancelScheduledValues(t);
+      s.guiaGain.gain.setValueAtTime(s.guiaGain.gain.value, t);
+      s.guiaGain.gain.linearRampToValueAtTime(0, t + 1.5);
+      s.droneGain.gain.cancelScheduledValues(t);
+      s.droneGain.gain.setValueAtTime(s.droneGain.gain.value, t);
+      s.droneGain.gain.linearRampToValueAtTime(0, t + 3.5);
+      setTimeout(function () { limpiar(s); if (S === s) S = null; }, 8000);
+    },
+
+    // Salida inmediata (cerrar la práctica)
+    detener: function () {
+      if (!ctx || !S) return;
+      var s = S;
+      activo = false;
+      pausado = false;
+      if (ctx.state === 'suspended') ctx.resume();
+      var t = ctx.currentTime;
+      s.out.gain.cancelScheduledValues(t);
+      s.out.gain.setValueAtTime(s.out.gain.value, t);
+      s.out.gain.linearRampToValueAtTime(0, t + 0.5);
+      setTimeout(function () { limpiar(s); if (S === s) S = null; }, 700);
+    }
+  };
+
+  window.PausaAudio = API;
+
+  // Botón de sonido (🔊 / 🔇)
+  function pintarBoton() {
+    var b = document.getElementById('btnSonido');
+    if (!b) return;
+    b.textContent = habilitado ? '🔊 Sonido' : '🔇 Silencio';
+    b.setAttribute('aria-pressed', String(habilitado));
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    pintarBoton();
+    var b = document.getElementById('btnSonido');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      habilitado = !habilitado;
+      try { localStorage.setItem(KEY, habilitado ? 'on' : 'off'); } catch (e) {}
+      if (ctx && master) {
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setTargetAtTime(habilitado ? 0.8 : 0, ctx.currentTime, 0.08);
+      }
+      pintarBoton();
+    });
+  });
+
+  // Si la pestaña se oculta, el audio se pausa igual que la animación
+  document.addEventListener('visibilitychange', function () {
+    if (!ctx || !activo || pausado) return;
+    if (document.hidden) { if (ctx.state === 'running') ctx.suspend(); }
+    else if (ctx.state === 'suspended') ctx.resume();
+  });
+})();
+</script>
+
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-003ZC6TLH3"></script>
 <script>
@@ -369,7 +680,8 @@ html, body {
   font-size: 13px; color: rgba(255,255,255,0.55);
   letter-spacing: 0.05em; text-align: center; margin-top: 8px;
 }
-.practice-controles { display: flex; gap: 12px; padding-bottom: 20px; flex-shrink: 0; justify-content: center; }
+.practice-controles { display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 20px; flex-shrink: 0; justify-content: center; }
+@media (max-width: 420px) { .btn-control { padding: 12px 16px; font-size: 13px; } }
 .btn-control {
   background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
   color: #fff; padding: 12px 24px; border-radius: 30px;
@@ -987,6 +1299,45 @@ html, body {
 .install-banner .ib-cerrar:hover { color: rgba(255,255,255,0.8); }
 
 /* ============================================
+   UPDATE BANNER
+   ============================================ */
+.update-banner {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 440px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--naranja) 0%, var(--naranja-luz) 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 12px 40px rgba(232,107,24,0.45);
+  z-index: 950;
+  align-items: center;
+  gap: 14px;
+  animation: installSlideUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.update-banner.visible { display: flex; }
+.update-banner .ub-icono { font-size: 26px; flex-shrink: 0; }
+.update-banner .ub-texto { flex: 1; min-width: 0; }
+.update-banner .ub-titulo {
+  font-weight: 700; font-size: 14.5px; margin-bottom: 2px; line-height: 1.25;
+}
+.update-banner .ub-desc {
+  font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.4;
+}
+.update-banner .ub-btn {
+  background: #fff; color: var(--naranja); border: none;
+  padding: 10px 20px; border-radius: 30px;
+  font-family: var(--font-cuerpo); font-weight: 700; font-size: 13px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+.update-banner .ub-btn:hover { transform: translateY(-1px); }
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (min-width: 700px) {
@@ -1137,6 +1488,7 @@ html, body {
     </div>
     <div class="practice-controles">
       <button class="btn-control" id="btnPausar">⏸ Pausar</button>
+      <button class="btn-control" id="btnSonido" aria-pressed="true" aria-label="Activar o silenciar el sonido">🔊 Sonido</button>
       <button class="btn-control primario" id="btnTerminar">Terminar</button>
     </div>
   </section>
@@ -1303,6 +1655,16 @@ html, body {
     </div>
     <button class="ib-btn" id="btnInstalar">Instalar</button>
     <button class="ib-cerrar" id="btnCerrarBanner" aria-label="Cerrar aviso de instalación">✕</button>
+  </div>
+
+  <!-- UPDATE BANNER -->
+  <div class="update-banner" id="updateBanner" role="alert" aria-live="polite">
+    <span class="ub-icono" aria-hidden="true">✨</span>
+    <div class="ub-texto">
+      <div class="ub-titulo">Hay una versión nueva</div>
+      <div class="ub-desc">Con audio en las respiraciones. Toca para actualizar.</div>
+    </div>
+    <button class="ub-btn" id="btnActualizar">Actualizar</button>
   </div>
 
 </div>
@@ -1704,6 +2066,7 @@ html, body {
     protocoloNombre.textContent = state.protocolo.nombre;
     progressFill.style.width = '0%';
     document.getElementById('btnPausar').textContent = '⏸ Pausar';
+    if (window.PausaAudio) PausaAudio.iniciar(key);
     actualizarFaseUI();
     mostrarPantalla('practice');
     state.rafId = requestAnimationFrame(loop);
@@ -1732,6 +2095,7 @@ html, body {
 
   function actualizarFaseUI() {
     faseNombre.textContent = state.protocolo.fases[state.faseIndex].nombre;
+    if (window.PausaAudio) PausaAudio.fase(state.protocolo.fases, state.faseIndex);
   }
 
   function actualizarAnimacion() {
@@ -1766,6 +2130,7 @@ html, body {
 
   function finalizarProtocolo() {
     detenerAnimacion();
+    if (window.PausaAudio) PausaAudio.fin();
     guardarSesion(state.protocoloKey);
     enviarEventoGA4('breathing_completed', { event_category: 'engagement', estado: state.protocoloKey });
     registrarFirebase('respiraciones', {
@@ -1820,10 +2185,12 @@ html, body {
       state.pausado = false;
       state.ultimoTimestamp = 0;
       this.textContent = '⏸ Pausar';
+      if (window.PausaAudio) PausaAudio.reanudar();
       state.rafId = requestAnimationFrame(loop);
     } else {
       state.pausado = true;
       this.textContent = '▶ Reanudar';
+      if (window.PausaAudio) PausaAudio.pausar();
       detenerAnimacion();
     }
   });
@@ -1835,6 +2202,7 @@ html, body {
   document.getElementById('btnCerrar').addEventListener('click', function() {
     if (confirm('¿Salir sin completar la práctica?')) {
       detenerAnimacion();
+      if (window.PausaAudio) PausaAudio.detener();
       mostrarPantalla('select');
     }
   });
@@ -2427,7 +2795,7 @@ html, body {
 
   actualizarTemaParticulas('home');
 
-  console.log('%c📖 Pausa Lyon v3.6.3 — Partículas + Frosted Glass + SW aislado', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.7.0 — Partículas + Frosted Glass + Audio sintetizado + Update banner', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -2435,19 +2803,77 @@ html, body {
 
 <script>
 // ============================================
-// SERVICE WORKER · PWA (scope restringido a Pausa Lyon)
+// SERVICE WORKER · PWA + detección de actualización
 // ============================================
-// ⭐ v3.6.3: el SW ahora SOLO controla /pausa-lyon.html y sus
-// assets. El resto del sitio web (home, blog, otras páginas)
-// no se ve afectado por este Service Worker.
-if ('serviceWorker' in navigator) {
+(function() {
+  if (!('serviceWorker' in navigator)) return;
+
+  var updateBanner = document.getElementById('updateBanner');
+  var btnActualizar = document.getElementById('btnActualizar');
+  var registration = null;
+
+  function mostrarBanner() {
+    if (updateBanner) updateBanner.classList.add('visible');
+  }
+
+  function ocultarBanner() {
+    if (updateBanner) updateBanner.classList.remove('visible');
+  }
+
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/service-worker.js', { scope: '/pausa-lyon.html' })
-      .then(function(reg) { console.log('✅ Service Worker registrado. Scope:', reg.scope); })
-      .catch(function(err) { console.warn('⚠️ Service Worker:', err); });
-  });
-}
+      .then(function(reg) {
+        registration = reg;
+        console.log('✅ SW registrado. Scope:', reg.scope);
 
+        // ¿Ya hay una versión nueva esperando?
+        if (reg.waiting && navigator.serviceWorker.controller) {
+          mostrarBanner();
+        }
+
+        // Cuando el SW nuevo se instala y queda en espera
+        reg.addEventListener('updatefound', function() {
+          var nuevo = reg.installing;
+          if (!nuevo) return;
+          nuevo.addEventListener('statechange', function() {
+            if (nuevo.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('✨ Nueva versión lista');
+              mostrarBanner();
+            }
+          });
+        });
+
+        // Busca actualizaciones cada vez que se abre la app
+        reg.update().catch(function(){});
+        // Y también cada 30 minutos si la app queda abierta
+        setInterval(function() { reg.update().catch(function(){}); }, 30 * 60 * 1000);
+      })
+      .catch(function(err) { console.warn('⚠️ SW:', err); });
+
+    // Cuando el SW nuevo toma el control, recarga una sola vez
+    var recargando = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function() {
+      if (recargando) return;
+      recargando = true;
+      window.location.reload();
+    });
+  });
+
+  if (btnActualizar) {
+    btnActualizar.addEventListener('click', function() {
+      ocultarBanner();
+      if (registration && registration.waiting) {
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      } else {
+        window.location.reload();
+      }
+    });
+  }
+})();
+
+// ============================================
+// INSTALL BANNER (PWA)
+// ============================================
 let deferredPrompt = null;
 const installBanner = document.getElementById('installBanner');
 const btnInstalar = document.getElementById('btnInstalar');
@@ -2460,12 +2886,10 @@ function cerrarBanner() {
   if (installBanner) installBanner.classList.remove('visible');
   try { sessionStorage.setItem('pausa_lyon_banner_cerrado', '1'); } catch(e) {}
 }
-
 function getDispositivoPWA() {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' : 
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'iOS' :
          /Android/i.test(navigator.userAgent) ? 'Android' : 'Desktop';
 }
-
 function getUsuarioIdPWA() {
   try {
     let id = localStorage.getItem('pausa_lyon_user_id');
@@ -2508,13 +2932,7 @@ window.addEventListener('appinstalled', function() {
   console.log('✅ App instalada correctamente');
   deferredPrompt = null;
   cerrarBanner();
-
-  try {
-    if (typeof gtag === 'function') {
-      gtag('event', 'pwa_installed', { event_category: 'pwa' });
-    }
-  } catch (e) {}
-
+  try { if (typeof gtag === 'function') gtag('event', 'pwa_installed', { event_category: 'pwa' }); } catch (e) {}
   try {
     if (typeof firebase !== 'undefined' && firebase.database) {
       firebase.database().ref('pausa_lyon_analytics/instalaciones').push({
@@ -2522,15 +2940,10 @@ window.addEventListener('appinstalled', function() {
         fechaLegible: new Date().toLocaleString('es-ES'),
         usuarioId: getUsuarioIdPWA(),
         dispositivo: getDispositivoPWA()
-      }).then(function() {
-        console.log('📊 Instalación registrada en Firebase');
-      }).catch(function(err) {
-        console.warn('⚠️ Error registrando instalación:', err.message);
-      });
+      }).then(function() { console.log('📊 Instalación registrada en Firebase'); })
+        .catch(function(err) { console.warn('⚠️ Error:', err.message); });
     }
-  } catch (e) {
-    console.warn('⚠️ Error registrando instalación:', e);
-  }
+  } catch (e) {}
 });
 
 if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
