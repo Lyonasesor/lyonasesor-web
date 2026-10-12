@@ -1,17 +1,23 @@
 // ============================================================
-// Service Worker · Pausa Lyon v3.6.3
+// Service Worker · Pausa Lyon v3.7.0
 // ============================================================
-// CAMBIOS v3.6.3 (vs v3.3):
-//   - AISLADO: este SW SOLO gestiona /pausa-lyon.html y sus
-//     assets. Ignora por completo el resto del sitio web
-//     (home, blog, otras páginas) para no interferir con ellas.
+// CAMBIOS v3.7.0 (vs v3.6.3):
+//   - Versión de caché subida a v3.7.0 para forzar la
+//     actualización en usuarios existentes.
+//   - El listener de mensajes ahora acepta BOTH formatos:
+//       'SKIP_WAITING' (string) y {type:'SKIP_WAITING'} (objeto).
+//     Esto evita que el botón "Actualizar" falle si el HTML
+//     envía el mensaje como objeto (que es lo que hace ahora).
+//   - Se mantiene el aislamiento: este SW SOLO gestiona
+//     /pausa-lyon.html y sus assets. El resto del sitio no se ve
+//     afectado.
 //   - NETWORK-FIRST para HTML → siempre ves la versión más
 //     reciente subida a GitHub.
 //   - CACHE-FIRST solo para assets estáticos (iconos, fuentes).
 //   - Fallback offline corregido (ya no redirige todo a la app).
 // ============================================================
 
-const CACHE_NAME = 'pausa-lyon-v3.6.3';
+const CACHE_NAME = 'pausa-lyon-v3.7.0';
 
 // Assets estáticos propios de la app
 const CACHE_STATIC = [
@@ -48,7 +54,7 @@ function esDeLaApp(url) {
 // INSTALACIÓN
 // ============================================================
 self.addEventListener('install', function(event) {
-  console.log('[SW] Instalando Pausa Lyon v3.6.3');
+  console.log('[SW] Instalando Pausa Lyon v3.7.0');
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll(CACHE_STATIC).catch(function(err) {
@@ -64,10 +70,10 @@ self.addEventListener('install', function(event) {
 // ACTIVACIÓN
 // ============================================================
 self.addEventListener('activate', function(event) {
-  console.log('[SW] Activando Pausa Lyon v3.6.3');
+  console.log('[SW] Activando Pausa Lyon v3.7.0');
   event.waitUntil(
     caches.keys().then(function(keys) {
-      // Borramos TODOS los cachés antiguos (incluidos v3.3, v3.6.1, etc.)
+      // Borramos TODOS los cachés antiguos (v3.3, v3.6.1, v3.6.3, etc.)
       return Promise.all(
         keys.filter(function(k) { return k !== CACHE_NAME; })
             .map(function(k) {
@@ -178,15 +184,41 @@ self.addEventListener('fetch', function(event) {
 // ============================================================
 // MENSAJES DESDE EL CLIENTE
 // ============================================================
+// ⭐ Acepta ambos formatos: string ('SKIP_WAITING') y objeto
+// ({ type: 'SKIP_WAITING' }), para que el botón "Actualizar"
+// funcione sin importar cómo se envíe el mensaje desde el HTML.
 self.addEventListener('message', function(event) {
-  if (event.data === 'SKIP_WAITING') {
+  const data = event.data;
+
+  // Formato string (compatibilidad con versiones previas)
+  if (data === 'SKIP_WAITING') {
     self.skipWaiting();
+    return;
   }
-  if (event.data === 'CLEAR_CACHE') {
+
+  // Formato string
+  if (data === 'CLEAR_CACHE') {
     caches.keys().then(function(keys) {
       return Promise.all(keys.map(function(k) { return caches.delete(k); }));
     }).then(function() {
       console.log('[SW] Caché borrado manualmente por petición del cliente');
     });
+    return;
+  }
+
+  // Formato objeto (usado por el nuevo botón "Actualizar")
+  if (data && typeof data === 'object') {
+    if (data.type === 'SKIP_WAITING') {
+      self.skipWaiting();
+      return;
+    }
+    if (data.type === 'CLEAR_CACHE') {
+      caches.keys().then(function(keys) {
+        return Promise.all(keys.map(function(k) { return caches.delete(k); }));
+      }).then(function() {
+        console.log('[SW] Caché borrado manualmente por petición del cliente');
+      });
+      return;
+    }
   }
 });
