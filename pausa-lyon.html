@@ -24,22 +24,15 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 
-<!-- AUDIO · Pausa Lyon -->
+<!-- AUDIO · Pausa Lyon · v3.7.1 (adaptativo móvil/PC) -->
 <script>
 /* ============================================================
-   Pausa Lyon · Motor de audio para la respiración guiada
+   Pausa Lyon · Motor de audio adaptativo
    ------------------------------------------------------------
-   Todo el sonido se sintetiza en el dispositivo (Web Audio API):
-   sin archivos, sin derechos de autor, sin descargas y funciona
-   sin conexión. Cada fase (inhala / sostén / exhala) se programa
-   con el reloj de audio, así que queda sincronizada con el conteo.
-
-   Capas:
-   1) Colchón armónico (drone) propio de cada protocolo.
-   2) Tono guía: sube en la inhalación, baja en la exhalación.
-   3) Cuenco tibetano suave al iniciar cada fase.
-   4) Pulso muy suave en cada segundo del conteo.
-   5) Cuenco final al terminar.
+   v3.7.1: Se añade un perfil LIGERO para dispositivos móviles
+   que reduce la carga de CPU (menos osciladores, sin convolución,
+   sin compresor) para eliminar los ruidos e interferencias que
+   aparecían en Android.
    ============================================================ */
 (function () {
   'use strict';
@@ -48,17 +41,31 @@
   var habilitado = true;
   try { habilitado = localStorage.getItem(KEY) !== 'off'; } catch (e) {}
 
+  // ------------------------------------------------------------
+  // Detección de dispositivo ligero
+  // ------------------------------------------------------------
+  // Es "ligero" si es un móvil/tablet, O si el dispositivo tiene
+  // poca memoria (deviceMemory < 4 GB) o pocos núcleos (<= 4).
+  var ES_LIGERO = (function() {
+    var esMovil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var pocaMemoria = (navigator.deviceMemory && navigator.deviceMemory < 4);
+    var pocosNucleos = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+    return esMovil || pocaMemoria || pocosNucleos;
+  })();
+
+  console.log('🔊 Motor de audio: perfil ' + (ES_LIGERO ? 'LIGERO (móvil)' : 'COMPLETO (PC)'));
+
   var ctx = null, master = null, bus = null;
-  var S = null;            // sesión actual
+  var S = null;
   var activo = false, pausado = false;
 
-  // Cada protocolo tiene su "color" sonoro
+  // Perfiles sonoros
   var PERFILES = {
-    ansioso:     { raiz: 110.00, acorde: [1, 1.5, 2, 3],        brillo: 520 },  // La · quintas abiertas, grave y envolvente
-    agotado:     { raiz: 130.81, acorde: [1, 1.25, 1.5, 2],     brillo: 640 },  // Do · acorde mayor, cálido
-    disperso:    { raiz: 146.83, acorde: [1, 1.5, 2.25],        brillo: 700 },  // Re · limpio, para enfocar
-    bajaEnergia: { raiz: 164.81, acorde: [1, 1.5, 2, 2.5],      brillo: 900 },  // Mi · más brillante, activa
-    calma:       { raiz: 174.61, acorde: [1, 1.5, 1.875, 2.25], brillo: 760 }   // Fa · lidio, aireado
+    ansioso:     { raiz: 110.00, acorde: [1, 1.5, 2, 3],        brillo: 520 },
+    agotado:     { raiz: 130.81, acorde: [1, 1.25, 1.5, 2],     brillo: 640 },
+    disperso:    { raiz: 146.83, acorde: [1, 1.5, 2.25],        brillo: 700 },
+    bajaEnergia: { raiz: 164.81, acorde: [1, 1.5, 2, 2.5],      brillo: 900 },
+    calma:       { raiz: 174.61, acorde: [1, 1.5, 1.875, 2.25], brillo: 760 }
   };
 
   function crearContexto() {
@@ -66,30 +73,41 @@
     var AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
     try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
-    ctx = new AC();
 
-    var comp = ctx.createDynamicsCompressor();
+    // CLAVE: latencyHint 'playback' prioriza estabilidad sobre latencia.
+    // El búfer de audio es más grande y evita underruns en móvil.
+    ctx = new AC({ latencyHint: 'playback' });
+
     master = ctx.createGain();
     master.gain.value = habilitado ? 0.8 : 0;
-    master.connect(comp);
-    comp.connect(ctx.destination);
 
-    // Reverberación sintética (cola de ~2.8 s)
-    var len = Math.floor(ctx.sampleRate * 2.8);
-    var buf = ctx.createBuffer(2, len, ctx.sampleRate);
-    for (var c = 0; c < 2; c++) {
-      var d = buf.getChannelData(c);
-      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    if (ES_LIGERO) {
+      // Perfil ligero: sin compresor, sin convolución.
+      master.connect(ctx.destination);
+      bus = ctx.createGain();
+      bus.connect(master);
+    } else {
+      // Perfil completo: compresor + reverberación por convolución.
+      var comp = ctx.createDynamicsCompressor();
+      master.connect(comp);
+      comp.connect(ctx.destination);
+
+      var len = Math.floor(ctx.sampleRate * 2.8);
+      var buf = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (var c = 0; c < 2; c++) {
+        var d = buf.getChannelData(c);
+        for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+      }
+      var conv = ctx.createConvolver();
+      conv.buffer = buf;
+      var wet = ctx.createGain();
+      wet.gain.value = 0.4;
+      bus = ctx.createGain();
+      bus.connect(master);
+      bus.connect(conv);
+      conv.connect(wet);
+      wet.connect(master);
     }
-    var conv = ctx.createConvolver();
-    conv.buffer = buf;
-    var wet = ctx.createGain();
-    wet.gain.value = 0.4;
-    bus = ctx.createGain();
-    bus.connect(master);
-    bus.connect(conv);
-    conv.connect(wet);
-    wet.connect(master);
     return ctx;
   }
 
@@ -114,23 +132,28 @@
     // 1) Colchón armónico
     s.droneGain = ctx.createGain();
     s.droneGain.gain.setValueAtTime(0, t);
-    s.droneGain.gain.linearRampToValueAtTime(0.5, t + 3);
+    s.droneGain.gain.linearRampToValueAtTime(ES_LIGERO ? 0.4 : 0.5, t + 3);
     s.droneFiltro = ctx.createBiquadFilter();
     s.droneFiltro.type = 'lowpass';
     s.droneFiltro.frequency.value = p.brillo;
     s.droneFiltro.Q.value = 0.7;
     s.droneFiltro.connect(s.droneGain);
     s.droneGain.connect(s.out);
+
+    // PC: 8 osciladores (4 notas × 2 con detune).
+    // Móvil: 4 osciladores (1 por nota, sin detune).
+    var maxOsc = ES_LIGERO ? 1 : 2;
     p.acorde.forEach(function (r, i) {
-      [-4, 4].forEach(function (det) {
+      for (var v = 0; v < maxOsc; v++) {
         var g = ctx.createGain();
-        g.gain.value = i === 0 ? 0.06 : 0.04;
+        g.gain.value = (i === 0 ? 0.06 : 0.04) * (ES_LIGERO ? 1.4 : 1);
         g.connect(s.droneFiltro);
         var o = osc(i === 0 ? 'triangle' : 'sine', p.raiz * r, g, s);
-        o.detune.value = det;
-      });
+        if (!ES_LIGERO) o.detune.value = (v === 0 ? -4 : 4);
+      }
     });
-    // Respiración lenta del timbre
+
+    // LFO de respiración del timbre
     var lfo = ctx.createOscillator();
     lfo.frequency.value = 0.07;
     var lfoG = ctx.createGain();
@@ -158,9 +181,10 @@
     return s;
   }
 
-  // 3) Cuenco suave
   function campana(freq, t, vol, dur) {
-    [[1, 1, 1], [2.76, 0.32, 0.6], [5.4, 0.1, 0.35]].forEach(function (par) {
+    // En móvil, una campana más simple (2 parciales en vez de 3)
+    var parciales = ES_LIGERO ? [[1, 1, 1], [2.76, 0.3, 0.6]] : [[1, 1, 1], [2.76, 0.32, 0.6], [5.4, 0.1, 0.35]];
+    parciales.forEach(function (par) {
       var o = ctx.createOscillator();
       o.type = 'sine';
       o.frequency.value = freq * par[0];
@@ -175,7 +199,6 @@
     });
   }
 
-  // 4) Pulso de conteo
   function pulso(freq, t) {
     var o = ctx.createOscillator();
     o.type = 'sine';
@@ -208,7 +231,6 @@
       campana(p.raiz * 3, ctx.currentTime + 0.05, 0.12, 4);
     },
 
-    // Se llama al comenzar cada fase. fases = lista del protocolo, idx = fase actual.
     fase: function (fases, idx) {
       if (!activo || !ctx || !S) return;
       var f = fases[idx];
@@ -238,7 +260,7 @@
         S.guiaFiltro.frequency.setValueAtTime(1900, t);
         S.guiaFiltro.frequency.linearRampToValueAtTime(900, t + d);
         campana(p.raiz * 2, t, 0.14, Math.min(3, d * 1.1));
-      } else { // sostén
+      } else {
         var lleno = prev.tipo === 'inhale';
         var fr = lleno ? hi : lo;
         ff1.setValueAtTime(fr, t);
@@ -247,13 +269,13 @@
         campana(p.raiz * 3, t, 0.07, Math.min(2.5, d * 1.1));
       }
 
-      // Brillo del colchón: se abre al inhalar, se cierra al exhalar
       df.cancelScheduledValues(t);
       if (f.tipo === 'inhale') { df.setValueAtTime(p.brillo, t); df.linearRampToValueAtTime(p.brillo * 1.7, t + d); }
       else if (f.tipo === 'exhale') { df.setValueAtTime(p.brillo * 1.7, t); df.linearRampToValueAtTime(p.brillo, t + d); }
 
-      // Un pulso suave en cada segundo del conteo
-      for (var s = 1; s < d; s++) pulso(p.raiz * 8, t + s);
+      // En móvil, un pulso cada 2 segundos en vez de cada segundo.
+      var paso = ES_LIGERO ? 2 : 1;
+      for (var s = 1; s < d; s += paso) pulso(p.raiz * 8, t + s);
     },
 
     pausar: function () {
@@ -266,7 +288,6 @@
       if (ctx && ctx.state === 'suspended') ctx.resume();
     },
 
-    // 5) Final suave: cuenco triple y desvanecimiento
     fin: function () {
       if (!activo || !ctx || !S) return;
       var s = S, p = s.perfil;
@@ -276,7 +297,7 @@
       var t = ctx.currentTime + 0.05;
       campana(p.raiz * 2, t, 0.16, 6);
       campana(p.raiz * 3, t + 0.3, 0.13, 6);
-      campana(p.raiz * 4, t + 0.6, 0.1, 6);
+      if (!ES_LIGERO) campana(p.raiz * 4, t + 0.6, 0.1, 6);
       s.guiaGain.gain.cancelScheduledValues(t);
       s.guiaGain.gain.setValueAtTime(s.guiaGain.gain.value, t);
       s.guiaGain.gain.linearRampToValueAtTime(0, t + 1.5);
@@ -286,7 +307,6 @@
       setTimeout(function () { limpiar(s); if (S === s) S = null; }, 8000);
     },
 
-    // Salida inmediata (cerrar la práctica)
     detener: function () {
       if (!ctx || !S) return;
       var s = S;
@@ -303,7 +323,6 @@
 
   window.PausaAudio = API;
 
-  // Botón de sonido (🔊 / 🔇)
   function pintarBoton() {
     var b = document.getElementById('btnSonido');
     if (!b) return;
@@ -326,7 +345,6 @@
     });
   });
 
-  // Si la pestaña se oculta, el audio se pausa igual que la animación
   document.addEventListener('visibilitychange', function () {
     if (!ctx || !activo || pausado) return;
     if (document.hidden) { if (ctx.state === 'running') ctx.suspend(); }
@@ -2795,7 +2813,7 @@ html, body {
 
   actualizarTemaParticulas('home');
 
-  console.log('%c📖 Pausa Lyon v3.7.0 — Partículas + Frosted Glass + Audio sintetizado + Update banner', 'color:#E86B18;font-weight:bold;font-size:14px;');
+  console.log('%c📖 Pausa Lyon v3.7.1 — Audio adaptativo (móvil/PC) + Update banner', 'color:#E86B18;font-weight:bold;font-size:14px;');
   console.log('%cLyon Asesor · Rugido de Consciencia', 'color:#1A2330;font-size:11px;');
 
 })();
@@ -2826,12 +2844,10 @@ html, body {
         registration = reg;
         console.log('✅ SW registrado. Scope:', reg.scope);
 
-        // ¿Ya hay una versión nueva esperando?
         if (reg.waiting && navigator.serviceWorker.controller) {
           mostrarBanner();
         }
 
-        // Cuando el SW nuevo se instala y queda en espera
         reg.addEventListener('updatefound', function() {
           var nuevo = reg.installing;
           if (!nuevo) return;
@@ -2843,14 +2859,11 @@ html, body {
           });
         });
 
-        // Busca actualizaciones cada vez que se abre la app
         reg.update().catch(function(){});
-        // Y también cada 30 minutos si la app queda abierta
         setInterval(function() { reg.update().catch(function(){}); }, 30 * 60 * 1000);
       })
       .catch(function(err) { console.warn('⚠️ SW:', err); });
 
-    // Cuando el SW nuevo toma el control, recarga una sola vez
     var recargando = false;
     navigator.serviceWorker.addEventListener('controllerchange', function() {
       if (recargando) return;
