@@ -945,6 +945,18 @@
                     <option value="p movil">Transferencia / Pago Móvil (solo Venezuela)</option>
                 </select>
 
+                <div id="pagoMovilInfo" style="display:none; background:rgba(255,255,255,0.06); border-radius:12px; padding:16px 20px; margin:4px 0; font-size:0.9rem; text-align:left;">
+                    <p style="margin:0 0 6px; color:#fff;"><strong>📱 Datos para Pago Móvil / Transferencia (Bs.)</strong></p>
+                    <p style="margin:0 0 4px;"><strong>Nombre:</strong> Alvaro Jose Lyon Abreu</p>
+                    <p style="margin:0 0 4px;"><strong>CI:</strong> V-17633035</p>
+                    <p style="margin:0 0 4px;"><strong>Banco:</strong> Banesco</p>
+                    <p style="margin:0 0 4px;"><strong>Número telefónico:</strong> 0414-8610464</p>
+                    <p style="margin:0 0 4px;"><strong>Transferencia bancaria:</strong> Banesco · Cuenta corriente</p>
+                    <p style="margin:0 0 4px;"><strong>N° de cuenta:</strong> 0134-0348-15-3481089168</p>
+                    <p style="margin:0 0 8px;"><strong>Tasa:</strong> Cambio del día (BCV / Dólar paralelo)</p>
+                    <p style="margin:0; opacity:0.8;">Realiza el pago con estos datos y luego pulsa el botón de abajo: se abrirá WhatsApp para que envíes tu comprobante y confirmemos tu pago.</p>
+                </div>
+
                 <button type="submit" class="btn-primary">📩 Enviar y continuar con el pago</button>
                 <p style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Tus datos están seguros y no serán compartidos.</p>
             </form>
@@ -1043,6 +1055,18 @@
         });
 
         // ===== FORMULARIO CON ENVÍO Y REDIRECCIÓN =====
+        // ===== INFO PAGO MÓVIL / TRANSFERENCIA (muestra los datos al elegir ese método) =====
+        (function() {
+            var sel = document.getElementById('metodo');
+            var box = document.getElementById('pagoMovilInfo');
+            if (!sel || !box) return;
+            function actualizarInfoPago() {
+                box.style.display = (sel.value === 'p movil') ? 'block' : 'none';
+            }
+            sel.addEventListener('change', actualizarInfoPago);
+            actualizarInfoPago();
+        })();
+
         document.getElementById('conferenciaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
